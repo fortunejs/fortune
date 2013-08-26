@@ -1,0 +1,70 @@
+# Fortune.js
+
+Hello nerds. Fortune is a web framework for prototyping rich APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with [MongoDB](http://www.mongodb.org/) support out of the box, and an adapter for MySQL, Postgres, & SQLite (see guide for how to use).
+
+Get it by installing from npm:
+```
+$ npm install fortune
+```
+
+### Features
+
+Fortune implements everything you need to get started with JSON API, with a few extra features:
+
+- Focus on ease of use, especially for those who are not familiar with node.js. Fortune does the heavy lifting for you.
+- Associations and bi-directional relationship mapping. Fortune manages associations between resources so you don't have to.
+- Hooks to transform resources before writing and after reading, for implementing application-specific logic.
+
+It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](http://github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
+
+## Guide & Documentation
+
+The full guide and API documentation are located at [fortunejs.com](http://fortunejs.com/).
+
+### Basic Usage
+
+Here is a minimal application:
+
+```javascript
+require('fortune')()
+
+.resource('person', {
+  name: String,
+  age: Number,
+  pets: ['pet'] // "has many" relationship to pets
+
+}).resource('pet', {
+  name: String,
+  age: Number,
+  owner: 'person' // "belongs to" relationship to a person
+
+}).listen(1337);
+```
+
+This exposes a few routes for the `person` and `pet` resources, as defined by the JSON API specification:
+
+| HTTP   | Person             | Pet               | Notes                                                        |
+|--------|--------------------|-------------------|--------------------------------------------------------------|
+| GET    | /people            | /pets             | Get a collection of resources, accepts query `?ids=1,2,3...` |
+| POST   | /people            | /pets             | Create a resource                                            |
+| GET    | /people/`:id`      | /pets/`:id`       | Get a specific resource, or multiple: `1,2,3`                |
+| PUT    | /people/`:id`      | /pets/`:id`       | Create or update a resource                                  |
+| PATCH  | /people/`:id`      | /pets/`:id`       | Patch a resource (see [RFC 6902](http://tools.ietf.org/html/rfc6902)) |
+| DELETE | /people/`:id`      | /pets/`:id`       | Delete a resource                                            |
+| GET    | /people/`:id`/pets | /pets/`:id`/owner | Get a related resource (one level deep)                      |
+
+### Unit Testing
+
+Tests are written with Mocha, and require MongoDB already set up on your system. To run tests:
+
+```
+$ npm test
+```
+
+### Meta
+
+For release history and roadmap, see [CHANGELOG.md](http://github.com/daliwali/fortune/blob/master/CHANGELOG.md).
+
+Fortune is licensed under the MIT license, see [LICENSE.md](http://github.com/daliwali/fortune/blob/master/LICENSE.md).
+
+Development of Fortune is sponsored by [AdStack](http://adstack.com/).

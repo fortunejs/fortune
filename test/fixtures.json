@@ -1,0 +1,18 @@
+{
+  "people": [
+    {
+      "name": "Dilbert"
+    },
+    {
+      "name": "Wally"
+    }
+  ],
+  "pets": [
+    {
+      "name": "Dogbert"
+    },
+    {
+      "name": "Ratbert"
+    }
+  ]
+}
