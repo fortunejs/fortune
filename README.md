@@ -1,4 +1,4 @@
-# Fortune.js
+# Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
 
 Hello nerds. Fortune is a web framework for prototyping rich APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with [MongoDB](http://www.mongodb.org/) support out of the box, and an adapter for MySQL, Postgres, & SQLite (see guide for how to use).
 
