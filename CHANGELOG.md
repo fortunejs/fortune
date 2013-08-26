@@ -4,5 +4,5 @@
 
 ## Changelog
 
-**v0.0.1 (8/??/2013)**
+**v0.0.1 (8/26/2013)**
 * Initial public release.
