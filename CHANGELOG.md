@@ -7,6 +7,7 @@
 
 **v0.0.2 (8/27/2013)**
 * Fix associations in MongoDB adapter.
+* Improve request validation.
 
 **v0.0.1 (8/26/2013)**
 * Initial public release.
