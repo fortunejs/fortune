@@ -1,6 +1,5 @@
 var _ = require('lodash')
   , mongoose = require('mongoose')
-  , RSVP = require('rsvp')
   , should = require('should')
   , request = require('supertest');
 
@@ -49,7 +48,7 @@ function runTest(adapter) {
         .send(body)
         .expect('Content-Type', /json/)
         .expect(201)
-        .end(function(error, response) {
+        .end(function(error) {
           should.not.exist(error);
           done();
         });
@@ -107,7 +106,7 @@ function runTest(adapter) {
             request(baseUrl)
             .del('/' + collection + '/' + id)
             .expect(204)
-            .end(function(error, response) {
+            .end(function(error) {
               should.not.exist(error);
               done();
             });

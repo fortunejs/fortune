@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Web framework for prototyping rich APIs.",
+  "description": "Web framework for prototyping rich hypermedia APIs.",
   "version": "0.0.1",
   "license": "MIT",
   "author": {
