@@ -62,8 +62,7 @@ $ npm test
 ```
 
 ### Client-side Implementations
-
-
+- [Ember Data](http://github.com/emberjs/data): the original implementation, it needs a [custom adapter](http://github.com/daliwali/ember-json-api) to actually work.
 
 ### Meta
 
