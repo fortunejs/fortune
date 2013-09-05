@@ -1,4 +1,5 @@
-var fortune = require('../lib/fortune');
+var fortune = require('../lib/fortune')
+  , express = fortune.express;
 
 /**
  * Example demonstrating two different databases being
@@ -7,7 +8,7 @@ var fortune = require('../lib/fortune');
  * you will have to solve any problems that arise from
  * that yourself.
  */
-var container = fortune.express()
+var container = express()
   , port = process.argv[2] || 1337;
 
 var peopleAPI = fortune({
