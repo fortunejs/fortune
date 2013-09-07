@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Web framework for prototyping rich hypermedia APIs.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -17,8 +17,8 @@
     "test": "node test/run"
   },
   "dependencies": {
-    "express": "~3.3.4",
-    "mongoose": "~3.6.18",
+    "express": "~3.3.8",
+    "mongoose": "~3.6.19",
     "orm": "~2.1.0",
     "rsvp": "~2.0.1",
     "i": "~0.3.2",

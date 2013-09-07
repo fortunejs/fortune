@@ -5,6 +5,10 @@
 
 ## Changelog
 
+**v0.0.4 (9/6/2013)**
+* Fix type checking code that breaks on Buffer types for all adapters.
+* Fix regression in MongoDB adapter that exposed `_id` and `__v` fields.
+
 **v0.0.3 (9/4/2013)**
 * Use `createConnection` instead of `connect` in mongoose, which allows for multiple database connections.
 * Expose and document the `router` namespace, which is actually an instance of `express`.

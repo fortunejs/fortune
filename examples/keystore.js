@@ -1,5 +1,5 @@
 var fortune = require('../lib/fortune')
-  , RSVP = require('RSVP')
+  , RSVP = fortune.RSVP
   , crypto = require('crypto');
 
 var pbkdf2 = {
