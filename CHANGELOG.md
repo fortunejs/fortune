@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.0.5 (9/8/2013)**
+* Convert keys to underscore for all incoming requests.
+
 **v0.0.4 (9/6/2013)**
 * Fix type checking code that breaks on Buffer types for all adapters.
 * Fix regression in MongoDB adapter that exposed `_id` and `__v` fields.

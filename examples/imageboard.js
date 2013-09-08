@@ -7,9 +7,6 @@ var fortune = require('../lib/fortune');
  */
 fortune({
 
-  username: 'root',
-  password: 'foobar',
-  adapter: 'mysql',
   db: '1337chan'
 
 })
