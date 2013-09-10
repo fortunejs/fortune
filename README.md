@@ -1,6 +1,6 @@
 # Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
 
-Hello nerds. Fortune is a web framework for prototyping rich hypermedia APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with [MongoDB](http://www.mongodb.org/) support out of the box, and an adapter for MySQL, Postgres, & SQLite (see guide for how to use).
+Hello nerds. Fortune is a web framework for prototyping rich hypermedia APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for MongoDB, MySQL, Postgres, & SQLite.
 
 Get it by installing from npm:
 ```
@@ -11,9 +11,9 @@ $ npm install fortune
 
 Fortune implements everything you need to get started with JSON API, with a few extra features:
 
-- Focus on ease of use, especially for those who are not familiar with node.js. Fortune does the heavy lifting for you.
+- Focus on ease of use. Fortune gives you routing and database interactions for free, through a very simple public API.
 - Associations and bi-directional relationship mapping. Fortune manages associations between resources so you don't have to.
-- Hooks to transform resources before writing and after reading, for implementing application-specific logic.
+- Hooks to transform resources before writing and after reading, for implementing application-specific logic (and magic).
 
 It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](http://github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
 
@@ -55,7 +55,7 @@ This exposes a few routes for the `person` and `pet` resources, as defined by th
 
 ### Unit Testing
 
-Tests are written with Mocha, and require MongoDB already set up on your system. To run tests:
+Tests are written with Mocha, and are run against the default NeDB adapter. To run tests:
 
 ```
 $ npm test
