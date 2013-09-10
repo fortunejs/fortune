@@ -1,5 +1,4 @@
 var _ = require('lodash')
-  , mongoose = require('mongoose')
   , should = require('should')
   , request = require('supertest');
 
@@ -25,7 +24,7 @@ function runTest(adapter) {
     ids[collection] = resources.map(function(resource) {
       counter++;
       if(adapter == 'mongodb') {
-        resource.id = mongoose.Types.ObjectId(counter).toString();
+        resource.id = app.adapter.mongoose.Types.ObjectId(counter).toString();
         return resource.id;
       } else {
         resource.id = counter;

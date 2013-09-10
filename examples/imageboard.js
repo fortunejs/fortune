@@ -42,7 +42,7 @@ fortune({
 
   // after retrieving from database
   function(resolve) {
-    this.timestamp = this.timestamp ?
+    this.timestamp = this.timestamp instanceof Date ?
       this.timestamp.getTime() : null;
     resolve(this);
   }
