@@ -55,7 +55,7 @@ This exposes a few routes for the `person` and `pet` resources, as defined by th
 
 ### Unit Testing
 
-Tests are written with Mocha, and are run against the NeDB adapter. To run tests:
+Tests are written with Mocha, and are run against the built-in NeDB adapter and MongoDB adapter, plus MySQL on Travis. You will also need to have the developer dependencies installed. To run tests:
 
 ```
 $ npm test
