@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.3 (9/11/2013)**
+* Fortune no longer enforces snake case on field names and resource names. The adapters have also been updated to reflect this.
+
 **v0.1.2 (9/10/2013)**
 * Make NeDB adapter persistent by default.
 
