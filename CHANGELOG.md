@@ -5,6 +5,10 @@
 
 ## Changelog
 
+**v0.1.1 (9/10/2013)**
+* Fix bug in NeDB adapter which would cause relationship updates to fail.
+* Refactor unit tests.
+
 **v0.1.0 (9/10/2013)**
 * Use NeDB as default database adapter. This is a breaking change if you were relying on the default adapter to be MongoDB.
 * Split up the database adapters into separate packages. There is now `fortune-mongodb` and `fortune-relational`.

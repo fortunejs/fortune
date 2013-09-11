@@ -1,10 +1,8 @@
 var fortune = require('../lib/fortune');
 
-function createApp(adapter, port) {
-  var app = fortune({
-    adapter: adapter,
-    db: 'fortune_test'
-  })
+function createApp(adapter, options, port) {
+
+  return fortune(options)
 
   .resource('person', {
     name: String,
@@ -18,8 +16,7 @@ function createApp(adapter, port) {
   })
 
   .listen(port);
-
-  return app;
+  
 }
 
 module.exports = createApp;
