@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Web framework for prototyping rich hypermedia APIs.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -17,6 +17,7 @@
     "test": "node test/run nedb && node test/run mongodb && node test/run mysql"
   },
   "dependencies": {
+    "mkdirp": "~0.3.5",
     "express": "~3.4.0",
     "nedb": "~0.8.8",
     "rsvp": "~2.0.4",

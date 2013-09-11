@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.2 (9/10/2013)**
+* Make NeDB adapter persistent by default.
+
 **v0.1.1 (9/10/2013)**
 * Fix bug in NeDB adapter which would cause relationship updates to fail.
 * Refactor unit tests.
