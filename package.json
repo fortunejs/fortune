@@ -14,7 +14,7 @@
   },
   "main": "lib/fortune",
   "scripts": {
-    "test": "node test/run"
+    "test": "node test/run nedb && node test/run mongodb && node test/run mysql"
   },
   "dependencies": {
     "express": "~3.4.0",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "fortune-mongodb": "~0.1.2",
+    "fortune-relational": "~0.1.0",
     "mocha": "~1.12.0",
     "should": "~1.2.2",
     "supertest": "~0.7.1"
