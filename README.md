@@ -1,4 +1,4 @@
-# Fortune.js [![Build Status](//travis-ci.org/daliwali/fortune.png?branch=master)](//travis-ci.org/daliwali/fortune)
+# Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
 
 Hello nerds. Fortune is a web framework for prototyping rich hypermedia APIs that implement the [JSON API](//jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for [NeDB](//github.com/louischatriot/nedb) (built-in), [MongoDB](//github.com/daliwali/fortune-mongodb), [MySQL](//github.com/daliwali/fortune-relational), [Postgres](//github.com/daliwali/fortune-relational), & [SQLite](//github.com/daliwali/fortune-relational).
 
