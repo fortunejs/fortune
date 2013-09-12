@@ -6,12 +6,14 @@ function createApp(adapter, options, port) {
 
   .resource('person', {
     name: String,
+    appearances: Number,
     pets: ['pet'],
     friends: ['person']
   })
 
   .resource('pet', {
     name: String,
+    appearances: Number,
     owner: 'person'
   })
 

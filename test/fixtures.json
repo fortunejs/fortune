@@ -1,18 +1,22 @@
 {
   "people": [
     {
-      "name": "Dilbert"
+      "name": "Dilbert",
+      "appearances": 3457
     },
     {
-      "name": "Wally"
+      "name": "Wally",
+      "appearances": 1934
     }
   ],
   "pets": [
     {
-      "name": "Dogbert"
+      "name": "Dogbert",
+      "appearances": 1903
     },
     {
-      "name": "Ratbert"
+      "name": "Ratbert",
+      "appearances": 509
     }
   ]
 }
