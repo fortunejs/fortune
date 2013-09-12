@@ -1,6 +1,6 @@
 # Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
 
-Hello nerds. Fortune is a web framework for prototyping rich hypermedia APIs that implement the [JSON API](//jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for [NeDB](//github.com/louischatriot/nedb) (built-in), [MongoDB](//github.com/daliwali/fortune-mongodb), [MySQL](//github.com/daliwali/fortune-relational), [Postgres](//github.com/daliwali/fortune-relational), & [SQLite](//github.com/daliwali/fortune-relational).
+Hello nerds. Fortune is a web framework for prototyping rich hypermedia APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for [NeDB](//github.com/louischatriot/nedb) (built-in), [MongoDB](//github.com/daliwali/fortune-mongodb), [MySQL](//github.com/daliwali/fortune-relational), [Postgres](//github.com/daliwali/fortune-relational), & [SQLite](//github.com/daliwali/fortune-relational).
 
 Get it by installing from npm:
 ```
@@ -19,7 +19,7 @@ It does not come with any authentication or authorization, you should implement 
 
 ## Guide & Documentation
 
-The full guide and API documentation are located at [fortunejs.com](//fortunejs.com/).
+The full guide and API documentation are located at [fortunejs.com](http://fortunejs.com/).
 
 ### Basic Usage
 
@@ -70,4 +70,4 @@ For release history and roadmap, see [CHANGELOG.md](//github.com/daliwali/fortun
 
 Fortune is licensed under the MIT license, see [LICENSE.md](//github.com/daliwali/fortune/blob/master/LICENSE.md).
 
-Development of Fortune is sponsored by [AdStack](//adstack.com/).
+Development of Fortune is sponsored by [AdStack](http://adstack.com/).
