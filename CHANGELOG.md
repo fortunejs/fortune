@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.5 (9/13/2013)**
+* Add `before` transform on DELETE requests. This is a nilpotent operation, and exists mostly to allow for authorization checking on delete.
+
 **v0.1.4 (9/11/2013)**
 * Fix type checking in NeDB adapter.
 
