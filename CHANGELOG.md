@@ -5,8 +5,11 @@
 
 ## Changelog
 
+**v0.1.7 (9/14/2013)**
+* Detect User-Agent header and send back response with `application/json` Content-Type if it exists. This allows a web browser to GET things more conveniently.
+
 **v0.1.6 (9/14/2013)**
-* Change the way that `before` and `after` transforms work. Now, one can simply return a value, or return a promise if asynchrony is needed. This is a breaking change that modifies the signature of the transform callbacks.
+* Change the way that `before` and `after` transforms work. Now, one can simply return a value, or return a promise if asynchrony is needed. This is a breaking change that modifies the signature of the transform callbacks. (Thanks @stefanpenner)
 
 **v0.1.5 (9/13/2013)**
 * Add `before` transform on DELETE requests. This is a nilpotent operation, and exists mostly to allow for authorization checking on delete.
