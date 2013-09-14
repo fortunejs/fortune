@@ -1,7 +1,7 @@
 {
   "name": "fortune",
-  "description": "Web framework for prototyping rich hypermedia APIs.",
-  "version": "0.1.5",
+  "description": "Web framework for prototyping hypermedia APIs.",
+  "version": "0.1.6",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
