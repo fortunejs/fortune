@@ -22,6 +22,8 @@ function testAdapter(adapter) {
     } else {
       process.exit();
     }
+  } else if(adapter == 'mongodb') {
+    if(!process.env.TRAVIS) process.exit();
   }
 
   var port = 8890
