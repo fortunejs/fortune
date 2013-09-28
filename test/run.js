@@ -32,8 +32,7 @@ function testAdapter(adapter) {
 
   /*!
    * This is ugly, but the reason behind it is that
-   * there is no other way to dynamically generate
-   * tests.
+   * there is no way to defer test runner execution.
    */
   global.adapter = adapter;
   global.baseUrl = 'http://localhost:' + port;
