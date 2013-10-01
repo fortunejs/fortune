@@ -55,7 +55,7 @@ This exposes a few routes for the `person` and `pet` resources, as defined by th
 
 ### Unit Testing
 
-Tests are written with Mocha, and are run against the built-in NeDB adapter and MongoDB adapter, plus MySQL on Travis. You will also need to have the developer dependencies installed. To run tests:
+Tests are written with Mocha, and are run against the built-in NeDB adapter, plus MongoDB & MySQL on Travis. You will also need to have the developer dependencies installed. To run tests:
 
 ```
 $ npm test
@@ -69,5 +69,3 @@ $ npm test
 For release history and roadmap, see [CHANGELOG.md](//github.com/daliwali/fortune/blob/master/CHANGELOG.md).
 
 Fortune is licensed under the MIT license, see [LICENSE.md](//github.com/daliwali/fortune/blob/master/LICENSE.md).
-
-Development of Fortune is sponsored by [AdStack](http://adstack.com/).
