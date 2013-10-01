@@ -26,12 +26,11 @@ function testAdapter(adapter) {
 
   var port = 8890
     , app = require('./app')(adapter, options, port)
-    , promises = [];
+    , createResources = [];
 
   /*!
    * This is ugly, but the reason behind it is that
-   * there is no other way to dynamically generate
-   * tests.
+   * there is no other way to dynamically generate tests.
    */
   global.adapter = adapter;
   global.baseUrl = 'http://localhost:' + port;
@@ -40,39 +39,43 @@ function testAdapter(adapter) {
   app.adapter.awaitConnection().then(function() {
 
     _.each(fixtures, function(resources, collection) {
-      promises.push(new RSVP.Promise(function(resolve, reject) {
+      createResources.push(new RSVP.Promise(function(resolve, reject) {
         var body = {};
         body[collection] = resources;
-        request(baseUrl)
-        .post('/' + collection + '/')
-        .send(body)
-        .expect('Content-Type', /json/)
-        .expect(201)
-        .end(function(error, res) {
-          if(error) return reject(error);
-          var resources = JSON.parse(res.text)[collection];
-          global._ids[collection] = global._ids[collection] || [];
-          resources.forEach(function(resource) {
-            global._ids[collection].push(resource.id);
+        request(app.router)
+          .post('/' + collection)
+          .send(body)
+          .expect('Content-Type', /json/)
+          .expect(201)
+          .end(function(error, response) {
+            if(error) return reject(error);
+            var resources = JSON.parse(response.text)[collection];
+            global._ids[collection] = global._ids[collection] || [];
+            resources.forEach(function(resource) {
+              global._ids[collection].push(resource.id);
+            });
+            resolve();
           });
-          resolve();
-        });
       }));
     });
 
-    RSVP.all(promises).then(function() {
+    return RSVP.all(createResources);
 
-      new Mocha({
-          bail: true
-        })
-        .reporter('spec')
-        .ui('bdd')
-        .addFile(path.join(location, 'all.js'))
-        .run(function(code) {
-          process.exit(code);
-        });
+  })
 
-    });
+  .then(function() {
+    var options = {};
+    if(process.env.TRAVIS) {
+      options.bail = true;
+    }
+
+    return new Mocha(options)
+      .reporter('spec')
+      .ui('bdd')
+      .addFile(path.join(location, 'all.js'))
+      .run(function(code) {
+        process.exit(code);
+      });
 
   });
 

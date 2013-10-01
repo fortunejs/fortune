@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.8 (9/30/2013)**
+* Fix resource post route, add shell script for running tests.
+
 **v0.1.7 (9/14/2013)**
 * Detect User-Agent header and send back response with `application/json` Content-Type if it exists. This allows a web browser to GET things more conveniently.
 
