@@ -34,17 +34,17 @@ fortune({
 }).transform(
 
   // before storing in database
-  function(resolve) {
+  function() {
     // TODO: "bump" feature
     this.timestamp = new Date();
-    resolve(this);
+    return this;
   },
 
   // after retrieving from database
-  function(resolve) {
+  function() {
     this.timestamp = this.timestamp instanceof Date ?
       this.timestamp.getTime() : null;
-    resolve(this);
+    return this;
   }
 
 )

@@ -35,7 +35,7 @@ var app = fortune({
 }).transform(
 
   // before storing in database
-  function(resolve, reject, request) {
+  function(request) {
     var user = this
       , password = user.password
       , id = user.id || request.path.split('/').pop();
@@ -43,26 +43,28 @@ var app = fortune({
     // require a password on user creation
     if(request.method == 'post') {
       if(!!password) {
-        return resolve(hashPassword(user, password));
+        return hashPassword(user, password);
       } else {
-        reject();
+        throw new Error('Password is required on user creation.');
       }
     }
 
     // update a user
-    checkUser(id, request).then(function(resource) {
-      if(!password) return resolve(user);
+    return new RSVP.Promise(function(resolve, reject) {
+      checkUser(id, request).then(function(resource) {
+        if(!password) return user;
 
-      user = hashPassword(user, password);
+        user = hashPassword(user, password);
 
-      // clear tokens after password change
-      RSVP.all((resource.links.tokens || []).map(function(id) {
-        return app.adapter.delete('token', id);
-      })).then(function() {
-        resolve(user);
+        // clear tokens after password change
+        RSVP.all((resource.links.tokens || []).map(function(id) {
+          return app.adapter.delete('token', id);
+        })).then(function() {
+          resolve(user);
+        }, reject);
+
       }, reject);
-
-    }, reject);
+    });
 
     function hashPassword(user, password) {
       var salt = crypto.randomBytes(Math.pow(2, 4));
@@ -75,15 +77,17 @@ var app = fortune({
   },
 
   // after retrieving from database
-  function(resolve, reject, request) {
+  function(request) {
     var user = this;
     delete user.password;
     delete user.salt;
-    checkUser(user.id, request).then(function() {
-      resolve(user);
-    }, function() {
-      delete user.links;
-      resolve(user);
+    return new RSVP.Promise(function(resolve) {
+      checkUser(user.id, request).then(function() {
+        resolve(user);
+      }, function() {
+        delete user.links;
+        resolve(user);
+      });
     });
   }
 
@@ -155,11 +159,13 @@ function authentication(req, res, next) {
 /**
  * Check if it's allowed to read/write based on the "owner" value.
  */
-function checkOwner(resolve, reject, request) {
+function checkOwner(request) {
   var resource = this;
-  checkUser(resource.links.owner, request).then(function() {
-    resolve(resource);
-  }, reject);
+  return new RSVP.Promise(function(resolve, reject) {
+    checkUser(resource.links.owner, request).then(function() {
+      resolve(resource);
+    }, reject);
+  });
 }
 
 /**
