@@ -13,8 +13,8 @@ if(!process.env.TRAVIS) {
 } else {
   runTests({
     nedb: 8890,
-    mongodb: 8891,
-    mysql: 8892
+    mongodb: 8891
+    //mysql: 8892
   });
 }
 
@@ -45,12 +45,7 @@ function runTests(adapters) {
     return app.adapter.awaitConnection();
   })).then(function() {
 
-    var options = {};
-    if(process.env.TRAVIS) {
-      options.bail = true;
-    }
-
-    new Mocha(options)
+    new Mocha()
       .reporter('spec')
       .ui('bdd')
       .addFile(path.join(location, 'all.js'))

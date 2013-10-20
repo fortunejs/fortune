@@ -5,6 +5,10 @@
 
 ## Changelog
 
+**v0.1.10 (10/20/2013)**
+* Bump versions of dependencies.
+* Expose Lodash library.
+
 **v0.1.9 (10/20/2013)**
 * Improve parsing of JSON-Patch requests.
 * Expose `response` object to `before` and `after` transformations.
