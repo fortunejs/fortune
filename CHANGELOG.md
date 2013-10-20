@@ -5,6 +5,12 @@
 
 ## Changelog
 
+**v0.1.9 (10/20/2013)**
+* Improve parsing of JSON-Patch requests.
+* Expose `response` object to `before` and `after` transformations.
+* Fix bug in NeDB adapter, not handling schema validations properly.
+* Refactor tests, improve coverage.
+
 **v0.1.8 (9/30/2013)**
 * Fix resource post route, add shell script for running tests.
 

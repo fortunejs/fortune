@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -14,7 +14,7 @@
   },
   "main": "lib/fortune",
   "scripts": {
-    "test": ". ./test.sh"
+    "test": "node test/run"
   },
   "dependencies": {
     "mkdirp": "~0.3.5",

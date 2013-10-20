@@ -1,14 +1,14 @@
 var fortune = require('../lib/fortune');
 
 function createApp(adapter, options, port) {
-
   return fortune(options)
 
   .resource('person', {
     name: String,
     appearances: Number,
     pets: ['pet'],
-    friends: ['person']
+    soulmate: {ref: 'person', inverse: 'soulmate'},
+    lovers: [{ref: 'person', inverse: 'lovers'}]
   })
 
   .resource('pet', {

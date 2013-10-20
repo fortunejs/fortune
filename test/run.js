@@ -6,72 +6,51 @@ var Mocha = require('mocha')
   , fixtures = require('./fixtures.json')
   , location = path.normalize(__dirname);
 
-testAdapter(process.argv[2] || 'nedb');
+if(!process.env.TRAVIS) {
+  var config = {};
+  config[process.argv[2] || 'nedb'] = 8890;
+  runTests(config);
+} else {
+  runTests({
+    nedb: 8890,
+    mongodb: 8891,
+    mysql: 8892
+  });
+}
 
-function testAdapter(adapter) {
+function runTests(adapters) {
+  global.adapters = adapters;
+  var apps = [];
 
-  // test application
-  var options = {
-    adapter: adapter,
-    db: 'fortune_test'
-  };
-  if(adapter == 'mysql') {
-    if(process.env.TRAVIS) {
-      options.username = 'travis';
-      options.password = '';
-    } else {
-      process.exit();
+  _.each(adapters, function(port, adapter) {
+
+    // test application
+    var options = {
+      adapter: adapter,
+      db: 'fortune_test'
+    };
+
+    if(adapter == 'mysql') {
+      if(process.env.TRAVIS) {
+        options.username = 'travis';
+        options.password = '';
+      }
     }
-  } else if(adapter == 'mongodb') {
-    if(!process.env.TRAVIS) process.exit();
-  }
 
-  var port = 8890
-    , app = require('./app')(adapter, options, port)
-    , createResources = [];
+    apps.push(require('./app')(adapter, options, port));
 
-  /*!
-   * This is ugly, but the reason behind it is that
-   * there is no way to defer test runner execution.
-   */
-  global.adapter = adapter;
-  global.baseUrl = 'http://localhost:' + port;
-  global._ids = {};
+  });
 
-  app.adapter.awaitConnection().then(function() {
+  RSVP.all(apps.map(function(app) {
+    return app.adapter.awaitConnection();
+  })).then(function() {
 
-    _.each(fixtures, function(resources, collection) {
-      createResources.push(new RSVP.Promise(function(resolve, reject) {
-        var body = {};
-        body[collection] = resources;
-        request(app.router)
-          .post('/' + collection)
-          .send(body)
-          .expect('Content-Type', /json/)
-          .expect(201)
-          .end(function(error, response) {
-            if(error) return reject(error);
-            var resources = JSON.parse(response.text)[collection];
-            global._ids[collection] = global._ids[collection] || [];
-            resources.forEach(function(resource) {
-              global._ids[collection].push(resource.id);
-            });
-            resolve();
-          });
-      }));
-    });
-
-    return RSVP.all(createResources);
-
-  })
-
-  .then(function() {
     var options = {};
     if(process.env.TRAVIS) {
       options.bail = true;
     }
 
-    return new Mocha(options)
+    new Mocha(options)
       .reporter('spec')
       .ui('bdd')
       .addFile(path.join(location, 'all.js'))
@@ -82,3 +61,5 @@ function testAdapter(adapter) {
   });
 
 }
+
+module.exports = runTests;
