@@ -5,6 +5,10 @@
 
 ## Changelog
 
+**v0.1.11 (10/20/2013)**
+* Deprecate `bodyParser` in favor of `json` middleware.
+* Make inverse nullable.
+
 **v0.1.10 (10/20/2013)**
 * Bump versions of dependencies.
 * Expose Lodash library.
