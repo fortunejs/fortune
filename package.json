@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -18,16 +18,16 @@
   },
   "dependencies": {
     "mkdirp": "~0.3.5",
-    "express": "~3.4.2",
-    "nedb": "~0.8.9",
+    "express": "~3.4.3",
+    "nedb": "~0.8.11",
     "rsvp": "~2.0.4",
     "i": "~0.3.2",
     "lodash": "~2.2.1"
   },
   "devDependencies": {
-    "fortune-mongodb": "~0.1.6",
+    "fortune-mongodb": "~0.1.7",
     "mocha": "~1.13.0",
-    "should": "~2.0.1",
+    "should": "~2.0.2",
     "supertest": "~0.8.0"
   },
   "engines": {

@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.13 (10/25/2013)**
+* Bump versions of dependencies.
+
 **v0.1.12 (10/25/2013)**
 * Add `suffix` configuration option to append a string to routes.
 * Add a check if the return value of a `before` or `after` transform is falsy.
