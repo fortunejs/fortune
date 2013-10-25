@@ -5,6 +5,10 @@
 
 ## Changelog
 
+**v0.1.12 (10/25/2013)**
+* Add `suffix` configuration option to append a string to routes.
+* Add a check if the return value of a `before` or `after` transform is falsy.
+
 **v0.1.11 (10/20/2013)**
 * Deprecate `bodyParser` in favor of `json` middleware.
 * Make inverse nullable.
