@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.14 (11/3/2013)**
+* Fix incorrect links in top-level links object (thanks @jcallaha)
+
 **v0.1.13 (10/25/2013)**
 * Bump versions of dependencies.
 
