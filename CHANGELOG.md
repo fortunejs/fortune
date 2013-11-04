@@ -5,6 +5,9 @@
 
 ## Changelog
 
+**v0.1.15 (11/3/2013)**
+* Amend `findMany` method so that the only required parameter is the model. Not specifying a query will default to finding everything.
+
 **v0.1.14 (11/3/2013)**
 * Fix incorrect links in top-level links object (thanks @jcallaha)
 
