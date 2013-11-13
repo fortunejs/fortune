@@ -4,6 +4,8 @@
 - Support more schema properties & options.
 
 ## Changelog
+**v0.1.16 (11/12/2013)**
+* Apply flags for NeDB adapter, allowing for in-memory mode.
 
 **v0.1.15 (11/3/2013)**
 * Amend `findMany` method so that the only required parameter is the model. Not specifying a query will default to finding everything.
