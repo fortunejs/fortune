@@ -1,9 +1,15 @@
 ## Roadmap
 
 - 100% test coverage.
+- Compound documents.
+- Querying, pagination, sorting.
 - Support more schema properties & options.
 
 ## Changelog
+**v0.1.17 (11/27/2013)**
+* Fix flags option for NeDB adapter, enabling fortune to run in memory.
+* Trace error when `awaitConnection` fails.
+
 **v0.1.16 (11/12/2013)**
 * Apply flags for NeDB adapter, allowing for in-memory mode.
 
