@@ -61,6 +61,36 @@ _.each(global.adapters, function(port, adapter) {
       });
     });
 
+    describe('compound document support', function() {
+      it("for a person should return pets, soulmate and lovers links", function(done) {
+        request(baseUrl)
+          .get('/people/' + ids.people[0])
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.links['people.pets'].type.should.equal('pets');
+            body.links['people.soulmate'].type.should.equal('people');
+            body.links['people.lovers'].type.should.equal('people');
+            done();
+          });
+      });
+
+      it("for a pet should return owner links", function(done) {
+        request(baseUrl)
+          .get('/pets/' + ids.pets[0])
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.links['pets.owner'].type.should.equal('people');
+            done();
+          });
+      });
+    });
+
     describe('getting each individual resource', function() {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {
