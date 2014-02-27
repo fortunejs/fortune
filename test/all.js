@@ -61,36 +61,6 @@ _.each(global.adapters, function(port, adapter) {
       });
     });
 
-    describe('compound document support', function() {
-      it("for a person should return pets, soulmate and lovers links", function(done) {
-        request(baseUrl)
-          .get('/people/' + ids.people[0])
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(error, response) {
-            should.not.exist(error);
-            var body = JSON.parse(response.text);
-            body.links['people.pets'].type.should.equal('pets');
-            body.links['people.soulmate'].type.should.equal('people');
-            body.links['people.lovers'].type.should.equal('people');
-            done();
-          });
-      });
-
-      it("for a pet should return owner links", function(done) {
-        request(baseUrl)
-          .get('/pets/' + ids.pets[0])
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(error, response) {
-            should.not.exist(error);
-            var body = JSON.parse(response.text);
-            body.links['pets.owner'].type.should.equal('people');
-            done();
-          });
-      });
-    });
-
     describe('getting each individual resource', function() {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {
@@ -357,6 +327,73 @@ _.each(global.adapters, function(port, adapter) {
               done();
             });
         });
+      });
+    });
+
+    describe('compound document support', function() {
+      it("for a person should return pets, soulmate and lovers links", function(done) {
+        request(baseUrl)
+          .get('/people/' + ids.people[0])
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.links['people.pets'].type.should.equal('pets');
+            body.links['people.soulmate'].type.should.equal('people');
+            body.links['people.lovers'].type.should.equal('people');
+            done();
+          });
+      });
+
+      it("for a pet should return owner links", function(done) {
+        request(baseUrl)
+          .get('/pets/' + ids.pets[0])
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.links['pets.owner'].type.should.equal('people');
+            done();
+          });
+      });
+
+      it("should return immediate child documents of people by default", function(done) {
+        new RSVP.Promise(function(resolve) {
+          request(baseUrl)
+            .put('/people/' + ids.people[0])
+            .send({people: [{
+              links: {
+                pets: [ids.pets[0]],
+                soulmate: ids.people[1]
+              }
+            }]})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+              resolve();
+            });
+        })
+        .then(function() {
+          request(baseUrl)
+            .get('/people/' + ids.people[0])
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              body.linked.pets.length.should.equal(1);
+              body.linked.pets[0].id.should.equal(ids.pets[0]);
+              body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+              body.linked.people.length.should.equal(1);
+              body.linked.people[0].name.should.equal(fixtures.people[1].name);
+              done();
+            });
+        });  
       });
     });
 
