@@ -391,6 +391,8 @@ _.each(global.adapters, function(port, adapter) {
               body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
               body.linked.people.length.should.equal(1);
               body.linked.people[0].name.should.equal(fixtures.people[1].name);
+              body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
+              body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
               done();
             });
         });  
