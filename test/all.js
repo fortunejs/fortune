@@ -380,7 +380,7 @@ _.each(global.adapters, function(port, adapter) {
         })
         .then(function() {
           request(baseUrl)
-            .get('/people/' + ids.people[0])
+            .get('/people/' + ids.people[0] + '?include=pets,soulmate')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(error, response) {
