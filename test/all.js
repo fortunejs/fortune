@@ -433,6 +433,9 @@ _.each(global.adapters, function(port, adapter) {
               body.linked.people[0].name.should.equal(fixtures.people[1].name);
               body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
               body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
+              body.links["people.pets"].type.should.equal("pets");
+              body.links["people.soulmate.pets"].type.should.equal("pets");
+              body.links["people.soulmate"].type.should.equal("people");
               done();
             });
         });  
@@ -469,6 +472,8 @@ _.each(global.adapters, function(port, adapter) {
               body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
               body.linked.pets[1].id.should.equal(ids.pets[1]);
               body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
+              body.links["people.pets"].type.should.equal("pets");
+              body.links["people.soulmate.pets"].type.should.equal("pets");
               should.not.exist(body.linked.people);
               done();
             });
