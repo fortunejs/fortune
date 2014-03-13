@@ -342,18 +342,18 @@ _.each(global.adapters, function(port, adapter) {
             should.exist(body.people[0].name);
             done();
           });
-      });
-      it("should return specific fields for a single document", function(done){
-        request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(error, response){
-            should.not.exist(error);
-            var body = JSON.parse(response.text);
-            should.not.exist(body.people[0].appearances);
-            should.exist(body.people[0].name);
-            done();
-          });
+        it("should return specific fields for a single document", function(done){
+          request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response){
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              should.not.exist(body.people[0].appearances);
+              should.exist(body.people[0].name);
+              done();
+            });
+        });
       });
     });
 
