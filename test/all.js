@@ -1,8 +1,8 @@
 var should = require('should')
-  , _ = require('lodash')
-  , RSVP = require('rsvp')
-  , request = require('supertest')
-  , fixtures = require('./fixtures.json');
+, _ = require('lodash')
+, RSVP = require('rsvp')
+, request = require('supertest')
+, fixtures = require('./fixtures.json');
 
 _.each(global.adapters, function(port, adapter) {
   var baseUrl = 'http://localhost:' + port;
@@ -46,17 +46,17 @@ _.each(global.adapters, function(port, adapter) {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {
           request(baseUrl)
-          .get('/' + collection)
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(error, response) {
-            should.not.exist(error);
-            var body = JSON.parse(response.text);
-            ids[collection].forEach(function(id) {
-              _.contains(_.pluck(body[collection], 'id'), id).should.equal(true);
+            .get('/' + collection)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              ids[collection].forEach(function(id) {
+                _.contains(_.pluck(body[collection], 'id'), id).should.equal(true);
+              });
+              done();
             });
-            done();
-          });
         });
       });
     });
@@ -67,17 +67,17 @@ _.each(global.adapters, function(port, adapter) {
           RSVP.all(ids[collection].map(function(id) {
             return new RSVP.Promise(function(resolve) {
               request(baseUrl)
-              .get('/' + collection + '/' + id)
-              .expect('Content-Type', /json/)
-              .expect(200)
-              .end(function(error, response) {
-                should.not.exist(error);
-                var body = JSON.parse(response.text);
-                body[collection].forEach(function(resource) {
-                  (resource.id).should.equal(id);
+                .get('/' + collection + '/' + id)
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(error, response) {
+                  should.not.exist(error);
+                  var body = JSON.parse(response.text);
+                  body[collection].forEach(function(resource) {
+                    (resource.id).should.equal(id);
+                  });
+                  resolve();
                 });
-                resolve();
-              });
             });
           })).then(function() {
             done();
@@ -342,19 +342,87 @@ _.each(global.adapters, function(port, adapter) {
             should.exist(body.people[0].name);
             done();
           });
+        it("should return specific fields for a single document", function(done){
+          request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response){
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              should.not.exist(body.people[0].appearances);
+              should.exist(body.people[0].name);
+              done();
+            });
+        });
       });
+    });
 
-      it("should return specific fields for a single document", function(done){
-        request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
+    describe('compound document support', function() {
+      it("for a person should return pets, soulmate and lovers links", function(done) {
+        request(baseUrl)
+          .get('/people/' + ids.people[0])
           .expect('Content-Type', /json/)
           .expect(200)
-          .end(function(error, response){
+          .end(function(error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            should.not.exist(body.people[0].appearances);
-            should.exist(body.people[0].name);
+            body.links['people.pets'].type.should.equal('pets');
+            body.links['people.soulmate'].type.should.equal('people');
+            body.links['people.lovers'].type.should.equal('people');
             done();
           });
+      });
+
+      it("for a pet should return owner links", function(done) {
+        request(baseUrl)
+          .get('/pets/' + ids.pets[0])
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.links['pets.owner'].type.should.equal('people');
+            done();
+          });
+      });
+
+      it("should return immediate child documents of people by default", function(done) {
+        new RSVP.Promise(function(resolve) {
+          request(baseUrl)
+            .put('/people/' + ids.people[0])
+            .send({people: [{
+              links: {
+                pets: [ids.pets[0]],
+                soulmate: ids.people[1]
+              }
+            }]})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+              resolve();
+            });
+        })
+          .then(function() {
+            request(baseUrl)
+              .get('/people/' + ids.people[0])
+              .expect('Content-Type', /json/)
+              .expect(200)
+              .end(function(error, response) {
+                should.not.exist(error);
+                var body = JSON.parse(response.text);
+                body.linked.pets.length.should.equal(1);
+                body.linked.pets[0].id.should.equal(ids.pets[0]);
+                body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+                body.linked.people.length.should.equal(1);
+                body.linked.people[0].name.should.equal(fixtures.people[1].name);
+                body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
+                body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
+                done();
+              });
+          });  
       });
     });
 
@@ -363,12 +431,12 @@ _.each(global.adapters, function(port, adapter) {
         RSVP.all(ids[collection].map(function(id) {
           return new RSVP.Promise(function(resolve) {
             request(baseUrl)
-            .del('/' + collection + '/' + id)
-            .expect(204)
-            .end(function(error) {
-              should.not.exist(error);
-              resolve();
-            });
+              .del('/' + collection + '/' + id)
+              .expect(204)
+              .end(function(error) {
+                should.not.exist(error);
+                resolve();
+              });
           });
         })).then(function() {
           done();

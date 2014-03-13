@@ -17,6 +17,11 @@ function createApp(adapter, options, port) {
     owner: 'person'
   })
 
+  .after('person', function() {
+    this.nickname = 'Super ' + this.name;
+    return this;
+  })
+
   .listen(port);
   
 }
