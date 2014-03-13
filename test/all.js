@@ -359,7 +359,7 @@ _.each(global.adapters, function(port, adapter) {
           });
       });
 
-      it("should return immediate child documents of people by default", function(done) {
+      it("should return immediate child documents of people when requested", function(done) {
         new RSVP.Promise(function(resolve) {
           request(baseUrl)
             .put('/people/' + ids.people[0])
@@ -380,7 +380,7 @@ _.each(global.adapters, function(port, adapter) {
         })
         .then(function() {
           request(baseUrl)
-            .get('/people/' + ids.people[0])
+            .get('/people/' + ids.people[0] + '?include=pets,soulmate')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(error, response) {
@@ -397,6 +397,89 @@ _.each(global.adapters, function(port, adapter) {
             });
         });  
       });
+
+      it("should return grandchild plus child documents of people when requested", function(done) {
+        new RSVP.Promise(function(resolve) {
+          request(baseUrl)
+            .put('/people/' + ids.people[1])
+            .send({people: [{
+              links: {
+                pets: [ids.pets[1]]
+              }
+            }]})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              (body.people[0].links.pets).should.includeEql(ids.pets[1]);
+              resolve();
+            });
+        })
+        .then(function() {
+          request(baseUrl)
+            .get('/people/' + ids.people[0] + '?include=pets,soulmate,soulmate.pets')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              body.linked.pets.length.should.equal(2);
+              body.linked.pets[0].id.should.equal(ids.pets[0]);
+              body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+              body.linked.pets[1].id.should.equal(ids.pets[1]);
+              body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
+              body.linked.people.length.should.equal(1);
+              body.linked.people[0].name.should.equal(fixtures.people[1].name);
+              body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
+              body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
+              body.links["people.pets"].type.should.equal("pets");
+              body.links["people.soulmate.pets"].type.should.equal("pets");
+              body.links["people.soulmate"].type.should.equal("people");
+              done();
+            });
+        });  
+      });
+
+      it("should return grandchild without child documents of people when requested", function(done) {
+        new RSVP.Promise(function(resolve) {
+          request(baseUrl)
+            .put('/people/' + ids.people[1])
+            .send({people: [{
+              links: {
+                pets: [ids.pets[1]]
+              }
+            }]})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              (body.people[0].links.pets).should.includeEql(ids.pets[1]);
+              resolve();
+            });
+        })
+        .then(function() {
+          request(baseUrl)
+            .get('/people/' + ids.people[0] + '?include=pets,soulmate.pets')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              body.linked.pets.length.should.equal(2);
+              body.linked.pets[0].id.should.equal(ids.pets[0]);
+              body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+              body.linked.pets[1].id.should.equal(ids.pets[1]);
+              body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
+              body.links["people.pets"].type.should.equal("pets");
+              body.links["people.soulmate.pets"].type.should.equal("pets");
+              should.not.exist(body.linked.people);
+              done();
+            });
+        });  
+      });
+
     });
 
     after(function(done) {
