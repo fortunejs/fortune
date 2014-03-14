@@ -7,13 +7,24 @@ Get it by installing from npm:
 $ npm install fortune
 ```
 
+### Road to 1.0
+
+There is a release tag for `v1.0` of JSON API, though Fortune does not yet implement the entire feature set. What needs to be done:
+
+- Querying, pagination, sorting
+- Compound documents
+- Content negotiation between different formats (future, planned)
+- Ensuring specification compliance
+
+Contributions welcome.
+
 ### Features
 
 Fortune implements everything you need to get started with JSON API, with a few extra features:
 
-- Focus on ease of use. Fortune gives you routing and database interactions for free, so you don't have to do the plumbing.
-- Associations and bi-directional relationship mapping. Fortune manages associations between resources so you don't have to.
-- Hooks to transform resources before writing and after reading, for implementing application-specific logic (and magic).
+- Batteries included, Fortune handles routing and database interactions so you don't have to.
+- Serializers and deserializers for JSON API, and other hypermedia formats (in the future).
+- Hooks to implement application specific logic before/after interacting with resources.
 
 It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](//github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
 
