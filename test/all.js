@@ -330,7 +330,7 @@ _.each(global.adapters, function(port, adapter) {
       });
     });
 
-    describe("Sparse fieldsets", function(){
+    describe("sparse fieldsets", function(){
       it("should return specific fields for documents", function(done){
         request(baseUrl).get('/people?fields=name')
           .expect('Content-Type', /json/)
@@ -342,20 +342,22 @@ _.each(global.adapters, function(port, adapter) {
             should.exist(body.people[0].name);
             done();
           });
-        it("should return specific fields for a single document", function(done){
-          request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end(function(error, response){
-              should.not.exist(error);
-              var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].appearances);
-              should.exist(body.people[0].name);
-              done();
-            });
-        });
+      });
+
+      it("should return specific fields for a single document", function(done){
+        request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response){
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            should.not.exist(body.people[0].appearances);
+            should.exist(body.people[0].name);
+            done();
+          });
       });
     });
+
 
     describe('compound document support', function() {
       it("for a person should return pets, soulmate and lovers links", function(done) {
@@ -529,5 +531,5 @@ _.each(global.adapters, function(port, adapter) {
     });
 
   });
-
 });
+
