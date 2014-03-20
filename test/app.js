@@ -22,6 +22,11 @@ function createApp(adapter, options, port) {
     return this;
   })
 
+  .after('person', function() {
+    this.nickname = this.nickname + '!';
+    return this;
+  })
+
   .listen(port);
   
 }
