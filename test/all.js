@@ -178,6 +178,17 @@ _.each(global.adapters, function(port, adapter) {
             });
         });
       });
+      it("should return a list of pets for a given person", function(done) {
+        request(baseUrl).get('/people/' + ids.people[0] + '/pets')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response){
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.pets.length.should.equal(1);
+            done();
+          });
+      });
       it('should be able to dissociate', function(done) {
         new RSVP.Promise(function(resolve, reject) {
           request(baseUrl)
