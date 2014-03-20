@@ -178,6 +178,17 @@ _.each(global.adapters, function(port, adapter) {
             });
         });
       });
+      it("should return a list of pets for a given person", function(done) {
+        request(baseUrl).get('/people/' + ids.people[0] + '/pets')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response){
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.pets.length.should.equal(1);
+            done();
+          });
+      });
       it('should be able to dissociate', function(done) {
         new RSVP.Promise(function(resolve, reject) {
           request(baseUrl)
@@ -420,8 +431,8 @@ _.each(global.adapters, function(port, adapter) {
                 body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
                 body.linked.people.length.should.equal(1);
                 body.linked.people[0].name.should.equal(fixtures.people[1].name);
-                body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
-                body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
+                body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name + '!');
+                body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name + '!');
                 done();
               });
           });  
@@ -460,8 +471,8 @@ _.each(global.adapters, function(port, adapter) {
                 body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
                 body.linked.people.length.should.equal(1);
                 body.linked.people[0].name.should.equal(fixtures.people[1].name);
-                body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name);
-                body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name);
+                body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name + '!');
+                body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name + '!');
                 body.links["people.pets"].type.should.equal("pets");
                 body.links["people.soulmate.pets"].type.should.equal("pets");
                 body.links["people.soulmate"].type.should.equal("people");
