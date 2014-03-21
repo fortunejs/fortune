@@ -16,13 +16,13 @@ _.each(global.adapters, function(port, adapter) {
       _.each(fixtures, function(resources, collection) {
         createResources.push(new RSVP.Promise(function(resolve, reject) {
           var body = {};
-          body[collection] = resources;
+          body[collection] = resources; 
           request(baseUrl)
             .post('/' + collection)
             .send(body)
             .expect('Content-Type', /json/)
             .expect(201)
-            .end(function(error, response) {
+            .end(function(error, response) { 
               if(error) return reject(error);
               var resources = JSON.parse(response.text)[collection];
               ids[collection] = ids[collection] || [];
@@ -353,6 +353,20 @@ _.each(global.adapters, function(port, adapter) {
             var body = JSON.parse(response.text);
             should.not.exist(body.people[0].appearances);
             should.exist(body.people[0].name);
+            done();
+          });
+      });
+    });
+
+    describe("filters", function(){
+      it("should allow top-level resource filtering for collection routes", function(done){
+        request(baseUrl).get('/people?filter[name]=Robert')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response){
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.people.length.should.equal(1);
             done();
           });
       });

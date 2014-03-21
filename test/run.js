@@ -9,6 +9,7 @@ var Mocha = require('mocha')
 if(!process.env.TRAVIS) {
   var config = {};
   config[process.argv[2] || 'nedb'] = 8890;
+  config.mongodb = 8891;
   runTests(config);
 } else {
   runTests({
