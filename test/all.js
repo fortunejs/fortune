@@ -449,6 +449,20 @@ _.each(global.adapters, function(port, adapter) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
               (body.people[0].links.pets).should.includeEql(ids.pets[1]);
+            });
+        }).then(function(){
+          request(baseUrl)
+            .put("/cars/" + ids.cars[0])
+            .send({cars:[{
+              links: {
+                lastMOT: "fakeref"
+              }
+            }]})
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.cars[0].links.lastMOT).should.equal("fakeref");
               done();
             });
         });
@@ -542,7 +556,20 @@ _.each(global.adapters, function(port, adapter) {
             should.not.exist(body.linked.people);
             done();
           });
-      });  
+      });
+
+      it("should not attempt to include resources marked as external", function(done){
+        request(baseUrl)
+          .get("/cars/" + ids.cars[0] + "?include=MOTs")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.cars[0].links.should.eql({ lastMOT: 'fakeref' });
+            body.linked.should.eql({});
+            done();
+          });
+      });
     });
 
   });
