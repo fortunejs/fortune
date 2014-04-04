@@ -21,7 +21,8 @@ function createApp(adapter, options, port) {
   .resource('car', {
     licenseNumber: String,
     model: String,
-    owner: {ref:'person', pkType: String}
+    owner: {ref:'person', pkType: String},
+    lastMOT: {ref: 'MOT', external: true, pkType: String}
   },{ model: { pk: "licenseNumber" } })
 
   .after('person', function() {
