@@ -455,14 +455,14 @@ _.each(global.adapters, function(port, adapter) {
             .put("/cars/" + ids.cars[0])
             .send({cars:[{
               links: {
-                lastMOT: "fakeref"
+                MOT: "fakeref"
               }
             }]})
             .expect(200)
             .end(function(err, res){
               should.not.exist(err);
               var body = JSON.parse(res.text);
-              (body.cars[0].links.lastMOT).should.equal("fakeref");
+              (body.cars[0].links.MOT).should.equal("fakeref");
               done();
             });
         });
@@ -560,13 +560,14 @@ _.each(global.adapters, function(port, adapter) {
 
       it("should not attempt to include resources marked as external", function(done){
         request(baseUrl)
-          .get("/cars/" + ids.cars[0] + "?include=MOTs")
+          .get("/cars/" + ids.cars[0] + "?include=MOT")
           .expect(200)
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            body.cars[0].links.should.eql({ lastMOT: 'fakeref' });
+            body.cars[0].links.should.eql({ MOT: 'fakeref' });
             body.linked.should.eql({});
+
             done();
           });
       });

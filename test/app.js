@@ -1,9 +1,12 @@
 var fortune = require('../lib/fortune');
 
 function createApp(adapter, options, port) {
-  return fortune(options)
+  
+  var app = fortune(options);
 
-  .resource('person', {
+  app.inflect.inflections.plural("MOT", "MOT");
+
+  return app.resource('person', {
     name: String,
     appearances: Number,
     email: String,
@@ -22,7 +25,7 @@ function createApp(adapter, options, port) {
     licenseNumber: String,
     model: String,
     owner: {ref:'person', pkType: String},
-    lastMOT: {ref: 'MOT', external: true, pkType: String}
+    MOT: {ref: 'MOT', external: true, pkType: String}
   },{ model: { pk: "licenseNumber" } })
 
   .after('person', function() {
