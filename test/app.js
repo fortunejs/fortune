@@ -12,7 +12,8 @@ function createApp(adapter, options, port) {
     email: String,
     pets: ['pet'],
     soulmate: {ref: 'person', inverse: 'soulmate', pkType: String},
-    lovers: [{ref: 'person', inverse: 'lovers', pkType: String}]
+    lovers: [{ref: 'person', inverse: 'lovers', pkType: String}],
+    externalResources: [{ ref: "externalResourceReference", pkType: String, external: true }]
   }, {model: {pk:"email"}})
 
   .resource('pet', {

@@ -10,7 +10,7 @@ _.each(global.adapters, function(port, adapter) {
   describe('using "' + adapter + '" adapter', function() {
     var ids = {};
 
-    beforeEach(function(done) {
+beforeEach(function(done) {
       var createResources = [];
 
       _.each(fixtures, function(resources, collection) {
@@ -62,8 +62,7 @@ _.each(global.adapters, function(port, adapter) {
         });
       });
     });
-
-
+    
     describe('getting a list of resources', function() {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {
@@ -424,7 +423,8 @@ _.each(global.adapters, function(port, adapter) {
             .send({people: [{
               links: {
                 pets: [ids.pets[0]],
-                soulmate: ids.people[1]
+                soulmate: ids.people[1],
+                externalResources: ["ref1", "ref2"]
               }
             }]})
             .expect('Content-Type', /json/)
@@ -558,7 +558,7 @@ _.each(global.adapters, function(port, adapter) {
           });
       });
 
-      it("should not attempt to include resources marked as external", function(done){
+      it("should not attempt to include resource (to-1) marked as external", function(done){
         request(baseUrl)
           .get("/cars/" + ids.cars[0] + "?include=MOT")
           .expect(200)
@@ -566,8 +566,29 @@ _.each(global.adapters, function(port, adapter) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
             body.cars[0].links.should.eql({ MOT: 'fakeref' });
-            body.linked.should.eql({});
+            body.linked.should.eql({MOT: "external"});
+            done();
+          });
+      });
 
+      it("should not attempt to include resources (to-many) marked as external", function(done){
+        request(baseUrl)
+          .get("/people/" + ids.people[0] + "?include=pets,soulmate,externalResources")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            
+            var body = JSON.parse(res.text);
+
+            body.people[0].links.pets.length.should.equal(1);
+            body.people[0].links.soulmate.should.equal(ids.people[1]);
+            body.people[0].links.externalResources.should.eql([ 'ref1', 'ref2' ]);
+
+            body.linked.pets.length.should.equal(1);
+            body.linked.people.length.should.equal(1);
+
+            body.linked.externalResourceReferences.should.equal("external");
+            
             done();
           });
       });
