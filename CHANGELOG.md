@@ -1,4 +1,7 @@
 ## Changelog
+**v0.2.1 (4/7/2014)**
+* Small fix for checking the environment variable.
+
 **v0.2.0 (4/7/2014)**
 * Add `path` option for NeDB adapter to allow specifying where data is stored.
 * Add `inflect` option to disable automatic pluralization of resource names.
