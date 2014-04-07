@@ -1,6 +1,6 @@
 var fortune = require('../lib/fortune');
 
-function createApp(adapter, options, port) {
+function createApp (options, port) {
   return fortune(options)
 
   .resource('person', {

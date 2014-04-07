@@ -1,5 +1,5 @@
 {
-  "people": [
+  "person": [
     {
       "name": "Dilbert",
       "appearances": 3457
@@ -9,7 +9,7 @@
       "appearances": 1934
     }
   ],
-  "pets": [
+  "pet": [
     {
       "name": "Dogbert",
       "appearances": 1903

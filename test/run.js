@@ -1,12 +1,15 @@
-var Mocha = require('mocha')
-  , path = require('path')
-  , _ = require('lodash')
-  , RSVP = require('rsvp')
-  , request = require('supertest')
-  , fixtures = require('./fixtures.json')
-  , location = path.normalize(__dirname);
+var Mocha = require('mocha');
+var path = require('path');
+var _ = require('lodash');
+var RSVP = require('rsvp');
+var request = require('supertest');
 
-if(!process.env.TRAVIS) {
+var fixtures = require('./fixtures.json');
+var location = path.normalize(__dirname);
+
+global.options = {};
+
+if (!process.env.TRAVIS) {
   var config = {};
   config[process.argv[2] || 'nedb'] = 8890;
   runTests(config);
@@ -19,37 +22,39 @@ if(!process.env.TRAVIS) {
 }
 
 function runTests(adapters) {
-  global.adapters = adapters;
   var apps = [];
 
-  _.each(adapters, function(port, adapter) {
+  _.each(adapters, function (port, adapter) {
 
     // test application
     var options = {
       adapter: adapter,
-      db: 'fortune_test'
+      db: 'fortune_test',
+      inflect: true
     };
 
-    if(adapter == 'mysql') {
-      if(process.env.TRAVIS) {
+    if (adapter == 'mysql') {
+      if (process.env.TRAVIS) {
         options.username = 'travis';
         options.password = '';
       }
     }
 
-    apps.push(require('./app')(adapter, options, port));
+    global.options[port] = options;
+
+    apps.push(require('./app')(options, port));
 
   });
 
-  RSVP.all(apps.map(function(app) {
+  RSVP.all(apps.map(function (app) {
     return app.adapter.awaitConnection();
-  })).then(function() {
+  })).then(function () {
 
     new Mocha()
       .reporter('spec')
       .ui('bdd')
       .addFile(path.join(location, 'all.js'))
-      .run(function(code) {
+      .run(function (code) {
         process.exit(code);
       });
 

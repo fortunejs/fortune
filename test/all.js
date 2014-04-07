@@ -1,59 +1,75 @@
-var should = require('should')
-  , _ = require('lodash')
-  , RSVP = require('rsvp')
-  , request = require('supertest')
-  , fixtures = require('./fixtures.json');
+var inflect = require('i')();
+var should = require('should');
+var _ = require('lodash');
+var RSVP = require('rsvp');
+var request = require('supertest');
 
-_.each(global.adapters, function(port, adapter) {
+var fixtures = require('./fixtures.json');
+
+_.each(global.options, function (options, port) {
   var baseUrl = 'http://localhost:' + port;
+  var keys = {};
 
-  describe('using "' + adapter + '" adapter', function() {
+  // check if inflections are enabled.
+  _.each(fixtures, function (resources, collection) {
+    if (options.inflect) {
+      keys[collection] = inflect.pluralize(collection);
+    } else {
+      keys[collection] = collection;
+    }
+  });
+
+  describe('using "' + options.adapter + '" adapter', function () {
     var ids = {};
 
-    before(function(done) {
+    before(function (done) {
       var createResources = [];
 
-      _.each(fixtures, function(resources, collection) {
-        createResources.push(new RSVP.Promise(function(resolve, reject) {
+      _.each(fixtures, function (resources, collection) {
+        var key = keys[collection];
+
+        createResources.push(new RSVP.Promise(function (resolve, reject) {
           var body = {};
-          body[collection] = resources;
+          body[key] = resources;
           request(baseUrl)
-            .post('/' + collection)
+            .post('/' + key)
             .send(body)
             .expect('Content-Type', /json/)
             .expect(201)
-            .end(function(error, response) {
-              if(error) return reject(error);
-              var resources = JSON.parse(response.text)[collection];
-              ids[collection] = ids[collection] || [];
-              resources.forEach(function(resource) {
-                ids[collection].push(resource.id);
+            .end(function (error, response) {
+              if (error) return reject(error);
+              var resources = JSON.parse(response.text)[key];
+              ids[key] = ids[key] || [];
+              resources.forEach(function (resource) {
+                ids[key].push(resource.id);
               });
               resolve();
             });
         }));
       });
 
-      RSVP.all(createResources).then(function() {
+      RSVP.all(createResources).then(function () {
         done();
-      }, function() {
+      }, function () {
         throw new Error('Failed to create resources.');
       });
 
     });
 
-    describe('getting a list of resources', function() {
-      _.each(fixtures, function(resources, collection) {
-        it('in collection "' + collection + '"', function(done) {
+    describe('getting a list of resources', function () {
+      _.each(fixtures, function (resources, collection) {
+        var key = keys[collection];
+
+        it('in collection "' + key + '"', function (done) {
           request(baseUrl)
-          .get('/' + collection)
+          .get('/' + key)
           .expect('Content-Type', /json/)
           .expect(200)
-          .end(function(error, response) {
+          .end(function (error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            ids[collection].forEach(function(id) {
-              _.contains(_.pluck(body[collection], 'id'), id).should.equal(true);
+            ids[key].forEach(function (id) {
+              _.contains(_.pluck(body[key], 'id'), id).should.equal(true);
             });
             done();
           });
@@ -61,290 +77,310 @@ _.each(global.adapters, function(port, adapter) {
       });
     });
 
-    describe('getting each individual resource', function() {
-      _.each(fixtures, function(resources, collection) {
-        it('in collection "' + collection + '"', function(done) {
-          RSVP.all(ids[collection].map(function(id) {
-            return new RSVP.Promise(function(resolve) {
+    describe('getting each individual resource', function () {
+      _.each(fixtures, function (resources, collection) {
+        var key = keys[collection];
+
+        it('in collection "' + key + '"', function (done) {
+          RSVP.all(ids[key].map(function (id) {
+            return new RSVP.Promise(function (resolve) {
               request(baseUrl)
-              .get('/' + collection + '/' + id)
+              .get('/' + key + '/' + id)
               .expect('Content-Type', /json/)
               .expect(200)
-              .end(function(error, response) {
+              .end(function (error, response) {
                 should.not.exist(error);
                 var body = JSON.parse(response.text);
-                body[collection].forEach(function(resource) {
+                body[key].forEach(function (resource) {
                   (resource.id).should.equal(id);
                 });
                 resolve();
               });
             });
-          })).then(function() {
+          })).then(function () {
             done();
           });
         });
       });
     });
 
-    describe('many to one association', function() {
-      it('should be able to associate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+    describe('many to one association', function () {
+      it('should be able to associate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
+          var payload = {};
+
+          payload[keys.person] = [{
+            links: {
+              pets: [ids[keys.pet][0]]
+            }
+          }];
+
           request(baseUrl)
-            .put('/people/' + ids.people[0])
-            .send({people: [{
-              links: {
-                pets: [ids.pets[0]]
-              }
-            }]})
+            .put('/' + keys.person + '/' + ids[keys.person][0])
+            .send(payload)
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+              (body[keys.person][0].links.pets).should.includeEql(ids[keys.pet][0]);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/pets/' + ids.pets[0])
+            .get('/' + keys.pet + '/' + ids[keys.pet][0])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.pets[0].links.owner).should.equal(ids.people[0]);
+              (body[keys.pet][0].links.owner).should.equal(ids[keys.person][0]);
               done();
             });
         });
       });
-      it('should be able to dissociate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+      it('should be able to dissociate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
           request(baseUrl)
-            .patch('/people/' + ids.people[0])
+            .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
-              {path: '/people/0/links/pets', op: 'replace', value: []}
+              {path: '/' + keys.person + '/0/links/pets', op: 'replace', value: []}
             ])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/pets/' + ids.pets[0])
+            .get('/' + keys.pet + '/' + ids[keys.pet][0])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.pets[0].links);
+              should.not.exist(body[keys.pet][0].links);
               done();
             });
         });
       });
     });
 
-    describe('one to many association', function() {
-      it('should be able to associate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+    describe('one to many association', function () {
+      it('should be able to associate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
+          var payload = {};
+
+          payload[keys.pet] = [{
+            links: {
+              owner: ids[keys.person][0]
+            }
+          }];
+
           request(baseUrl)
-            .put('/pets/' + ids.pets[0])
-            .send({pets: [{
-              links: {
-                owner: ids.people[0]
-              }
-            }]})
+            .put('/' + keys.pet + '/' + ids[keys.pet][0])
+            .send(payload)
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.equal(body.pets[0].links.owner, ids.people[0]);
+              should.equal(body[keys.pet][0].links.owner, ids[keys.person][0]);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[0])
+            .get('/' + keys.person + '/' + ids[keys.person][0])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+              (body[keys.person][0].links.pets).should.includeEql(ids[keys.pet][0]);
               done();
             });
         });
       });
-      it('should be able to dissociate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+      it('should be able to dissociate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
           request(baseUrl)
-            .patch('/pets/' + ids.pets[0])
+            .patch('/' + keys.pet + '/' + ids[keys.pet][0])
             .send([
-              {path: '/pets/0/links/owner', op: 'replace', value: null}
+              {path: '/' + keys.pet + '/0/links/owner', op: 'replace', value: null}
             ])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.pets[0].links);
+              should.not.exist(body[keys.pet][0].links);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[1])
+            .get('/' + keys.person + '/' + ids[keys.person][1])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               done();
             });
         });
       });
     });
 
-    describe('one to one association', function() {
-      it('should be able to associate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+    describe('one to one association', function () {
+      it('should be able to associate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
+          var payload = {};
+
+          payload[keys.person] = [{
+            links: {
+              soulmate: ids[keys.person][1]
+            }
+          }];
+
           request(baseUrl)
-            .put('/people/' + ids.people[0])
-            .send({people: [{
-              links: {
-                soulmate: ids.people[1]
-              }
-            }]})
+            .put('/' + keys.person + '/' + ids[keys.person][0])
+            .send(payload)
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.equal(body.people[0].links.soulmate, ids.people[1]);
+              should.equal(body[keys.person][0].links.soulmate, ids[keys.person][1]);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[1])
+            .get('/' + keys.person + '/' + ids[keys.person][1])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.soulmate).should.equal(ids.people[0]);
+              (body[keys.person][0].links.soulmate).should.equal(ids[keys.person][0]);
               done();
             });
         });
       });
-      it('should be able to dissociate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+      it('should be able to dissociate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
           request(baseUrl)
-            .patch('/people/' + ids.people[0])
+            .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
-              {path: '/people/0/links/soulmate', op: 'replace', value: null}
+              {path: '/' + keys.person + '/0/links/soulmate', op: 'replace', value: null}
             ])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[1])
+            .get('/' + keys.person + '/' + ids[keys.person][1])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               done();
             });
         });
       });
     });
 
-    describe('many to many association', function() {
-      it('should be able to associate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+    describe('many to many association', function () {
+      it('should be able to associate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
+          var payload = {};
+
+          payload[keys.person] = [{
+            links: {
+              lovers: [ids[keys.person][1]]
+            }
+          }];
+
           request(baseUrl)
-            .put('/people/' + ids.people[0])
-            .send({people: [{
-              links: {
-                lovers: [ids.people[1]]
-              }
-            }]})
+            .put('/' + keys.person + '/' + ids[keys.person][0])
+            .send(payload)
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.lovers).should.includeEql(ids.people[1]);
+              (body[keys.person][0].links.lovers).should.includeEql(ids[keys.person][1]);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[1])
+            .get('/' + keys.person + '/' + ids[keys.person][1])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.lovers).should.includeEql(ids.people[0]);
+              (body[keys.person][0].links.lovers).should.includeEql(ids[keys.person][0]);
               done();
             });
         });
       });
-      it('should be able to dissociate', function(done) {
-        new RSVP.Promise(function(resolve, reject) {
+      it('should be able to dissociate', function (done) {
+        new RSVP.Promise(function (resolve, reject) {
           request(baseUrl)
-            .patch('/people/' + ids.people[0])
+            .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
-              {path: '/people/0/links/lovers', op: 'replace', value: []}
+              {path: '/' + keys.person + '/0/links/lovers', op: 'replace', value: []}
             ])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               resolve();
             });
-        }).then(function() {
+        }).then(function () {
           request(baseUrl)
-            .get('/people/' + ids.people[1])
+            .get('/' + keys.person + '/' + ids[keys.person][1])
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body[keys.person][0].links);
               done();
             });
         });
       });
     });
 
-    after(function(done) {
-      _.each(fixtures, function(resources, collection) {
-        RSVP.all(ids[collection].map(function(id) {
-          return new RSVP.Promise(function(resolve) {
+    after(function (done) {
+      _.each(fixtures, function (resources, collection) {
+        var key = keys[collection];
+
+        RSVP.all(ids[key].map(function (id) {
+          return new RSVP.Promise(function (resolve) {
             request(baseUrl)
-            .del('/' + collection + '/' + id)
+            .del('/' + key + '/' + id)
             .expect(204)
-            .end(function(error) {
+            .end(function (error) {
               should.not.exist(error);
               resolve();
             });
           });
-        })).then(function() {
+        })).then(function () {
           done();
-        }, function() {
+        }, function () {
           throw new Error('Failed to delete resources.');
         });
       });
