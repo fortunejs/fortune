@@ -16,13 +16,13 @@ beforeEach(function(done) {
       _.each(fixtures, function(resources, collection) {
         createResources.push(new RSVP.Promise(function(resolve, reject) {
           var body = {};
-          body[collection] = resources; 
+          body[collection] = resources;
           request(baseUrl)
             .post('/' + collection)
             .send(body)
             .expect('Content-Type', /json/)
             .expect(201)
-            .end(function(error, response) { 
+            .end(function(error, response) {
               if(error) return reject(error);
               var resources = JSON.parse(response.text)[collection];
               ids[collection] = ids[collection] || [];
@@ -62,7 +62,7 @@ beforeEach(function(done) {
         });
       });
     });
-    
+
     describe('getting a list of resources', function() {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {
@@ -577,7 +577,7 @@ beforeEach(function(done) {
           .expect(200)
           .end(function(err, res){
             should.not.exist(err);
-            
+
             var body = JSON.parse(res.text);
 
             body.people[0].links.pets.length.should.equal(1);
@@ -588,12 +588,61 @@ beforeEach(function(done) {
             body.linked.people.length.should.equal(1);
 
             body.linked.externalResourceReferences.should.equal("external");
-            
+
             done();
           });
+      });
+
+      it("should return a 200 response when attempting to follow a valid path", function(done) {
+        request(baseUrl)
+          .get("/people/" + ids.people[0] + "/pets")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            res.statusCode.should.equal(200);
+            done();
+          });
+      });
+
+      it("should return a 404 response when attempting to follow an invalid path", function(done) {
+        request(baseUrl)
+          .get("/people/" + ids.people[0] + "/fish")
+          .expect(404)
+          .end(function(err, res){
+            should.not.exist(err);
+            res.statusCode.should.equal(404);
+            done();
+          });
+      });
+
+      describe("Adding new fields to a model", function() {
+        beforeEach(function(done) {
+          // Remove a field from the model
+          // Fortune should treat this as if it were an empty array
+          // when resolving links
+          request(baseUrl)
+            .post("/remove-pets-link/" + ids.people[0])
+            .end(function(err) {
+              should.not.exist(err);
+              done();
+            });
+        });
+
+        it("should return an empty array when requesting linked pets for a person without pet links", function(done) {
+          request(baseUrl)
+          .get("/people/" + ids.people[0] + "/pets")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            res.statusCode.should.equal(200);
+            var body = JSON.parse(res.text);
+            body.pets.length.should.equal(0);
+            done();
+          });
+        });
+
       });
     });
 
   });
 });
-
