@@ -1,4 +1,7 @@
 ## Changelog
+**v0.2.2 (4/15/2014)**
+* Add resource creation with `linked` entities.
+
 **v0.2.1 (4/7/2014)**
 * Small fix for checking the environment variable.
 
