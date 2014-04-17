@@ -1,10 +1,33 @@
 var fortune = require('../lib/fortune');
 
 function createApp(adapter, options, port) {
-  
+
   var app = fortune(options);
 
   app.inflect.inflections.plural("MOT", "MOT");
+
+  if (app.adapter.mongoose) {
+    app.adapter.awaitConnection().then(function() {
+      console.log('Dropping database');
+      app.adapter.mongoose.connections[1].db.dropDatabase();
+    });
+  }
+
+  app.router.post("/remove-pets-link/:personid", function(req, res) {
+    var Person = app.adapter.model("person");
+    Person.findOne({email: req.params.personid}, function(err,person) {
+      if (err) {
+        console.error(err);
+        res.send(500,err);
+        return;
+      }
+      person.pets = null;
+      person.save(function() {
+        res.send(200);
+      });
+    });
+
+  });
 
   return app.resource('person', {
     name: String,
@@ -41,7 +64,7 @@ function createApp(adapter, options, port) {
   })
 
   .listen(port);
-  
+
 }
 
 module.exports = createApp;
