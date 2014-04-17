@@ -10,7 +10,7 @@ _.each(global.adapters, function(port, adapter) {
   describe('using "' + adapter + '" adapter', function() {
     var ids = {};
 
-beforeEach(function(done) {
+    beforeEach(function(done) {
       var createResources = [];
 
       _.each(fixtures, function(resources, collection) {
@@ -424,7 +424,8 @@ beforeEach(function(done) {
               links: {
                 pets: [ids.pets[0]],
                 soulmate: ids.people[1],
-                externalResources: ["ref1", "ref2"]
+                externalResources: ["ref1", "ref2"],
+                cars: [ids.cars[0]]
               }
             }]})
             .expect('Content-Type', /json/)
@@ -565,7 +566,7 @@ beforeEach(function(done) {
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            body.cars[0].links.should.eql({ MOT: 'fakeref' });
+            body.cars[0].links.should.eql({ MOT: 'fakeref', owner: "dilbert@mailbert.com" });
             body.linked.should.eql({MOT: "external"});
             done();
           });
@@ -589,6 +590,19 @@ beforeEach(function(done) {
 
             body.linked.externalResourceReferences.should.equal("external");
             
+            done();
+          });
+      });
+
+      it("should append links for external references", function(done){
+        request(baseUrl)
+          .get("/people/" + ids.people[0] + "?include=cars,cars.MOT")
+          .expect(200)
+          .end(function(err, res){ 
+            should.not.exist(err);
+
+            var body = JSON.parse(res.text);
+            console.log(body.links["people.cars.MOT"].should.eql({type: "services"}));
             done();
           });
       });
