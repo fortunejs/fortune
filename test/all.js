@@ -398,6 +398,17 @@ _.each(global.adapters, function(port, adapter) {
             done();
           });
       });
+      it("should allow top-level resource filtering based on a numeric value", function(done) {
+        request(baseUrl).get('/people?filter[appearances]=1934')
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response){
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.people.length.should.equal(1);
+            done();
+          });
+      });
     });
 
     describe("Business key", function(){
@@ -621,7 +632,7 @@ _.each(global.adapters, function(port, adapter) {
         request(baseUrl)
           .get("/people/" + ids.people[0] + "?include=cars,cars.MOT")
           .expect(200)
-          .end(function(err, res){ 
+          .end(function(err, res){
             should.not.exist(err);
 
             var body = JSON.parse(res.text);
