@@ -2,9 +2,7 @@ var Mocha = require('mocha');
 var path = require('path');
 var _ = require('lodash');
 var RSVP = require('rsvp');
-var request = require('supertest');
 
-var fixtures = require('./fixtures.json');
 var location = path.normalize(__dirname);
 
 global.options = {};

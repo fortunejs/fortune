@@ -4,6 +4,7 @@ var _ = require('lodash');
 var RSVP = require('rsvp');
 var request = require('supertest');
 
+var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
 
 _.each(global.options, function (options, port) {
@@ -28,7 +29,7 @@ _.each(global.options, function (options, port) {
       _.each(fixtures, function (resources, collection) {
         var key = keys[collection];
 
-        createResources.push(new RSVP.Promise(function (resolve, reject) {
+        createResources.push(new Promise(function (resolve) {
           var body = {};
           body[key] = resources;
           request(baseUrl)
@@ -37,7 +38,7 @@ _.each(global.options, function (options, port) {
             .expect('Content-Type', /json/)
             .expect(201)
             .end(function (error, response) {
-              if (error) return reject(error);
+              should.not.exist(error);
               var resources = JSON.parse(response.text)[key];
               ids[key] = ids[key] || [];
               resources.forEach(function (resource) {
@@ -83,7 +84,7 @@ _.each(global.options, function (options, port) {
 
         it('in collection "' + key + '"', function (done) {
           RSVP.all(ids[key].map(function (id) {
-            return new RSVP.Promise(function (resolve) {
+            return new Promise(function (resolve) {
               request(baseUrl)
               .get('/' + key + '/' + id)
               .expect('Content-Type', /json/)
@@ -106,7 +107,7 @@ _.each(global.options, function (options, port) {
 
     describe('many to one association', function () {
       it('should be able to associate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           var payload = {};
 
           payload[keys.person] = [{
@@ -140,7 +141,7 @@ _.each(global.options, function (options, port) {
         });
       });
       it('should be able to dissociate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           request(baseUrl)
             .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
@@ -171,7 +172,7 @@ _.each(global.options, function (options, port) {
 
     describe('one to many association', function () {
       it('should be able to associate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           var payload = {};
 
           payload[keys.pet] = [{
@@ -205,7 +206,7 @@ _.each(global.options, function (options, port) {
         });
       });
       it('should be able to dissociate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           request(baseUrl)
             .patch('/' + keys.pet + '/' + ids[keys.pet][0])
             .send([
@@ -236,7 +237,7 @@ _.each(global.options, function (options, port) {
 
     describe('one to one association', function () {
       it('should be able to associate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           var payload = {};
 
           payload[keys.person] = [{
@@ -270,7 +271,7 @@ _.each(global.options, function (options, port) {
         });
       });
       it('should be able to dissociate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           request(baseUrl)
             .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
@@ -301,7 +302,7 @@ _.each(global.options, function (options, port) {
 
     describe('many to many association', function () {
       it('should be able to associate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           var payload = {};
 
           payload[keys.person] = [{
@@ -335,7 +336,7 @@ _.each(global.options, function (options, port) {
         });
       });
       it('should be able to dissociate', function (done) {
-        new RSVP.Promise(function (resolve, reject) {
+        new Promise(function (resolve) {
           request(baseUrl)
             .patch('/' + keys.person + '/' + ids[keys.person][0])
             .send([
@@ -369,7 +370,7 @@ _.each(global.options, function (options, port) {
         var key = keys[collection];
 
         RSVP.all(ids[key].map(function (id) {
-          return new RSVP.Promise(function (resolve) {
+          return new Promise(function (resolve) {
             request(baseUrl)
             .del('/' + key + '/' + id)
             .expect(204)

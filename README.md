@@ -37,19 +37,22 @@ The full guide and API documentation are located at [fortunejs.com](http://fortu
 Here is a minimal application:
 
 ```javascript
-require('fortune')()
+var fortune = require('fortune');
+var app = fortune();
 
-.resource('person', {
+app.resource('person', {
   name: String,
   age: Number,
   pets: ['pet'] // "has many" relationship to pets
+});
 
-}).resource('pet', {
+app.resource('pet', {
   name: String,
   age: Number,
   owner: 'person' // "belongs to" relationship to a person
+});
 
-}).listen(1337);
+app.listen(1337);
 ```
 
 This exposes a few routes for the `person` and `pet` resources, as defined by the JSON API specification:
