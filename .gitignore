@@ -2,3 +2,5 @@ node_modules/
 data/
 report/
 *.log
+TAGS
+coverage

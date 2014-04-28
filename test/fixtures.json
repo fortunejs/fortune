@@ -2,11 +2,18 @@
   "person": [
     {
       "name": "Dilbert",
-      "appearances": 3457
+      "appearances": 3457,
+      "email": "dilbert@mailbert.com"
     },
     {
       "name": "Wally",
-      "appearances": 1934
+      "appearances": 1934,
+      "email": "wally@mailbert.com"
+    },
+    {
+      "name": "Robert",
+      "appearances": 0,
+      "email": "robert@mailbert.com"
     }
   ],
   "pet": [
@@ -17,6 +24,16 @@
     {
       "name": "Ratbert",
       "appearances": 509
+    }
+  ],
+  "cars": [
+    {
+      "licenseNumber": "ABC123",
+      "model": "Carbert"
+    },
+    {
+      "licenseNumber": "XYZ890",
+      "model": "Carbert"
     }
   ]
 }
