@@ -1,8 +1,9 @@
-var should = require('should')
-, _ = require('lodash')
-, RSVP = require('rsvp')
-, request = require('supertest')
-, fixtures = require('./fixtures.json');
+var inflect= require('i')();
+var should = require('should');
+var _ = require('lodash');
+var RSVP = require('rsvp');
+var request = require('supertest');
+
 
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
@@ -59,10 +60,12 @@ _.each(global.options, function (options, port) {
 
     afterEach(function(done) {
       _.each(fixtures, function(resources, collection) {
-        RSVP.all(ids[collection].map(function(id) {
+        var key = keys[collection];
+        
+        RSVP.all(ids[key].map(function(id) {
           return new RSVP.Promise(function(resolve) {
             request(baseUrl)
-              .del('/' + collection + '/' + id)
+              .del('/' + key + '/' + id)
               .expect(204)
               .end(function(error) {
                 should.not.exist(error);
@@ -80,16 +83,18 @@ _.each(global.options, function (options, port) {
 
     describe('getting a list of resources', function() {
       _.each(fixtures, function(resources, collection) {
-        it('in collection "' + collection + '"', function(done) {
+        var key = keys[collection];
+        
+        it('in collection "' + key + '"', function(done) {
           request(baseUrl)
-            .get('/' + collection)
+            .get('/' + key)
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              ids[collection].forEach(function(id) {
-                _.contains(_.pluck(body[collection], 'id'), id).should.equal(true);
+              ids[key].forEach(function(id) {
+                _.contains(_.pluck(body[key], 'id'), id).should.equal(true);
               });
               done();
             });
@@ -105,13 +110,13 @@ _.each(global.options, function (options, port) {
           RSVP.all(ids[key].map(function (id) {
             return new Promise(function (resolve) {
               request(baseUrl)
-                .get('/' + collection + '/' + id)
+                .get('/' + key + '/' + id)
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(error, response) {
                   should.not.exist(error);
                   var body = JSON.parse(response.text);
-                  body[collection].forEach(function(resource) {
+                  body[key].forEach(function(resource) {
                     (resource.id).should.equal(id);
                   });
                   resolve();
@@ -534,11 +539,11 @@ _.each(global.options, function (options, port) {
             var body = JSON.parse(response.text);
             body.linked.pets.length.should.equal(1);
             body.linked.pets[0].id.should.equal(ids.pets[0]);
-            body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+            body.linked.pets[0].name.should.equal(fixtures.pet[0].name);
             body.linked.people.length.should.equal(1);
-            body.linked.people[0].name.should.equal(fixtures.people[1].name);
-            body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name + '!');
-            body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name + '!');
+            body.linked.people[0].name.should.equal(fixtures.person[1].name);
+            body.people[0].nickname.should.equal('Super ' + fixtures.person[0].name + '!');
+            body.linked.people[0].nickname.should.equal('Super ' + fixtures.person[1].name + '!');
             done();
           });
       });
@@ -553,13 +558,13 @@ _.each(global.options, function (options, port) {
             var body = JSON.parse(response.text);
             body.linked.pets.length.should.equal(2);
             body.linked.pets[0].id.should.equal(ids.pets[0]);
-            body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+            body.linked.pets[0].name.should.equal(fixtures.pet[0].name);
             body.linked.pets[1].id.should.equal(ids.pets[1]);
-            body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
+            body.linked.pets[1].name.should.equal(fixtures.pet[1].name);
             body.linked.people.length.should.equal(1);
-            body.linked.people[0].name.should.equal(fixtures.people[1].name);
-            body.people[0].nickname.should.equal('Super ' + fixtures.people[0].name + '!');
-            body.linked.people[0].nickname.should.equal('Super ' + fixtures.people[1].name + '!');
+            body.linked.people[0].name.should.equal(fixtures.person[1].name);
+            body.people[0].nickname.should.equal('Super ' + fixtures.person[0].name + '!');
+            body.linked.people[0].nickname.should.equal('Super ' + fixtures.person[1].name + '!');
             body.links["people.pets"].type.should.equal("pets");
             body.links["people.soulmate.pets"].type.should.equal("pets");
             body.links["people.soulmate"].type.should.equal("people");
@@ -577,9 +582,9 @@ _.each(global.options, function (options, port) {
             var body = JSON.parse(response.text);
             body.linked.pets.length.should.equal(2);
             body.linked.pets[0].id.should.equal(ids.pets[0]);
-            body.linked.pets[0].name.should.equal(fixtures.pets[0].name);
+            body.linked.pets[0].name.should.equal(fixtures.pet[0].name);
             body.linked.pets[1].id.should.equal(ids.pets[1]);
-            body.linked.pets[1].name.should.equal(fixtures.pets[1].name);
+            body.linked.pets[1].name.should.equal(fixtures.pet[1].name);
             body.links["people.pets"].type.should.equal("pets");
             body.links["people.soulmate.pets"].type.should.equal("pets");
             should.not.exist(body.linked.people);

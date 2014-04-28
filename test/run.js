@@ -24,7 +24,6 @@ function runTests(adapters) {
   var apps = [];
 
   _.each(adapters, function (port, adapter) {
-
     // test application
     var options = {
       adapter: adapter,

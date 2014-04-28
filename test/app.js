@@ -1,7 +1,6 @@
 var fortune = require('../lib/fortune');
 
-function createApp(adapter, options, port) {
-
+function createApp(options, port) {
   var app = fortune(options);
 
   app.inflect.inflections.plural("MOT", "MOT");
@@ -10,7 +9,7 @@ function createApp(adapter, options, port) {
     app.adapter.awaitConnection().then(function() {
       console.log('Dropping database');
       app.adapter.mongoose.connections[1].db.dropDatabase();
-    });
+    }, function(err){ console.trace(err); });
   }
 
   app.router.post("/remove-pets-link/:personid", function(req, res) {
