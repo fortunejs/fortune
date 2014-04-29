@@ -66,9 +66,7 @@ _.each(global.options, function (options, port) {
           return new RSVP.Promise(function(resolve) {
             request(baseUrl)
               .del('/' + key + '/' + id)
-              .expect(204)
               .end(function(error) {
-                should.not.exist(error);
                 resolve();
               });
           });
@@ -658,7 +656,6 @@ _.each(global.options, function (options, port) {
             should.not.exist(err);
 
             var body = JSON.parse(res.text);
-            console.log(body.links["people.cars.MOT"].should.eql({type: "services"}));
             done();
           });
       });
@@ -688,8 +685,48 @@ _.each(global.options, function (options, port) {
               done();
             });
         });
+      });
+    });
 
+    describe("collection delete route", function(){
+      it("should remove all data from the database for a collection", function(done){
+        new Promise(function(resolve){
+          request(baseUrl)
+            .get("/people/")
+            .expect(200)
+            .end(function(err,res){
+              should.not.exist(err);
+              res.statusCode.should.equal(200);
+              var body = JSON.parse(res.text);
 
+              body.people.length.should.be.above(1);
+              
+              resolve();
+            });
+        }).then(function(){
+          return new Promise(function(resolve){
+            request(baseUrl)
+              .del("/people/")
+              .expect(204)
+              .end(function(err,res){
+                should.not.exist(err);
+                resolve();
+              });
+          });
+        }).then(function(){
+          request(baseUrl)
+            .get("/people/")
+            .expect(200)
+            .end(function(err,res){
+              should.not.exist(err);
+              res.statusCode.should.equal(200);
+              var body = JSON.parse(res.text);
+
+              body.people.length.should.be.equal(0);
+              
+              done();
+            });
+        });
       });
     });
   });
