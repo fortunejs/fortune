@@ -8,7 +8,7 @@ var fortune = require('../lib/fortune');
 fortune({
 
   adapter: "mongodb",
-  db: 'userAddress'
+  db: 'relationships'
 
 })
 
