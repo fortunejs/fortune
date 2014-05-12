@@ -40,7 +40,7 @@ fortune({
   postCode: String,
   country: String,
   dateDeleted: Date,
-  user: {ref: "user", inverse: "addresses"}
+  user: {ref: "user", inverse: "addresses", pkType: String}
 })
 
 .resource("flight", {
