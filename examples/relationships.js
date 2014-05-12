@@ -24,7 +24,7 @@ fortune({
   nationality: String,
   languageCode: String,
   addresses: [{ref: "address", inverse: "user"}],
-  flights: [{ref: "flight", inverse: "flights"}]
+  flights: [{ref: "flight", inverse: "flights", pkType: String}]
 })
 
 .resource("address", {
@@ -44,7 +44,7 @@ fortune({
 .resource("flight", {
   flightNumber: String,
   users: [{ref: "user", inverse: "users"}]
-})
+}, { model: { pk: "flightNumber" }})
 
 /*!
  * Start the API
