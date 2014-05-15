@@ -49,7 +49,10 @@ function createApp(options, port) {
     licenseNumber: String,
     model: String,
     owner: {ref:'person', pkType: String},
-    MOT: {ref: 'service', external: true, pkType: String}
+    MOT: {ref: 'service', external: true, pkType: String},
+    additionalDetails: {
+      seats: Number
+    }
   },{ model: { pk: "licenseNumber" } })
 
   .after('person', function() {
