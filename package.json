@@ -24,7 +24,7 @@
     "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "fortune-mongodb": "git+ssh://git@github.com:flyvictor/fortune-mongodb.git",
+    "fortune-mongodb": "git+ssh://git@github.com:flyvictor/fortune-mongodb.git#v1.1.2",
     "mocha": "~1.13.0",
     "should": "~2.0.2",
     "supertest": "~0.8.0",

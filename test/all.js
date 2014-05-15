@@ -527,9 +527,9 @@ _.each(global.options, function (options, port) {
           });
       });
 
-      it("should return immediate child documents of people when requested", function(done) {
+      it("should return immediate child documents of people when requested, ignoring invalid includes", function(done) {
         request(baseUrl)
-          .get('/people/' + ids.people[0] + '?include=pets,soulmate')
+          .get('/people/' + ids.people[0] + '?include=pets,soulmate,bananas')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(error, response) {
