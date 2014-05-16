@@ -33,6 +33,7 @@ _.each(global.options, function (options, port) {
         createResources.push(new Promise(function (resolve) {
           var body = {};
           body[key] = resources;
+
           request(baseUrl)
             .post('/' + key)
             .send(body)
@@ -58,6 +59,7 @@ _.each(global.options, function (options, port) {
 
     });
 
+    
     afterEach(function(done) {
       _.each(fixtures, function(resources, collection) {
         var key = keys[collection];
@@ -426,6 +428,14 @@ _.each(global.options, function (options, port) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
             body.people.length.should.equal(1);
+            done();
+          });
+      });
+      it("should allow resource sub-document filtering based on a numeric value", function(done){
+        request(baseUrl).get("/cars?filter[additionalDetails.seats]=2")
+          .end(function(err, res){
+            var body = JSON.parse(res.text);
+            console.log(body);
             done();
           });
       });

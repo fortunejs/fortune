@@ -29,11 +29,17 @@
   "car": [
     {
       "licenseNumber": "ABC123",
-      "model": "Carbert"
+      "model": "Carbert",
+      "additionalDetails": {
+        "seats": 5
+      }
     },
     {
       "licenseNumber": "XYZ890",
-      "model": "Carbert"
+      "model": "Carbert",
+      "additionalDetails": {
+        "seats": 2
+      }
     }
   ]
 }
