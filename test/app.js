@@ -1,6 +1,6 @@
 var fortune = require('../lib/fortune');
 
-function createApp(options, port) {
+module.exports = function(options, port) {
   var app = fortune(options);
 
   app.inflect.inflections.plural("MOT", "MOT");
@@ -67,6 +67,6 @@ function createApp(options, port) {
 
   .listen(port);
 
-}
+};
 
-module.exports = createApp;
+
