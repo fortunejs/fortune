@@ -439,6 +439,34 @@ _.each(global.options, function (options, port) {
             done();
           });
       });
+      it('should be possible to filter related resources by ObjectId', function(done){
+        var cmd = [
+          {
+            op: 'replace',
+            path: '/people/0/pets',
+            value: [ids.pets[0], ids.pets[1]]
+          }
+        ];
+        //Give a man a pet
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('Content-Type', 'application/vnd.api+json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people?filter[pets]=' + ids.pets[0])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var data = JSON.parse(res.text);
+                (data.people).should.be.an.Array;
+                //Make sure filtering was run by ObjectId
+                (/[0-9a-f]{24}/.test(ids.pets[0])).should.be.ok;
+                (/[0-9a-f]{24}/.test(data.people[0].links.pets[0])).should.be.ok;
+                done();
+              });
+          });
+      });
     });
 
     describe("Business key", function(){
