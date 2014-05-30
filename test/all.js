@@ -952,6 +952,14 @@ _.each(global.options, function (options, port) {
               done();
             });
         });
+        afterEach(function(done){
+          request(baseUrl).del('/people/one-to-one')
+            .expect(204)
+            .end(function(err, res){
+              should.not.exist(err);
+              done();
+            });
+        });
       });
       describe('creating a resource referencing another one: many-to-one', function(){
         beforeEach(function(done){
@@ -987,6 +995,14 @@ _.each(global.options, function (options, port) {
               should.not.exist(err);
               var body = JSON.parse(res.text);
               (body.pets[0].links.owner).should.equal('one-to-many');
+              done();
+            });
+        });
+        afterEach(function(done){
+          request(baseUrl).del('/people/one-to-many')
+            .expect(204)
+            .end(function(err, res){
+              should.not.exist(err);
               done();
             });
         });
@@ -1193,7 +1209,7 @@ _.each(global.options, function (options, port) {
           .end(function(err, res){
             should.not.exist(err);
             cb(err, res);
-          });
+        });
       }
     });
   });
