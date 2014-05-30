@@ -36,9 +36,14 @@ function createApp(options, port) {
     soulmate: {ref: 'person', inverse: 'soulmate', pkType: String},
     lovers: [{ref: 'person', inverse: 'lovers', pkType: String}],
     externalResources: [{ ref: "externalResourceReference", pkType: String, external: true }],
-    cars: [{ref:'car', pkType: String}]
+    cars: [{ref:'car', pkType: String}],
+    houses: [{ref: 'house', inverse: 'owners'}]
   }, {model: {pk:"email"}})
 
+  .resource('house', {
+    address: String,
+    owners: [{ref: 'person', inverse: 'houses', pkType: String}]
+  })
   .resource('pet', {
     name: String,
     appearances: Number,

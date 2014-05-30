@@ -279,15 +279,27 @@ _.each(global.options, function (options, port) {
           });
       });
       it('should be able to associate', function(done) {
-        request(baseUrl)
-          .get('/people/' + ids.people[1])
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(error, response) {
-            should.not.exist(error);
-            var body = JSON.parse(response.text);
-            (body.people[0].links.soulmate).should.equal(ids.people[0]);
-            done();
+        new Promise(function(resolve){
+          request(baseUrl)
+            .get('/people/' + ids.people[1])
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(error, response) {
+              should.not.exist(error);
+              var body = JSON.parse(response.text);
+              (body.people[0].links.soulmate).should.equal(ids.people[0]);
+              resolve();
+            });
+          }).then(function(){
+            request(baseUrl)
+              .get('/people/' + ids.people[0])
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                should.exist(body.people[0].links);
+                (body.people[0].links.soulmate).should.equal(ids.people[1]);
+                done();
+              });
           });
       });
       it('should be able to dissociate', function(done) {
@@ -314,6 +326,34 @@ _.each(global.options, function (options, port) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
               should.not.exist(body.people[0].links);
+              done();
+            });
+        });
+      });
+      it('should update association on PATCH', function(done){
+        new Promise(function(resolve){
+          var patch = [{
+            op: 'replace',
+            path: '/people/0/soulmate',
+            value: ids.people[2]
+          }];
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(patch))
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.soulmate).should.equal(ids.people[2]);
+              resolve();
+            });
+        }).then(function(){
+          request(baseUrl).get('/people/' + ids.people[2])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.soulmate).should.equal(ids.people[0]);
               done();
             });
         });
@@ -435,7 +475,6 @@ _.each(global.options, function (options, port) {
         request(baseUrl).get("/cars?filter[additionalDetails.seats]=2")
           .end(function(err, res){
             var body = JSON.parse(res.text);
-            console.log(body);
             done();
           });
       });
@@ -738,6 +777,424 @@ _.each(global.options, function (options, port) {
             });
         });
       });
+    });
+    describe("includes", function(){
+      beforeEach(function(done){
+        function link(url, path, value){
+          return new Promise(function(resolve){
+            var data =  [{
+              op: 'replace',
+              path: path,
+              value: value
+            }];
+            request(baseUrl).patch(url)
+              .set('Content-Type', 'application/json')
+              .send(JSON.stringify(data))
+              .end(function(err){
+                should.not.exist(err);
+                resolve();
+              });
+          });
+        }
+        RSVP.all([
+            link('/people/' + ids.people[0], '/people/0/soulmate', ids.people[1]),
+            //TODO: fortune should take care about this on its own
+            link('/people/' + ids.people[1], '/people/0/soulmate', ids.people[0]),
+
+            link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
+            link('/people/' + ids.people[0], '/people/0/cars', [ids.cars[0], ids.cars[1]]),
+            link('/people/' + ids.people[0], '/people/0/houses', [ids.houses[0]]),
+            link('/people/' + ids.people[1], '/people/0/houses', [ids.houses[0], ids.houses[1]])
+        ]).then(function(){
+          done();
+        })
+      });
+      it('many to many: should include referenced houses when querying people', function(done){
+        request(baseUrl).get('/people?include=houses')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.linked).should.be.an.Object;
+            (body.linked.houses).should.be.an.Array;
+            (body.linked.houses.length).should.equal(2);
+            done();
+          });
+      });
+      it('many to many: should include referenced people when querying houses', function(done){
+        request(baseUrl).get('/houses?include=owners')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.linked).should.be.an.Object;
+            (body.linked.people).should.be.an.Array;
+            (body.linked.people.length).should.equal(2);
+            done();
+          });
+      });
+      it('one to one: should include soulmate when querying people', function(done){
+        request(baseUrl).get('/people?include=soulmate')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.linked).should.be.an.Object;
+            (body.linked.people).should.be.an.Array;
+            (body.linked.people.length).should.equal(2);
+            done();
+          });
+      });
+      it('one to many: should include pets when querying people', function(done){
+        request(baseUrl).get('/cars?include=owner')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.linked).should.be.an.Object;
+            (body.linked.people).should.be.an.Array;
+            (body.linked.people.length).should.equal(1);
+            done();
+          });
+      });
+      it('many to one: should include people when querying cars', function(done){
+        request(baseUrl).get('/people?include=cars')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.linked).should.be.an.Object;
+            (body.linked.cars).should.be.an.Array;
+            (body.linked.cars.length).should.equal(2);
+            done();
+          });
+      });
+    });
+    describe('documents with links', function(){
+      describe('creating a resource referencing another one: many-to-many', function(){
+        var houseId;
+        beforeEach(function(done){
+          //Create new house referencing a man
+          var data = {
+            houses: [{
+              address: 'Piccadilly',
+              owners: [ids.people[0], ids.people[1]]
+            }]
+          };
+          request(baseUrl).post('/houses')
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(data))
+            .expect(201)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              houseId = body.houses[0].id;
+              (/[0-9a-f]{24}/.test(houseId)).should.be.ok;
+              done();
+            });
+        });
+        it("should create A correctly referencing B", function(done){
+          request(baseUrl).get('/houses/' + houseId)
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.houses[0].links.owners.indexOf(ids.people[0])).should.not.equal(-1);
+              (body.houses[0].links.owners.indexOf(ids.people[1])).should.not.equal(-1);
+              done();
+            });
+        });
+        it("should create reference from B to A", function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.houses.indexOf(houseId)).should.not.equal(-1);
+              done();
+            });
+        });
+      });
+      describe('creating a resource referencing another one: one-to-one', function(){
+        beforeEach(function(done){
+          var data = {
+            people: [{
+              email: 'one-to-one',
+              soulmate: ids.people[0]
+            }]
+          };
+          request(baseUrl).post('/people')
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(data))
+            .expect(201)
+            .end(function(err, res){
+              should.not.exist(err);
+              done();
+            });
+        });
+        it("should create A correctly referencing B", function(done){
+          request(baseUrl).get('/people/one-to-one')
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.soulmate).should.equal(ids.people[0]);
+              done();
+            });
+        });
+        it("should create reference from B to A", function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.soulmate).should.equal('one-to-one');
+              done();
+            });
+        });
+      });
+      describe('creating a resource referencing another one: many-to-one', function(){
+        beforeEach(function(done){
+          var data = {
+            people: [{
+              email: 'one-to-many',
+              pets: [ids.pets[0]]
+            }]
+          };
+          request(baseUrl).post('/people')
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(data))
+            .expect(201)
+            .end(function(err, res){
+              should.not.exist(err);
+              done();
+            });
+        });
+        it("should create A correctly referencing B", function(done){
+          request(baseUrl).get('/people/one-to-many')
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.pets.indexOf(ids.pets[0])).should.not.equal(-1);
+              done();
+            });
+        });
+        it("should create reference from B to A", function(done){
+          request(baseUrl).get('/pets/' + ids.pets[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.pets[0].links.owner).should.equal('one-to-many');
+              done();
+            });
+        });
+      });
+      describe('creating a resource referencing another one: one-to-many', function(){
+        var petId;
+        beforeEach(function(done){
+          var data = {
+            pets: [{
+              name: 'many-to-one',
+              owner: ids.people[0]
+            }]
+          };
+          request(baseUrl).post('/pets')
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(data))
+            .expect(201)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              petId = body.pets[0].id;
+              done();
+            });
+        });
+        it("should create A correctly referencing B", function(done){
+          request(baseUrl).get('/pets/' + petId)
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.pets[0].links.owner).should.equal(ids.people[0]);
+              done();
+            });
+        });
+        it("should create reference from B to A", function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.pets.indexOf(petId)).should.not.equal(-1);
+              done();
+            });
+        });
+      });
+    });
+    describe("PATCH add method", function(){
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, done);
+      });
+      it('should atomically add item to array', function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[1]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(2);
+          (body.people[0].links.houses[1]).should.equal(ids.houses[1]);
+          done();
+        });
+      });
+      it('should also update related resource', function(done){
+        request(baseUrl).get('/houses/' + ids.houses[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.houses[0].links.owners[0]).should.equal(ids.people[0]);
+            done();
+          });
+      });
+      it('should support bulk update', function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(3);
+          done();
+        });
+      });
+      //helpers
+      function patch(url, cmd, cb){
+        request(baseUrl).patch(url)
+          .set('Content-Type', 'application/json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            cb(err, res);
+          });
+      }
+    });
+    describe("PATCH remove method", function(){
+
+      /*
+       * After this people[0] should have 3 houses
+       * and three different houses should reference people[0]
+       */
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[1]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[2]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err){
+          should.not.exist(err);
+          done();
+        });
+      });
+      /*
+       * After this houses[0] should have three owners
+       */
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/houses/0/owners/-',
+          value: ids.people[1]
+        },{
+          op: 'add',
+          path: '/houses/0/owners/-',
+          value: ids.people[2]
+        }];
+        patch('/houses/' + ids.houses[0], cmd, function(err){
+          should.not.exist(err);
+          done();
+        });
+      });
+      it('should atomically remove array item', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people).should.be.an.Array;
+          (body.people[0].links.houses.length).should.equal(2);
+          (body.people[0].links.houses.indexOf(ids.houses[0])).should.equal(-1);
+          done();
+        });
+      });
+      it('should also update referenced item', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err){
+          should.not.exist(err);
+          request(baseUrl).get('/houses/' + ids.houses[0])
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.houses[0].links.owners.length).should.equal(2);
+              (body.houses[0].links.owners.indexOf(ids.people[0])).should.equal(-1);
+              done();
+            });
+        });
+      });
+      it('should support bulk operation', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        },{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[1]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(1);
+          done();
+        });
+      });
+      //helpers
+      function patch(url, cmd, cb){
+        request(baseUrl).patch(url)
+          .set('Content-Type', 'application/json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            cb(err, res);
+          });
+      }
     });
   });
 });
