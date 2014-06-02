@@ -1,6 +1,6 @@
 var fortune = require('../lib/fortune');
 
-function createApp(options, port) {
+module.exports = function(options, port) {
   var app = fortune(options);
 
   app.inflect.inflections.plural("MOT", "MOT");
@@ -47,14 +47,14 @@ function createApp(options, port) {
   .resource('pet', {
     name: String,
     appearances: Number,
-    owner: {ref:'person', pkType: String}
+    owner: {ref:'person', type: String}
   })
 
   .resource('car', {
     licenseNumber: String,
     model: String,
-    owner: {ref:'person', pkType: String},
-    MOT: {ref: 'service', external: true, pkType: String},
+    owner: {ref:'person', type: String},
+    MOT: {ref: 'service', external: true, type: String},
     additionalDetails: {
       seats: Number
     }
@@ -72,6 +72,6 @@ function createApp(options, port) {
 
   .listen(port);
 
-}
+};
 
-module.exports = createApp;
+
