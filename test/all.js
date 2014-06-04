@@ -792,8 +792,8 @@ describe('Fortune', function () {
           });
       });
     });
-    describe('broken backward compatibility', function(){
-      it('legacy before should now be beforeRead + beforeWrite', function(done){
+    describe('backward compatibility', function(){
+      it('legacy before now equals to beforeWrite', function(done){
         var man = {
           people: [{
             name: 'Smith',
@@ -803,21 +803,24 @@ describe('Fortune', function () {
         request(baseUrl).post('/people')
           .set('content-type', 'application/json')
           .send(JSON.stringify(man))
-          .expect('before', 'called for both reads and writes')
+          .expect('before', 'called for writes only')
           .end(function(err, res){
             should.not.exist(err);
+            should.not.exist(res.headers.after);
             var body = JSON.parse(res.text);
             (body.people[0].official).should.equal('Mr. Smith');
-            (body.people[0].nickname).should.equal('Super ' + body.people[0].name + '!');
+            //Thanks to .afterRW
+            (body.people[0].nickname).should.equal('undefined!');
             done();
           });
       });
-      it('legacy after should now be afterRead + afterWrite', function(done){
+      it('legacy after now equals to afterRead', function(done){
         request(baseUrl).get('/people/' + ids.people[0])
           .expect(200)
-          .expect('after', 'called for both reads and writes')
+          .expect('after', 'called for reads only')
           .end(function(err, res){
             should.not.exist(err);
+            should.not.exist(res.headers.before);
             var body = JSON.parse(res.text);
             var person = body.people[0];
             should.not.exist(person.password);

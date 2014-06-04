@@ -21,14 +21,14 @@ var synchronousHook = [{
 describe('hooks', function(){
   it('should keep track of registered hooks', function(done){
     hooks.registerGlobalHook('_before', 'read', synchronousHook);
-    should.exist(hooks._hooksAll._before.read.syncHook);
+    should.exist(hooks._hooksAll._before.read[0]);
     done();
   });
   it('should be able to apply registered hooks to provided resource', function(done){
     var resourceConfig = {};
     hooks.initGlobalHooks(resourceConfig, {});
     should.exist(resourceConfig.hooks);
-    (resourceConfig.hooks._before.read.syncHook).should.be.a.Function;
+    (resourceConfig.hooks._before.read[0]).should.be.a.Function;
     done();
   });
   it('should be configurable', function(done){
@@ -41,7 +41,7 @@ describe('hooks', function(){
     };
     var resource = {};
     hooks.initGlobalHooks(resourceConfig, {b: 2});
-    resourceConfig.hooks._before.read.syncHook.call(resource);
+    resourceConfig.hooks._before.read[0].call(resource);
     (resource.hooked).should.equal(3);
     done();
   });
@@ -54,15 +54,15 @@ describe('hooks', function(){
       }
     };
     hooks.initGlobalHooks(resourceConfig, {});
-    should.not.exist(resourceConfig.hooks.syncHook);
+    should.not.exist(resourceConfig.hooks[0]);
     done();
   });
   it('should apply default hook config if resource does not provide one', function(done){
     var resourceConfig = {};
     var resource = {};
     hooks.initGlobalHooks(resourceConfig, {});
-    should.exist(resourceConfig.hooks._before.read.syncHook);
-    resourceConfig.hooks._before.read.syncHook.call(resource);
+    should.exist(resourceConfig.hooks._before.read[0]);
+    resourceConfig.hooks._before.read[0].call(resource);
     (resource.hooked).should.equal(110);
     done();
   });
@@ -87,7 +87,7 @@ describe('hooks', function(){
     });
     it('should provide method to register a hook for selected resource', function(done){
       hooks.addHook.call(fortune, 'person', synchronousHook, '_after', 'read');
-      should.exist(fortune._resources.person.hooks._after.read.syncHook);
+      (fortune._resources.person.hooks._after.read.length).should.equal(1);
       done();
     });
     it('should be backward compatible', function(done){
@@ -95,16 +95,15 @@ describe('hooks', function(){
         return 'Hello world';
       };
       hooks.addHook.call(fortune, 'person', mockHook, '_before', 'write');
-      var mockHookName = crypto.createHash('md5').update(mockHook.toString()).digest('hex');
-      var generatedHook = fortune._resources.person.hooks._before.write[mockHookName];
+      var generatedHook = fortune._resources.person.hooks._before.write[0];
       should.exist(generatedHook);
       (generatedHook()).should.equal('Hello world');
       done();
     });
     it('should be possible to provide space-separated names of resources to apply hooks to', function(done){
       hooks.addHook.call(fortune, 'person pet', synchronousHook, '_after', 'write');
-      var personHook = fortune._resources.person.hooks._after.write.syncHook;
-      var petHook = fortune._resources.pet.hooks._after.write.syncHook;
+      var personHook = fortune._resources.person.hooks._after.write[0];
+      var petHook = fortune._resources.pet.hooks._after.write[0];
       should.exist(personHook);
       should.exist(petHook);
       var person = {};

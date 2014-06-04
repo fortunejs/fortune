@@ -132,7 +132,7 @@ module.exports = function(options, port) {
   .before('person', function(req, res){
     this.password = Math.random();
     this.official = 'Mr. ' + this.name;
-    res.setHeader('before', 'called for both reads and writes');
+    res.setHeader('before', 'called for writes only');
     return this;
   })
 
@@ -146,13 +146,13 @@ module.exports = function(options, port) {
   }])
 
   .after('person', function(req, res) {
-    res.setHeader('after', 'called for both reads and writes');
+    res.setHeader('after', 'called for reads only');
     delete this.password;
     this.nickname = 'Super ' + this.name;
     return this;
   })
 
-  .after('person',[{
+  .afterRW('person',[{
     name: 'secondLegacyAfter',
     init: function() {
       return function(){
