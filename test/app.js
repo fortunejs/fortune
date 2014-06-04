@@ -129,9 +129,10 @@ module.exports = function(options, port) {
     })
 
 
-  .before('person', function(){
+  .before('person', function(req, res){
     this.password = Math.random();
     this.official = 'Mr. ' + this.name;
+    res.setHeader('before', 'called for both reads and writes');
     return this;
   })
 
@@ -144,16 +145,22 @@ module.exports = function(options, port) {
       init: Hook
   }])
 
-  .after('person', function() {
+  .after('person', function(req, res) {
+    res.setHeader('after', 'called for both reads and writes');
     delete this.password;
     this.nickname = 'Super ' + this.name;
     return this;
   })
 
-  .after('person', function() {
-    this.nickname = this.nickname + '!';
-    return this;
-  })
+  .after('person',[{
+    name: 'secondLegacyAfter',
+    init: function() {
+      return function(){
+        this.nickname = this.nickname + '!';
+        return this;
+      }
+    }
+  }])
 
   .listen(port);
 

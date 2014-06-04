@@ -792,8 +792,8 @@ describe('Fortune', function () {
           });
       });
     });
-    describe('backward compatibility', function(){
-      it('legacy before should default to beforeWrite', function(done){
+    describe('broken backward compatibility', function(){
+      it('legacy before should now be beforeRead + beforeWrite', function(done){
         var man = {
           people: [{
             name: 'Smith',
@@ -803,16 +803,19 @@ describe('Fortune', function () {
         request(baseUrl).post('/people')
           .set('content-type', 'application/json')
           .send(JSON.stringify(man))
+          .expect('before', 'called for both reads and writes')
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people[0].official).should.equal('Mr. Smith');
+            (body.people[0].nickname).should.equal('Super ' + body.people[0].name + '!');
             done();
           });
       });
-      it('legacy after should default to afterRead', function(done){
+      it('legacy after should now be afterRead + afterWrite', function(done){
         request(baseUrl).get('/people/' + ids.people[0])
           .expect(200)
+          .expect('after', 'called for both reads and writes')
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
