@@ -9,7 +9,7 @@ var hooks = {};
       config: {
         option: type
       },
-      init: function(fortuneOptions, hookOptions){
+      init: function(hookOptions, fortuneOptions){
         return function(req, res){
           res.setHeader(hookOptions.option, '1');
           return this;
@@ -18,7 +18,7 @@ var hooks = {};
     }]
 });
 
-var Hook = function(fortuneConfig, hookConfig){
+var Hook = function(hookConfig, fortuneConfig){
   return function(req, res){
     res.setHeader(hookConfig.header, hookConfig.value);
     return this;

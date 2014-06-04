@@ -1,5 +1,5 @@
 
-function Hook(fortuneConfig, hookConfig){
+function Hook(hookConfig, fortuneConfig){
   return function(req, res){
     res.setHeader(hookConfig.header, hookConfig.value);
     return this;

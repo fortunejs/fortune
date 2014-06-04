@@ -8,7 +8,7 @@ var synchronousHook = [{
   config: {
     a: 10
   },
-  init: function(fortuneConfig, hookConfig){
+  init: function(hookConfig, fortuneConfig){
     var a = hookConfig.a;
     var b = fortuneConfig.b || 100;
     return function(req, res){
