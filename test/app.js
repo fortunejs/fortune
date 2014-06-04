@@ -1,4 +1,29 @@
 var fortune = require('../lib/fortune');
+var personHooks = require('./personHooks');
+
+var hooks = {};
+
+['beforeAll', 'beforeAllRead', 'beforeAllWrite', 'afterAll', 'afterAllRead', 'afterAllWrite'].forEach(function(type){
+    hooks[type] = [{
+      name: type,
+      config: {
+        option: type
+      },
+      init: function(fortuneOptions, hookOptions){
+        return function(req, res){
+          res.setHeader(hookOptions.option, '1');
+          return this;
+        };
+      }
+    }]
+});
+
+var Hook = function(fortuneConfig, hookConfig){
+  return function(req, res){
+    res.setHeader(hookConfig.header, hookConfig.value);
+    return this;
+  }
+};
 
 module.exports = function(options, port) {
   var app = fortune(options);
@@ -28,8 +53,18 @@ module.exports = function(options, port) {
 
   });
 
-  return app.resource('person', {
+  return app
+  .beforeAll(hooks.beforeAll)
+  .beforeAllRead(hooks.beforeAllRead)
+  .beforeAllWrite(hooks.beforeAllWrite)
+  .afterAll(hooks.afterAll)
+  .afterAllRead(hooks.afterAllRead)
+  .afterAllWrite(hooks.afterAllWrite)
+
+  .resource('person', {
     name: String,
+    official: String,
+    password: String,
     appearances: Number,
     email: String,
     pets: ['pet'],
@@ -37,13 +72,44 @@ module.exports = function(options, port) {
     lovers: [{ref: 'person', inverse: 'lovers', type: String}],
     externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
     cars: [{ref:'car', type: String}]
-  }, {model: {pk:"email"}})
+  }, {
+      model: {pk:"email"},
+      hooks: {
+        beforeAll:{
+          option: 'beforeAllPeople'
+        },
+        afterAllRead: {
+          option: 'afterAllReadPeople'
+        },
+        afterRead: {
+          header: 'afterReadPerson',
+          value: 'ok'
+        }
+      }
+    })
+
+    //Hooks with standard config defined in personHooks.js
+    .beforeWrite([personHooks.beforeWrite])
+    .afterWrite([personHooks.afterWrite])
+    //A hook with overridden config in person resource configuration
+    .afterRead([personHooks.afterRead])
+    //Hooks with config passed along
+    .beforeRead([personHooks.readFirst, personHooks.readSecond], {
+      readFirst: {
+        header: 'beforeReadFirst'
+      },
+      readSecond: {
+        header: 'beforeReadSecond'
+      }
+    })
+
 
   .resource('pet', {
     name: String,
     appearances: Number,
     owner: {ref:'person', type: String}
   })
+
 
   .resource('car', {
     licenseNumber: String,
@@ -53,9 +119,33 @@ module.exports = function(options, port) {
     additionalDetails: {
       seats: Number
     }
-  },{ model: { pk: "licenseNumber" } })
+  },{
+      model: { pk: "licenseNumber" },
+      hooks: {
+        afterAll: {
+          disable: true
+        }
+      }
+    })
+
+
+  .before('person', function(){
+    this.password = Math.random();
+    this.official = 'Mr. ' + this.name;
+    return this;
+  })
+
+  .beforeRead('pet', [{
+      name: 'petHook',
+      config: {
+        header: 'petHook',
+        value: 'ok'
+      },
+      init: Hook
+  }])
 
   .after('person', function() {
+    delete this.password;
     this.nickname = 'Super ' + this.name;
     return this;
   })
