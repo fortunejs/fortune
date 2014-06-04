@@ -4,18 +4,18 @@ var personHooks = require('./personHooks');
 var hooks = {};
 
 ['beforeAll', 'beforeAllRead', 'beforeAllWrite', 'afterAll', 'afterAllRead', 'afterAllWrite'].forEach(function(type){
-    hooks[type] = [{
-      name: type,
-      config: {
-        option: type
-      },
-      init: function(hookOptions, fortuneOptions){
-        return function(req, res){
-          res.setHeader(hookOptions.option, '1');
-          return this;
-        };
-      }
-    }]
+  hooks[type] = [{
+    name: type,
+    config: {
+      option: type
+    },
+    init: function(hookOptions, fortuneOptions){
+      return function(req, res){
+        res.setHeader(hookOptions.option, '1');
+        return this;
+      };
+    }
+  }]
 });
 
 var Hook = function(hookConfig, fortuneConfig){
@@ -54,25 +54,26 @@ module.exports = function(options, port) {
   });
 
   return app
-  .beforeAll(hooks.beforeAll)
-  .beforeAllRead(hooks.beforeAllRead)
-  .beforeAllWrite(hooks.beforeAllWrite)
-  .afterAll(hooks.afterAll)
-  .afterAllRead(hooks.afterAllRead)
-  .afterAllWrite(hooks.afterAllWrite)
+    .beforeAll(hooks.beforeAll)
+    .beforeAllRead(hooks.beforeAllRead)
+    .beforeAllWrite(hooks.beforeAllWrite)
+    .afterAll(hooks.afterAll)
+    .afterAllRead(hooks.afterAllRead)
+    .afterAllWrite(hooks.afterAllWrite)
 
-  .resource('person', {
-    name: String,
-    official: String,
-    password: String,
-    appearances: Number,
-    email: String,
-    pets: ['pet'],
-    soulmate: {ref: 'person', inverse: 'soulmate', type: String},
-    lovers: [{ref: 'person', inverse: 'lovers', type: String}],
-    externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
-    cars: [{ref:'car', type: String}]
-  }, {
+    .resource('person', {
+      name: String,
+      official: String,
+      password: String,
+      appearances: Number,
+      email: String,
+      pets: ['pet'],
+      soulmate: {ref: 'person', inverse: 'soulmate', type: String},
+      lovers: [{ref: 'person', inverse: 'lovers', type: String}],
+      externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
+      cars: [{ref:'car', type: String}],
+      houses: [{ref: 'house', inverse: 'owners'}]
+    }, {
       model: {pk:"email"},
       hooks: {
         beforeAll:{
@@ -88,12 +89,12 @@ module.exports = function(options, port) {
       }
     })
 
-    //Hooks with standard config defined in personHooks.js
+  //Hooks with standard config defined in personHooks.js
     .beforeWrite([personHooks.beforeWrite])
     .afterWrite([personHooks.afterWrite])
-    //A hook with overridden config in person resource configuration
+  //A hook with overridden config in person resource configuration
     .afterRead([personHooks.afterRead])
-    //Hooks with config passed along
+  //Hooks with config passed along
     .beforeRead([personHooks.readFirst, personHooks.readSecond], {
       readFirst: {
         header: 'beforeReadFirst'
@@ -103,23 +104,26 @@ module.exports = function(options, port) {
       }
     })
 
+    .resource('house', {
+      address: String,
+      owners: [{ref: 'person', inverse: 'houses', pkType: String}]
+    })
+    .resource('pet', {
+      name: String,
+      appearances: Number,
+      owner: {ref:'person', type: String}
+    })
 
-  .resource('pet', {
-    name: String,
-    appearances: Number,
-    owner: {ref:'person', type: String}
-  })
 
-
-  .resource('car', {
-    licenseNumber: String,
-    model: String,
-    owner: {ref:'person', type: String},
-    MOT: {ref: 'service', external: true, type: String},
-    additionalDetails: {
-      seats: Number
-    }
-  },{
+    .resource('car', {
+      licenseNumber: String,
+      model: String,
+      owner: {ref:'person', type: String},
+      MOT: {ref: 'service', external: true, type: String},
+      additionalDetails: {
+        seats: Number
+      }
+    },{
       model: { pk: "licenseNumber" },
       hooks: {
         afterAll: {
@@ -129,40 +133,40 @@ module.exports = function(options, port) {
     })
 
 
-  .before('person', function(req, res){
-    this.password = Math.random();
-    this.official = 'Mr. ' + this.name;
-    res.setHeader('before', 'called for writes only');
-    return this;
-  })
+    .before('person', function(req, res){
+      this.password = Math.random();
+      this.official = 'Mr. ' + this.name;
+      res.setHeader('before', 'called for writes only');
+      return this;
+    })
 
-  .beforeRead('pet', [{
+    .beforeRead('pet', [{
       name: 'petHook',
       config: {
         header: 'petHook',
         value: 'ok'
       },
       init: Hook
-  }])
+    }])
 
-  .after('person', function(req, res) {
-    res.setHeader('after', 'called for reads only');
-    delete this.password;
-    this.nickname = 'Super ' + this.name;
-    return this;
-  })
+    .after('person', function(req, res) {
+      res.setHeader('after', 'called for reads only');
+      delete this.password;
+      this.nickname = 'Super ' + this.name;
+      return this;
+    })
 
-  .afterRW('person',[{
-    name: 'secondLegacyAfter',
-    init: function() {
-      return function(){
-        this.nickname = this.nickname + '!';
-        return this;
+    .afterRW('person',[{
+      name: 'secondLegacyAfter',
+      init: function() {
+        return function(){
+          this.nickname = this.nickname + '!';
+          return this;
+        }
       }
-    }
-  }])
+    }])
 
-  .listen(port);
+    .listen(port);
 
 };
 
