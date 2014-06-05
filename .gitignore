@@ -4,3 +4,4 @@ report/
 *.log
 TAGS
 coverage
+.idea

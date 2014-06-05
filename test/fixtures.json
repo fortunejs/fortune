@@ -41,5 +41,19 @@
         "seats": 2
       }
     }
+  ],
+  "houses": [
+    {
+      "address": "Penny lane"
+    },
+    {
+      "address": "Backer street"
+    },
+    {
+      "address": "Abbey road"
+    },
+    {
+      "address": "Downing street"
+    }
   ]
 }

@@ -36,13 +36,19 @@ module.exports = function(options, port) {
     soulmate: {ref: 'person', inverse: 'soulmate', type: String},
     lovers: [{ref: 'person', inverse: 'lovers', type: String}],
     externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
-    cars: [{ref:'car', type: String}]
+    cars: [{ref:'car', type: String}],
+    houses: [{ref: 'house', type: String}]
   }, {model: {pk:"email"}})
 
   .resource('pet', {
     name: String,
     appearances: Number,
     owner: {ref:'person', type: String}
+  })
+
+  .resource('house', {
+    address: String,
+    owners: [{ref: 'person', type: String}]
   })
 
   .resource('car', {
