@@ -416,6 +416,21 @@ describe('Fortune', function () {
   });
 
   describe("sparse fieldsets", function(){
+    beforeEach(function(done){
+      var association = [{
+        op: 'replace',
+        path: '/people/0/pets',
+        value: [ids.pets[0]]
+      }];
+      request(baseUrl).patch('/people/' + ids.people[0])
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(association))
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          done();
+        });
+    });
     it("should return specific fields for documents", function(done){
       request(baseUrl).get('/people?fields=name')
         .expect('Content-Type', /json/)
@@ -438,6 +453,32 @@ describe('Fortune', function () {
           var body = JSON.parse(response.text);
           should.not.exist(body.people[0].appearances);
           should.exist(body.people[0].name);
+          done();
+        });
+    });
+
+    it("should return specific fields for linked document of a collection", function(done){
+      request(baseUrl).get('/people?include=pets&fields[pets]=name')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          should.not.exist(body.linked.pets[0].appearances);
+          should.exist(body.linked.pets[0].name);
+          done();
+        });
+    });
+
+    it("should return specific fields for linked document of single doc", function(done){
+      request(baseUrl).get('/people/' + ids.people[0] + '?include=pets&fields[pets]=name')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          should.not.exist(body.linked.pets[0].appearances);
+          should.exist(body.linked.pets[0].name);
           done();
         });
     });
