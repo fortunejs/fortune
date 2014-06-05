@@ -23,6 +23,7 @@
     "moment": "~2.6.0"
   },
   "devDependencies": {
+    "fortune-mongodb": "git://github.com/flyvictor/fortune-mongodb.git#v1.1.5",
     "mocha": "~1.19.0",
     "should": "~2.0.2",
     "supertest": "~0.8.0",

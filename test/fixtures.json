@@ -44,16 +44,16 @@
   ],
   "houses": [
     {
-      "address": "Penny lane"
+      "address": "Penny Lane"
     },
     {
-      "address": "Backer street"
+      "address": "Baker Street"
     },
     {
-      "address": "Abbey road"
+      "address": "Downing Street"
     },
     {
-      "address": "Downing street"
+      "address": "Abbey Road"
     }
   ]
 }
