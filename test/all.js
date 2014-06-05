@@ -65,7 +65,7 @@ describe('Fortune', function () {
       RSVP.all(ids[collection].map(function(id) {
         return new RSVP.Promise(function(resolve) {
           request(baseUrl)
-            .del('/' + collection + '/' + id)
+            .del('/' + collection)
             .end(function(error) {
               resolve();
             });
@@ -330,15 +330,15 @@ describe('Fortune', function () {
             resolve();
           });
       }).then(function(){
-          request(baseUrl).get('/people/' + ids.people[2])
-            .expect(200)
-            .end(function(err, res){
-              should.not.exist(err);
-              var body = JSON.parse(res.text);
-              (body.people[0].links.soulmate).should.equal(ids.people[0]);
-              done();
-            });
-        });
+        request(baseUrl).get('/people/' + ids.people[2])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].links.soulmate).should.equal(ids.people[0]);
+            done();
+          });
+      });
     });
   });
 
@@ -814,6 +814,7 @@ describe('Fortune', function () {
       });
     });
   });
+
   describe("includes", function(){
     beforeEach(function(done){
       function link(url, path, value){
@@ -833,17 +834,17 @@ describe('Fortune', function () {
         });
       }
       RSVP.all([
-          link('/people/' + ids.people[0], '/people/0/soulmate', ids.people[1]),
-          //TODO: fortune should take care about this on its own
-          link('/people/' + ids.people[1], '/people/0/soulmate', ids.people[0]),
+        link('/people/' + ids.people[0], '/people/0/soulmate', ids.people[1]),
+        //TODO: fortune should take care about this on its own
+        link('/people/' + ids.people[1], '/people/0/soulmate', ids.people[0]),
 
-          link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
-          link('/people/' + ids.people[0], '/people/0/cars', [ids.cars[0], ids.cars[1]]),
-          link('/people/' + ids.people[0], '/people/0/houses', [ids.houses[0]]),
-          link('/people/' + ids.people[1], '/people/0/houses', [ids.houses[0], ids.houses[1]])
-        ]).then(function(){
-          done();
-        })
+        link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
+        link('/people/' + ids.people[0], '/people/0/cars', [ids.cars[0], ids.cars[1]]),
+        link('/people/' + ids.people[0], '/people/0/houses', [ids.houses[0]]),
+        link('/people/' + ids.people[1], '/people/0/houses', [ids.houses[0], ids.houses[1]])
+      ]).then(function(){
+        done();
+      });
     });
     it('many to many: should include referenced houses when querying people', function(done){
       request(baseUrl).get('/people?include=houses')
@@ -947,8 +948,175 @@ describe('Fortune', function () {
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people[0].links.houses.indexOf(houseId)).should.not.equal(-1);
+
             done();
           });
+      });
+    });
+    
+    describe('hooks', function(){
+
+      describe('Hooks configuration', function(){
+        it('should apply defaults if otherwise is not specified', function(done){
+          request(baseUrl).get('/cars')
+            .expect(200)
+            .expect('afterAllRead', '1')
+            .end(done);
+        });
+        it('should apply global hook configuration passed with resource config', function(done){
+          request(baseUrl).get('/people')
+            .expect(200)
+            .expect('afterAllReadPeople', '1')
+            .end(done);
+        });
+        it('should apply specific hook configuration passed with resource config', function(done){
+          request(baseUrl).get('/people')
+            .expect(200)
+            .expect('afterReadPerson', 'ok')
+            .end(done);
+        });
+      });
+      describe('*All hooks', function(){
+        it('should be possible to disable selected hook', function(done){
+          request(baseUrl).get('/cars')
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              should.not.exist(res.headers.afterall);
+              should.exist(res.headers.afterallread);
+              done();
+            });
+        });
+      });
+      
+      describe('backward compatibility', function(){
+        it('legacy before now equals to beforeWrite', function(done){
+          var man = {
+            people: [{
+              name: 'Smith',
+              email: 'smith@gmail.com'
+            }]
+          };
+          request(baseUrl).post('/people')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify(man))
+            .expect('before', 'called for writes only')
+            .end(function(err, res){
+              should.not.exist(err);
+              should.not.exist(res.headers.after);
+              var body = JSON.parse(res.text);
+              (body.people[0].official).should.equal('Mr. Smith');
+              //Thanks to .afterRW
+              (body.people[0].nickname).should.equal('undefined!');
+              done();
+            });
+        });
+        it('legacy after now equals to afterRead', function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .expect(200)
+            .expect('after', 'called for reads only')
+            .end(function(err, res){
+              should.not.exist(err);
+              should.not.exist(res.headers.before);
+              var body = JSON.parse(res.text);
+              var person = body.people[0];
+              should.not.exist(person.password);
+              (person.nickname).should.equal('Super ' + person.name + '!');
+              done();
+            });
+        });
+      });
+      describe('resource-specific hooks', function(){
+        it('should be possible to define a hook for one resource', function(done){
+          new Promise(function(resolve){
+            //Read hooks
+            request(baseUrl).get('/people')
+              .expect(200)
+              .expect('beforeReadFirst', 'one')
+              .expect('beforeReadSecond', 'two')
+              .expect('afterRead', 'ok')
+              .end(resolve);
+          }).then(function(){
+            //Write hooks
+            var newPerson = {
+              people: [{
+                name: 'Jack',
+                email: 'Daniels'
+              }]
+            };
+            request(baseUrl).post('/people')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify(newPerson))
+              .expect(201)
+              .expect('beforeWrite', 'ok')
+              .expect('afterWritePerson', 'ok')
+              .end(done);
+          });
+        });
+      });
+      it('should apply proper hooks to related resources on read', function(done){
+        //Link pet to person
+        new Promise(function(resolve){
+          var update = [{
+            op: 'replace',
+            path: '/pets/0/owner',
+            value: ids.people[0]
+          }];
+          request(baseUrl).patch('/pets/' + ids.pets[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify(update))
+            .expect(200)
+            .end(resolve);
+        }).then(function(){
+          request(baseUrl).get('/pets/' + ids.pets[0] + '/owner')
+            .expect(200)
+          //Expect person resource headers
+            .expect('beforeReadFirst', 'one')
+            .expect('beforeReadSecond', 'two')
+          //And pet resource headers
+            .expect('petHook', 'ok')
+            .end(done);
+        });
+      });
+      it('should apply proper hooks to linked resources on write', function(done){
+        var puppet = {
+          pets: [{
+            name: 'fluffy',
+            owner: ids.people[0]
+          }],
+          linked: {
+            people: [{
+              name: 'fluffy owner',
+              email: 'who cares?'
+            }]
+          }
+        };
+        request(baseUrl).post('/pets')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify(puppet))
+          .expect(201)
+          .expect('afterWritePerson', 'ok')
+          .end(done);
+      });
+      it('should apply proper hook on linked resources on read', function(done){
+        new Promise(function(resolve){
+          var link = [{
+            op: 'replace',
+            path: '/pets/0/owner',
+            value: ids.people[0]
+          }];
+          request(baseUrl).patch('/pets/' + ids.pets[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify(link))
+            .expect(200)
+            .end(resolve)
+        }).then(function(){
+          request(baseUrl).get('/people?include=pets')
+            .expect(200)
+            .expect('petHook', 'ok')
+            .expect('afterReadPerson', 'ok')
+            .end(done);
+        });
       });
     });
     describe('creating a resource referencing another one: one-to-one', function(){
@@ -1247,6 +1415,7 @@ describe('Fortune', function () {
           cb(err, res);
         });
     }
+
   });
 });
 
