@@ -112,7 +112,10 @@ module.exports = function(options){
         it('should return all existing fields when no select is specified', function(done){
           adapter.findMany('person')
             .then(function(docs){
-              (Object.keys(docs[0]).length).should.equal(4);
+              //hooks add their black magic here.
+              //See what you have in fixtures + what beforeWrite hooks assign in addiction
+              var keys = Object.keys(docs[0]).length;
+              (keys).should.equal(6);
               done();
             });
         });
@@ -167,7 +170,9 @@ module.exports = function(options){
         it('should return all existing fields when no select is specified', function(done){
           adapter.find('person', ids.people[0])
             .then(function(doc){
-              (Object.keys(doc).length).should.equal(4);
+              //hooks add their black magic here.
+              //See what you have in fixtures + what beforeWrite hooks assign in addiction
+              (Object.keys(doc).length).should.equal(6);
               done();
             });
         });

@@ -100,5 +100,170 @@ module.exports = function(options){
           });
       });
     });
+
+    describe("PATCH add method", function(){
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, done);
+      });
+      it('should atomically add item to array', function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[1]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(2);
+          (body.people[0].links.houses[1]).should.equal(ids.houses[1]);
+          done();
+        });
+      });
+      it('should also update related resource', function(done){
+        request(baseUrl).get('/houses/' + ids.houses[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.houses[0].links.owners[0]).should.equal(ids.people[0]);
+            done();
+          });
+      });
+      it('should support bulk update', function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(3);
+          done();
+        });
+      });
+      //helpers
+      function patch(url, cmd, cb){
+        request(baseUrl).patch(url)
+          .set('Content-Type', 'application/json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            cb(err, res);
+          });
+      }
+    });
+    describe("PATCH remove method", function(){
+
+      /*
+       * After this people[0] should have 3 houses
+       * and three different houses should reference people[0]
+       */
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[0]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[1]
+        },{
+          op: 'add',
+          path: '/people/0/houses/-',
+          value: ids.houses[2]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err){
+          should.not.exist(err);
+          done();
+        });
+      });
+      /*
+       * After this houses[0] should have three owners
+       */
+      beforeEach(function(done){
+        var cmd = [{
+          op: 'add',
+          path: '/houses/0/owners/-',
+          value: ids.people[1]
+        },{
+          op: 'add',
+          path: '/houses/0/owners/-',
+          value: ids.people[2]
+        }];
+        patch('/houses/' + ids.houses[0], cmd, function(err){
+          should.not.exist(err);
+          done();
+        });
+      });
+      it('should atomically remove array item', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people).should.be.an.Array;
+          (body.people[0].links.houses.length).should.equal(2);
+          (body.people[0].links.houses.indexOf(ids.houses[0])).should.equal(-1);
+          done();
+        });
+      });
+      it('should also update referenced item', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err){
+          should.not.exist(err);
+          request(baseUrl).get('/houses/' + ids.houses[0])
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.houses[0].links.owners.length).should.equal(2);
+              (body.houses[0].links.owners.indexOf(ids.people[0])).should.equal(-1);
+              done();
+            });
+        });
+      });
+      it('should support bulk operation', function(done){
+        var cmd = [{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[0]
+        },{
+          op: 'remove',
+          path: '/people/0/houses/' + ids.houses[1]
+        }];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.people[0].links.houses.length).should.equal(1);
+          done();
+        });
+      });
+      //helpers
+      function patch(url, cmd, cb){
+        request(baseUrl).patch(url)
+          .set('Content-Type', 'application/json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            cb(err, res);
+          });
+      }
+
+    });
   });
 };

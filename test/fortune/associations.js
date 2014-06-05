@@ -204,6 +204,34 @@ module.exports = function(options){
               });
           });
       });
+      it('should update association on PATCH', function(done){
+        new Promise(function(resolve){
+          var patch = [{
+            op: 'replace',
+            path: '/people/0/soulmate',
+            value: ids.people[2]
+          }];
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(patch))
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people[0].links.soulmate).should.equal(ids.people[2]);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get('/people/' + ids.people[2])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people[0].links.soulmate).should.equal(ids.people[0]);
+                done();
+              });
+          });
+      });
     });
 
     describe('many to many association', function() {
