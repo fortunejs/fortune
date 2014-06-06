@@ -1,15 +1,25 @@
 {
-  "person": [
+  "people": [
     {
       "name": "Dilbert",
-      "appearances": 3457
+      "appearances": 3457,
+      "birthday": "1990-01-01",
+      "email": "dilbert@mailbert.com"
     },
     {
       "name": "Wally",
-      "appearances": 1934
+      "appearances": 1934,
+      "birthday": "1995-01-01",
+      "email": "wally@mailbert.com"
+    },
+    {
+      "name": "Robert",
+      "appearances": 0,
+      "birthday": "2000-01-01",
+      "email": "robert@mailbert.com"
     }
   ],
-  "pet": [
+  "pets": [
     {
       "name": "Dogbert",
       "appearances": 1903
@@ -17,6 +27,36 @@
     {
       "name": "Ratbert",
       "appearances": 509
+    }
+  ],
+  "cars": [
+    {
+      "licenseNumber": "ABC123",
+      "model": "Carbert",
+      "additionalDetails": {
+        "seats": 5
+      }
+    },
+    {
+      "licenseNumber": "XYZ890",
+      "model": "Carbert",
+      "additionalDetails": {
+        "seats": 2
+      }
+    }
+  ],
+  "houses": [
+    {
+      "address": "Penny Lane"
+    },
+    {
+      "address": "Baker Street"
+    },
+    {
+      "address": "Downing Street"
+    },
+    {
+      "address": "Abbey Road"
     }
   ]
 }

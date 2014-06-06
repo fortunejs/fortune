@@ -12,22 +12,25 @@
     "type": "git",
     "url": "https://github.com/daliwali/fortune"
   },
-  "scripts": {
-    "test": "node test/run"
-  },
   "dependencies": {
     "mkdirp": "~0.3.5",
     "express": "~3.5.1",
     "nedb": "~0.10.4",
     "rsvp": "~3.0.6",
     "i": "~0.3.2",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "mongoose": "~3.8.8",
+    "moment": "~2.6.0"
   },
   "devDependencies": {
-    "fortune-mongodb": "~0.1.7",
-    "mocha": "~1.18.2",
-    "should": "~3.2.0",
-    "supertest": "~0.10.0"
+    "fortune-mongodb": "git://github.com/flyvictor/fortune-mongodb.git#v1.1.5",
+    "mocha": "~1.19.0",
+    "should": "~2.0.2",
+    "supertest": "~0.8.0",
+    "istanbul": "~0.2.4"
+  },
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha --recursive -R spec"
   },
   "engines": {
     "node": ">=0.10"
