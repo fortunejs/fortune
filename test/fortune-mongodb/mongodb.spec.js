@@ -11,7 +11,7 @@ RSVP.on('error', function(err){
 });
 
 module.exports = function(options){
-  describe('MongoDB adapter', function(){
+  describe.only('MongoDB adapter', function(){
     var ids;
 
     beforeEach(function(){
@@ -115,7 +115,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               var keys = Object.keys(docs[0]).length;
-              (keys).should.equal(6);
+              (keys).should.equal(7);
               done();
             });
         });
@@ -172,7 +172,7 @@ module.exports = function(options){
             .then(function(doc){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
-              (Object.keys(doc).length).should.equal(6);
+              (Object.keys(doc).length).should.equal(7);
               done();
             });
         });
@@ -190,6 +190,119 @@ module.exports = function(options){
           }).should.not.throw();
           done();
         });
+      });
+    });
+    describe('Filtering', function(){
+      it('should be able to filter date by exact value', function(done){
+        adapter.findMany('person', {birthday: '2000-01-01'})
+          .then(function(docs){
+            (docs.length).should.equal(1);
+            (docs[0].name).should.equal('Robert');
+            done();
+          });
+      });
+      it('should be able to filter date range: exclusive', function(done){
+        var query = {
+          birthday: {
+            lt: '2000-02-02',
+            gt: '1990-01-01'
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(2);
+            done();
+          });
+      });
+      it('should be able to filter date range: inclusive', function(done){
+        var query = {
+          birthday: {
+            gte: '1995-01-01',
+            lte: '2000-01-01'
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(2);
+            done();
+          });
+      });
+      it('should be able to filter number range: exclusive', function(done){
+        var query = {
+          appearances: {
+            gt: 1934,
+            lt: 4000
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(1);
+            done();
+          });
+      });
+      it('should be able to filter number range: inclusive', function(done){
+        var query = {
+          appearances: {
+            gte: 1934,
+            lte: 3457
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(2);
+            done();
+          });
+      });
+      it('should be able to run regex query with default options', function(done){
+        var queryLowercase = {
+          email: {
+            regex: 'bert@'
+          }
+        };
+        var queryUppercase = {
+          email: {
+            regex: 'Bert@'
+          }
+        };
+        new Promise(function(resolve){
+          adapter.findMany('person', queryLowercase)
+            .then(function(docs){
+              (docs.length).should.equal(2);
+              resolve();
+            });
+        }).then(function(){
+            adapter.findMany('person',queryUppercase)
+              .then(function(docs){
+                (docs.length).should.equal(0);
+                done();
+              });
+          });
+      });
+      it('should be possible to specify custom options', function(done){
+        var query = {
+          name: {
+            regex: 'WALLY',
+            options: 'i'
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(1);
+            (docs[0].name).should.equal('Wally');
+            done();
+          });
+      });
+      it('should treat empty regex as find all', function(done){
+        var query = {
+          email: {
+            regex: ''
+          }
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            (docs.length).should.equal(3);
+            done();
+          });
       });
     });
   });

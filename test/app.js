@@ -66,6 +66,7 @@ module.exports = function(options, port) {
       official: String,
       password: String,
       appearances: Number,
+      birthday: Date,
       email: String,
       pets: ['pet'],
       soulmate: {ref: 'person', inverse: 'soulmate', type: String},
