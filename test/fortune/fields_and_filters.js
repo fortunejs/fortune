@@ -114,8 +114,7 @@ module.exports = function(options){
             done();
           });
       });
-    });
-    it('should be possible to filter related resources by ObjectId', function(done){
+      it('should be possible to filter related resources by ObjectId', function(done){
       var cmd = [
         {
           op: 'replace',
@@ -142,6 +141,17 @@ module.exports = function(options){
               done();
             });
         });
+    });
+      it('should support regex query', function(done){
+        request(baseUrl).get('/people?filter[email][regex]=Bert@&filter[email][options]=i')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people.length).should.equal(2);
+            done();
+          });
+      });
     });
   });
 };
