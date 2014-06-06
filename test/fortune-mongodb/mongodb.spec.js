@@ -11,7 +11,7 @@ RSVP.on('error', function(err){
 });
 
 module.exports = function(options){
-  describe.only('MongoDB adapter', function(){
+  describe('MongoDB adapter', function(){
     var ids;
 
     beforeEach(function(){
