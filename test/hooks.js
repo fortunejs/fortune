@@ -66,6 +66,19 @@ describe('hooks', function(){
     (resource.hooked).should.equal(110);
     done();
   });
+  it('warning should not affect other hooks', function(done){
+    var fortune = {
+      _resources: {
+        defined: {}
+      },
+      options: {}
+    };
+    (function(){
+      hooks.addHook.call(fortune, 'undefined defined', synchronousHook, '_before', 'read');
+    }).should.not.throw();
+    should.exist(fortune._resources.defined.hooks._before.read);
+    done();
+  });
   describe('integration with fortune', function(){
     var fortune;
     beforeEach(function(){
