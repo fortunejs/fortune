@@ -18,9 +18,15 @@ describe('Fortune test runner', function(){
   };
 
   before(function(done){
+    var remoteDB = process.env.DB_CONNECTION_STRING;
+    
+    if(remoteDB){
+      console.log("Using remoted mongodb:",remoteDB);
+    }
+    
     options.app = require("./app")({
       adapter: "mongodb",
-      connectionString: process.env.DB_CONNECTION_STRING || "mongodb://localhost/fortune_test",
+      connectionString: remoteDB || "mongodb://localhost/fortune_test",
       inflect: true
     }, port);
 
