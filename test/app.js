@@ -1,7 +1,7 @@
 var fortune = require('../lib/fortune');
 var personHooks = require('./personHooks');
 var _ = require("lodash");
-var RSVP = require("RSVP");
+var RSVP = require("rsvp");
 
 var hooks = {};
 
