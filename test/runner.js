@@ -20,7 +20,7 @@ describe('Fortune test runner', function(){
   before(function(done){
     options.app = require("./app")({
       adapter: "mongodb",
-      db: "fortune_test",
+      connectionString: process.env.DB_CONNECTION_STRING || "mongodb://localhost/fortune_test",
       inflect: true
     }, port);
 
