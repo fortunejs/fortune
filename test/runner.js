@@ -21,7 +21,7 @@ describe('Fortune test runner', function(){
     var remoteDB = process.env.DB_CONNECTION_STRING;
     
     if(remoteDB){
-      console.log("Using remoted mongodb:",remoteDB);
+      console.log("Using remote mongodb:",remoteDB);
     }
     
     options.app = require("./app")({
