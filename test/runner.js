@@ -19,23 +19,21 @@ describe('Fortune test runner', function(){
 
   before(function(done){
     var remoteDB = process.env.DB_CONNECTION_STRING;
-    
+
     if(remoteDB){
       console.log("Using remote mongodb:",remoteDB);
     }
-    
+
     options.app = require("./app")({
       adapter: "mongodb",
       connectionString: remoteDB || "mongodb://localhost/fortune_test",
       inflect: true
     }, port);
-
-    options.app.adapter.awaitConnection().then(function(){
-      done();
-    });
+    
+    options.app.adapter.awaitConnection().then(done);
   });
 
-  beforeEach(function(done) {
+  beforeEach(function(done) { 
     var createResources = [];
 
     _.each(fixtures, function (resources, collection) {
