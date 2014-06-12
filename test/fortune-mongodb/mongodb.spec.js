@@ -177,7 +177,7 @@ module.exports = function(options){
             });
         });
         it('should not affect business id selection', function(done){
-          adapter.find('person', [ids.people[0]], {select: ['name']})
+          adapter.find('person', ids.people[0], {select: ['name']})
             .then(function(doc){
               (doc.id).should.equal(ids.people[0]);
               should.not.exist(doc.email);
@@ -210,7 +210,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(2);
+            (docs.length).should.equal(3);
             done();
           });
       });
@@ -223,7 +223,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(2);
+            (docs.length).should.equal(3);
             done();
           });
       });
@@ -300,7 +300,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(3);
+            (docs.length).should.equal(4);
             done();
           });
       });
