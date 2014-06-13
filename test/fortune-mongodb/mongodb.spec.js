@@ -98,13 +98,13 @@ module.exports = function(options){
         });
         it('should select specified fields for a collection', function(done){
           var projection = {
-            select: ['name']
+            select: ['name', 'appearances', 'pets']
           };
           adapter.findMany('person', {}, projection)
             .then(function(docs){
-              //email is included behind the scenes to provide id
-              (Object.keys(docs[0]).length).should.equal(2);
+              (Object.keys(docs[0]).length).should.equal(3);
               should.exist(docs[0].name);
+              should.exist(docs[0].appearances);
               should.exist(docs[0].id);
               done();
             });
@@ -144,9 +144,21 @@ module.exports = function(options){
         });
       });
       describe('find', function(){
+        beforeEach(function(done){
+          adapter.update('person', ids.people[0], {$push: {pets: ids.pets[0]}})
+            .then(function(){
+              return adapter.update('person', ids.people[0], {$set: {soulmate: ids.people[1]}})
+            })
+            .then(function(){
+              return adapter.update('person', ids.people[0], {$push: {houses: ids.houses[0]}})
+            })
+            .then(function(){
+              done();
+            });
+        });
         it('should provide interface for selecting fields to return', function(done){
           var projection = {
-            select: ['name']
+            select: ['name', 'pets', 'soulmate']
           };
           (function(){
             adapter.find('person', {email: ids.people[0]}, projection)
@@ -158,12 +170,16 @@ module.exports = function(options){
         });
         it('should select specified fields for a single document', function(done){
           var projection = {
-            select: ['name']
+            select: ['name', 'soulmate', 'pets', 'houses']
           };
           adapter.find('person', ids.people[0], projection)
             .then(function(doc){
-              (Object.keys(doc).length).should.equal(2);
+              (Object.keys(doc).length).should.equal(3);
+              (Object.keys(doc.links).length).should.equal(3);
               should.exist(doc.name);
+              should.exist(doc.links.pets);
+              should.exist(doc.links.soulmate);
+              should.exist(doc.links.houses);
               done();
             });
         });
@@ -172,14 +188,18 @@ module.exports = function(options){
             .then(function(doc){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
-              (Object.keys(doc).length).should.equal(7);
+              //+ soulmate from before each
+              (Object.keys(doc).length).should.equal(8);
               done();
             });
         });
         it('should not affect business id selection', function(done){
-          adapter.find('person', ids.people[0], {select: ['name']})
+          adapter.find('person', ids.people[0], {select: ['name', 'soulmate', 'pets', 'houses']})
             .then(function(doc){
               (doc.id).should.equal(ids.people[0]);
+              (doc.links.soulmate).should.equal(ids.people[1]);
+              (doc.links.houses[0].toString()).should.equal(ids.houses[0]);
+              (doc.links.pets[0].toString()).should.equal(ids.pets[0]);
               should.not.exist(doc.email);
               done();
             });
