@@ -29,7 +29,7 @@ module.exports = function(options){
           .end(done);
       });
       it("should return specific fields for documents", function(done){
-        request(baseUrl).get('/people?fields=name')
+        request(baseUrl).get('/people?fields=name,email,pets')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(error, response){
@@ -37,12 +37,14 @@ module.exports = function(options){
             var body = JSON.parse(response.text);
             should.not.exist(body.people[0].appearances);
             should.exist(body.people[0].name);
+            should.exist(body.people[0].email);
+            should.exist(body.people[0].links.pets);
             done();
           });
       });
 
       it("should return specific fields for a single document", function(done){
-        request(baseUrl).get('/people/'+ids.people[0] + "?fields=name")
+        request(baseUrl).get('/people/'+ids.people[0] + "?fields=name,email,pets")
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(error, response){
@@ -50,6 +52,8 @@ module.exports = function(options){
             var body = JSON.parse(response.text);
             should.not.exist(body.people[0].appearances);
             should.exist(body.people[0].name);
+            should.exist(body.people[0].email);
+            should.exist(body.people[0].links.pets);
             done();
           });
       });
