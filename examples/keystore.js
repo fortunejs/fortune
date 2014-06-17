@@ -41,7 +41,7 @@ var app = fortune({
       , id = user.id || request.path.split('/').pop();
 
     // require a password on user creation
-    if(request.method == 'post') {
+    if(request.method.toLowerCase() == 'post') {
       if(!!password) {
         return hashPassword(user, password);
       } else {
