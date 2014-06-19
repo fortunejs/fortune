@@ -13,6 +13,11 @@ var hooks = {};
     },
     init: function(hookOptions, fortuneOptions){
       return function(req, res){
+        if (req.query['fail' + type]) {
+          console.log('Failing hook',type);
+          res.send(321);
+          return false;
+        }
         res.setHeader(hookOptions.option, '1');
         return this;
       };

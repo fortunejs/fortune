@@ -23,6 +23,7 @@ describe('Fortune', function () {
   require('./compound_document')(options);
   require('./documents_with_links')(options);
   require('./includes')(options);
+  require('./hooks')(options);
 
   describe("Business key", function(){
     it("can be used as primary key for individual resource requests", function(done){
