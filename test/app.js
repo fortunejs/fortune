@@ -14,7 +14,19 @@ var hooks = {};
     init: function(hookOptions, fortuneOptions){
       return function(req, res){
         res.setHeader(hookOptions.option, '1');
-        return this;
+
+        if (req.query['fail' + type]) {          
+          console.log('Failing hook',type);
+          _.defer(function() {
+            res.send(321);
+          });
+          if (req.query['fail' + type] === 'boolean')
+            return false;
+          else
+            return new RSVP.Promise(function(resolve) { resolve(false); });
+        } 
+        
+        return this;      
       };
     }
   }]
