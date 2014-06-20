@@ -265,5 +265,40 @@ module.exports = function(options){
       }
 
     });
+    describe("PUT individual route", function(){
+      it("should create document if there's no such one with provided id and update if it exists", function(done){
+        new Promise(function(resolve){
+          var doc = {
+            people: [{
+              name: "Gilbert",
+              email: "gilbert@mailbert.com"
+            }]
+          };
+          request(baseUrl).put("/people/gilbert@mailbert.com")
+            .set("Content-Type", "application/json")
+            .send(JSON.stringify(doc))
+            .end(function(err, res){
+              should.not.exist(err);
+              (res.statusCode).should.equal(201);
+              resolve();
+            })
+        }).then(function(){
+            var upd = {
+              people: [{
+                name: "Huilbert",
+                email: "gilbert@mailbert.com"
+              }]
+            };
+            request(baseUrl).put("/people/gilbert@mailbert.com")
+              .set("Content-Type", "application/json")
+              .send(JSON.stringify(upd))
+              .end(function(err, res){
+                should.not.exist(err);
+                (res.statusCode).should.equal(200);
+                done();
+              });
+          });
+      });
+    });
   });
 };
