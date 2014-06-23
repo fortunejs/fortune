@@ -300,5 +300,20 @@ module.exports = function(options){
           });
       });
     });
+    describe('resources metadata', function(){
+      it('should be able to expose resources metadata', function(done){
+        request(baseUrl).get('/resources')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.resources).should.be.an.Array;
+            should.exist(body.resources[0].name);
+            should.exist(body.resources[0].schema);
+            should.exist(body.resources[0].route);
+            done();
+          });
+      });
+    });
   });
 };
