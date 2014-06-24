@@ -106,7 +106,6 @@ module.exports = function(options){
               should.exist(docs[0].name);
               should.exist(docs[0].appearances);
               should.exist(docs[0].id);
-              //should.exist(docs[0].links.pets);
               done();
             });
         });
@@ -231,7 +230,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(2);
+            (docs.length).should.equal(3);
             done();
           });
       });
@@ -244,7 +243,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(2);
+            (docs.length).should.equal(3);
             done();
           });
       });
@@ -321,7 +320,7 @@ module.exports = function(options){
         };
         adapter.findMany('person', query)
           .then(function(docs){
-            (docs.length).should.equal(3);
+            (docs.length).should.equal(4);
             done();
           });
       });

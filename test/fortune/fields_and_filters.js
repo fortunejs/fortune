@@ -5,14 +5,16 @@ var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('../fixtures.json');
+var neighbourhood = require('../neighbourhood');
 
 module.exports = function(options){
   describe('fields and filters', function(){
-    var app, baseUrl, ids;
+    var app, baseUrl, ids, adapter;
     beforeEach(function(){
       app = options.app;
       baseUrl = options.baseUrl;
       ids = options.ids;
+      adapter = options.app.adapter;
     });
 
     describe("sparse fieldsets", function(){
@@ -146,6 +148,33 @@ module.exports = function(options){
             });
         });
     });
+      it('should support filtering by id for one-to-one relationships', function(done){
+        new Promise(function(resolve){
+          var upd = [{
+            op: 'replace',
+            path: '/people/0/soulmate',
+            value: ids.people[1]
+          }];
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify(upd))
+            .expect(200)
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        })
+          .then(function(){
+            request(baseUrl).get('/people?filter[soulmate]=' + ids.people[1])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people[0].id).should.equal(ids.people[0]);
+                done();
+              });
+          });
+      });
       it('should support regex query', function(done){
         request(baseUrl).get('/people?filter[email][regex]=Bert@&filter[email][options]=i')
           .expect(200)
@@ -153,6 +182,109 @@ module.exports = function(options){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people.length).should.equal(2);
+            done();
+          });
+      });
+      it('should support `in` query', function(done){
+        new Promise(function(resolve){
+          var upd = [{
+            op: 'add',
+            path: '/people/0/houses/-',
+            value: ids.houses[0]
+          },{
+            op: 'add',
+            path: '/people/0/houses/-',
+            value: ids.houses[1]
+          }];
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify(upd))
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              resolve();
+            });
+        })
+          .then(function(){
+            return new Promise(function(resolve){
+              var upd = [{
+                op: 'add',
+                path: '/people/0/houses/-',
+                value: ids.houses[1]
+              },{
+                op: 'add',
+                path: '/people/0/houses/-',
+                value: ids.houses[2]
+              }];
+              request(baseUrl).patch('/people/' + ids.people[1])
+                .set('content-type', 'application/json')
+                .send(JSON.stringify(upd))
+                .expect(200)
+                .end(function(err, res){
+                  should.not.exist(err);
+                  resolve();
+                });
+            });
+          })
+          .then(function(){
+            request(baseUrl).get('/people?filter[houses][in]=' + ids.houses[0] + ',' + ids.houses[1])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people.length).should.equal(2);
+                done();
+              });
+          });
+      });
+      describe('filtering by related objects fields', function(){
+        beforeEach(function(done){
+          neighbourhood(adapter, ids).then(function(){
+            done();
+          });
+        });
+        it('should be able to filter by related resource fields', function(done){
+          request(baseUrl).get('/cars?filter[owner][soulmate]=' + ids.people[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.cars[0].id).should.equal(ids.cars[1]);
+              done();
+            });
+        });
+        it('should be able to filter by two and more parameters', function(done){
+          new Promise(function(resolve){
+            request(baseUrl).get('/pets?filter[owner][name][regex]=ally&filter[owner][soulmate]=' + ids.people[0])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.pets.length).should.equal(1);
+                (body.pets[0].id).should.equal(ids.pets[0]);
+                resolve();
+              });
+          }).then(function(){
+            request(baseUrl).get('/pets?filter[owner][name][regex]=ally')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.pets.length).should.equal(2);
+                done();
+              });
+            });
+        });
+      });
+    });
+    describe('limits', function(){
+      it('should be possible to tell how many documents to return', function(done){
+        request(baseUrl).get('/people?limit=1')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people.length).should.equal(1);
             done();
           });
       });

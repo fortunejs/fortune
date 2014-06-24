@@ -68,6 +68,7 @@ describe('Fortune test runner', function(){
 
   require('./fortune/all')(options);
   require('./fortune-mongodb/mongodb.spec.js')(options);
+  require('./querytree')(options);
 
 
   afterEach(function(done) {

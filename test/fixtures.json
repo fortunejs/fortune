@@ -17,6 +17,12 @@
       "appearances": 0,
       "birthday": "2000-01-01",
       "email": "robert@mailbert.com"
+    },
+    {
+      "name": "Sally",
+      "apperances" : 0,
+      "birthday" : "1995-01-01",
+      "email" : "sally@mailbert.com"
     }
   ],
   "pets": [
