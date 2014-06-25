@@ -281,7 +281,7 @@ module.exports = function(options){
               should.not.exist(err);
               (res.statusCode).should.equal(201);
               resolve();
-            })
+            });
         }).then(function(){
             var upd = {
               people: [{
