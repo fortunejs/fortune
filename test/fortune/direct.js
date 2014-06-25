@@ -107,6 +107,29 @@ module.exports = function(options){
           done();
         });
       });
+
+      it("supports filters", function(done){
+        app.direct.get("people", {filter: {name: "Robert"}}).then(function(body){
+          body.people.length.should.equal(1);
+          body.people[0].name.should.be.equal("Robert");
+          done();
+        });
+      });
+
+      it("supports includes", function(done){
+        app.direct.update("people", ids.people[0], [{
+          op: "add",
+          path: "/people/0/houses/-",
+          value: ids.houses[1]
+        }]).then(function(){
+          return app.direct.get("people", {include: "houses"});
+        }).then(function(body){
+          body.linked.should.be.an.Object;
+          body.linked.houses.length.should.equal(1);
+          body.linked.houses[0].id.should.equal(ids.houses[1]);
+          done();
+        });
+      });
     });
   });
 };
