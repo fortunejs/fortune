@@ -11,125 +11,125 @@ module.exports = function(options){
     });
 
     it("gets a resource collection", function(done){
-      app.direct.get("people").then(function(body){
+      app.direct.get("people").then(function(res){
         ids.people.forEach(function(id){
-          _.contains(_.pluck(body.people, 'id'), id).should.equal(true);
+          _.contains(_.pluck(res.body.people, 'id'), id).should.equal(true);
         });
         done();
       });
     });
 
     it("gets a single resource", function(done){
-      app.direct.get("people", ids.people[0]).then(function(body){
-        body.people.length.should.be.equal(1);
-        body.people[0].id.should.equal(ids.people[0]);
+      app.direct.get("people", { id:ids.people[0] }).then(function(res){
+        res.body.people.length.should.be.equal(1);
+        res.body.people[0].id.should.equal(ids.people[0]);
         done();
       }).catch(function(err){ console.trace(err); });;
     });
 
     it("gets a number of resources by ids", function(done){
-      app.direct.get("people", ids.people).then(function(body){
+      app.direct.get("people", {id:ids.people}).then(function(res){
         _.each(ids.people, function(id){
-          _.contains(_.pluck(body.people, "id"),id).should.be.true;
+          _.contains(_.pluck(res.body.people, "id"),id).should.be.true;
         });
         done();
       });
     });
 
     it("deletes a collection", function(done){
-      app.direct.get("people").then(function(body){
-        body.people.length.should.be.above(1);
+      app.direct.get("people").then(function(res){
+        res.body.people.length.should.be.above(1);
       }).then(function(){
         return app.direct.destroy("people");
       }).then(function(){
         return app.direct.get("people");
-      }).then(function(body){
-        body.people.length.should.be.equal(0);
+      }).then(function(res){
+        res.body.people.length.should.be.equal(0);
         done();
       });
     });
 
     it("creates a resource", function(done){
-      var res = { name: "Director", email: "director@abc.com" };
-      app.direct.create("people", res).then(function(body){
-        body.people.length.should.be.equal(1);
-        body.people[0].id.should.be.equal(res.email);
-        return app.direct.get("people", res.email);
-      }).then(function(body){
-        body.people[0].id.should.be.equal(res.email);
+      var doc = {people: [{ name: "Director", email: "director@abc.com" }]};
+      
+      app.direct.create("people", {body:doc}).then(function(res){
+        res.body.people.length.should.be.equal(1);
+        res.body.people[0].id.should.be.equal(doc.people[0].email);
+        return app.direct.get("people", {id:doc.people[0].email});
+      }).then(function(res){
+        res.body.people[0].id.should.be.equal(doc.people[0].email);
         done();
       });
     });
 
     it("replaces a resource", function(done){
-      var resource;
+      var resource, id;
 
-      app.direct.get("people",ids.people[0]).then(function(body){
-        resource = body.people[0];
+      app.direct.get("people",{id:id = ids.people[0]}).then(function(res){
+        resource = res.body.people[0];
         resource.birthday = null;
         resource.email = "abc@xyz.com";
         resource.nickname = "udpated";
-        return app.direct.replace("people", resource.id, resource);
-      }).then(function(body){
-        should.not.exist(body.error);
-        body.people[0].id.should.be.equal(resource.email);
-        return app.direct.get("people", resource.email);
-      }).then(function(body){
-        body.people[0].id.should.be.equal(resource.email);
+        return app.direct.replace("people", {id:id, body:{people: [resource]}});
+      }).then(function(res){
+        should.not.exist(res.body.error);
+        res.body.people[0].id.should.be.equal(resource.email);
+        return app.direct.get("people", {id: resource.email});
+      }).then(function(res){
+        res.body.people[0].id.should.be.equal(resource.email);
         done();
       }).catch(function(err){ console.trace(err); });
     });
 
-    describe("update", function(){
-      it("adds a record to an array", function(done){
-        app.direct.update("people", ids.people[0], [{
-          op: "add",
-          path: "/people/0/houses/-",
-          value: ids.houses[1]
-        }]).then(function(body){
-          body.people[0].links.houses.length.should.equal(1);
-          body.people[0].links.houses[0].should.equal(ids.houses[1]);
-          done();
-        });
-      });
-
-      it("supports bulk update", function(done){
-        app.direct.update("people", ids.people[0], [{
-          op: 'add',
-          path: '/people/0/houses/-',
-          value: ids.houses[0]
-        },{
-          op: 'add',
-          path: '/people/0/houses/-',
-          value: ids.houses[1]
-        }]).then(function(body){
-          body.people[0].links.houses.length.should.equal(2);
-          done();
-        });
-      });
-
-      it("supports filters", function(done){
-        app.direct.get("people", {filter: {name: "Robert"}}).then(function(body){
-          body.people.length.should.equal(1);
-          body.people[0].name.should.be.equal("Robert");
-          done();
-        });
-      });
-
-      it("supports includes", function(done){
-        app.direct.update("people", ids.people[0], [{
-          op: "add",
-          path: "/people/0/houses/-",
-          value: ids.houses[1]
-        }]).then(function(){
-          return app.direct.get("people", {include: "houses"});
-        }).then(function(body){
-          body.linked.should.be.an.Object;
-          body.linked.houses.length.should.equal(1);
-          body.linked.houses[0].id.should.equal(ids.houses[1]);
-          done();
-        });
+    it("udpate can add a record to an array", function(done){
+      app.direct.update("people", {id: ids.people[0], body:[{
+        op: "add",
+        path: "/people/0/houses/-",
+        value: ids.houses[1]
+      }]}).then(function(res){
+        res.body.people[0].links.houses.length.should.equal(1);
+        res.body.people[0].links.houses[0].should.equal(ids.houses[1]);
+        done();
       });
     });
+
+    it("supports bulk update", function(done){
+      app.direct.update("people", {id: ids.people[0], body:[{
+        op: 'add',
+        path: '/people/0/houses/-',
+        value: ids.houses[0]
+      },{
+        op: 'add',
+        path: '/people/0/houses/-',
+        value: ids.houses[1]
+      }]}).then(function(res){
+        res.body.people[0].links.houses.length.should.equal(2);
+        done();
+      });
+    });
+
+    it("supports filters", function(done){
+      app.direct.get("people", {filter: {name: "Robert"}}).then(function(res){
+        res.body.people.length.should.equal(1);
+        res.body.people[0].name.should.be.equal("Robert");
+        done();
+      });
+    });
+
+    it("supports includes", function(done){
+      app.direct.update("people", {id: ids.people[0], body: [{
+        op: "add",
+        path: "/people/0/houses/-",
+        value: ids.houses[1]
+      }]}).then(function(){
+        return app.direct.get("people", {include: "houses"});
+      }).then(function(res){
+        res.body.linked.should.be.an.Object;
+        res.body.linked.houses.length.should.equal(1);
+        res.body.linked.houses[0].id.should.equal(ids.houses[1]);
+        done();
+      });
+    });
+
   });
 };
