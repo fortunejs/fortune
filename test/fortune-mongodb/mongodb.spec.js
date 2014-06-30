@@ -81,6 +81,37 @@ module.exports = function(options){
             });
         });
       });
+      describe('sync path selection', function(){
+        it('should have a method to identify changed paths', function(done){
+          (adapter._getModifiedRefs).should.be.a.Function;
+          var update = {
+            refPath: 'some new value',
+            $push: {
+              manyRefOne: 'one'
+            },
+            $pull: {
+              manyRefTwo: 'two'
+            },
+            $addToSet: {
+              manyRefThree: 'three'
+            },
+            $unset: {
+              'nested.ref': 'nested'
+            }
+          };
+          var modifiedPaths = adapter._getModifiedRefs(update);
+          (modifiedPaths.indexOf('refPath')).should.not.equal(-1);
+          (modifiedPaths.indexOf('manyRefOne')).should.not.equal(-1);
+          (modifiedPaths.indexOf('manyRefTwo')).should.not.equal(-1);
+          (modifiedPaths.indexOf('manyRefThree')).should.not.equal(-1);
+          (modifiedPaths.indexOf('nested.ref')).should.not.equal(-1);
+          done();
+        });
+        it('should not run updates on related documents which binding path were not modified during the update', function(){
+
+          //TODO: how the hack this could be tested?? O_o
+        });
+      });
     });
     describe('Select', function(){
       describe('findMany', function(){
