@@ -40,7 +40,8 @@ module.exports = function(options){
           link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
           link('/people/' + ids.people[0], '/people/0/cars', [ids.cars[0], ids.cars[1]]),
           link('/people/' + ids.people[0], '/people/0/houses', [ids.houses[0]]),
-          link('/people/' + ids.people[1], '/people/0/houses', [ids.houses[0], ids.houses[1]])
+          link('/people/' + ids.people[1], '/people/0/houses', [ids.houses[0], ids.houses[1]]),
+          link('/people/' + ids.people[1], '/people/0/estate', [ids.houses[0]])
         ]).then(function(){
           done();
         });
@@ -102,6 +103,15 @@ module.exports = function(options){
           (body.linked).should.be.an.Object;
           (body.linked.cars).should.be.an.Array;
           (body.linked.cars.length).should.equal(2);
+          done();
+        });
+    });
+    it('should include uniq documents', function(done){
+      request(baseUrl).get('/people/' + ids.people[1] + '?include=houses,estate')
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          (body.linked.houses.length).should.equal(2);
           done();
         });
     });
