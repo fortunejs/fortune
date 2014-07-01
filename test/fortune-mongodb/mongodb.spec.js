@@ -107,9 +107,47 @@ module.exports = function(options){
           (modifiedPaths.indexOf('nested.ref')).should.not.equal(-1);
           done();
         });
-        it('should not run updates on related documents which binding path were not modified during the update', function(){
-
-          //TODO: how the hack this could be tested?? O_o
+        it('should not run updates on related documents which binding path were not modified during the update', function(done){
+          var oto = adapter._updateOneToOne;
+          var otm = adapter._updateOneToMany;
+          var mtm = adapter._updateManyToMany;
+          var mto = adapter._updateManyToOne;
+          var mockCalled = false;
+          adapter._updateOneToOne = function(){
+            mockCalled = true;
+          };
+          adapter._updateOneToMany = function(){
+            mockCalled = true;
+          };
+          adapter._updateManyToMany = function(){
+            mockCalled = true;
+          };
+          adapter._updateManyToOne = function(){
+            mockCalled = true;
+          };
+          adapter.update('person', ids.people[0], {$set: {name: 'Filbert'}})
+            .then(function(){
+              mockCalled.should.equal(false);
+              adapter._updateOneToOne = oto;
+              adapter._updateOneToMany = otm;
+              adapter._updateManyToMany = mtm;
+              adapter._updateManyToOne = mto;
+              done();
+            });
+        });
+        it('should update references if ref path was changed', function(done){
+          var oto = adapter._updateOneToOne;
+          var mockCalled = false;
+          adapter._updateOneToOne = function(){
+            mockCalled = true;
+            return oto.apply(null, arguments);
+          };
+          adapter.update('person', ids.people[0], {$set: {soulmate: ids.people[1]}})
+            .then(function(){
+              mockCalled.should.equal(true);
+              adapter._updateOneToOne = oto;
+              done();
+            });
         });
       });
     });
