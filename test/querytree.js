@@ -122,7 +122,7 @@ module.exports = function(options){
             }
           }
         };
-        tree.parse('houses', query).then(function(result){
+        tree.parse('house', query).then(function(result){
           //ids.houses[0] owner is ids.people[0]
           result.should.eql({owners: {$in: [ids.people[0]]}});
           done();
@@ -142,7 +142,7 @@ module.exports = function(options){
               }
             }
           };
-          tree.parse('houses', query).then(function(result){
+          tree.parse('house', query).then(function(result){
             result.should.eql({owners: {$in: [ids.people[0]]}});
             done();
           });
@@ -156,7 +156,7 @@ module.exports = function(options){
               }
             }
           };
-          tree.parse('houses', query).then(function(result){
+          tree.parse('house', query).then(function(result){
             (result).should.eql({owners: {$in: [ids.people[1]]}});
            done();
           });
