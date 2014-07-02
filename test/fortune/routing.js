@@ -15,33 +15,6 @@ module.exports = function(options){
       ids = options.ids;
     });
 
-    describe('failing $in query', function(){
-      it('should work', function(done){
-        request(baseUrl).patch("/people/robert@mailbert.com")
-          .set("content-type", "application/json")
-          .send(JSON.stringify([
-            {
-              path: '/people/0/soulmate',
-              op: 'replace',
-              value: 'dilbert@mailbert.com'
-            }
-          ]))
-          .end(function(err){
-            should.not.exist(err);
-
-            request(baseUrl).get("/people?filter[soulmate][$in]=robert@mailbert.com&filter[soulmate][$in]=dilbert@mailbert.com")
-              .expect(200)
-              .end(function(err, res){
-                should.not.exist(err);
-                var body = JSON.parse(res.text);
-                (body.people.length).should.equal(2);
-                done();
-              });
-          });
-      });
-    });
-
-
     describe('getting a list of resources', function() {
       _.each(fixtures, function(resources, collection) {
         it('in collection "' + collection + '"', function(done) {

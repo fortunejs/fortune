@@ -237,6 +237,82 @@ module.exports = function(options){
               });
           });
       });
+      it('should support $in query against one-to-one refs', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/people/robert@mailbert.com")
+            .set("content-type", "application/json")
+            .send(JSON.stringify([
+              {
+                path: '/people/0/soulmate',
+                op: 'replace',
+                value: 'dilbert@mailbert.com'
+              }
+            ]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/people?filter[soulmate][$in]=robert@mailbert.com&filter[soulmate][$in]=dilbert@mailbert.com")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people.length).should.equal(2);
+                done();
+              });
+          });
+      });
+      it('should support $in query against many-to-many refs', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/people/robert@mailbert.com")
+            .set("content-type", "application/json")
+            .send(JSON.stringify([
+              {
+                path: '/people/0/lovers',
+                op: 'replace',
+                value: ['dilbert@mailbert.com']
+              }
+            ]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/people?filter[lovers][$in]=robert@mailbert.com&filter[lovers][$in]=dilbert@mailbert.com")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people.length).should.equal(2);
+                done();
+              });
+          });
+      });
+      it('should support $in query against external refs values', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/cars/" + ids.cars[0])
+            .set("content-type", "application/json")
+            .send(JSON.stringify([{
+              path: "/cars/0/MOT",
+              op: "replace",
+              value: "Pimp-my-ride"
+            }]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/cars?filter[MOT][$in]=Pimp-my-ride")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.cars.length).should.equal(1);
+                done();
+              });
+          });
+      });
       describe('filtering by related objects fields', function(){
         beforeEach(function(done){
           neighbourhood(adapter, ids).then(function(){
