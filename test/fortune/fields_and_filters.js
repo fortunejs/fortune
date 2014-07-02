@@ -277,6 +277,7 @@ module.exports = function(options){
         });
       });
     });
+
     describe('limits', function(){
       it('should be possible to tell how many documents to return', function(done){
         request(baseUrl).get('/people?limit=1')
@@ -285,6 +286,72 @@ module.exports = function(options){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people.length).should.equal(1);
+            done();
+          });
+      });
+    });
+
+    describe('sort', function(){
+      it('should be possible to sort by name', function(done){
+        request(baseUrl).get('/people?sort=name')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Dilbert", "Robert", "Sally", "Wally"]);
+            done();
+          });
+      });
+
+      it('should be possible to sort by name desc', function(done){
+        request(baseUrl).get('/people?sort=-name')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Wally", "Sally", "Robert", "Dilbert"]);
+            done();
+          });
+      });
+
+      it('should be possible to sort by appearances', function(done){
+        request(baseUrl).get('/people?sort=appearances')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Sally", "Robert", "Wally", "Dilbert"]);
+            done();
+          });
+      });
+    });
+
+    describe('paging', function(){
+      it('should be possible to get page 1', function(done){
+        request(baseUrl).get('/people?sort=name&page=1&pageSize=2')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+             (body.people.length).should.equal(2);
+            _.pluck(body.people, "name").should.eql(["Dilbert", "Robert"]);
+            done();
+          });
+      });
+
+      it('should be possible to get page 2', function(done){
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            (body.people.length).should.equal(2);
+            _.pluck(body.people, "name").should.eql(["Sally", "Wally"]);
             done();
           });
       });
