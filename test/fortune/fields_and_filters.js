@@ -237,6 +237,82 @@ module.exports = function(options){
               });
           });
       });
+      it('should support $in query against one-to-one refs', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/people/robert@mailbert.com")
+            .set("content-type", "application/json")
+            .send(JSON.stringify([
+              {
+                path: '/people/0/soulmate',
+                op: 'replace',
+                value: 'dilbert@mailbert.com'
+              }
+            ]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/people?filter[soulmate][$in]=robert@mailbert.com&filter[soulmate][$in]=dilbert@mailbert.com")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people.length).should.equal(2);
+                done();
+              });
+          });
+      });
+      it('should support $in query against many-to-many refs', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/people/robert@mailbert.com")
+            .set("content-type", "application/json")
+            .send(JSON.stringify([
+              {
+                path: '/people/0/lovers',
+                op: 'replace',
+                value: ['dilbert@mailbert.com']
+              }
+            ]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/people?filter[lovers][$in]=robert@mailbert.com&filter[lovers][$in]=dilbert@mailbert.com")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.people.length).should.equal(2);
+                done();
+              });
+          });
+      });
+      it('should support $in query against external refs values', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/cars/" + ids.cars[0])
+            .set("content-type", "application/json")
+            .send(JSON.stringify([{
+              path: "/cars/0/MOT",
+              op: "replace",
+              value: "Pimp-my-ride"
+            }]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/cars?filter[MOT][$in]=Pimp-my-ride")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.cars.length).should.equal(1);
+                done();
+              });
+          });
+      });
       describe('filtering by related objects fields', function(){
         beforeEach(function(done){
           neighbourhood(adapter, ids).then(function(){
@@ -277,6 +353,7 @@ module.exports = function(options){
         });
       });
     });
+
     describe('limits', function(){
       it('should be possible to tell how many documents to return', function(done){
         request(baseUrl).get('/people?limit=1')
@@ -285,6 +362,72 @@ module.exports = function(options){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people.length).should.equal(1);
+            done();
+          });
+      });
+    });
+
+    describe('sort', function(){
+      it('should be possible to sort by name', function(done){
+        request(baseUrl).get('/people?sort=name')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Dilbert", "Robert", "Sally", "Wally"]);
+            done();
+          });
+      });
+
+      it('should be possible to sort by name desc', function(done){
+        request(baseUrl).get('/people?sort=-name')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Wally", "Sally", "Robert", "Dilbert"]);
+            done();
+          });
+      });
+
+      it('should be possible to sort by appearances', function(done){
+        request(baseUrl).get('/people?sort=appearances')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            _.pluck(body.people, "name").should.eql(["Sally", "Robert", "Wally", "Dilbert"]);
+            done();
+          });
+      });
+    });
+
+    describe('paging', function(){
+      it('should be possible to get page 1', function(done){
+        request(baseUrl).get('/people?sort=name&page=1&pageSize=2')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+             (body.people.length).should.equal(2);
+            _.pluck(body.people, "name").should.eql(["Dilbert", "Robert"]);
+            done();
+          });
+      });
+
+      it('should be possible to get page 2', function(done){
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            // console.log(body);
+            (body.people.length).should.equal(2);
+            _.pluck(body.people, "name").should.eql(["Sally", "Wally"]);
             done();
           });
       });

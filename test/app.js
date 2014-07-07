@@ -142,7 +142,8 @@ module.exports = function(options, port) {
 
     .resource('house', {
       address: String,
-      owners: [{ref: 'person', inverse: 'houses', pkType: String}]
+      owners: [{ref: 'person', inverse: 'houses', pkType: String}],
+      landlord: {ref: 'person', inverse: 'estate', pkType: String}
     })
     .resource('pet', {
       name: String,
