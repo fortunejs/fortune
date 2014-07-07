@@ -107,7 +107,8 @@ module.exports = function(options, port) {
       lovers: [{ref: 'person', inverse: 'lovers', type: String}],
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
       cars: [{ref:'car', type: String}],
-      houses: [{ref: 'house', inverse: 'owners'}]
+      houses: [{ref: 'house', inverse: 'owners'}],
+      estate: {ref: 'house', inverse: 'estate'}
     }, {
       model: {pk:"email"},
       hooks: {
@@ -172,6 +173,14 @@ module.exports = function(options, port) {
       this.password = Math.random();
       this.official = 'Mr. ' + this.name;
       res.setHeader('before', 'called for writes only');
+      return this;
+    })
+
+    .before('person pet', function(req, res){
+      if (this.email === 'falsey@bool.com'){
+        res.send(321);
+        return false;
+      }
       return this;
     })
 
