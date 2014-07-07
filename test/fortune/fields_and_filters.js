@@ -313,6 +313,17 @@ module.exports = function(options){
               });
           });
       });
+      it('should be able to run $in query against nested fields', function(done){
+        request(baseUrl).get("/cars?filter[additionalDetails.seats][in]=2")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.cars[0].additionalDetails.seats).should.equal(2);
+            (body.cars.length).should.equal(1);
+            done();
+          });
+      });
       describe('filtering by related objects fields', function(){
         beforeEach(function(done){
           neighbourhood(adapter, ids).then(function(){
