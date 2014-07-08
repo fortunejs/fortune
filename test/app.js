@@ -108,7 +108,7 @@ module.exports = function(options, port) {
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
       cars: [{ref:'car', type: String}],
       houses: [{ref: 'house', inverse: 'owners'}],
-      estate: {ref: 'house', inverse: 'estate'}
+      estate: {ref: 'house', inverse: 'landlord'}
     }, {
       model: {pk:"email"},
       hooks: {
