@@ -2,6 +2,7 @@ var fortune = require('../lib/fortune');
 var personHooks = require('./personHooks');
 var _ = require("lodash");
 var RSVP = require("rsvp");
+var mongoosePlugin = require('./mongoose_middleware');
 
 var hooks = {};
 
@@ -144,6 +145,8 @@ module.exports = function(options, port) {
       address: String,
       owners: [{ref: 'person', inverse: 'houses', pkType: String}],
       landlord: {ref: 'person', inverse: 'estate', pkType: String}
+    }, null, function(schema){
+      schema.plugin(mongoosePlugin, {paths: ['address']});
     })
     .resource('pet', {
       name: String,
