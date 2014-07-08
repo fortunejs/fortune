@@ -254,6 +254,264 @@ module.exports = function(options){
           });
       });
     });
+
+    describe("Compound document creation", function(){
+      var pets = {};
+      beforeEach(function(done){
+        var docs = {
+          people: [
+            {email: "balin@dwarf.com", name: "Balin", pets: [3]},
+            {email: "dwalin@dwarf.com", name: "Dwalin", pets: [1,2]}
+          ],
+          linked: {
+            pets: [
+              {name: "Lumpy", id: 1},
+              {name: "Cuddles", id: 2},
+              {name: "Toothy", id: 3}
+            ]
+          }
+        };
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify(docs))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.pets.forEach(function(pet){
+              pets[pet.name] = pet.id;
+            });
+            done();
+          });
+      });
+      it("should create docs from linked section", function(done){
+        request(baseUrl).get("/pets/" + pets.Lumpy)
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.pets.length).should.equal(1);
+            (body.pets[0].name).should.equal("Lumpy");
+            done();
+          });
+      });
+      it("should properly reference linked documents from primary documents", function(done){
+        request(baseUrl).get("/people/dwalin@dwarf.com,balin@dwarf.com")
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            var dwalin = _.findWhere(body.people, {name: "Dwalin"});
+            (dwalin.links.pets.length).should.equal(2);
+            (dwalin.links.pets.indexOf(pets.Lumpy)).should.not.equal(-1);
+            (dwalin.links.pets.indexOf(pets.Cuddles)).should.not.equal(-1);
+            var balin = _.findWhere(body.people, {name: "Balin"});
+            (balin.links.pets.length).should.equal(1);
+            (balin.links.pets.indexOf(pets.Toothy)).should.not.equal(-1);
+            done();
+          });
+      });
+      it("should properly reference primary documents from linked documents", function(done){
+        request(baseUrl).get("/pets/" + pets.Lumpy + "," + pets.Cuddles + "," + pets.Toothy)
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (_.findWhere(body.pets, {name: "Lumpy"}).links.owner).should.equal("dwalin@dwarf.com");
+            (_.findWhere(body.pets, {name: "Cuddles"}).links.owner).should.equal("dwalin@dwarf.com");
+            (_.findWhere(body.pets, {name: "Toothy"}).links.owner).should.equal("balin@dwarf.com");
+            done();
+          });
+      });
+      it("should properly handle case of a hook returning false for subresource", function(done){
+        var data = {
+          people: [{
+            email: "falsey@bool.com",
+            pets: []
+          }],
+          linked: {
+            pets: [{
+              owner: "falsey@bool.com"
+            }]
+          }
+        };
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify(data))
+          .expect(321)
+          .end(function(err, res){
+            should.not.exist(err);
+            done();
+          });
+      });
+      it("should not attempt to create linked external resources", function(done){
+        request(baseUrl).post("/cars")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            cars: [{
+              licenseNumber: "AAA"
+            }],
+            linked: {
+              services: [{
+                mot: "something"
+              }]
+            }
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.not.exist(body.linked);
+            done();
+          });
+      });
+      it("should respond with all created documents, including linked section", function(done){
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            people: [{
+              email: "posted@post.com",
+              name: "posted"
+            }],
+            linked: {
+              pets: [{
+                name: "fluffy"
+              }]
+            }
+          }))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].email).should.equal("posted@post.com");
+            (body.linked.pets[0].name).should.equal("fluffy");
+            (body.linked.pets[0].links.owner).should.equal("posted@post.com");
+            done();
+          });
+      });
+      it("should be able to create multiple types of linked resources simultaneously", function(done){
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            people: [{
+              email: "fili@dwarf.com",
+              name: "Fili",
+              pets: [1],
+              cars: [1]
+            },{
+              email: "kili@dwarf.com",
+              name: "Kili",
+              pets: [2],
+              cars: [2,3]
+            }],
+            linked: {
+              pets: [
+                {name: "Oin", id: 1},
+                {name: "Gloin", id: 2}
+              ],
+              cars: [
+                {licenseNumber: 111, id: 1},
+                {licenseNumber: 222, id: 2},
+                {licenseNumber: 333, id: 3}
+              ]
+            }
+          }))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].links.pets.length).should.equal(1);
+            (body.people[0].links.cars.length).should.equal(1);
+            (body.people[1].links.pets.length).should.equal(1);
+            (body.people[1].links.cars.length).should.equal(2);
+            done();
+          });
+      });
+      it("should be able to properly map bindings between same-type fields", function(done){
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            people: [{
+              email: "thorin@dwarf.com",
+              name: "Thorin",
+              houses: [1],
+              estate: 2
+            }],
+            linked: {
+              houses: [{
+                id: 1,
+                address: "shack"
+              },{
+                id: 2,
+                address: "mansion"
+              }]
+            }
+          }))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].links.houses.length).should.equal(1);
+            (body.people[0].links.estate).should.match(/[-0-9a-f]{24}/);
+            var shackId = body.people[0].links.houses[0];
+            var mansionId = body.people[0].links.estate;
+            var shack = _.findWhere(body.linked.houses, {address: "shack"});
+            var mansion = _.findWhere(body.linked.houses, {address: "mansion"});
+            (shack.id).should.equal(shackId);
+            (mansion.id).should.equal(mansionId);
+            done();
+          });
+      });
+      it("should succeed to link new resource to both existing and new resource", function(done){
+        request(baseUrl).post("/people")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            people: [{
+              email: "thorin@dwarf.com",
+              name: "Thorin",
+              houses: [1, ids.houses[0]],
+              estate: [2]
+            }],
+            linked: {
+              houses: [{
+                id: 1,
+                address: "shack"
+              },{
+                id: 2,
+                address: "mansion"
+              }]
+            }
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].links.houses.indexOf(ids.houses[0])).should.not.equal(-1);
+            (body.linked.houses.length).should.equal(3);
+            done();
+          });
+      });
+      it("should not fail if request includes additional fields", function(done){
+        request(baseUrl).post("/people?include=soulmate")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            people: [{
+              email: "bifur@dwarf.com",
+              name: "Bifur"
+            }],
+            linked: {
+              pets: [{
+                name: "a pet"
+              }]
+            }
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.exist(body.linked.pets);
+            should.exist(body.people[0]);
+            done();
+          });
+      });
+    });
   });
 
 };
