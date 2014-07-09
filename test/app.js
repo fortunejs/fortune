@@ -2,6 +2,7 @@ var fortune = require('../lib/fortune');
 var personHooks = require('./personHooks');
 var _ = require("lodash");
 var RSVP = require("rsvp");
+var mongoosePlugin = require('./mongoose_middleware');
 
 var hooks = {};
 
@@ -108,7 +109,7 @@ module.exports = function(options, port) {
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
       cars: [{ref:'car', type: String}],
       houses: [{ref: 'house', inverse: 'owners'}],
-      estate: [{ref: 'house', inverse: 'landlord'}]
+      estate: {ref: 'house', inverse: 'landlord'}
     }, {
       model: {pk:"email"},
       hooks: {
@@ -144,6 +145,8 @@ module.exports = function(options, port) {
       address: String,
       owners: [{ref: 'person', inverse: 'houses', pkType: String}],
       landlord: {ref: 'person', inverse: 'estate', pkType: String}
+    }, null, function(schema){
+      schema.plugin(mongoosePlugin, {paths: ['address']});
     })
     .resource('pet', {
       name: String,
@@ -174,6 +177,14 @@ module.exports = function(options, port) {
       this.password = Math.random();
       this.official = 'Mr. ' + this.name;
       res.setHeader('before', 'called for writes only');
+      return this;
+    })
+
+    .before('person pet', function(req, res){
+      if (this.email === 'falsey@bool.com'){
+        res.send(321);
+        return false;
+      }
       return this;
     })
 
