@@ -324,6 +324,28 @@ module.exports = function(options){
             done();
           });
       });
+      it('should support or query', function(done){
+        request(baseUrl).get('/people?filter[or][0][name]=Dilbert&filter[or][1][email]=robert@mailbert.com&sort=name')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people.length).should.equal(2);
+            (body.people[0].name).should.equal('Dilbert');
+            (body.people[1].name).should.equal('Robert');
+            done();
+          });
+      });
+      it('should have id filter', function(done){
+        request(baseUrl).get('/cars?filter[id]=' + ids.cars[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.cars[0].id).should.equal(ids.cars[0]);
+            done();
+          });
+      });
       describe('filtering by related objects fields', function(){
         beforeEach(function(done){
           neighbourhood(adapter, ids).then(function(){
@@ -361,6 +383,42 @@ module.exports = function(options){
                 done();
               });
             });
+        });
+        it('should be able to apply OR filter to related resources', function(done){
+          request(baseUrl).get('/cars?filter[or][0][owner][soulmate]=' + ids.people[0] + '&filter[or][1][id]=' + ids.cars[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.cars.length).should.equal(2);
+              var one = _.findWhere(body.cars, {id: ids.cars[0]});
+              var two = _.findWhere(body.cars, {id: ids.cars[1]});
+              should.exist(one);
+              should.exist(two);
+              done();
+            });
+        });
+        it('should be able to apply AND filter to related resources', function(done){
+          request(baseUrl).get('/pets?filter[and][0][owner][soulmate][email]=' + ids.people[0] + '&filter[and][1][owner][email]=' + ids.people[1])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.pets.length).should.equal(1);
+              (body.pets[0].id).should.equal(ids.pets[0]);
+              done();
+            })
+        });
+        it('should be able to nest OR and AND filters', function(done){
+          request(baseUrl).get('/houses?filter[or][0][and][0][owners][in]=' + ids.people[0])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.houses.length).should.equal(1);
+              (body.houses[0].id).should.equal(ids.houses[0]);
+              done();
+            })
         });
       });
     });
