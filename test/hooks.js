@@ -10,7 +10,7 @@ var synchronousHook = [{
   },
   init: function(hookConfig, fortuneConfig){
     var a = hookConfig.a;
-    var b = fortuneConfig.b || 100;
+    var b = (fortuneConfig.options && fortuneConfig.options.b) || 100;
     return function(req, res){
       this.hooked = a + b;
       return this;
@@ -40,7 +40,7 @@ describe('hooks', function(){
       }
     };
     var resource = {};
-    hooks.initGlobalHooks(resourceConfig, {b: 2});
+    hooks.initGlobalHooks(resourceConfig, {options: {b: 2}});
     resourceConfig.hooks._before.read[0].call(resource);
     (resource.hooked).should.equal(3);
     done();
@@ -83,6 +83,7 @@ describe('hooks', function(){
     var fortune;
     beforeEach(function(){
       fortune = {
+        _resource: "person",
         _resources: {
           person: {
             hooksOptions: {
@@ -128,6 +129,18 @@ describe('hooks', function(){
       //Options are defined only in fortune config
       (pet.hooked).should.equal(12);
       done();
+    });
+    it('hooks should be provided with full fortune instance', function(done){
+      var mock = [{
+        name: "mock",
+        init: function(config, fortune){
+          should.exist(fortune);
+          (fortune._resource).should.equal('person');
+          (fortune._resources).should.be.an.Object;
+          done();
+        }
+      }];
+      hooks.addHook.call(fortune, 'person', mock, '_after', 'write');
     });
   });
 });
