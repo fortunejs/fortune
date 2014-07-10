@@ -1,5 +1,6 @@
 var request = require('supertest');
 var should = require('should');
+var RSVP = require('rsvp');
 
 module.exports = function(options){
   var ids, app, baseUrl;
@@ -54,14 +55,29 @@ module.exports = function(options){
   });
   describe("native mongoose middleware", function(){
     it("should be able to expose mongoose api to resources", function(done){
-      request(baseUrl).get("/houses/" + ids.houses[0])
-        .expect(200)
-        .end(function(err, res){
-          should.not.exist(err);
-          var body = JSON.parse(res.text);
-          (body.houses[0].address).should.match(/mongoosed$/);
-          done();
-        });
+      new RSVP.Promise(function(resolve){
+        request(baseUrl).post("/houses")
+          .set("content-type", "application/json")
+          .send(JSON.stringify({
+            houses: [{
+              address: "mongoose-"
+            }]
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            resolve(body.houses[0].id);
+          });
+      }).then(function(createdId){
+        request(baseUrl).get("/houses/" + createdId)
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.houses[0].address).should.match(/mongoosed$/);
+            done();
+          });
+      });
     });
   });
 };
