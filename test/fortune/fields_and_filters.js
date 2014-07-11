@@ -17,6 +17,28 @@ module.exports = function(options){
       adapter = options.app.adapter;
     });
 
+    describe("patching nested objects", function() {
+      it("should support replacing just one of the values", function(done) {
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([{op: "replace", path: "/people/0/nested/field1", value: "value1"}]))
+          .expect(200)
+          .end(function(error, response) {
+            if (error) return done(error);
+            JSON.parse(response.text).people[0].nested.should.eql({field1: "value1"});
+            request(baseUrl).patch('/people/' + ids.people[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([{op: "replace", path: "/people/0/nested/field2", value: "value2"}]))
+            .expect(200)
+            .end(function(error, response) {
+              if (error) return done(error);
+              JSON.parse(response.text).people[0].nested.should.eql({field1: "value1", field2: "value2"});
+              done();
+            });
+          });
+      });
+    });
+
     describe("sparse fieldsets", function(){
       beforeEach(function(done){
         var update = [{
