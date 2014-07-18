@@ -18,6 +18,34 @@ module.exports = function(options){
       ids = options.ids;
     });
 
+    describe('Creation', function(){
+      it('should be able to create document with provided id', function(done){
+        var doc = {
+          id: '123456789012345678901234'
+        };
+        adapter.create('pet', doc).then(function(){
+          var model = adapter.model('pet');
+          model.findOne({_id: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+            done();
+          });
+        });
+      });
+      it('should be able to cast provided id to proper type', function(done){
+        var doc = {
+          id: '123456789012345678901234'
+        };
+        adapter.create('person', doc).then(function(){
+          var model = adapter.model('person');
+          model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+            done();
+          });
+        });
+      });
+    });
     describe('Relationships', function(){
       describe('synchronizing many-to-many', function(){
         it('should keep in sync many-to-many relationship', function(done){
