@@ -124,7 +124,7 @@ _.each(global.options, function (options, port) {
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body[keys.person][0].links.pets).should.includeEql(ids[keys.pet][0]);
+              (body[keys.person][0].links.pets).should.containEql(ids[keys.pet][0]);
               resolve();
             });
         }).then(function () {
@@ -200,7 +200,7 @@ _.each(global.options, function (options, port) {
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body[keys.person][0].links.pets).should.includeEql(ids[keys.pet][0]);
+              (body[keys.person][0].links.pets).should.containEql(ids[keys.pet][0]);
               done();
             });
         });
@@ -319,7 +319,7 @@ _.each(global.options, function (options, port) {
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body[keys.person][0].links.lovers).should.includeEql(ids[keys.person][1]);
+              (body[keys.person][0].links.lovers).should.containEql(ids[keys.person][1]);
               resolve();
             });
         }).then(function () {
@@ -330,7 +330,7 @@ _.each(global.options, function (options, port) {
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body[keys.person][0].links.lovers).should.includeEql(ids[keys.person][0]);
+              (body[keys.person][0].links.lovers).should.containEql(ids[keys.person][0]);
               done();
             });
         });
