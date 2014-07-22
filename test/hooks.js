@@ -138,6 +138,8 @@ describe('hooks', function(){
           (fortune._resource).should.equal('person');
           (fortune._resources).should.be.an.Object;
           done();
+          //Hook must return a function
+          return function(){}
         }
       }];
       hooks.addHook.call(fortune, 'person', mock, '_after', 'write');
