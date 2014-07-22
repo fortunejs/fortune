@@ -69,6 +69,14 @@ module.exports = function(options){
           done();
         });
     });
+    it("should apply asynchronous hooks in series according to priority", function(done){
+      request(baseUrl).get("/pets")
+        .end(function(err, res){
+          should.not.exist(err);
+          res.headers.asyncseries.should.equal("correct");
+          done();
+        });
+    });
   });
   describe("native mongoose middleware", function(){
     it("should be able to expose mongoose api to resources", function(done){

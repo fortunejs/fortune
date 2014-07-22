@@ -237,6 +237,44 @@ module.exports = function(options, port) {
         }
       }
     }])
+    .beforeRead('pet', [{
+      name: 'async1',
+      priority: 3,
+      init: function(){
+        return function(req, res){
+          var self = this;
+          var d = RSVP.defer();
+          setImmediate(function(){
+            res.setHeader("asyncseries", (res.get("asyncseries") || "") +  "cor");
+            d.resolve(self);
+          });
+          return d.promise;
+        }
+      }
+    },{
+        name: 'async2',
+        priority: 2,
+        init: function(){
+          return function(req, res){
+            var self = this;
+            var d = RSVP.defer();
+            setImmediate(function(){
+              res.setHeader("asyncseries", (res.get("asyncseries") || "") + "re");
+              d.resolve(self);
+            });
+            return d.promise;
+          }
+        }
+    },{
+      name: 'async3',
+      priority: 1,
+      init: function(){
+        return function(req, res){
+          res.setHeader("asyncseries", (res.get("asyncseries") || "") + "ct");
+          return this;
+        }
+      }
+    }])
 
     .after('person', function(req, res) {
       res.setHeader('after', 'called for reads only');
