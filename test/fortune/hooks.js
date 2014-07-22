@@ -52,6 +52,23 @@ module.exports = function(options){
         });
       });      
     });
+
+    it("should apply global hooks in priority order", function(done){
+      request(baseUrl).get("/people")
+        .end(function(err, res){
+          should.not.exist(err);
+          res.headers.globalpriority.should.equal("correct");
+          done();
+        });
+    });
+    it("should apply resource hooks in priority order", function(done){
+      request(baseUrl).get("/houses")
+        .end(function(err, res){
+          should.not.exist(err);
+          res.headers.resourcepriority.should.equal("correct");
+          done();
+        });
+    });
   });
   describe("native mongoose middleware", function(){
     it("should be able to expose mongoose api to resources", function(done){

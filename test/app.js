@@ -86,7 +86,25 @@ module.exports = function(options, port) {
     });
   });
 
-  
+  app.beforeAllRW([{
+    name: "by5",
+    priority: 10,
+    init: function(){
+      return function(req, res){
+        res.setHeader("globalPriority", (res.get("globalPriority") || "") + "rect");
+        return this;
+      }
+    }
+  },{
+    name: "by3",
+    priority: 20,
+    init: function(){
+      return function(req, res){
+        res.setHeader("globalPriority", (res.get("globalPriority") || "") + "cor");
+        return this;
+      }
+    }
+  }]);
 
   
   return app.beforeAll(hooks.beforeAll)
@@ -199,6 +217,25 @@ module.exports = function(options, port) {
         value: 'ok'
       },
       init: Hook
+    }])
+    .beforeRead('house', [{
+      name: 'div5',
+      priority: 10,
+      init: function(){
+        return function(req, res){
+          res.setHeader("resourcePriority", (res.get("resourcePriority") || "")  + "rect");
+          return this;
+        }
+      }
+    },{
+      name: 'div3',
+      priority: 20,
+      init: function(){
+        return function(req, res){
+          res.setHeader("resourcePriority", (res.get("resourcePriority") || "") + "cor");
+          return this;
+        }
+      }
     }])
 
     .after('person', function(req, res) {
