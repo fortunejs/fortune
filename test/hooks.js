@@ -24,7 +24,23 @@ describe('hooks', function(){
     should.exist(hooks._hooksAll._before.read[0]);
     done();
   });
+  it('should be able to extend global hook config along with registration', function(done){
+    hooks.registerGlobalHook('_after', 'write', synchronousHook, {syncHook: {a: 500}});
+    synchronousHook[0].config.a.should.equal(10);
+    var resourceConfig = {};
+    hooks.initGlobalHooks(resourceConfig, {});
+    resourceConfig.hooks._after.write[0].call({}).should.eql({hooked: 600});
+    done();
+  });
+  it('inline config should not break default hook configuration', function(done){
+    hooks.registerGlobalHook('_after', 'write', synchronousHook, {syncHook: {a: 500}});
+    synchronousHook[0].config.a.should.equal(10);
+    hooks.registerGlobalHook('_before', 'read', synchronousHook, {syncHook: {a: 600}});
+    synchronousHook[0].config.a.should.equal(10);
+    done();
+  });
   it('should be able to apply registered hooks to provided resource', function(done){
+    hooks.registerGlobalHook('_before', 'read', synchronousHook);
     var resourceConfig = {};
     hooks.initGlobalHooks(resourceConfig, {});
     should.exist(resourceConfig.hooks);
@@ -32,6 +48,7 @@ describe('hooks', function(){
     done();
   });
   it('should be configurable', function(done){
+    hooks.registerGlobalHook('_before', 'read', synchronousHook);
     var resourceConfig = {
       hooksOptions: {
         syncHook: {
@@ -46,6 +63,7 @@ describe('hooks', function(){
     done();
   });
   it('should be possible to disable specific hook in resource config', function(done){
+    hooks.registerGlobalHook('_before', 'read', synchronousHook);
     var resourceConfig = {
       hooksConfig: {
         syncHook: {
@@ -58,6 +76,7 @@ describe('hooks', function(){
     done();
   });
   it('should apply default hook config if resource does not provide one', function(done){
+    hooks.registerGlobalHook('_before', 'read', synchronousHook);
     var resourceConfig = {};
     var resource = {};
     hooks.initGlobalHooks(resourceConfig, {});
