@@ -395,13 +395,17 @@ module.exports = function(options){
             people: [{
               email: "fili@dwarf.com",
               name: "Fili",
-              pets: [1],
-              cars: [1]
+              links: {
+                pets: [1],
+                cars: [1]
+              }
             },{
               email: "kili@dwarf.com",
               name: "Kili",
-              pets: [2],
-              cars: [2,3]
+              links: {
+                pets: [2],
+                cars: [2,3]
+              }
             }],
             linked: {
               pets: [
@@ -433,8 +437,10 @@ module.exports = function(options){
             people: [{
               email: "thorin@dwarf.com",
               name: "Thorin",
-              houses: [1],
-              estate: 2
+              links: {
+                houses: [1],
+                estate: 2
+              }
             }],
             linked: {
               houses: [{
@@ -468,8 +474,10 @@ module.exports = function(options){
             people: [{
               email: "thorin@dwarf.com",
               name: "Thorin",
-              houses: [1, ids.houses[0]],
-              estate: [2]
+              links: {
+                houses: [1, ids.houses[0]],
+                estate: [2]
+              }
             }],
             linked: {
               houses: [{
