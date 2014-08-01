@@ -99,6 +99,20 @@ module.exports = function(options){
               });
           });
       });
+      it('should not overwrite explicitly set creation time', function(done){
+        var check = new Date(new Date().getTime() - 1000);
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{email: 'test@test.com', createdAt: check}]
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            new Date(body.people[0].createdAt).getTime().should.equal(new Date(check).getTime());
+            done();
+          });
+      });
     });
   });
 };
