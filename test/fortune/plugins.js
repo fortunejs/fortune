@@ -63,6 +63,42 @@ module.exports = function(options){
             });
           });
       });
+      it('should properly handle PUT requests', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).put('/people/test@test.com')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com',
+                name: 'test'
+              }]
+            }))
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              var createdAt = body.people[0].createdAt;
+              should.exist(createdAt);
+              body.people[0].name.should.equal('test');
+              resolve(createdAt);
+            });
+        }).then(function(createdAt){
+            request(baseUrl).put('/people/test@test.com')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify({
+                people:[{
+                  email: 'test@test.com',
+                  name: 'changed'
+                }]
+              }))
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people[0].createdAt.should.equal(createdAt);
+                body.people[0].name.should.equal('changed');
+                done();
+              });
+          });
+      });
     });
   });
 };
