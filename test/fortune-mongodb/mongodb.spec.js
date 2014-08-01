@@ -212,7 +212,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               var keys = Object.keys(docs[0]).length;
-              (keys).should.equal(7);
+              (keys).should.equal(9);
               done();
             });
         });
@@ -286,7 +286,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               //+ soulmate from before each
-              (Object.keys(doc).length).should.equal(8);
+              (Object.keys(doc).length).should.equal(10);
               done();
             });
         });

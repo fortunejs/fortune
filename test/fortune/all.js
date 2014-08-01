@@ -25,6 +25,7 @@ describe('Fortune', function () {
   require('./includes')(options);
   require('./hooks')(options);
   require('./direct')(options);
+  require('./plugins')(options);
 
   describe("Business key", function(){
     it("can be used as primary key for individual resource requests", function(done){
