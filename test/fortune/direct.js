@@ -20,7 +20,7 @@ module.exports = function(options){
     });
 
     it("gets a single resource", function(done){
-      app.direct.get("people", { id:ids.people[0] }).then(function(res){
+      app.direct.get("people", {params: { id:ids.people[0] }}).then(function(res){
         res.body.people.length.should.be.equal(1);
         res.body.people[0].id.should.equal(ids.people[0]);
         done();
@@ -55,7 +55,7 @@ module.exports = function(options){
       app.direct.create("people", {body:doc}).then(function(res){
         res.body.people.length.should.be.equal(1);
         res.body.people[0].id.should.be.equal(doc.people[0].email);
-        return app.direct.get("people", {id:doc.people[0].email});
+        return app.direct.get("people", {params: {id:doc.people[0].email}});
       }).then(function(res){
         res.body.people[0].id.should.be.equal(doc.people[0].email);
         done();
@@ -65,16 +65,16 @@ module.exports = function(options){
     it("replaces a resource", function(done){
       var resource, id;
 
-      app.direct.get("people",{id:id = ids.people[0]}).then(function(res){
+      app.direct.get("people",{params: {id:id = ids.people[0]}}).then(function(res){
         resource = res.body.people[0];
         resource.birthday = null;
         resource.email = "abc@xyz.com";
         resource.nickname = "udpated";
-        return app.direct.replace("people", {id:id, body:{people: [resource]}});
+        return app.direct.replace("people", {params: {id:id}, body:{people: [resource]}});
       }).then(function(res){
         should.not.exist(res.body.error);
         res.body.people[0].id.should.be.equal(resource.email);
-        return app.direct.get("people", {id: resource.email});
+        return app.direct.get("people", {params: {id: resource.email}});
       }).then(function(res){
         res.body.people[0].id.should.be.equal(resource.email);
         done();
@@ -82,7 +82,7 @@ module.exports = function(options){
     });
 
     it("udpate can add a record to an array", function(done){
-      app.direct.update("people", {id: ids.people[0], body:[{
+      app.direct.update("people", {params: {id: ids.people[0]}, body:[{
         op: "add",
         path: "/people/0/houses/-",
         value: ids.houses[1]
@@ -94,7 +94,7 @@ module.exports = function(options){
     });
 
     it("supports bulk update", function(done){
-      app.direct.update("people", {id: ids.people[0], body:[{
+      app.direct.update("people", {params: {id: ids.people[0]}, body:[{
         op: 'add',
         path: '/people/0/houses/-',
         value: ids.houses[0]
@@ -109,7 +109,7 @@ module.exports = function(options){
     });
 
     it("supports filters", function(done){
-      app.direct.get("people", {filter: {name: "Robert"}}).then(function(res){
+      app.direct.get("people", {query: {filter: {name: "Robert"}}}).then(function(res){
         res.body.people.length.should.equal(1);
         res.body.people[0].name.should.be.equal("Robert");
         done();
@@ -117,12 +117,12 @@ module.exports = function(options){
     });
 
     it("supports includes", function(done){
-      app.direct.update("people", {id: ids.people[0], body: [{
+      app.direct.update("people", {params: {id: ids.people[0]}, body: [{
         op: "add",
         path: "/people/0/houses/-",
         value: ids.houses[1]
       }]}).then(function(){
-        return app.direct.get("people", {include: "houses"});
+        return app.direct.get("people", {query: {include: "houses"}});
       }).then(function(res){
         res.body.linked.should.be.an.Object;
         res.body.linked.houses.length.should.equal(1);

@@ -86,7 +86,25 @@ module.exports = function(options, port) {
     });
   });
 
-  
+  app.beforeAllRW([{
+    name: "by5",
+    priority: 10,
+    init: function(){
+      return function(req, res){
+        res.setHeader("globalPriority", (res.get("globalPriority") || "") + "rect");
+        return this;
+      }
+    }
+  },{
+    name: "by3",
+    priority: 20,
+    init: function(){
+      return function(req, res){
+        res.setHeader("globalPriority", (res.get("globalPriority") || "") + "cor");
+        return this;
+      }
+    }
+  }]);
 
   
   return app.beforeAll(hooks.beforeAll)
@@ -199,6 +217,63 @@ module.exports = function(options, port) {
         value: 'ok'
       },
       init: Hook
+    }])
+    .beforeRead('house', [{
+      name: 'div5',
+      priority: 10,
+      init: function(){
+        return function(req, res){
+          res.setHeader("resourcePriority", (res.get("resourcePriority") || "")  + "rect");
+          return this;
+        }
+      }
+    },{
+      name: 'div3',
+      priority: 20,
+      init: function(){
+        return function(req, res){
+          res.setHeader("resourcePriority", (res.get("resourcePriority") || "") + "cor");
+          return this;
+        }
+      }
+    }])
+    .beforeRead('pet', [{
+      name: 'async1',
+      priority: 3,
+      init: function(){
+        return function(req, res){
+          var self = this;
+          var d = RSVP.defer();
+          setImmediate(function(){
+            res.setHeader("asyncseries", (res.get("asyncseries") || "") +  "cor");
+            d.resolve(self);
+          });
+          return d.promise;
+        }
+      }
+    },{
+        name: 'async2',
+        priority: 2,
+        init: function(){
+          return function(req, res){
+            var self = this;
+            var d = RSVP.defer();
+            setImmediate(function(){
+              res.setHeader("asyncseries", (res.get("asyncseries") || "") + "re");
+              d.resolve(self);
+            });
+            return d.promise;
+          }
+        }
+    },{
+      name: 'async3',
+      priority: 1,
+      init: function(){
+        return function(req, res){
+          res.setHeader("asyncseries", (res.get("asyncseries") || "") + "ct");
+          return this;
+        }
+      }
     }])
 
     .after('person', function(req, res) {

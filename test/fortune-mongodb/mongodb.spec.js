@@ -18,6 +18,34 @@ module.exports = function(options){
       ids = options.ids;
     });
 
+    describe('Creation', function(){
+      it('should be able to create document with provided id', function(done){
+        var doc = {
+          id: '123456789012345678901234'
+        };
+        adapter.create('pet', doc).then(function(){
+          var model = adapter.model('pet');
+          model.findOne({_id: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+            done();
+          });
+        });
+      });
+      it('should be able to cast provided id to proper type', function(done){
+        var doc = {
+          id: '123456789012345678901234'
+        };
+        adapter.create('person', doc).then(function(){
+          var model = adapter.model('person');
+          model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+            done();
+          });
+        });
+      });
+    });
     describe('Relationships', function(){
       describe('synchronizing many-to-many', function(){
         it('should keep in sync many-to-many relationship', function(done){
@@ -184,7 +212,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               var keys = Object.keys(docs[0]).length;
-              (keys).should.equal(7);
+              (keys).should.equal(9);
               done();
             });
         });
@@ -258,7 +286,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               //+ soulmate from before each
-              (Object.keys(doc).length).should.equal(8);
+              (Object.keys(doc).length).should.equal(10);
               done();
             });
         });

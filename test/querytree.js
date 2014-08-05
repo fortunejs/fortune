@@ -1,4 +1,4 @@
-var tree = require('../lib/querytree');
+var querytree = require('../lib/querytree');
 var _ = require('lodash');
 var RSVP = require('rsvp');
 var Promise = RSVP.Promise;
@@ -34,8 +34,9 @@ module.exports = function(options){
   });
   describe('Query tree', function(){
     describe('Nodes', function(){
+      var tree;
       before(function(){
-        tree.use({
+        tree = querytree.init({
           _resources: options.app._resources,
           inflect: options.app.inflect,
           adapter: mockAdapter
@@ -97,10 +98,10 @@ module.exports = function(options){
       });
     });
     describe('Integration to fortune', function(){
-      var adapter;
+      var adapter, tree;
       before(function(){
         adapter = options.app.adapter;
-        tree.use(options.app);
+        tree = querytree.init(options.app);
       });
       beforeEach(function(done){
         //Create little social network

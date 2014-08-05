@@ -346,6 +346,28 @@ module.exports = function(options){
             done();
           });
       });
+      it('should be able to run in query against links', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/people/" + ids.people[1])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: "replace", path: '/people/0/soulmate', value: ids.people[0]}
+            ]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+          request(baseUrl).get("/people?filter[soulmate][in]=" + ids.people[0] + "," + ids.people[1])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.people.length.should.equal(2);
+              done();
+            });
+          });
+      });
       it('should support or query', function(done){
         request(baseUrl).get('/people?filter[or][0][name]=Dilbert&filter[or][1][email]=robert@mailbert.com&sort=name')
           .expect(200)
