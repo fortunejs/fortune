@@ -293,6 +293,94 @@ module.exports = function(options){
           });
       });
     });
+    describe('many to one', function(){
+      it('should unbind other "many" refs when updated', function(done){
+        new Promise(function(resolve){
+          //Create initial binding
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .send([
+              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]},
+              {path: '/people/0/cars/-', op: 'add', value: ids.cars[1]}
+            ])
+            .expect(200)
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+          return new Promise(function(resolve){
+            //Update binding
+            request(baseUrl).patch('/people/' + ids.people[1])
+              .send([
+                {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+              ])
+              .expect(200)
+              .end(function(err){
+                should.not.exist(err);
+                resolve();
+              });
+          });
+        }).then(function(){
+          request(baseUrl).get('/people/' + ids.people[0] + ',' + ids.people[1])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              var first = _.findWhere(body.people, {id: ids.people[0]});
+              var second = _.findWhere(body.people, {id: ids.people[1]});
+              should.exist(first.links.cars);
+              (first.links.cars.length).should.equal(1);
+              (first.links.cars[0]).should.equal(ids.cars[1]);
+              should.exist(second.links.cars);
+              (second.links.cars.length).should.equal(1);
+              (second.links.cars[0]).should.equal(ids.cars[0]);
+              done();
+            });
+        });
+      });
+    });
+    describe('one to many', function(){
+      it('should unbind other "many" when updated', function(done){
+        new Promise(function(resolve){
+          //Create binding
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .send([
+              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+            ])
+            .expect(200)
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            return new Promise(function(resolve){
+              //update binding
+              request(baseUrl).patch('/cars/' + ids.cars[0])
+                .send([
+                  {path: '/cars/0/links/owner', op: 'replace', value: ids.people[1]}
+                ])
+                .expect(200)
+                .end(function(err){
+                  should.not.exist(err);
+                  resolve();
+                });
+            });
+        }).then(function(){
+            request(baseUrl).get('/people/' + ids.people[0] + ',' + ids.people[1])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                var first = _.findWhere(body.people, {id: ids.people[0]});
+                var second = _.findWhere(body.people, {id: ids.people[1]});
+                should.not.exist(first.links);
+                should.exist(second.links.cars);
+                (second.links.cars[0]).should.equal(ids.cars[0]);
+                done();
+              });
+          });
+      });
+    });
 
     it("should be indexed", function(done){
       var model;
