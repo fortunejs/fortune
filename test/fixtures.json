@@ -25,6 +25,20 @@
       "email" : "sally@mailbert.com"
     }
   ],
+  "addresses": [
+    {
+      "name": "One",
+      "person": "dilbert@mailbert.com"
+    },
+    {
+      "name": "Two",
+      "person": "dilbert@mailbert.com"
+    },
+    {
+      "name": "Three",
+      "person": "robert@mailbert.com"
+    }
+  ],
   "pets": [
     {
       "name": "Dogbert",
