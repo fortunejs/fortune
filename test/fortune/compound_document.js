@@ -158,6 +158,18 @@ module.exports = function(options){
         });
     });
 
+    it('should not throw when requested to include address', function(done){
+      request(baseUrl).get('/people/' + ids.people[0] + '?include=addresses')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.addresses.length.should.equal(2);
+          body.linked.addresses.length.should.equal(2);
+          done();
+        });
+    });
+
     it("should not attempt to include resource (to-1) marked as external", function(done){
       request(baseUrl)
         .get("/cars/" + ids.cars[0] + "?include=MOT")

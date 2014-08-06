@@ -127,6 +127,7 @@ module.exports = function(options, port) {
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
       cars: [{ref:'car', type: String}],
       houses: [{ref: 'house', inverse: 'owners'}],
+      addresses: [{ref: 'address', inverse: 'person'}],
       estate: {ref: 'house', inverse: 'landlord'},
       nested: {
         field1: String,
@@ -174,6 +175,11 @@ module.exports = function(options, port) {
       name: String,
       appearances: Number,
       owner: {ref:'person', type: String}
+    })
+
+    .resource('address', {
+      name: String,
+      person: {ref: 'person', inverse: 'addresses', pkType: String}
     })
 
 

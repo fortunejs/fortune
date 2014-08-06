@@ -57,7 +57,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body.people[0].links.pets);
               resolve();
             });
         }).then(function () {
@@ -68,7 +68,7 @@ module.exports = function(options){
               .end(function (error, response) {
                 should.not.exist(error);
                 var body = JSON.parse(response.text);
-                should.not.exist(body.pets[0].links);
+                should.not.exist(body.pets[0].links && body.pets[0].links.owner);
                 done();
               });
           });
@@ -188,7 +188,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body.people[0].links.soulmate);
               resolve();
             });
         }).then(function () {
@@ -199,7 +199,7 @@ module.exports = function(options){
               .end(function (error, response) {
                 should.not.exist(error);
                 var body = JSON.parse(response.text);
-                should.not.exist(body.people[0].links);
+                should.not.exist(body.people[0].links && body.people[0].links.soulmate);
                 done();
               });
           });
@@ -276,7 +276,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links);
+              should.not.exist(body.people[0].links.lovers);
               resolve();
             });
         }).then(function () {
@@ -287,7 +287,7 @@ module.exports = function(options){
               .end(function (error, response) {
                 should.not.exist(error);
                 var body = JSON.parse(response.text);
-                should.not.exist(body.people[0].links);
+                should.not.exist(body.people[0].links && body.people[0].links.lovers);
                 done();
               });
           });
@@ -373,7 +373,7 @@ module.exports = function(options){
                 var body = JSON.parse(res.text);
                 var first = _.findWhere(body.people, {id: ids.people[0]});
                 var second = _.findWhere(body.people, {id: ids.people[1]});
-                should.not.exist(first.links);
+                should.not.exist(first.links.cars);
                 should.exist(second.links.cars);
                 (second.links.cars[0]).should.equal(ids.cars[0]);
                 done();
