@@ -9,6 +9,7 @@ var fixtures = require('../fixtures.json');
 module.exports = function(options){
 
 describe('Fortune', function () {
+  this.timeout(10000);
   var ids, baseUrl, app;
   beforeEach(function(){
     ids = options.ids;
@@ -26,6 +27,7 @@ describe('Fortune', function () {
   require('./hooks')(options);
   require('./direct')(options);
   require('./plugins')(options);
+  require('./linking_perf')(options);
 
   describe("Business key", function(){
     it("can be used as primary key for individual resource requests", function(done){
