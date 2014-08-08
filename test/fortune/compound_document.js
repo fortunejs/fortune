@@ -114,6 +114,19 @@ module.exports = function(options){
         });
     });
 
+    it("should return empty array for linked documents if there are no reference to them", function(done){
+      request(baseUrl)
+        .get('/people/' + ids.people[2] + '?include=pets')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.linked.pets.should.be.an.Array;
+          body.linked.pets.length.should.equal(0);
+          done();
+        });
+    });
+
     it("should return grandchild plus child documents of people when requested", function(done) {
       request(baseUrl)
         .get('/people/' + ids.people[0] + '?include=pets,soulmate,soulmate.pets')
