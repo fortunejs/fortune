@@ -172,15 +172,37 @@ module.exports = function(options){
     });
 
     it('should not throw when requested to include address', function(done){
-      request(baseUrl).get('/people/' + ids.people[0] + '?include=addresses')
-        .expect(200)
-        .end(function(err, res){
+      function linkAddress(person, address){
+        return new Promise(function(resolve){
+          request(baseUrl).patch('/people/' + person)
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'add', path: '/people/0/addresses/-', value: address}
+            ])).end(function(err, res){
+              should.not.exist(err);
+              resolve();
+            })
+          });
+      }
+      new Promise(function(resolve){
+        request(baseUrl).get('/addresses').end(function(err, res){
           should.not.exist(err);
           var body = JSON.parse(res.text);
-          body.people[0].links.addresses.length.should.equal(2);
-          body.linked.addresses.length.should.equal(2);
-          done();
+          resolve(RSVP.all(_.map(_.rest(body.addresses), function(addr){
+            return linkAddress(ids.people[0], addr.id);
+          })));
         });
+      }).then(function(){
+        request(baseUrl).get('/people/' + ids.people[0] + '?include=addresses')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.addresses.length.should.equal(2);
+            body.linked.addresses.length.should.equal(2);
+            done();
+          });
+      });
     });
 
     it("should not attempt to include resource (to-1) marked as external", function(done){

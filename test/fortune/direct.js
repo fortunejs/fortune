@@ -78,7 +78,7 @@ module.exports = function(options){
       }).then(function(res){
         res.body.people[0].id.should.be.equal(resource.email);
         done();
-      }).catch(function(err){ console.trace(err); });
+      }).catch(function(err){ console.trace(err.stack || err); });
     });
 
     it("udpate can add a record to an array", function(done){

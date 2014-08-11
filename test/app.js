@@ -125,7 +125,7 @@ module.exports = function(options, port) {
       soulmate: {ref: 'person', inverse: 'soulmate', type: String},
       lovers: [{ref: 'person', inverse: 'lovers', type: String}],
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
-      cars: [{ref:'car', type: String}],
+      cars: [{ref:'car', inverse: 'owner', type: String}],
       houses: [{ref: 'house', inverse: 'owners'}],
       addresses: [{ref: 'address', inverse: 'person'}],
       estate: {ref: 'house', inverse: 'landlord'},
@@ -174,7 +174,7 @@ module.exports = function(options, port) {
     .resource('pet', {
       name: String,
       appearances: Number,
-      owner: {ref:'person', type: String}
+      owner: {ref:'person', inverse: 'pets', type: String}
     })
 
     .resource('address', {
@@ -186,7 +186,7 @@ module.exports = function(options, port) {
     .resource('car', {
       licenseNumber: String,
       model: String,
-      owner: {ref:'person', type: String},
+      owner: {ref:'person', inverse: 'cars', type: String},
       MOT: {ref: 'service', external: true, type: String},
       additionalDetails: {
         seats: Number

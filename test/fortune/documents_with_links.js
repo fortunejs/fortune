@@ -204,7 +204,7 @@ module.exports = function(options){
           .expect('afterWritePerson', 'ok')
           .end(done);
       });
-      it('should apply proper hook on linked resources on read', function(done){
+      it.skip('should apply proper hook on linked resources on read', function(done){
         new Promise(function(resolve){
           var link = [{
             op: 'replace',

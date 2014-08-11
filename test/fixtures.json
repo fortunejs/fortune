@@ -27,16 +27,13 @@
   ],
   "addresses": [
     {
-      "name": "One",
-      "person": "dilbert@mailbert.com"
+      "name": "One"
     },
     {
-      "name": "Two",
-      "person": "dilbert@mailbert.com"
+      "name": "Two"
     },
     {
-      "name": "Three",
-      "person": "robert@mailbert.com"
+      "name": "Three"
     }
   ],
   "pets": [
