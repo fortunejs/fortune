@@ -495,6 +495,28 @@ module.exports = function(options){
               done();
             })
         });
+        describe('should rewrite id to resource PK for', function(){
+          it('$and filters', function(done){
+            request(baseUrl).get('/people?filter[$and][0][id]=' + ids.people[0])
+              .expect(200).end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people.length.should.equal(1);
+                body.people[0].id.should.equal(ids.people[0]);
+                done();
+              });
+          });
+          it('$or filters', function(done){
+            request(baseUrl).get('/people?filter[$or][0][id]=' + ids.people[0])
+              .expect(200).end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people.length.should.equal(1);
+                body.people[0].id.should.equal(ids.people[0]);
+                done();
+              });
+          });
+        });
         it('should be able to nest OR and AND filters', function(done){
           request(baseUrl).get('/houses?filter[or][0][and][0][owners][in]=' + ids.people[0])
             .expect(200)
