@@ -390,6 +390,48 @@ module.exports = function(options){
             done();
           });
       });
+      it('should let hooks modify req.query.filter', function(done){
+        request(baseUrl).get('/people/' + ids.people[0])
+          .set('hookFilter', ids.people[1])
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].id.should.equal(ids.people[1]);
+            body.people.length.should.equal(1);
+            done();
+          });
+      });
+      it('should let hooks modify req.query.filter for subresource requests', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch('/people/' + ids.people[0]).set('content-type', 'application/json')
+            .send(JSON.stringify([{op: 'replace', path: '/people/0/links/cars', value: [ids.cars[0]]}]))
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+          return new Promise(function(resolve){
+            request(baseUrl).patch('/people/' + ids.people[1]).set('content-type', 'application/json')
+              .send(JSON.stringify([{op: 'replace', path: '/people/0/links/cars', value: [ids.cars[1]]}]))
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                resolve();
+              });
+          });
+        }).then(function(){
+          request(baseUrl).get('/people/' + ids.people[0] + '/cars')
+            .set('hookFilter', ids.people[1])
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.cars[0].id.should.equal(ids.cars[1]);
+              done();
+            });
+        });
+      });
       describe('filtering by related objects fields', function(){
         beforeEach(function(done){
           neighbourhood(adapter, ids).then(function(){
