@@ -11,11 +11,11 @@ module.exports = function(options){
   });
 
   describe("hooks", function(){
-    it("should stop processing a request if a before hook returns false", function(done) {      
+    it("should stop processing a request if a before hook returns false", function(done) {
       var petCount;
       request(baseUrl).get('/pets/')
         .set('content-type', 'application/json')
-        .end(function(err, res) {          
+        .end(function(err, res) {
           petCount = JSON.parse(res.text).pets.length;
           request(baseUrl).post('/pets/?failbeforeAllWrite=boolean')
           .set('content-type', 'application/json')
@@ -29,14 +29,14 @@ module.exports = function(options){
                 done();
             });
         });
-      });      
+      });
     });
 
-    it("should stop processing a request if a before hook returns false via a promise", function(done) {      
+    it("should stop processing a request if a before hook returns false via a promise", function(done) {
       var petCount;
       request(baseUrl).get('/pets/')
         .set('content-type', 'application/json')
-        .end(function(err, res) {          
+        .end(function(err, res) {
           petCount = JSON.parse(res.text).pets.length;
           request(baseUrl).post('/pets/?failbeforeAllWrite=promise')
           .set('content-type', 'application/json')
@@ -50,7 +50,7 @@ module.exports = function(options){
                 done();
             });
         });
-      });      
+      });
     });
 
     it("should apply global hooks in priority order", function(done){
@@ -78,7 +78,7 @@ module.exports = function(options){
         });
     });
   });
-  describe("native mongoose middleware", function(){
+  describe.skip("native mongoose middleware", function(){
     it("should be able to expose mongoose api to resources", function(done){
       new RSVP.Promise(function(resolve){
         request(baseUrl).post("/houses")
