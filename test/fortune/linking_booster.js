@@ -134,7 +134,8 @@ module.exports = function(options){
           query:{
             filter: {owner: {$in: ['personId']}},
             include: ''
-          }
+          },
+          user: undefined
         });
         done();
       });
