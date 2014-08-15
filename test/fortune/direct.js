@@ -4,7 +4,7 @@ var _ = require("lodash"),
 module.exports = function(options){
   describe("direct", function(){
     var app, ids;
-    
+
     beforeEach(function(){
       app = options.app;
       ids = options.ids;
@@ -51,7 +51,7 @@ module.exports = function(options){
 
     it("creates a resource", function(done){
       var doc = {people: [{ name: "Director", email: "director@abc.com" }]};
-      
+
       app.direct.create("people", {body:doc}).then(function(res){
         res.body.people.length.should.be.equal(1);
         res.body.people[0].id.should.be.equal(doc.people[0].email);
@@ -78,7 +78,7 @@ module.exports = function(options){
       }).then(function(res){
         res.body.people[0].id.should.be.equal(resource.email);
         done();
-      }).catch(function(err){ console.trace(err); });
+      }).catch(function(err){ console.trace(err.stack || err); });
     });
 
     it("udpate can add a record to an array", function(done){

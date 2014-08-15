@@ -57,7 +57,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links.pets);
+              should.not.exist(body.people[0].links);
               resolve();
             });
         }).then(function () {
@@ -188,7 +188,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links.soulmate);
+              should.not.exist(body.people[0].links);
               resolve();
             });
         }).then(function () {
@@ -276,7 +276,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              should.not.exist(body.people[0].links.lovers);
+              should.not.exist(body.people[0].links);
               resolve();
             });
         }).then(function () {
@@ -373,7 +373,7 @@ module.exports = function(options){
                 var body = JSON.parse(res.text);
                 var first = _.findWhere(body.people, {id: ids.people[0]});
                 var second = _.findWhere(body.people, {id: ids.people[1]});
-                should.not.exist(first.links.cars);
+                should.not.exist(first.links);
                 should.exist(second.links.cars);
                 (second.links.cars[0]).should.equal(ids.cars[0]);
                 done();

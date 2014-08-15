@@ -212,7 +212,7 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               var keys = Object.keys(docs[0]).length;
-              (keys).should.equal(10);
+              (keys).should.equal(9);
               done();
             });
         });

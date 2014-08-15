@@ -8,11 +8,12 @@ var fixtures = require('../fixtures.json');
 
 module.exports = function(options){
   describe('routing', function(){
-    var app, baseUrl, ids;
+    var app, baseUrl, ids, adapter;
     beforeEach(function(){
       app = options.app;
       baseUrl = options.baseUrl;
       ids = options.ids;
+      adapter = options.app.adapter;
     });
 
     describe('getting a list of resources', function() {
@@ -58,6 +59,84 @@ module.exports = function(options){
         });
       });
     });
+
+    describe('creating a list of resources', function(){
+      it('should create a list of resources setting proper references', function(done){
+        var resources = _.reduce([ids.people[0], ids.people[0], ids.people[1]], function(memo, person){
+          memo.push({
+            name: '' + memo.length,
+            person: person
+          });
+          return memo;
+        }, []);
+        request(baseUrl).post('/addresses')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            addresses: resources
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            var ids = body.addresses.map(function(addr){
+              should.exist(addr.links.person);
+              return addr.id;
+            });
+            adapter.findMany('address', {id: {$in: ids}}).then(function(found){
+              found.forEach(function(addr){
+                should.exist(addr.links.person);
+              });
+              done();
+            });
+          });
+      });
+
+      it.skip('should properly bind created resources when they are created in parallel', function(done){
+        var people = _.reduce(['one', 'two', 'three'], function(memo, mail){
+          memo.push({email: mail});
+          return memo;
+        }, []);
+        var addresses = _.reduce(['one', 'two', 'three'], function(memo, person){
+          memo.push({person: person});
+          return memo;
+        }, []);
+        function create(path, body){
+          return new Promise(function(resolve){
+            request(baseUrl).post(path).set('content-type', 'application/json')
+              .send(JSON.stringify(body)).end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                _.each(body[path.replace('/', '')], function(i){
+                  console.log(i);
+                });
+                resolve(_.map(body[path.replace('/', '')], function(i){return i.id}));
+              });
+          })
+        }
+        function verify(model, ids, link){
+          return adapter.findMany(model, ids).then(function(found){
+            found.forEach(function(f){
+              console.log(link, f);
+              should.exist(f.links[link]);
+            });
+            return true;
+          });
+        }
+          RSVP.all([
+            create('/addresses', {addresses: addresses}),
+            create('/people', {people: people})
+          ]).then(function(results){
+            return RSVP.all([
+              verify('person', results[0], 'addresses'),
+              verify('address', results[1], 'person')
+            ]);
+          })
+          .then(function(ok){
+            _.all(ok).should.equal(true);
+            done();
+          });
+      });
+    });
+
 
     describe("collection delete route", function(){
       it("should remove all data from the database for a collection", function(done){

@@ -45,47 +45,6 @@ module.exports = function(options, port) {
 
   app.inflect.inflections.plural("MOT", "MOT");
 
-  app.adapter.awaitConnection().then(function(){
-    return new RSVP.Promise(function(resolve){
-      app.adapter.mongoose.connections[1].db.collectionNames(function(err, collections){
-        resolve(_.compact(_.map(collections, function(collection){
-          
-          var name = collection.name.split(".")[1];
-          if(name && name !== "system"){
-            return new RSVP.Promise(function(resolve){
-              app.adapter.mongoose.connections[1].db.collection(name, function(err, collection){
-                collection.remove({},null, function(){
-                  console.log("Wiped collection", name);
-                  resolve();
-                });
-              });
-            });
-          }
-          return null;
-        })));
-      });
-    });
-  }).then(function(wipeFns){
-    console.log("Wiping collections:");
-    return RSVP.all(wipeFns);
-  }).then(function(){
-    app.router.post("/remove-pets-link/:personid", function(req, res) {
-      var Person = app.adapter.model("person");
-      Person.findOne({email: req.params.personid}, function(err,person) {
-        if (err) {
-          console.error(err);
-          res.send(500,err);
-          return;
-        }
-        person.pets = null;
-        person.save(function() {
-          res.send(200);
-        });
-      });
-
-    });
-  });
-
   app.beforeAllRW([{
     name: "by5",
     priority: 10,
@@ -125,7 +84,7 @@ module.exports = function(options, port) {
       soulmate: {ref: 'person', inverse: 'soulmate', type: String},
       lovers: [{ref: 'person', inverse: 'lovers', type: String}],
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
-      cars: [{ref:'car', type: String}],
+      cars: [{ref:'car', inverse: 'owner', type: String}],
       houses: [{ref: 'house', inverse: 'owners'}],
       addresses: [{ref: 'address', inverse: 'person'}],
       estate: {ref: 'house', inverse: 'landlord'},
@@ -186,7 +145,7 @@ module.exports = function(options, port) {
     .resource('pet', {
       name: String,
       appearances: Number,
-      owner: {ref:'person', type: String}
+      owner: {ref:'person', inverse: 'pets', type: String}
     })
 
     .resource('address', {
@@ -198,7 +157,7 @@ module.exports = function(options, port) {
     .resource('car', {
       licenseNumber: String,
       model: String,
-      owner: {ref:'person', type: String},
+      owner: {ref:'person', inverse: 'cars', type: String},
       MOT: {ref: 'service', external: true, type: String},
       additionalDetails: {
         seats: Number
