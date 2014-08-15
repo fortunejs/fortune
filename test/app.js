@@ -107,6 +107,18 @@ module.exports = function(options, port) {
         }
       }
     })
+    .beforeRead([{
+      name: 'modifyFilter',
+      init: function(){
+        return function(req, res){
+          if (req.headers['hookfilter']){
+            req.query.filter = {};
+            req.query.filter.id = req.headers['hookfilter'];
+          }
+          return this;
+        }
+      }
+    }])
 
   //Hooks with standard config defined in personHooks.js
     .beforeWrite([personHooks.beforeWrite])
