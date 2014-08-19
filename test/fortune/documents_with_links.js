@@ -358,6 +358,49 @@ module.exports = function(options){
           });
       });
     });
+    describe('deleting a resource referencing another one', function(){
+      beforeEach(function(done){
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/pets', value: [ids.pets[0]]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people[0].links.pets).should.eql([ids.pets[0]]);
+            done();
+          });
+      });
+      it('should delete single resource and unlink it from referenced document', function(done){
+        request(baseUrl).del('/pets/' + ids.pets[0])
+          .expect(204)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people/' + ids.people[0])
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                should.not.exist(body.people[0].links);
+                done();
+              });
+          });
+      });
+      it('should delete collection and unlink documents from referenced resources', function(done){
+        request(baseUrl).del('/pets')
+          .expect(204)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people/' + ids.people[0])
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                should.not.exist(body.people[0].links);
+                done();
+              });
+          });
+      });
+    });
   });
 
 }
