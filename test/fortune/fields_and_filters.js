@@ -27,14 +27,14 @@ module.exports = function(options){
             if (error) return done(error);
             JSON.parse(response.text).people[0].nested.should.eql({field1: "value1"});
             request(baseUrl).patch('/people/' + ids.people[0])
-            .set('content-type', 'application/json')
-            .send(JSON.stringify([{op: "replace", path: "/people/0/nested/field2", value: "value2"}]))
-            .expect(200)
-            .end(function(error, response) {
-              if (error) return done(error);
-              JSON.parse(response.text).people[0].nested.should.eql({field1: "value1", field2: "value2"});
-              done();
-            });
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([{op: "replace", path: "/people/0/nested/field2", value: "value2"}]))
+              .expect(200)
+              .end(function(error, response) {
+                if (error) return done(error);
+                JSON.parse(response.text).people[0].nested.should.eql({field1: "value1", field2: "value2"});
+                done();
+              });
           });
       });
     });
@@ -121,6 +121,7 @@ module.exports = function(options){
             done();
           });
       });
+
       it("should allow top-level resource filtering based on a numeric value", function(done) {
         request(baseUrl).get('/people?filter[appearances]=1934')
           .expect('Content-Type', /json/)
@@ -143,33 +144,33 @@ module.exports = function(options){
           });
       });
       it('should be possible to filter related resources by ObjectId', function(done){
-      var cmd = [
-        {
-          op: 'replace',
-          path: '/people/0/pets',
-          value: [ids.pets[0], ids.pets[1]]
-        }
-      ];
-      //Give a man a pet
-      request(baseUrl).patch('/people/' + ids.people[0])
-        .set('Content-Type', 'application/vnd.api+json')
-        .send(JSON.stringify(cmd))
-        .expect(200)
-        .end(function(err){
-          should.not.exist(err);
-          request(baseUrl).get('/people?filter[pets]=' + ids.pets[0])
-            .expect(200)
-            .end(function(err, res){
-              should.not.exist(err);
-              var data = JSON.parse(res.text);
-              (data.people).should.be.an.Array;
-              //Make sure filtering was run by ObjectId
-              (/[0-9a-f]{24}/.test(ids.pets[0])).should.be.ok;
-              (/[0-9a-f]{24}/.test(data.people[0].links.pets[0])).should.be.ok;
-              done();
-            });
-        });
-    });
+        var cmd = [
+          {
+            op: 'replace',
+            path: '/people/0/pets',
+            value: [ids.pets[0], ids.pets[1]]
+          }
+        ];
+        //Give a man a pet
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('Content-Type', 'application/vnd.api+json')
+          .send(JSON.stringify(cmd))
+          .expect(200)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people?filter[pets]=' + ids.pets[0])
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var data = JSON.parse(res.text);
+                (data.people).should.be.an.Array;
+                //Make sure filtering was run by ObjectId
+                (/[0-9a-f]{24}/.test(ids.pets[0])).should.be.ok;
+                (/[0-9a-f]{24}/.test(data.people[0].links.pets[0])).should.be.ok;
+                done();
+              });
+          });
+      });
       it('should support filtering by id for one-to-one relationships', function(done){
         new Promise(function(resolve){
           var upd = [{
@@ -275,15 +276,15 @@ module.exports = function(options){
               resolve();
             });
         }).then(function(){
-            request(baseUrl).get("/people?filter[soulmate][$in]=robert@mailbert.com&filter[soulmate][$in]=dilbert@mailbert.com")
-              .expect(200)
-              .end(function(err, res){
-                should.not.exist(err);
-                var body = JSON.parse(res.text);
-                (body.people.length).should.equal(2);
-                done();
-              });
-          });
+          request(baseUrl).get("/people?filter[soulmate][$in]=robert@mailbert.com&filter[soulmate][$in]=dilbert@mailbert.com")
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people.length).should.equal(2);
+              done();
+            });
+        });
       });
       it('should support $in query against many-to-many refs', function(done){
         new Promise(function(resolve){
@@ -301,15 +302,15 @@ module.exports = function(options){
               resolve();
             });
         }).then(function(){
-            request(baseUrl).get("/people?filter[lovers][$in]=robert@mailbert.com&filter[lovers][$in]=dilbert@mailbert.com")
-              .expect(200)
-              .end(function(err, res){
-                should.not.exist(err);
-                var body = JSON.parse(res.text);
-                (body.people.length).should.equal(2);
-                done();
-              });
-          });
+          request(baseUrl).get("/people?filter[lovers][$in]=robert@mailbert.com&filter[lovers][$in]=dilbert@mailbert.com")
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.people.length).should.equal(2);
+              done();
+            });
+        });
       });
       it('should support $in query against external refs values', function(done){
         new Promise(function(resolve){
@@ -325,15 +326,15 @@ module.exports = function(options){
               resolve();
             });
         }).then(function(){
-            request(baseUrl).get("/cars?filter[MOT][$in]=Pimp-my-ride")
-              .expect(200)
-              .end(function(err, res){
-                should.not.exist(err);
-                var body = JSON.parse(res.text);
-                (body.cars.length).should.equal(1);
-                done();
-              });
-          });
+          request(baseUrl).get("/cars?filter[MOT][$in]=Pimp-my-ride")
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              (body.cars.length).should.equal(1);
+              done();
+            });
+        });
       });
       it('should be able to run $in query against nested fields', function(done){
         request(baseUrl).get("/cars?filter[additionalDetails.seats][in]=2")
@@ -366,7 +367,7 @@ module.exports = function(options){
               body.people.length.should.equal(2);
               done();
             });
-          });
+        });
       });
       it('should support or query', function(done){
         request(baseUrl).get('/people?filter[or][0][name]=Dilbert&filter[or][1][email]=robert@mailbert.com&sort=name')
@@ -468,7 +469,7 @@ module.exports = function(options){
                 (body.pets.length).should.equal(2);
                 done();
               });
-            });
+          });
         });
         it('should be able to apply OR filter to related resources', function(done){
           request(baseUrl).get('/cars?filter[or][0][owner][soulmate]=' + ids.people[0] + '&filter[or][1][id]=' + ids.cars[0])
@@ -590,7 +591,7 @@ module.exports = function(options){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             // console.log(body);
-             (body.people.length).should.equal(2);
+            (body.people.length).should.equal(2);
             _.pluck(body.people, "name").should.eql(["Dilbert", "Robert"]);
             done();
           });

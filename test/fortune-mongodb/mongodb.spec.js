@@ -370,6 +370,19 @@ module.exports = function(options){
             done();
           });
       });
+
+      it("should be tolerant to $in:undefined queries", function(done){
+        var query = { '$in': undefined  };
+
+        adapter.findMany("person", query).then(function(){ done(); });
+      });
+
+      it("should be tolerant to $in:null queries", function(done){
+        var query = { '$in': null  };
+
+        adapter.findMany("person", query).then(function(){ done(); });
+      });
+
       it('should be able to run regex query with default options', function(done){
         var queryLowercase = {
           email: {
