@@ -1,4 +1,5 @@
 var _ = require("lodash"),
+    sinon = require("sinon"),
     should = require("should");
 
 module.exports = function(options){
@@ -131,5 +132,13 @@ module.exports = function(options){
       });
     });
 
+    it("should provide httpMethod for hooks that inspect it", function(done){
+      app.direct.update("people", {params: {id: ids.people[0]}, body: [{
+        op: "add", path: "/people/0/houses/-", value: ids.houses[0]
+      }]}).then(function(res){
+        res.headers["hookedmethod"].should.equal("PATCH");
+        done();
+      });
+    });
   });
 };

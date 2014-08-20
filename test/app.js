@@ -51,6 +51,7 @@ module.exports = function(options, port) {
     init: function(){
       return function(req, res){
         res.setHeader("globalPriority", (res.get("globalPriority") || "") + "rect");
+        res.setHeader("hookedmethod", req.method);
         return this;
       }
     }
@@ -160,7 +161,8 @@ module.exports = function(options, port) {
       owner: {ref:'person', inverse: 'cars', type: String},
       MOT: {ref: 'service', external: true, type: String},
       additionalDetails: {
-        seats: Number
+        seats: Number,
+        wheels: Number
       }
     },{
       model: { pk: "licenseNumber" },

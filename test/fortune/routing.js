@@ -180,6 +180,25 @@ module.exports = function(options){
       });
     });
 
+    describe("PATCH replace method", function(){
+      it("with embedded documents", function(done){
+        request(baseUrl).patch("/cars/" + ids.cars[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/cars/0/model', value: 'monster truck'},
+            {op: 'replace', path: '/cars/0/additionalDetails/wheels', value: 10},
+            {op: 'replace', path: '/cars/0/additionalDetails/seats', value: 100}
+          ]))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.cars[0].additionalDetails.seats.should.equal(100);
+            done();
+          });
+      });
+    });
+
     describe("PATCH add method", function(){
       beforeEach(function(done){
         var cmd = [{
