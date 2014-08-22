@@ -60,6 +60,52 @@ module.exports = function(options){
       });
     });
 
+    describe('getting a subresource', function(){
+      beforeEach(function(done){
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/links/addresses', value: [ids.addresses[0], ids.addresses[1]]}
+          ]))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.addresses.length.should.equal(2);
+            done();
+          });
+      });
+      it('should be able to return subresource', function(done){
+        request(baseUrl).get('/people/' + ids.people[0] + '/addresses')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.addresses.length.should.equal(2);
+            should.not.exist(body.people);
+            done();
+          });
+      });
+      it('should apply provided filters to subresource only', function(done){
+        request(baseUrl).get('/addresses/' + ids.addresses[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var addressName = JSON.parse(res.text).addresses[0].name;
+            request(baseUrl).get('/people/' + ids.people[0] + '/addresses?filter[name]=' + addressName)
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.addresses.length.should.equal(1);
+                should.not.exist(body.people);
+                done();
+              });
+          })
+      });
+    });
+
+
     describe('creating a list of resources', function(){
       it('should create a list of resources setting proper references', function(done){
         var resources = _.reduce([ids.people[0], ids.people[0], ids.people[1]], function(memo, person){
