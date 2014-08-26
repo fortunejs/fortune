@@ -115,7 +115,7 @@ module.exports = function(options){
           done();
         });
     });
-    describe('should not suck a cock including a lot of different stuff', function(){
+    describe('include external resources', function(){
       beforeEach(function(done){
         //Create external bindings;
         new Promise(function(resolve){
