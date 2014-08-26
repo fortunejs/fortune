@@ -115,5 +115,98 @@ module.exports = function(options){
           done();
         });
     });
+    describe('include external resources', function(){
+      beforeEach(function(done){
+        //Create external bindings;
+        new Promise(function(resolve){
+          request(baseUrl).patch('/cars/' + ids.cars[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'replace', path: '/cars/0/MOT', value: 'motOne'},
+              {op: 'replace', path: '/cats/0/links/owner', value: ids.people[0]}
+            ]))
+            .expect(200)
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+          return new Promise(function(resolve){
+            request(baseUrl).patch('/cars/' + ids.cars[1])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'replace', path: '/cars/0/MOT', value: 'motTwo'},
+              {op: 'replace', path: '/cars/0/links/owner', value: ids.people[1]}
+            ]))
+            .expect(200)
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+          });
+        }).then(function(){
+            request(baseUrl).patch('/people/' + ids.people[0])
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([
+                {op: 'replace', path: '/people/0/links/soulmate', value: ids.people[1]}
+              ]))
+              .expect(200)
+              .end(function(err){
+                should.not.exist(err);
+                done();
+              });
+          });
+      });
+      it('should mark external include as external', function(done){
+        request(baseUrl).get('/cars?include=MOT')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.services.should.equal('external');
+            done();
+          });
+      });
+      it('should mark external include when its two levels deep', function(done){
+        request(baseUrl).get('/people?include=cars.MOT')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.services.should.equal('external');
+            done();
+          });
+      });
+      it('should mark external include when its requested twice', function(done){
+        request(baseUrl).get('/people?include=soulmate.cars.MOT,cars.MOT')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.services.should.equal('external');
+            done();
+          });
+      });
+      it('should mark external include when resource is requested by id', function(done){
+        request(baseUrl).get('/cars/' + ids.cars[0] + '?include=MOT')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.services.should.equal('external');
+            done();
+          });
+      });
+      it('should mark external include when its nested and resource is requested by id', function(done){
+        request(baseUrl).get('/people/' + ids.people[0] + '?include=cars.MOT,soulmate.cars.MOT')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.linked.services.should.equal('external');
+            done();
+          });
+      });
+    });
   });
-}
+};
