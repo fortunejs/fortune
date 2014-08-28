@@ -162,6 +162,25 @@ module.exports = function(options){
            done();
           });
         });
+        it('should pass all $-prefixed fields transparently', function(done){
+          var query = {
+            owners: {
+              $exists: true
+            }
+          };
+          tree.parse('house', query).then(function(result){
+            (result).should.eql({owners: {$exists: true}});
+            var complexQuery = {
+              $or: [
+                {owners: {$exists: true}}
+              ]
+            };
+            tree.parse('house', complexQuery).then(function(result) {
+              (result).should.eql({$or: [{owners: {$exists: true}}]});
+              done();
+            });
+          });
+        });
       });
     });
   });
