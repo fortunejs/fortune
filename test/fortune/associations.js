@@ -392,5 +392,44 @@ module.exports = function(options){
         done();
       });
     });
+
+    it("should be able to link itself", function(done){
+      request(baseUrl).patch("/people/" + ids.people[0])
+        .set("content-type", "application/json")
+        .send(JSON.stringify([
+          {op: "replace", path: "/people/0/links/soulmate", value: ids.people[0]}
+        ]))
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.soulmate.should.equal(ids.people[0]);
+          done();
+        });
+    });
+    it.only("should handle update of self-link", function(done){
+      request(baseUrl).patch("/people/" + ids.people[0])
+        .set("content-type", "application/json")
+        .send(JSON.stringify([
+          {op: "replace", path: "/people/0/links/soulmate", value: ids.people[0]}
+        ]))
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.soulmate.should.equal(ids.people[0]);
+
+
+          request(baseUrl).patch("/people/" + ids.people[0])
+            .set("content-type", "application/json")
+            .send(JSON.stringify([
+              {op: "replace", path: "/people/0/links/soulmate", value: ids.people[1]}
+            ]))
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.people[0].links.soulmate.should.equal(ids.people[1]);
+              done();
+            });
+        });
+    });
   });
 };
