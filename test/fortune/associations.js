@@ -299,8 +299,8 @@ module.exports = function(options){
           //Create initial binding
           request(baseUrl).patch('/people/' + ids.people[0])
             .send([
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]},
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[1]}
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]},
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[1]}
             ])
             .expect(200)
             .end(function(err){
@@ -312,7 +312,7 @@ module.exports = function(options){
             //Update binding
             request(baseUrl).patch('/people/' + ids.people[1])
               .send([
-                {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+                {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]}
               ])
               .expect(200)
               .end(function(err){
@@ -345,7 +345,7 @@ module.exports = function(options){
           //Create binding
           request(baseUrl).patch('/people/' + ids.people[0])
             .send([
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]}
             ])
             .expect(200)
             .end(function(err){

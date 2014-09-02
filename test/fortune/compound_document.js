@@ -177,7 +177,7 @@ module.exports = function(options){
           request(baseUrl).patch('/people/' + person)
             .set('content-type', 'application/json')
             .send(JSON.stringify([
-              {op: 'add', path: '/people/0/addresses/-', value: address}
+              {op: 'add', path: '/people/0/links/addresses/-', value: address}
             ])).end(function(err, res){
               should.not.exist(err);
               resolve();

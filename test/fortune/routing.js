@@ -249,7 +249,7 @@ module.exports = function(options){
       beforeEach(function(done){
         var cmd = [{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[0]
         }];
         patch('/people/' + ids.people[0], cmd, done);
@@ -257,7 +257,7 @@ module.exports = function(options){
       it('should atomically add item to array', function(done){
         var cmd = [{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[1]
         }];
         patch('/people/' + ids.people[0], cmd, function(err, res){
@@ -281,11 +281,11 @@ module.exports = function(options){
       it('should support bulk update', function(done){
         var cmd = [{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[0]
         },{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[0]
         }];
         patch('/people/' + ids.people[0], cmd, function(err, res){
@@ -316,15 +316,15 @@ module.exports = function(options){
       beforeEach(function(done){
         var cmd = [{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[0]
         },{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[1]
         },{
           op: 'add',
-          path: '/people/0/houses/-',
+          path: '/people/0/links/houses/-',
           value: ids.houses[2]
         }];
         patch('/people/' + ids.people[0], cmd, function(err){
@@ -338,11 +338,11 @@ module.exports = function(options){
       beforeEach(function(done){
         var cmd = [{
           op: 'add',
-          path: '/houses/0/owners/-',
+          path: '/houses/0/links/owners/-',
           value: ids.people[1]
         },{
           op: 'add',
-          path: '/houses/0/owners/-',
+          path: '/houses/0/links/owners/-',
           value: ids.people[2]
         }];
         patch('/houses/' + ids.houses[0], cmd, function(err){
@@ -353,7 +353,7 @@ module.exports = function(options){
       it('should atomically remove array item', function(done){
         var cmd = [{
           op: 'remove',
-          path: '/people/0/houses/' + ids.houses[0]
+          path: '/people/0/links/houses/' + ids.houses[0]
         }];
         patch('/people/' + ids.people[0], cmd, function(err, res){
           should.not.exist(err);
@@ -367,7 +367,7 @@ module.exports = function(options){
       it('should also update referenced item', function(done){
         var cmd = [{
           op: 'remove',
-          path: '/people/0/houses/' + ids.houses[0]
+          path: '/people/0/links/houses/' + ids.houses[0]
         }];
         patch('/people/' + ids.people[0], cmd, function(err){
           should.not.exist(err);
@@ -384,10 +384,10 @@ module.exports = function(options){
       it('should support bulk operation', function(done){
         var cmd = [{
           op: 'remove',
-          path: '/people/0/houses/' + ids.houses[0]
+          path: '/people/0/links/houses/' + ids.houses[0]
         },{
           op: 'remove',
-          path: '/people/0/houses/' + ids.houses[1]
+          path: '/people/0/links/houses/' + ids.houses[1]
         }];
         patch('/people/' + ids.people[0], cmd, function(err, res){
           should.not.exist(err);
