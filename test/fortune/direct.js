@@ -85,7 +85,7 @@ module.exports = function(options){
     it("udpate can add a record to an array", function(done){
       app.direct.update("people", {params: {id: ids.people[0]}, body:[{
         op: "add",
-        path: "/people/0/houses/-",
+        path: "/people/0/links/houses/-",
         value: ids.houses[1]
       }]}).then(function(res){
         res.body.people[0].links.houses.length.should.equal(1);
@@ -97,11 +97,11 @@ module.exports = function(options){
     it("supports bulk update", function(done){
       app.direct.update("people", {params: {id: ids.people[0]}, body:[{
         op: 'add',
-        path: '/people/0/houses/-',
+        path: '/people/0/links/houses/-',
         value: ids.houses[0]
       },{
         op: 'add',
-        path: '/people/0/houses/-',
+        path: '/people/0/links/houses/-',
         value: ids.houses[1]
       }]}).then(function(res){
         res.body.people[0].links.houses.length.should.equal(2);
@@ -120,7 +120,7 @@ module.exports = function(options){
     it("supports includes", function(done){
       app.direct.update("people", {params: {id: ids.people[0]}, body: [{
         op: "add",
-        path: "/people/0/houses/-",
+        path: "/people/0/links/houses/-",
         value: ids.houses[1]
       }]}).then(function(){
         return app.direct.get("people", {query: {include: "houses"}});
@@ -134,7 +134,7 @@ module.exports = function(options){
 
     it("should provide httpMethod for hooks that inspect it", function(done){
       app.direct.update("people", {params: {id: ids.people[0]}, body: [{
-        op: "add", path: "/people/0/houses/-", value: ids.houses[0]
+        op: "add", path: "/people/0/links/houses/-", value: ids.houses[0]
       }]}).then(function(res){
         res.headers["hookedmethod"].should.equal("PATCH");
         done();

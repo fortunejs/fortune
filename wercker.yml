@@ -1,0 +1,8 @@
+box: wercker/nodejs
+services:
+    - wercker/mongodb
+no-response-timeout: 15
+build:
+  steps:
+    - npm-install
+    - npm-test

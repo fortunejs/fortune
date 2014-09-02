@@ -299,8 +299,8 @@ module.exports = function(options){
           //Create initial binding
           request(baseUrl).patch('/people/' + ids.people[0])
             .send([
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]},
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[1]}
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]},
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[1]}
             ])
             .expect(200)
             .end(function(err){
@@ -312,7 +312,7 @@ module.exports = function(options){
             //Update binding
             request(baseUrl).patch('/people/' + ids.people[1])
               .send([
-                {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+                {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]}
               ])
               .expect(200)
               .end(function(err){
@@ -345,7 +345,7 @@ module.exports = function(options){
           //Create binding
           request(baseUrl).patch('/people/' + ids.people[0])
             .send([
-              {path: '/people/0/cars/-', op: 'add', value: ids.cars[0]}
+              {path: '/people/0/links/cars/-', op: 'add', value: ids.cars[0]}
             ])
             .expect(200)
             .end(function(err){
@@ -390,6 +390,62 @@ module.exports = function(options){
           indexData[key+"_1"].should.be.eql([[key,1]]);
         });
         done();
+      });
+    });
+
+    describe("self-link", function(){
+      beforeEach(function(done){
+        request(baseUrl).patch("/people/" + ids.people[0])
+          .set("content-type", "application/json")
+          .send(JSON.stringify([
+            {op: "replace", path: "/people/0/links/soulmate", value: ids.people[0]},
+            {op: "replace", path: "/people/0/links/lovers", value: [ids.people[0]]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.soulmate.should.equal(ids.people[0]);
+            done();
+          });
+      });
+      it("should be able to link itself", function(done){
+        request(baseUrl).patch("/people/" + ids.people[1])
+          .set("content-type", "application/json")
+          .send(JSON.stringify([
+            {op: "replace", path: "/people/0/links/soulmate", value: ids.people[1]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.soulmate.should.equal(ids.people[1]);
+            done();
+          });
+      });
+      it("should handle update of self-link", function(done){
+        request(baseUrl).patch("/people/" + ids.people[0])
+          .set("content-type", "application/json")
+          .send(JSON.stringify([
+            {op: "replace", path: "/people/0/links/soulmate", value: ids.people[1]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.soulmate.should.equal(ids.people[1]);
+            done();
+          });
+      });
+      it("should handle update of self-link to many", function(done){
+        request(baseUrl).patch("/people/" + ids.people[0])
+          .set("content-type", "application/json")
+          .send(JSON.stringify([
+            {op: "replace", path: "/people/0/links/lovers", value: [ids.people[1]]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.people[0].links.lovers[0].should.equal(ids.people[1]);
+            done();
+          });
       });
     });
   });
