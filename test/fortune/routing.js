@@ -295,6 +295,30 @@ module.exports = function(options){
           done();
         });
       });
+      it('should be backward compatible with /resource/0/field syntax', function(done){
+        var cmd = [
+          {op: 'add', path: '/people/0/houses', value: ids.houses[1]},
+        ];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.houses.length.should.equal(2);
+          body.people[0].links.houses[1].should.equal(ids.houses[1]);
+          done();
+        });
+      });
+      it('should be backward compatible with /resource/0/field/- syntax', function(done){
+        var cmd = [
+          {op: 'add', path: '/people/0/houses/-', value: ids.houses[1]}
+        ];
+        patch('/people/' + ids.people[0], cmd, function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.houses.length.should.equal(2);
+          body.people[0].links.houses[1].should.equal(ids.houses[1]);
+          done();
+        });
+      });
       //helpers
       function patch(url, cmd, cb){
         request(baseUrl).patch(url)
@@ -393,6 +417,17 @@ module.exports = function(options){
           should.not.exist(err);
           var body = JSON.parse(res.text);
           (body.people[0].links.houses.length).should.equal(1);
+          done();
+        });
+      });
+      it('should be backward compatible with /field/value syntax', function(done){
+        var cmd = [
+          {op: 'remove', path: '/people/0/houses/' + ids.houses[0]}
+        ];
+        patch('/people/' + ids.people[0], cmd, function(err,res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.houses.length.should.equal(2);
           done();
         });
       });
