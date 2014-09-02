@@ -369,6 +369,30 @@ module.exports = function(options){
             });
         });
       });
+      it('should support special mongo $prefixed queries against external resources', function(done){
+        new Promise(function(resolve){
+          request(baseUrl).patch("/cars/" + ids.cars[0])
+            .set("content-type", "application/json")
+            .send(JSON.stringify([{
+              path: "/cars/0/links/MOT",
+              op: "replace",
+              value: "Pimp-my-ride"
+            }]))
+            .end(function(err){
+              should.not.exist(err);
+              resolve();
+            });
+        }).then(function(){
+            request(baseUrl).get("/cars?filter[MOT][$exists]=true")
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                (body.cars.length).should.equal(1);
+                done();
+              });
+          });
+      });
       it('should support or query', function(done){
         request(baseUrl).get('/people?filter[or][0][name]=Dilbert&filter[or][1][email]=robert@mailbert.com&sort=name')
           .expect(200)
