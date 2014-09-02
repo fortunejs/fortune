@@ -18,7 +18,7 @@ describe('Fortune test runner', function(){
   };
 
   before(function(done){
-    var remoteDB = process.env.WERCKER_MONGODB_URL ? process.env.WERKER_MONGODB_URL + '/fortune' : null;
+    var remoteDB = process.env.WERCKER_MONGODB_URL ? process.env.WERCKER_MONGODB_URL + '/fortune' : null;
 
     if(remoteDB){
       console.log("Using remote mongodb:",remoteDB);
