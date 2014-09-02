@@ -43,7 +43,7 @@ module.exports = function(options){
       beforeEach(function(done){
         var update = [{
           op: 'add',
-          path: '/people/0/pets',
+          path: '/people/0/links/pets/-',
           value: ids.pets[0]
         }];
         request(baseUrl).patch('/people/' + ids.people[0])
@@ -212,11 +212,11 @@ module.exports = function(options){
         new Promise(function(resolve){
           var upd = [{
             op: 'add',
-            path: '/people/0/houses/-',
+            path: '/people/0/links/houses/-',
             value: ids.houses[0]
           },{
             op: 'add',
-            path: '/people/0/houses/-',
+            path: '/people/0/links/houses/-',
             value: ids.houses[1]
           }];
           request(baseUrl).patch('/people/' + ids.people[0])
@@ -232,11 +232,11 @@ module.exports = function(options){
             return new Promise(function(resolve){
               var upd = [{
                 op: 'add',
-                path: '/people/0/houses/-',
+                path: '/people/0/links/houses/-',
                 value: ids.houses[1]
               },{
                 op: 'add',
-                path: '/people/0/houses/-',
+                path: '/people/0/links/houses/-',
                 value: ids.houses[2]
               }];
               request(baseUrl).patch('/people/' + ids.people[1])
