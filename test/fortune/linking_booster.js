@@ -135,7 +135,8 @@ module.exports = function(options){
             filter: {owner: {$in: ['personId']}},
             include: ''
           },
-          user: undefined
+          user: undefined,
+          clientApp: undefined
         });
         done();
       });
