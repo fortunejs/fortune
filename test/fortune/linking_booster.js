@@ -135,8 +135,10 @@ module.exports = function(options){
             filter: {owner: {$in: ['personId']}},
             include: ''
           },
-          user: undefined,
-          clientApp: undefined
+          params: undefined,
+          path: undefined,
+          originalIncludes: undefined,
+          scopedIncludes: undefined
         });
         done();
       });
