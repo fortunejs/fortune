@@ -137,7 +137,6 @@ module.exports = function(options){
           },
           params: undefined,
           path: undefined,
-          linker: undefined,
           originalIncludes: undefined,
           scopedIncludes: undefined
         });
