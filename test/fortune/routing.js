@@ -226,6 +226,25 @@ module.exports = function(options){
       });
     });
 
+    describe('individual delete route', function(){
+      it('should delete single value', function(done){
+        request(baseUrl).del('/people/' + ids.people[0])
+          .expect(204)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                console.log(body.people);
+                body.people.length.should.be.greaterThan(0);
+                done();
+              });
+          });
+      });
+    });
+
     describe("PATCH replace method", function(){
       it("with embedded documents", function(done){
         request(baseUrl).patch("/cars/" + ids.cars[0])
