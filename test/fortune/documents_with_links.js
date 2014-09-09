@@ -364,14 +364,17 @@ module.exports = function(options){
           .set('content-type', 'application/json')
           .send(JSON.stringify([
             {op: 'replace', path: '/people/0/links/lovers', value: [ids.people[1], ids.people[2]]},
-            {op: 'replace', path: '/people/0/links/pets', value: [ids.pets[0]]},
+            {op: 'replace', path: '/people/0/links/pets', value: [ids.pets[0], ids.pets[1]]},
             {op: 'replace', path: '/people/0/links/soulmate', value: ids.people[1]},
-            {op: 'replace', path: '/people/0/links/addresses', value: [ids.addresses[0]]}
+            {op: 'replace', path: '/people/0/links/addresses', value: [ids.addresses[0], ids.addresses[1]]}
           ]))
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            (body.people[0].links.pets).should.eql([ids.pets[0]]);
+            (body.people[0].links.pets).should.eql([ids.pets[0], ids.pets[1]]);
+            (body.people[0].links.lovers).should.eql([ids.people[1], ids.people[2]]);
+            (body.people[0].links.soulmate).should.eql(ids.people[1]);
+            (body.people[0].links.addresses).should.eql([ids.addresses[0], ids.addresses[1]]);
             done();
           });
       });
@@ -384,7 +387,7 @@ module.exports = function(options){
               .end(function(err, res){
                 should.not.exist(err);
                 var body = JSON.parse(res.text);
-                should.not.exist(body.people[0].links.pets);
+                body.people[0].links.pets.should.eql([ids.pets[1]]);
                 done();
               });
           });
@@ -394,11 +397,12 @@ module.exports = function(options){
           .expect(204)
           .end(function(err){
             should.not.exist(err);
-            request(baseUrl).get('/addresses/' + ids.addresses[0])
+            request(baseUrl).get('/addresses/' + ids.addresses[0] + ',' + ids.addresses[1])
               .end(function(err, res){
                 should.not.exist(err);
                 var body = JSON.parse(res.text);
                 should.not.exist(body.addresses[0].links);
+                should.not.exist(body.addresses[1].links);
                 done();
               });
           });
