@@ -41,29 +41,5 @@
     "framework",
     "rest",
     "restful"
-  ],
-  "gitHead": "b7e9349e9c736b895e632c11f416fc254d09f7fb",
-  "bugs": {
-    "url": "https://github.com/daliwali/fortune/issues"
-  },
-  "_id": "fortune@0.2.4",
-  "_shasum": "aeca6c52beca21a5f143eb1f3d5614d46408e746",
-  "_from": "fortune@~0.2.4",
-  "_npmVersion": "1.4.21",
-  "_npmUser": {
-    "name": "daliwali",
-    "email": "d@liwa.li"
-  },
-  "maintainers": [
-    {
-      "name": "daliwali",
-      "email": "dali@series.ac"
-    }
-  ],
-  "dist": {
-    "shasum": "aeca6c52beca21a5f143eb1f3d5614d46408e746",
-    "tarball": "http://registry.npmjs.org/fortune/-/fortune-0.2.4.tgz"
-  },
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/fortune/-/fortune-0.2.4.tgz"
+  ]
 }
