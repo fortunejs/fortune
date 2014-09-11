@@ -1,4 +1,8 @@
 ## Changelog
+
+**v0.2.4 -AGCO (9/10/2014)**
+* AGCO build - adds support for linked resources via "includes" query.
+
 **v0.2.2 (4/15/2014)**
 * Add resource creation with `linked` entities.
 
