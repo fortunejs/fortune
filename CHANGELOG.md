@@ -1,4 +1,11 @@
 ## Changelog
+**v0.3.0 (9/30/2014)**
+* Complete rewrite.
+* Redone schema definitions. It is now very verbose about possible errors.
+* Introducing serializers and deserializers for multiple content types.
+* `before` and `after` methods removed, merged into `transform` which accepts a generator function.
+* Removed Express as a dependency, it now uses either the included router, or its internal routes can be used as part of a larger app.
+
 **v0.2.2 (4/15/2014)**
 * Add resource creation with `linked` entities.
 
