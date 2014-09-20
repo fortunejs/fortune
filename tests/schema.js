@@ -6,6 +6,7 @@ var parser = require('../lib/schemas/parser');
 var enforcer = require('../lib/schemas/enforcer');
 
 
+// suppress warnings
 console.warn = function () {};
 
 

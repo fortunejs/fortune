@@ -1,6 +1,6 @@
 {
   "node": true,
   "unused": true,
-  "esnext": true,
+  "es5": true,
   "laxcomma": true
 }

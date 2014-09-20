@@ -2,7 +2,7 @@
   "name": "fortune",
   "description": "Framework for prototyping hypermedia-driven applications.",
   "version": "0.3.0",
-  "license": "GPL",
+  "license": "MIT",
   "author": {
     "name": "Dali Zheng",
     "email": "d@liwa.li"
@@ -24,7 +24,7 @@
     "vows": "^0.7.0"
   },
   "engines": {
-    "node": ">=0.11"
+    "node": ">=0.10"
   },
   "keywords": [
     "json",
