@@ -13,7 +13,7 @@ console.warn = function () {};
 var schema = parser('person', {
   name: String,
   birthdate: {type: Date},
-  mugshot: {type: Buffer},
+  mugshot: {type: 'buffer'},
   lucky_numbers: [Number],
   toys: {type: [Object]},
   friends: {link: ['person'], inverse: 'friends'},
@@ -29,41 +29,41 @@ vows.describe('schema').addBatch({
 
     topic: schema,
 
-    'has a name': function (topic) {
+    'parses native type': function (topic) {
       assert.equal(topic.name.type, 'string');
     },
 
-    'has a birthdate': function (topic) {
+    'parses object with native type': function (topic) {
       assert.equal(topic.birthdate.type, 'date');
     },
 
-    'has a mugshot': function (topic) {
+    'parses object with string type': function (topic) {
       assert.equal(topic.mugshot.type, 'buffer');
     },
 
-    'has an array of lucky numbers': function (topic) {
+    'parses array of native type': function (topic) {
       assert.equal(topic.lucky_numbers.type, 'number');
       assert.equal(topic.lucky_numbers.isArray, true);
     },
 
-    'has toys': function (topic) {
+    'parses object with array of native type': function (topic) {
       assert.equal(topic.toys.type, 'object');
       assert.equal(topic.toys.isArray, true);
     },
 
-    'has friends': function (topic) {
+    'parses array of links': function (topic) {
       assert.equal(topic.friends.link, 'person');
       assert.equal(topic.friends.inverse, 'friends');
       assert.equal(topic.friends.isArray, true);
     },
 
-    'has a spouse': function (topic) {
+    'parses link': function (topic) {
       assert.equal(topic.spouse.link, 'person');
       assert.equal(topic.spouse.inverse, 'spouse');
       assert.equal(!!topic.spouse.isArray, false);
     },
 
-    'should not have invalid fields': function (topic) {
+    'drops invalid fields': function (topic) {
       assert.equal(topic.nonexistent, undefined);
       assert.equal(topic.fake, undefined);
       assert.equal(topic.nested, undefined);
@@ -84,31 +84,50 @@ vows.describe('schema').addBatch({
       }, schema);
     },
 
-    'into string': function (topic) {
+    'casts into string': function (topic) {
       assert.equal(topic.name, '[object Object]');
     },
 
-    'into date': function (topic) {
+    'casts into date': function (topic) {
       assert.equal(topic.birthdate, new Date(0).toString());
     },
 
-    'into buffer': function (topic) {
+    'casts into buffer': function (topic) {
       assert.equal(topic.mugshot.toString('utf8'), 'Hello world!');
     },
 
-    'into number': function (topic) {
+    'casts into number': function (topic) {
       assert.deepEqual(topic.lucky_numbers, [1, 2, 3]);
     },
 
-    'into object': function (topic) {
+    'casts into object': function (topic) {
       assert.equal(topic.toys.length, 3);
       assert.equal(topic.toys[0].foo, 'bar');
       assert.equal(topic.toys[1].foo, 'baz');
       assert.equal(!!topic.toys[2], false);
     },
 
-    'into link': function (topic) {
+    'casts into link': function (topic) {
       assert.deepEqual(topic.friends, ['a', 'b', 'c']);
+    }
+
+  }
+}).addBatch({
+  'mangler': {
+
+    topic: function () {
+      return enforcer({
+        birthdate: new Date(0),
+        mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64')
+      }, schema, true);
+    },
+
+    'date outputs timestamp as number': function (topic) {
+      assert.equal(topic.birthdate, 0);
+    },
+
+    'buffer outputs base64': function (topic) {
+      assert.equal(topic.mugshot, 'SGVsbG8gd29ybGQh');
     }
 
   }
