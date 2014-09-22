@@ -113,7 +113,7 @@ vows.describe('schema').addBatch({
 
   }
 }).addBatch({
-  'mangler': {
+  'output': {
 
     topic: function () {
       return enforcer({
