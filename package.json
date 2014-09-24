@@ -17,7 +17,8 @@
     "coverage": "istanbul cover tests/*"
   },
   "dependencies": {
-    "inflection": "^1.4.2"
+    "inflection": "^1.4.2",
+    "negotiator": "^0.4.7"
   },
   "devDependencies": {
     "istanbul": "^0.3.2",
