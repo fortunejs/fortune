@@ -1,7 +1,13 @@
 ## Changelog
 
-**v0.2.4 -AGCO (9/10/2014)**
+**v0.2.6 -AGCO (9/29/2014)**
+* AGCO build - adds support for simple queries on collection urls.
+
+**v0.2.5 -AGCO (9/10/2014)**
 * AGCO build - adds support for linked resources via "includes" query.
+
+**v0.2.4 -AGCO (9/29/2014)**
+* registry package version bump.
 
 **v0.2.2 (4/15/2014)**
 * Add resource creation with `linked` entities.
