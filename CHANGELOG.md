@@ -1,5 +1,8 @@
 ## Changelog
 
+**v0.2.5 -AGCO (9/29/2014)**
+* AGCO build - adds support for simple queries on collection urls.
+
 **v0.2.4 -AGCO (9/10/2014)**
 * AGCO build - adds support for linked resources via "includes" query.
 
