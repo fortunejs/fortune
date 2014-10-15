@@ -434,6 +434,28 @@ module.exports = function(options){
             done();
           });
       });
+      it('should deeply parse nested $and, $or, or, and queries', function(done){
+        var query = {
+          $or: [{
+            or: [{
+              $and: [{
+                and: [{
+                  name: {
+                    regex: 'WALLY',
+                    options: 'i'
+                  }
+                }]
+              }]
+            }]
+          }]
+        };
+        adapter.findMany('person', query)
+          .then(function(docs){
+            docs.length.should.equal(1);
+            docs[0].name.should.equal('Wally');
+            done();
+          });
+      });
     });
   });
 
