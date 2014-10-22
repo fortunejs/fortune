@@ -17,15 +17,16 @@
     "coverage": "istanbul cover tests/*"
   },
   "dependencies": {
-    "inflection": "^1.4.2",
-    "negotiator": "^0.4.7"
+    "inflection": "^1.5.1",
+    "negotiator": "^0.4.9",
+    "promise": "^6.0.1"
   },
   "devDependencies": {
     "istanbul": "^0.3.2",
     "vows": "^0.7.0"
   },
   "engines": {
-    "node": ">=0.11"
+    "node": ">=0.10"
   },
   "keywords": [
     "json",

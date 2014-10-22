@@ -1,6 +1,4 @@
 {
   "node": true,
-  "unused": true,
-  "esnext": true,
-  "laxcomma": true
+  "unused": true
 }
