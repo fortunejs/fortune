@@ -1,7 +1,7 @@
 {
   "name": "fortune-agco",
   "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -22,10 +22,10 @@
     "lodash": "~2.4.1",
     "mkdirp": "~0.5.0",
     "nedb": "~0.10.6",
-    "rsvp": "~3.0.9"
+    "rsvp": "~3.0.9",
+    "fortune-mongodb-agco": "~0.2.4"
   },
   "devDependencies": {
-    "fortune-mongodb-agco": "~0.2.3",
     "mocha": "~1.20.1",
     "should": "~4.0.4",
     "supertest": "~0.13.0"
