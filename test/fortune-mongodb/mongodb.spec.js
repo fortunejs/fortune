@@ -11,6 +11,7 @@ RSVP.on('error', function(err){
 });
 
 module.exports = function(options){
+  require('./deletes')(options);
   describe('MongoDB adapter', function(){
     var ids;
 
