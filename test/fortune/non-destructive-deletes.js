@@ -5,13 +5,24 @@ var RSVP = require('rsvp');
 var Promise = RSVP.Promise;
 
 module.exports = function(options){
-  describe.skip('non-destructive deletes', function(){
+  describe('non-destructive deletes', function(){
     var app, baseUrl, ids, adapter;
     beforeEach(function(){
       app = options.app;
       adapter = app.adapter;
       baseUrl = options.baseUrl;
       ids = options.ids;
+    });
+    it('should not reveal empty _links', function(done){
+      request(baseUrl).get('/people')
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.forEach(function(p){
+            should.not.exist(p._links);
+          });
+          done();
+        })
     });
     it('should mark item with deletedAt', function(done){
       request(baseUrl).del('/people/' + ids.people[0])
@@ -111,13 +122,25 @@ module.exports = function(options){
                 should.not.exist(err);
                 resolve();
               });
+          }),
+          new Promise(function(resolve){
+            request(baseUrl).get('/people')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people.forEach(function(person){
+                  person.id.should.not.equal(ids.people[0]);
+                });
+                resolve();
+              });
           })
         ]).then(function(){
           done();
         });
       });
     });
-    it('should allow PUT request replacing old document with new one', function(done){
+    it.skip('should allow PUT request replacing old document with new one', function(done){
       request(baseUrl).del('/people/' + ids.people[0]).end(function(err){
         should.not.exist(err);
         request(baseUrl).put('/people/' + ids.people[0])
@@ -131,6 +154,7 @@ module.exports = function(options){
               should.not.exist(err);
               doc.name.should.equal('Replaced');
               doc.email.should.equal(ids.people[0]);
+              should.not.exist(doc.deletedAt);
               Object.keys(doc).length.should.equal(2);
               done();
             });

@@ -7,14 +7,14 @@ var Promise = RSVP.Promise;
 var _ = require('lodash');
 
 module.exports = function(options){
-  describe.only('non-destructive deletion', function(){
+  describe.skip('non-destructive deletion', function(){
     var ids;
     beforeEach(function(){
       ids = options.ids;
     });
     it('should mark item as deleted', function(done){
       adapter.markDeleted('person', ids.people[0]).then(function(){
-        adapter.find('person', ids.people[0]).then(function(doc){
+        return adapter.find('person', ids.people[0]).then(function(doc){
           should.exist(doc);
           should.exist(doc.deletedAt);
           should.exist(doc._links);

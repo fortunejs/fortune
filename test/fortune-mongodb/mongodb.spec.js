@@ -7,6 +7,7 @@ var Promise = RSVP.Promise;
 var _ = require('lodash');
 
 RSVP.on('error', function(err){
+  console.log('rsvp err handler', err);
   throw err;
 });
 
