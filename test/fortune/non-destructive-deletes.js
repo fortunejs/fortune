@@ -35,6 +35,16 @@ module.exports = function(options){
           });
         });
     });
+    it('should mark collection as deleted for collection route', function(done){
+      request(baseUrl).del('/people').expect(204).end(function(err){
+        should.not.exist(err);
+        adapter.model('person').find({}, function(err, docs){
+          should.not.exist(err);
+          docs.length.should.be.greaterThan(0);
+          done()
+        });
+      });
+    });
     it('related resources should no longer reference deleted resource', function(done){
       request(baseUrl).patch('/people/' + ids.people[0])
         .set('content-type', 'application/json')
@@ -87,6 +97,19 @@ module.exports = function(options){
           adapter.model('person').findOne({email: ids.people[0]}, function(err, doc){
             should.not.exist(err);
             should.not.exist(doc);
+            done();
+          });
+        });
+    });
+    it('should not delete resource if beforeHook returns false', function(done){
+      request(baseUrl).del('/people/' + ids.people[0] + '?failbeforeAll=1')
+        .expect(321)
+        .end(function(err){
+          should.not.exist(err);
+          adapter.model('person').findOne({email: ids.people[0]}, function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+            should.not.exist(doc.deletedAt);
             done();
           });
         });
