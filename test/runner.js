@@ -116,7 +116,7 @@ describe('Fortune test runner', function(){
     _.each(fixtures, function(resources, collection) {
       promises.push(new RSVP.Promise(function(resolve) {
         request(baseUrl)
-          .del('/' + collection)
+          .del('/' + collection + '?destroy=true')
           .end(function(error) {
             resolve();
           });
