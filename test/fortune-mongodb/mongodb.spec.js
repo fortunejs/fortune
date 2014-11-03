@@ -47,6 +47,68 @@ module.exports = function(options){
           });
         });
       });
+      it("should upsert where the appropriate upsert keys are specified", function(done) {
+        var doc = {
+          id: '123456789012345678901234',
+          upsertTest : "foo"
+        };
+
+        var model = adapter.model("person");
+        model.schema.upsertKeys = ["upsertTest"];
+
+        var response = null,
+          upsertVal  = false,
+          origUpsert = adapter._shouldUpsert;
+
+        adapter._shouldUpsert = function() {
+          return response = origUpsert.apply(this, arguments);
+        };
+
+        adapter.create("person", doc).then(function() {
+          should.exist(response);
+          (response.status).should.equal(true);
+          (response.opts.upsert).should.equal(true);
+
+          model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+
+            adapter._shouldUpsert = origUpsert;
+            done();
+          });
+        });
+      });
+      it("should not upsert where the appropriate upsert keys are not specified", function(done) {
+        var doc = {
+          id: '123456789012345678901234',
+          upsertTestYYY : "foo"
+        };
+
+        var model = adapter.model("person");
+        model.schema.upsertKeys = ["upsertTest"];
+
+        var response = null,
+          upsertVal  = false,
+          origUpsert = adapter._shouldUpsert;
+
+        adapter._shouldUpsert = function() {
+          return response = origUpsert.apply(this, arguments);
+        };
+
+        adapter.create("person", doc).then(function() {
+          should.exist(response);
+          (response.status).should.equal(false);
+          (response.opts.upsert).should.equal(false);
+
+          model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
+            should.not.exist(err);
+            should.exist(doc);
+
+            adapter._shouldUpsert = origUpsert;
+            done();
+          });
+        });
+      });
     });
     describe('Relationships', function(){
       describe('synchronizing many-to-many', function(){

@@ -16,7 +16,7 @@ var hooks = {};
       return function(req, res){
         res.setHeader(hookOptions.option, '1');
 
-        if (req.query['fail' + type]) {          
+        if (req.query['fail' + type]) {
           console.log('Failing hook',type);
           _.defer(function() {
             res.send(321);
@@ -25,9 +25,9 @@ var hooks = {};
             return false;
           else
             return new RSVP.Promise(function(resolve) { resolve(false); });
-        } 
-        
-        return this;      
+        }
+
+        return this;
       };
     }
   }]
@@ -66,7 +66,7 @@ module.exports = function(options, port) {
     }
   }]);
 
-  
+
   return app.beforeAll(hooks.beforeAll)
     .beforeAllRead(hooks.beforeAllRead)
     .beforeAllWrite(hooks.beforeAllWrite)
@@ -92,7 +92,8 @@ module.exports = function(options, port) {
       nested: {
         field1: String,
         field2: String
-      }
+      },
+      upsertTest : String
     }, {
       model: {pk:"email"},
       hooks: {
@@ -172,7 +173,6 @@ module.exports = function(options, port) {
         }
       }
     })
-
 
     .before('person', function(req, res){
       this.password = Math.random();
