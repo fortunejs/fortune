@@ -1,4 +1,5 @@
 var should = require('should');
+var _ = require('lodash');
 var lodash = require('lodash');
 var request = require('supertest');
 var RSVP = require('rsvp');
@@ -160,6 +161,21 @@ module.exports = function(options){
           })
         ]).then(function(){
           done();
+        });
+      });
+    });
+    it.only('should return deleted resource if it is requested explicitly', function(done){
+      request(baseUrl).del('/people/' + ids.people[0]).end(function(err) {
+        should.not.exist(err);
+        request(baseUrl).get('/people?includeDeleted=true').end(function(err, res){
+          var body = JSON.parse(res.text);
+          var del = _.find(body.people, function(p){return p.id === ids.people[0]});
+          should.exist(del);
+          request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=true').end(function(err, res){
+            var body = JSON.parse(res.text);
+            should.exist(body.people[0]);
+            done();
+          });
         });
       });
     });
