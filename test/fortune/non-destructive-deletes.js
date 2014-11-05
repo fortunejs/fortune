@@ -164,7 +164,7 @@ module.exports = function(options){
         });
       });
     });
-    it.only('should return deleted resource if it is requested explicitly', function(done){
+    it('should return deleted resource if it is requested explicitly', function(done){
       request(baseUrl).del('/people/' + ids.people[0]).end(function(err) {
         should.not.exist(err);
         request(baseUrl).get('/people?includeDeleted=true').end(function(err, res){
