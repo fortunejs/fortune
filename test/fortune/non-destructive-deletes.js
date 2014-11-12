@@ -179,6 +179,24 @@ module.exports = function(options){
         });
       });
     });
+
+    it('should not return deleted item with /:resource/:id/:linked response', function(done){
+      request(baseUrl).patch('/people/' + ids.people[0]).set('content-type', 'application/json')
+        .send(JSON.stringify([{op: 'replace', path: '/people/0/addresses', value: [ids.addresses[0], ids.addresses[1]]}]))
+        .end(function(err, res){
+          should.not.exist(err);
+          request(baseUrl).del('/addresses/' + ids.addresses[0]).end(function(){
+            request(baseUrl).get('/people/' + ids.people[0] + '/addresses')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.addresses.length.should.equal(1);
+                done();
+              });
+          });
+        });
+    });
     it.skip('should allow PUT request replacing old document with new one', function(done){
       request(baseUrl).del('/people/' + ids.people[0]).end(function(err){
         should.not.exist(err);
