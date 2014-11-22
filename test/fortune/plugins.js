@@ -3,6 +3,9 @@ var _ = require('lodash');
 var request = require('supertest');
 var RSVP = require('rsvp');
 var Promise = RSVP.Promise;
+var io = require('socket.io-client');
+
+
 
 module.exports = function(options){
   describe('opinionated plugins', function(){
@@ -111,6 +114,68 @@ module.exports = function(options){
             var body = JSON.parse(res.text);
             new Date(body.people[0].createdAt).getTime().should.equal(new Date(check).getTime());
             done();
+          });
+      });
+    });
+    describe('websockets plugin', function(){
+      before(function(done) {
+        var socket = io.connect("http://localhost:4000");
+        this.socket = socket;
+        this.socket.on('connect', function() {
+          socket.emit("watch", "person");
+          console.log("conected, watching person");
+          done();
+        });
+      });
+
+      after(function(done) {
+        this.socket.on('disconnect', function() {
+          console.log("disconnected");
+          done();
+        })
+        this.socket.disconnect();
+      });
+
+      it('should inform users when a resource is added', function(done) {
+        this.socket.on('add', function(data) {
+          console.log("add", data);
+          data.data.should.be.an.object;
+          done();
+        });
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com'
+            }]
+          }))
+          .end(function(err, res){
+          });
+      });
+      it('should inform users when a resource is edited', function(done) {
+        this.socket.on('update', function(data) {
+          data.data.should.be.an.object;
+          done();
+        });
+        request(baseUrl).put('/people/test@test.com')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people:[{
+              email: 'test@test.com',
+              name: 'changed'
+            }]
+          }))
+          .end(function(err, res){
+          });
+      });
+      it('should inform users when a resource is deleted', function(done) {
+        this.socket.on('delete', function(data) {
+          data.data.should.be.an.object;
+          done();
+        });
+
+        request(baseUrl).delete('/people/test@test.com')
+          .end(function(err, res) {
           });
       });
     });
