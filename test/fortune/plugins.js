@@ -120,15 +120,9 @@ module.exports = function(options){
     describe('websockets plugin', function(){
       var socket;
       before(function(done) {
-        socket = io.connect("http://localhost:4000");
-        socket.on('watching', function(resource) {
-          console.log("watching", resource);
-          done();
-        })
-
+        socket = io.connect("http://localhost:4000/person");
         socket.on('connect', function() {
-          console.log("conected");
-          socket.emit("watch", "person");
+          done();
         });
       });
 
@@ -137,8 +131,7 @@ module.exports = function(options){
         socket.off('update');
         socket.off('delete');
         done();
-      })
-
+      });
 
       it('should inform users when a resource is added', function(done) {
         socket.on('add', function(data) {
