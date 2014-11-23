@@ -118,27 +118,30 @@ module.exports = function(options){
       });
     });
     describe('websockets plugin', function(){
+      var socket;
       before(function(done) {
-        var socket = io.connect("http://localhost:4000");
-        this.socket = socket;
-        this.socket.on('connect', function() {
-          socket.emit("watch", "person");
-          console.log("conected, watching person");
+        socket = io.connect("http://localhost:4000");
+        socket.on('watching', function(resource) {
+          console.log("watching", resource);
           done();
+        })
+
+        socket.on('connect', function() {
+          console.log("conected");
+          socket.emit("watch", "person");
         });
       });
 
-      after(function(done) {
-        this.socket.on('disconnect', function() {
-          console.log("disconnected");
-          done();
-        })
-        this.socket.disconnect();
-      });
+      afterEach(function(done) {
+        socket.off('add');
+        socket.off('update');
+        socket.off('delete');
+        done();
+      })
+
 
       it('should inform users when a resource is added', function(done) {
-        this.socket.on('add', function(data) {
-          console.log("add", data);
+        socket.on('add', function(data) {
           data.data.should.be.an.object;
           done();
         });
@@ -153,29 +156,46 @@ module.exports = function(options){
           });
       });
       it('should inform users when a resource is edited', function(done) {
-        this.socket.on('update', function(data) {
+        socket.on('update', function(data) {
           data.data.should.be.an.object;
           done();
         });
-        request(baseUrl).put('/people/test@test.com')
+        request(baseUrl).post('/people')
           .set('content-type', 'application/json')
           .send(JSON.stringify({
-            people:[{
-              email: 'test@test.com',
-              name: 'changed'
+            people: [{
+              email: 'test@test.com'
             }]
           }))
           .end(function(err, res){
+            request(baseUrl).put('/people/test@test.com')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify({
+                people:[{
+                  email: 'test@test.com',
+                  name: 'changed'
+                }]
+              }))
+              .end(function(err, res){
+              });
           });
       });
       it('should inform users when a resource is deleted', function(done) {
-        this.socket.on('delete', function(data) {
+        socket.on('delete', function(data) {
           data.data.should.be.an.object;
           done();
         });
-
-        request(baseUrl).delete('/people/test@test.com')
-          .end(function(err, res) {
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com'
+            }]
+          }))
+          .end(function(err, res){
+            request(baseUrl).del('/people/test@test.com')
+              .end(function(err, res) {
+            });
           });
       });
     });
