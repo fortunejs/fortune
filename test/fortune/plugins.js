@@ -148,9 +148,10 @@ module.exports = function(options){
           .end(function(err, res){
           });
       });
-      it('should inform users when a resource is edited', function(done) {
+      it('should inform users when a resource is edited with put', function(done) {
         socket.on('update', function(data) {
           data.data.should.be.an.object;
+          data.data.name.should.equal.changed;
           done();
         });
         request(baseUrl).post('/people')
@@ -169,6 +170,29 @@ module.exports = function(options){
                   name: 'changed'
                 }]
               }))
+              .end(function(err, res){
+              });
+          });
+      });
+      it('should inform users when a resource is edited with patch', function(done) {
+        socket.on('update', function(data) {
+          data.data.should.be.an.object;
+          data.data.name.should.equal.tested;
+          done();
+        });
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com'
+            }]
+          }))
+          .end(function(err, res){
+            request(baseUrl).patch('/people/test@test.com')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([
+                {op: "replace", path: "/people/0/name", value: "tested"}
+              ]))
               .end(function(err, res){
               });
           });
