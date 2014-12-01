@@ -29,6 +29,7 @@ describe('Fortune', function () {
   require('./plugins')(options);
   require('./linking_booster')(options);
   require('./non-destructive-deletes')(options);
+  require('./should-upsert')(options);
 
   describe("Business key", function(){
     it("can be used as primary key for individual resource requests", function(done){

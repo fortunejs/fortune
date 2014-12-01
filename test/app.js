@@ -95,6 +95,7 @@ module.exports = function(options, port) {
       },
       upsertTest : String
     }, {
+      upsertKeys: ["upsertTest"],
       model: {pk:"email"},
       hooks: {
         beforeAll:{
