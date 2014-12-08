@@ -12,14 +12,15 @@
     "url": "git@github.com:flyvictor/fortune.git"
   },
   "dependencies": {
-    "mkdirp": "~0.3.5",
     "express": "~3.5.1",
-    "nedb": "~0.10.4",
-    "rsvp": "~3.0.6",
     "i": "~0.3.2",
     "lodash": "~2.4.1",
+    "mkdirp": "~0.3.5",
+    "moment": "~2.6.0",
     "mongoose": "~3.8.14",
-    "moment": "~2.6.0"
+    "nedb": "~0.10.4",
+    "rsvp": "~3.0.6",
+    "socket.io": "^1.2.1"
   },
   "devDependencies": {
     "fortune-mongodb": "git://github.com/flyvictor/fortune-mongodb.git#v1.1.5",
@@ -27,6 +28,7 @@
     "mocha": "~1.19.0",
     "should": "~2.0.2",
     "sinon": "^1.10.3",
+    "socket.io-client": "^1.2.1",
     "supertest": "~0.8.0"
   },
   "scripts": {
