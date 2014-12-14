@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-require('longjohn');
-
 var options = {
     adapter: 'mongodb',
     connectionString: process.env.MONGODB_URL,
@@ -13,7 +11,7 @@ var options = {
 before(function (done) {
     this.app = require('./app')(options)
         .catch(function (error) {
-            console.trace(error);
+            done(error);
             process.exit(1);
         });
     done();
