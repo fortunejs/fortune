@@ -21,7 +21,6 @@
     "fortune-mongodb-agco": "~0.2.4",
     "i": "~0.3.2",
     "lodash": "~2.4.1",
-    "longjohn": "^0.2.4",
     "mkdirp": "~0.5.0",
     "nedb": "~0.10.6",
     "rsvp": "~3.0.9"
