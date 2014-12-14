@@ -379,17 +379,33 @@ describe('using mongodb adapter', function () {
         });
     });
 
-    describe('raise an error in random spot og the req/res chain', function () {
+    describe('raise ramdom error in the express req/res chain', function () {
         it('should respond with a 500 error and content-type set to application/problem+json', function (done) {
             request(baseUrl)
-                .get('/error')
-                //.expect('Content-Type', 'application/problem+json; charset=utf-8')
+                .get('/random-error')
+                .expect('Content-Type', 'application/problem+json; charset=utf-8')
                 .expect(500)
                 .end(function (error, response) {
                     var body = JSON.parse(response.text);
                     should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(500);
                     should.exist(body.problem.title) && body.problem.title.should.equal('Oops, something went wrong.');
                     should.exist(body.problem.detail) && body.problem.detail.should.equal('This is an error');
+                    done();
+                });
+        });
+    });
+
+    describe('raise json problem error with 400 status code in the express the req/res chain', function () {
+        it('should respond with a 400 error and content-type set to application/problem+json', function (done) {
+            request(baseUrl)
+                .get('/json-problem-error')
+                .expect('Content-Type', 'application/problem+json; charset=utf-8')
+                .expect(400)
+                .end(function (error, response) {
+                    var body = JSON.parse(response.text);
+                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(400);
+                    should.exist(body.problem.title) && body.problem.title.should.equal('');
+                    should.exist(body.problem.detail) && body.problem.detail.should.equal('Bar was not foo');
                     done();
                 });
         });
