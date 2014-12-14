@@ -367,14 +367,13 @@ describe('using mongodb adapter', function () {
             request(baseUrl)
                 .post('/foobars')
                 .send({foobars: [{foo: 'notbar'}]})
-                //.expect('Content-Type', 'problem+json')
-                //.expect(400)
+                .expect('Content-Type', 'application/problem+json; charset=utf-8')
+                .expect(400)
                 .end(function (error, response) {
-                    should.exist(error);
                     var body = JSON.parse(response.text);
-                    should.exist(body.httpStatus) && body.httpStatus.should.equal(400);
-                    should.exist(body.title) && body.title.should.equal('foobar error');
-                    should.exist(body.detail) && body.detail.should.equal('Foo was not bar');
+                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(400);
+                    should.exist(body.problem.title) && body.problem.title.should.equal('foobar error');
+                    should.exist(body.problem.detail) && body.problem.detail.should.equal('Foo was not bar');
                     done();
                 });
         });
