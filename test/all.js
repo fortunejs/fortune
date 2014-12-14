@@ -7,54 +7,56 @@ var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
 
-_.each(global.options, function (options, port) {
-  var baseUrl = 'http://localhost:' + port;
+  var baseUrl = 'http://localhost:' + process.env.PORT;
   var keys = {};
 
-  // check if inflections are enabled.
   _.each(fixtures, function (resources, collection) {
-    if (options.inflect) {
       keys[collection] = inflect.pluralize(collection);
-    } else {
-      keys[collection] = collection;
-    }
   });
 
-  describe('using "' + options.adapter + '" adapter', function () {
+  var insertAll = function (resource, collection) {
+    return RSVP.all(_.map(collection, function (item) {
+      return fortuneApp.adapter.create(resource, item);
+    }))
+  };
+
+
+  describe('using mongodb adapter', function () {
     var ids = {};
 
     before(function (done) {
-      var createResources = [];
+      this.app.then(function(fortuneApp) {
+        var createResources = [];
 
-      _.each(fixtures, function (resources, collection) {
-        var key = keys[collection];
+        _.each(fixtures, function (resources, collection) {
+          var key = keys[collection];
 
-        createResources.push(new Promise(function (resolve) {
-          var body = {};
-          body[key] = resources;
-          request(baseUrl)
-            .post('/' + key)
-            .send(body)
-            .expect('Content-Type', /json/)
-            .expect(201)
-            .end(function (error, response) {
-              should.not.exist(error);
-              var resources = JSON.parse(response.text)[key];
-              ids[key] = ids[key] || [];
-              resources.forEach(function (resource) {
-                ids[key].push(resource.id);
-              });
-              resolve();
-            });
-        }));
+          createResources.push(new Promise(function (resolve) {
+            var body = {};
+            body[key] = resources;
+            request(baseUrl)
+                .post('/' + key)
+                .send(body)
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end(function (error, response) {
+                  should.not.exist(error);
+                  var resources = JSON.parse(response.text)[key];
+                  ids[key] = ids[key] || [];
+                  resources.forEach(function (resource) {
+                    ids[key].push(resource.id);
+                  });
+                  resolve();
+                });
+          }));
+        });
+
+        RSVP.all(createResources).then(function () {
+          done();
+        }, function () {
+          throw new Error('Failed to create resources.');
+        });
       });
-
-      RSVP.all(createResources).then(function () {
-        done();
-      }, function () {
-        throw new Error('Failed to create resources.');
-      });
-
     });
 
     describe('getting a list of resources', function () {
@@ -386,7 +388,5 @@ _.each(global.options, function (options, port) {
         });
       });
     });
-
-  });
 
 });
