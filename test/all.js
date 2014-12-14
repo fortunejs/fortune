@@ -362,8 +362,8 @@ describe('using mongodb adapter', function () {
         });
     });
 
-    describe('raise a problem error in before callback', function () {
-        it('should respond with a 400 and content-type set to problem+json', function (done) {
+    describe('raise a problem error in foobar before callback', function () {
+        it('should respond with a 400 and content-type set to application/problem+json', function (done) {
             request(baseUrl)
                 .post('/foobars')
                 .send({foobars: [{foo: 'notbar'}]})
@@ -374,6 +374,22 @@ describe('using mongodb adapter', function () {
                     should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(400);
                     should.exist(body.problem.title) && body.problem.title.should.equal('foobar error');
                     should.exist(body.problem.detail) && body.problem.detail.should.equal('Foo was not bar');
+                    done();
+                });
+        });
+    });
+
+    describe('raise an error in random spot og the req/res chain', function () {
+        it('should respond with a 500 error and content-type set to application/problem+json', function (done) {
+            request(baseUrl)
+                .get('/error')
+                //.expect('Content-Type', 'application/problem+json; charset=utf-8')
+                .expect(500)
+                .end(function (error, response) {
+                    var body = JSON.parse(response.text);
+                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(500);
+                    should.exist(body.problem.title) && body.problem.title.should.equal('Oops, something went wrong.');
+                    should.exist(body.problem.detail) && body.problem.detail.should.equal('This is an error');
                     done();
                 });
         });

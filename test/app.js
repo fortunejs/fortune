@@ -39,6 +39,10 @@ function createApp(options) {
             })
         ;
 
+    fortuneApp.router.get('/error', function(req, res, next) {
+        next(new Error('this is an error'));
+    });
+
     return RSVP.all([
         fortuneApp.onRouteCreated('pet'),
         fortuneApp.onRouteCreated('person'),
