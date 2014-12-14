@@ -22,8 +22,6 @@ describe('using mongodb adapter', function () {
             .then(function (fortuneApp) {
                 var createResources = [];
 
-                d.foo();
-
                 _.each(fixtures, function (resources, collection) {
                     var key = keys[collection];
 
@@ -47,9 +45,11 @@ describe('using mongodb adapter', function () {
                     }));
                 });
 
-                return RSVP.all(createResources).then(done);
+                return RSVP.all(createResources).then(function() {
+                    done();
+                });
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 done(err);
             });
     });
@@ -361,6 +361,25 @@ describe('using mongodb adapter', function () {
                 });
         });
     });
+
+    describe('raise a problem error in before callback', function () {
+        it('should respond with a 400 and content-type set to problem+json', function (done) {
+            request(baseUrl)
+                .post('/foobars')
+                .send({foobars: [{foo: 'notbar'}]})
+                //.expect('Content-Type', 'problem+json')
+                //.expect(400)
+                .end(function (error, response) {
+                    should.exist(error);
+                    var body = JSON.parse(response.text);
+                    should.exist(body.httpStatus) && body.httpStatus.should.equal(400);
+                    should.exist(body.title) && body.title.should.equal('foobar error');
+                    should.exist(body.detail) && body.detail.should.equal('Foo was not bar');
+                    done();
+                });
+        });
+    });
+
 
     after(function (done) {
         _.each(fixtures, function (resources, collection) {
