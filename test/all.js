@@ -366,7 +366,7 @@ describe('using mongodb adapter', function () {
         it('should respond with a 400 and content-type set to application/problem+json', function (done) {
             request(baseUrl)
                 .post('/foobars')
-                .send({foobars: [{foo: 'notbar'}]})
+                .send({foobars: [{foo: 'bar'}]})
                 .expect('Content-Type', 'application/problem+json; charset=utf-8')
                 .expect(400)
                 .end(function (error, response) {
@@ -376,7 +376,27 @@ describe('using mongodb adapter', function () {
                     should.exist(body.problem.title);
                     body.problem.title.should.equal('Request was malformed.');
                     should.exist(body.problem.detail);
-                    body.problem.detail.should.equal('Foo was not bar');
+                    body.problem.detail.should.equal('Foo was bar');
+                    done();
+                });
+        });
+    });
+
+    describe('return a promise which rejects with a problem error in foobar before callback', function () {
+        it('should respond with a 400 and content-type set to application/problem+json', function (done) {
+            request(baseUrl)
+                .post('/foobars')
+                .send({foobars: [{foo: 'baz'}]})
+                .expect('Content-Type', 'application/problem+json; charset=utf-8')
+                .expect(400)
+                .end(function (error, response) {
+                    var body = JSON.parse(response.text);
+                    should.exist(body.problem.httpStatus);
+                    body.problem.httpStatus.should.equal(400);
+                    should.exist(body.problem.title);
+                    body.problem.title.should.equal('Request was malformed.');
+                    should.exist(body.problem.detail);
+                    body.problem.detail.should.equal('Foo was baz');
                     done();
                 });
         });

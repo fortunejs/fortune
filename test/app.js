@@ -5,44 +5,54 @@ var RSVP = require('rsvp');
 function createApp(options) {
     var fortuneApp = fortune(options)
 
-            .resource('person', {
-                name: String,
-                appearances: Number,
-                pets: ['pet'],
-                soulmate: {ref: 'person', inverse: 'soulmate'},
-                lovers: [{ref: 'person', inverse: 'lovers'}]
-            })
+        .resource('person', {
+            name: String,
+            appearances: Number,
+            pets: ['pet'],
+            soulmate: {ref: 'person', inverse: 'soulmate'},
+            lovers: [{ref: 'person', inverse: 'lovers'}]
+        })
 
-            .resource('pet', {
-                name: String,
-                appearances: Number,
-                owner: 'person'
-            })
+        .resource('pet', {
+            name: String,
+            appearances: Number,
+            owner: 'person'
+        })
 
-            .resource('foobar', {
-                foo: String
-            })
-            .before(
-            function (req, res) {
-                var foobar = this;
-                if (foobar.foo && foobar.foo !== 'bar') {
-                    throw new JSONProblemError({
+        .resource('foobar', {
+            foo: String
+        })
+        .before(
+        function (req, res) {
+            var foobar = this;
+
+            if (foobar.foo && foobar.foo === 'bar') {
+                // promise
+                return new RSVP.Promise(function (resolve, reject) {
+                    reject(new JSONProblemError({
                         httpStatus: 400,
-                        detail: 'Foo was not bar'
-                    });
-                }
-                else {
-                    return foobar;
-                }
-            })
-        ;
+                        detail: 'Foo was bar'
+                    }));
+                });
+            } else if (foobar.foo && foobar.foo === 'baz') {
+                // non-promise
+                throw new JSONProblemError({
+                    httpStatus: 400,
+                    detail: 'Foo was baz'
+                });
+            }
+            else {
+                return foobar;
+            }
+        });
 
-    fortuneApp.router.get('/random-error', function(req, res, next) {
+
+    fortuneApp.router.get('/random-error', function (req, res, next) {
         next(new Error('this is an error'));
     });
 
-    fortuneApp.router.get('/json-problem-error', function(req, res, next) {
-        next(new JSONProblemError({httpStatus:400, detail:'Bar was not foo'}));
+    fortuneApp.router.get('/json-problem-error', function (req, res, next) {
+        next(new JSONProblemError({httpStatus: 400, detail: 'Bar was not foo'}));
     });
 
 
