@@ -1,5 +1,5 @@
 var fortune = require('../lib/fortune');
-var jsonProblemError = require('../lib/json-problem-error');
+var JSONProblemError = require('../lib/json-problem-error');
 var RSVP = require('rsvp');
 
 function createApp(options) {
@@ -26,7 +26,10 @@ function createApp(options) {
             function (req, res) {
                 var foobar = this;
                 if (foobar.foo && foobar.foo !== 'bar') {
-                    throw jsonProblemError(400, 'Foo was not bar');
+                    throw new JSONProblemError({
+                        httpStatus: 400,
+                        detail: 'Foo was not bar'
+                    });
                 }
                 else {
                     return foobar;
@@ -39,7 +42,7 @@ function createApp(options) {
     });
 
     fortuneApp.router.get('/json-problem-error', function(req, res, next) {
-        next(jsonProblemError(400, 'Bar was not foo'));
+        next(new JSONProblemError({httpStatus:400, detail:'Bar was not foo'}));
     });
 
 

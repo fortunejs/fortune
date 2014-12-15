@@ -371,9 +371,12 @@ describe('using mongodb adapter', function () {
                 .expect(400)
                 .end(function (error, response) {
                     var body = JSON.parse(response.text);
-                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(400);
-                    should.exist(body.problem.title) && body.problem.title.should.equal('foobar error');
-                    should.exist(body.problem.detail) && body.problem.detail.should.equal('Foo was not bar');
+                    should.exist(body.problem.httpStatus);
+                    body.problem.httpStatus.should.equal(400);
+                    should.exist(body.problem.title);
+                    body.problem.title.should.equal('Request was malformed.');
+                    should.exist(body.problem.detail);
+                    body.problem.detail.should.equal('Foo was not bar');
                     done();
                 });
         });
@@ -387,9 +390,12 @@ describe('using mongodb adapter', function () {
                 .expect(500)
                 .end(function (error, response) {
                     var body = JSON.parse(response.text);
-                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(500);
-                    should.exist(body.problem.title) && body.problem.title.should.equal('Oops, something went wrong.');
-                    should.exist(body.problem.detail) && body.problem.detail.should.equal('This is an error');
+                    should.exist(body.problem.httpStatus);
+                    body.problem.httpStatus.should.equal(500);
+                    should.exist(body.problem.title);
+                    body.problem.title.should.equal('Oops, something went wrong.');
+                    should.exist(body.problem.detail);
+                    body.problem.detail.should.equal('Error: this is an error');
                     done();
                 });
         });
@@ -403,9 +409,12 @@ describe('using mongodb adapter', function () {
                 .expect(400)
                 .end(function (error, response) {
                     var body = JSON.parse(response.text);
-                    should.exist(body.problem.httpStatus) && body.problem.httpStatus.should.equal(400);
-                    should.exist(body.problem.title) && body.problem.title.should.equal('');
-                    should.exist(body.problem.detail) && body.problem.detail.should.equal('Bar was not foo');
+                    should.exist(body.problem.httpStatus);
+                    body.problem.httpStatus.should.equal(400);
+                    should.exist(body.problem.title);
+                    body.problem.title.should.equal('Request was malformed.');
+                    should.exist(body.problem.detail);
+                    body.problem.detail.should.equal('Bar was not foo');
                     done();
                 });
         });
