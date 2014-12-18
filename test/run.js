@@ -6,18 +6,17 @@ var RSVP = require('rsvp');
 var location = path.normalize(__dirname);
 
 global.options = {};
-
-if (!process.env.TRAVIS) {
-  var config = {};
-  config[process.argv[2] || 'nedb'] = 8890;
-  runTests(config);
-} else {
+//if (!process.env.TRAVIS) {
+//  var config = {};
+//  config[process.argv[2] || 'nedb'] = 8890;
+//  runTests(config);
+//} else {
   runTests({
-    nedb: 8890,
+//    nedb: 8890,
     mongodb: 8891
     //mysql: 8892
   });
-}
+//}
 
 function runTests(adapters) {
   var apps = [];
@@ -27,7 +26,7 @@ function runTests(adapters) {
     // test application
     var options = {
       adapter: adapter,
-      db: 'fortune_test',
+      db: 'fortune_agco_test',
       inflect: true
     };
 
@@ -51,7 +50,7 @@ function runTests(adapters) {
     new Mocha()
       .reporter('spec')
       .ui('bdd')
-      .addFile(path.join(location, 'all.js'))
+      .addFile(path.join(location, 'fortune/all.js'))
       .run(function (code) {
         process.exit(code);
       });
