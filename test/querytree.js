@@ -13,8 +13,10 @@ var mockAdapter = {
   flush: function(response){
     var that = this;
     setTimeout(function(){
-      that.exec(response);
-    },0);
+      setTimeout(function(){
+        that.exec(response);
+      },0);
+    });
   },
   findMany: function(resource, query, projection){
     var that = this;
