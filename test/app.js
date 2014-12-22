@@ -23,28 +23,29 @@ function createApp(options) {
             foo: String
         })
         .before(
-        function (req, res) {
-            var foobar = this;
+            function (req, res) {
+                var foobar = this;
 
-            if (foobar.foo && foobar.foo === 'bar') {
-                // promise
-                return new RSVP.Promise(function (resolve, reject) {
-                    reject(new JSONProblemError({
+                if (foobar.foo && foobar.foo === 'bar') {
+                    // promise
+                    return new RSVP.Promise(function (resolve, reject) {
+                        reject(new JSONProblemError({
+                            status: 400,
+                            detail: 'Foo was bar'
+                        }));
+                    });
+                } else if (foobar.foo && foobar.foo === 'baz') {
+                    // non-promise
+                    throw new JSONProblemError({
                         status: 400,
-                        detail: 'Foo was bar'
-                    }));
-                });
-            } else if (foobar.foo && foobar.foo === 'baz') {
-                // non-promise
-                throw new JSONProblemError({
-                    status: 400,
-                    detail: 'Foo was baz'
-                });
+                        detail: 'Foo was baz'
+                    });
+                }
+                else {
+                    return foobar;
+                }
             }
-            else {
-                return foobar;
-            }
-        });
+        );
 
 
     fortuneApp.router.get('/random-error', function (req, res, next) {

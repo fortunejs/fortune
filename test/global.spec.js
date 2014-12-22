@@ -3,7 +3,7 @@
 
 var options = {
     adapter: 'mongodb',
-    connectionString: process.env.MONGODB_URL,
+    connectionString: process.argv[2] || "‌mongodb://127.0.0.1:27017/testDB",
     db: 'testDB',
     inflect: true
 };
