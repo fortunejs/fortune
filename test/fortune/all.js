@@ -16,10 +16,46 @@ _.each(fixtures, function (resources, collection) {
 
 describe('using mongodb adapter', function () {
     var ids = {};
+    this.timeout(50000);
 
     before(function (done) {
         this.app
-            .then(function (fortuneApp) {
+            .then(function (fortuneApp){
+                var expectedDbName = fortuneApp.options.db;
+
+                return new Promise(function(resolve){
+                    fortuneApp.adapter.mongoose.connections[1].db.collectionNames(function(err, collections){
+                        resolve(_.compact(_.map(collections, function(collection){
+
+                            var collectionParts = collection.name.split(".");
+                            var name = collectionParts[1];
+                            var db = collectionParts[0];
+
+                            if(name && (name !== "system") && db && (db === expectedDbName)){
+                                return new RSVP.Promise(function(resolve){
+                                    fortuneApp.adapter.mongoose.connections[1].db.collection(name, function(err, collection){
+                                        collection.remove({},null, function(){
+                                            console.log("Wiped collection", name);
+                                            resolve();
+                                        });
+                                    });
+                                });
+                            }
+                            return null;
+                        })));
+                    });
+                });
+            }).then(function(wipeFns){
+                console.log("Wiping collections:");
+                return RSVP.all(wipeFns);
+            })
+
+
+            .then(function () {
+                console.log("--------------------");
+                console.log("Running tests:");
+
+
                 var createResources = [];
 
                 _.each(fixtures, function (resources, collection) {
@@ -58,6 +94,7 @@ describe('using mongodb adapter', function () {
     require("./resources")(baseUrl,keys,ids);
     require("./associations")(baseUrl,keys,ids);
     require("./limits")(baseUrl,keys,ids);
+    require("./includes")(baseUrl,keys,ids);
     require("./jsonapi_error")(baseUrl,keys,ids);
 
 
