@@ -117,7 +117,7 @@ module.exports = function(options){
           });
       });
     });
-    describe.skip('websockets plugin', function(){
+    describe('websockets plugin', function(){
       var socket;
       before(function(done) {
         socket = io.connect("http://localhost:4000/person");
@@ -200,6 +200,7 @@ module.exports = function(options){
       it('should inform users when a resource is deleted', function(done) {
         socket.on('delete', function(data) {
           data.data.should.be.an.object;
+          data.data.id.should.equal('test@test.com');
           done();
         });
         request(baseUrl).post('/people')
@@ -214,6 +215,115 @@ module.exports = function(options){
               .end(function(err, res) {
             });
           });
+      });
+      describe('filtering integration', function(){
+        it('should apply simple query filter', function(done){
+          var callCount = 0;
+          var callEmails = [];
+          socket.on('add', function(data){
+            callEmails.push(data.data.email);
+            callCount++;
+          });
+          request(baseUrl).post('/people?filter[email]=test@test.com')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com'
+              },{
+                email: 'dummy@test.com'
+              }]
+            }))
+            .end(function(err, res){
+              should.not.exist(err);
+              setTimeout(function(){
+                callCount.should.equal(1);
+                callEmails.should.eql(['test@test.com']);
+                done();
+              }, 0);
+            });
+        });
+        it('should apply $in filter', function(done){
+          var callCount = 0;
+          var callEmails = [];
+          socket.on('add', function(data){
+            callEmails.push(data.data.email);
+            callCount++;
+          });
+          request(baseUrl).post('/people?filter[email][in]=test@test.com')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com'
+              },{
+                email: 'dummy@test.com'
+              }]
+            }))
+            .end(function(err, res){
+              should.not.exist(err);
+              setTimeout(function(){
+                callCount.should.equal(1);
+                callEmails.should.eql(['test@test.com']);
+                done();
+              }, 0);
+            });
+        });
+        it('should be able to apply AND filter', function(done){
+          var callCount = 0;
+          var callEmails = [];
+          socket.on('add', function(data){
+            callEmails.push(data.data.email);
+            callCount++;
+          });
+          request(baseUrl).post('/people?filter[and][0][email]=test@test.com&filter[and][1][name]=match')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com',
+                name: 'match'
+              },{
+                email: 'dummy@test.com',
+                name: 'match'
+              }]
+            }))
+            .end(function(err, res){
+              should.not.exist(err);
+              setTimeout(function(){
+                callCount.should.equal(1);
+                callEmails.should.eql(['test@test.com']);
+                done();
+              }, 0);
+            });
+        });
+        it('should be able to apply OR filter', function(done){
+          var callCount = 0;
+          var callEmails = [];
+          socket.on('add', function(data){
+            callEmails.push(data.data.email);
+            callCount++;
+          });
+          request(baseUrl).post('/people?filter[or][0][email]=test@test.com&filter[or][1][name]=catch')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com',
+                name: 'match'
+              },{
+                email: 'matched@test.com',
+                name: 'catch'
+              },{
+                email: 'dummy@test.com',
+                name: 'match'
+              }]
+            }))
+            .end(function(err, res){
+              should.not.exist(err);
+              setTimeout(function(){
+                callCount.should.equal(2);
+                callEmails.should.eql(['test@test.com', 'matched@test.com']);
+                done();
+              }, 0);
+            });
+        });
       });
     });
   });

@@ -27,7 +27,11 @@ describe('Fortune test runner', function(){
     options.app = require("./app")({
       adapter: "mongodb",
       connectionString: remoteDB || "mongodb://localhost/fortune_test",
-      inflect: true
+      inflect: true,
+      websockets: {
+        enable: true,
+        port: 4000
+      }
     }, port);
 
     var app = options.app;
