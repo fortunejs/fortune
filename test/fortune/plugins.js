@@ -118,10 +118,10 @@ module.exports = function(options){
       });
     });
     describe('websockets plugin', function(){
-      var socket;
+      var socket, createSocket;
       before(function(done) {
-        socket = io.connect("http://localhost:4000/person");
-        socket.on('connect', function() {
+        socket = io.connect("http://localhost:" + options.ioPort + namespace || "/people");
+        socket.on('connect', function(err) {
           done();
         });
       });
@@ -194,6 +194,7 @@ module.exports = function(options){
                 {op: "replace", path: "/people/0/name", value: "tested"}
               ]))
               .end(function(err, res){
+                console.log('update complete');
               });
           });
       });
@@ -216,15 +217,44 @@ module.exports = function(options){
             });
           });
       });
-      describe('filtering integration', function(){
-        it('should apply simple query filter', function(done){
+
+    });
+    describe('filtering integration', function(){
+      var socket, createSocket;
+      beforeEach(function(done) {
+        socket = null;
+        createSocket = function(namespace, callback){
+          socket = io.connect("http://localhost:" + options.ioPort + namespace || "/people");
+          socket.on('connect', function() {
+            callback();
+          });
+          socket.on('error', function(err){
+            callback(err);
+          });
+        };
+        done();
+      });
+
+      afterEach(function(done) {
+        socket.off('add');
+        socket.off('update');
+        socket.off('delete');
+        done();
+      });
+
+      it.only('should apply simple query filter', function(done){
+        //var namespace = "/people?filter[email]=test@test.com";
+        //var namespace = "/people";
+        var namespace = "/people?filter=val";
+        createSocket(namespace, function(err){
+          should.not.exist(err);
           var callCount = 0;
           var callEmails = [];
           socket.on('add', function(data){
             callEmails.push(data.data.email);
             callCount++;
           });
-          request(baseUrl).post('/people?filter[email]=test@test.com')
+          request(baseUrl).post('/people')
             .set('content-type', 'application/json')
             .send(JSON.stringify({
               people: [{
@@ -242,88 +272,88 @@ module.exports = function(options){
               }, 0);
             });
         });
-        it('should apply $in filter', function(done){
-          var callCount = 0;
-          var callEmails = [];
-          socket.on('add', function(data){
-            callEmails.push(data.data.email);
-            callCount++;
-          });
-          request(baseUrl).post('/people?filter[email][in]=test@test.com')
-            .set('content-type', 'application/json')
-            .send(JSON.stringify({
-              people: [{
-                email: 'test@test.com'
-              },{
-                email: 'dummy@test.com'
-              }]
-            }))
-            .end(function(err, res){
-              should.not.exist(err);
-              setTimeout(function(){
-                callCount.should.equal(1);
-                callEmails.should.eql(['test@test.com']);
-                done();
-              }, 0);
-            });
+      });
+      it('should apply $in filter', function(done){
+        var callCount = 0;
+        var callEmails = [];
+        socket.on('add', function(data){
+          callEmails.push(data.data.email);
+          callCount++;
         });
-        it('should be able to apply AND filter', function(done){
-          var callCount = 0;
-          var callEmails = [];
-          socket.on('add', function(data){
-            callEmails.push(data.data.email);
-            callCount++;
+        request(baseUrl).post('/people?filter[email][in]=test@test.com')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com'
+            },{
+              email: 'dummy@test.com'
+            }]
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            setTimeout(function(){
+              callCount.should.equal(1);
+              callEmails.should.eql(['test@test.com']);
+              done();
+            }, 0);
           });
-          request(baseUrl).post('/people?filter[and][0][email]=test@test.com&filter[and][1][name]=match')
-            .set('content-type', 'application/json')
-            .send(JSON.stringify({
-              people: [{
-                email: 'test@test.com',
-                name: 'match'
-              },{
-                email: 'dummy@test.com',
-                name: 'match'
-              }]
-            }))
-            .end(function(err, res){
-              should.not.exist(err);
-              setTimeout(function(){
-                callCount.should.equal(1);
-                callEmails.should.eql(['test@test.com']);
-                done();
-              }, 0);
-            });
+      });
+      it('should be able to apply AND filter', function(done){
+        var callCount = 0;
+        var callEmails = [];
+        socket.on('add', function(data){
+          callEmails.push(data.data.email);
+          callCount++;
         });
-        it('should be able to apply OR filter', function(done){
-          var callCount = 0;
-          var callEmails = [];
-          socket.on('add', function(data){
-            callEmails.push(data.data.email);
-            callCount++;
+        request(baseUrl).post('/people?filter[and][0][email]=test@test.com&filter[and][1][name]=match')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com',
+              name: 'match'
+            },{
+              email: 'dummy@test.com',
+              name: 'match'
+            }]
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            setTimeout(function(){
+              callCount.should.equal(1);
+              callEmails.should.eql(['test@test.com']);
+              done();
+            }, 0);
           });
-          request(baseUrl).post('/people?filter[or][0][email]=test@test.com&filter[or][1][name]=catch')
-            .set('content-type', 'application/json')
-            .send(JSON.stringify({
-              people: [{
-                email: 'test@test.com',
-                name: 'match'
-              },{
-                email: 'matched@test.com',
-                name: 'catch'
-              },{
-                email: 'dummy@test.com',
-                name: 'match'
-              }]
-            }))
-            .end(function(err, res){
-              should.not.exist(err);
-              setTimeout(function(){
-                callCount.should.equal(2);
-                callEmails.should.eql(['test@test.com', 'matched@test.com']);
-                done();
-              }, 0);
-            });
+      });
+      it('should be able to apply OR filter', function(done){
+        var callCount = 0;
+        var callEmails = [];
+        socket.on('add', function(data){
+          callEmails.push(data.data.email);
+          callCount++;
         });
+        request(baseUrl).post('/people?filter[or][0][email]=test@test.com&filter[or][1][name]=catch')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [{
+              email: 'test@test.com',
+              name: 'match'
+            },{
+              email: 'matched@test.com',
+              name: 'catch'
+            },{
+              email: 'dummy@test.com',
+              name: 'match'
+            }]
+          }))
+          .end(function(err, res){
+            should.not.exist(err);
+            setTimeout(function(){
+              callCount.should.equal(2);
+              callEmails.should.eql(['test@test.com', 'matched@test.com']);
+              done();
+            }, 0);
+          });
       });
     });
   });
