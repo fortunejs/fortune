@@ -220,6 +220,22 @@ module.exports = function(options){
           });
       });
 
+      it('should properly serialize the data', function(done){
+        socket.on('update', function(data){
+          data.people[0].links.should.be.an.Object;
+          data.people[0].links.pets[0].should.equal(ids.pets[0]);
+          should.not.exist(data.people[0].pets);
+          done();
+        });
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/pets', value: [ids.pets[0]]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+          });
+      });
     });
     describe('filtering integration', function(){
       var socket, createSocket;
