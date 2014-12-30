@@ -133,7 +133,8 @@ module.exports = function(options){
 
       it('should inform users when a resource is added', function(done) {
         socket.on('add', function(data) {
-          data.data.should.be.an.object;
+          data.people.should.be.an.Array;
+          data.people.length.should.equal(1);
           done();
         });
         request(baseUrl).post('/people')
@@ -148,8 +149,9 @@ module.exports = function(options){
       });
       it('should inform users when a resource is edited with put', function(done) {
         socket.on('update', function(data) {
-          data.data.should.be.an.object;
-          data.data.name.should.equal.changed;
+          data.people.should.be.an.Array;
+          data.people.length.should.equal(1);
+          data.people[0].name.should.equal.changed;
           done();
         });
         request(baseUrl).post('/people')
@@ -174,8 +176,9 @@ module.exports = function(options){
       });
       it('should inform users when a resource is edited with patch', function(done) {
         socket.on('update', function(data) {
-          data.data.should.be.an.object;
-          data.data.name.should.equal.tested;
+          data.people.should.be.an.Array;
+          data.people.length.should.equal(1);
+          data.people[0].name.should.equal.tested;
           done();
         });
         request(baseUrl).post('/people')
@@ -198,8 +201,9 @@ module.exports = function(options){
       });
       it('should inform users when a resource is deleted', function(done) {
         socket.on('delete', function(data) {
-          data.data.should.be.an.object;
-          data.data.id.should.equal('test@test.com');
+          data.people.should.be.an.Array;
+          data.people.length.should.equal(1);
+          data.people[0].id.should.equal('test@test.com');
           done();
         });
         request(baseUrl).post('/people')
@@ -216,6 +220,22 @@ module.exports = function(options){
           });
       });
 
+      it('should properly serialize the data', function(done){
+        socket.on('update', function(data){
+          data.people[0].links.should.be.an.Object;
+          data.people[0].links.pets[0].should.equal(ids.pets[0]);
+          should.not.exist(data.people[0].pets);
+          done();
+        });
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/pets', value: [ids.pets[0]]}
+          ]))
+          .end(function(err, res){
+            should.not.exist(err);
+          });
+      });
     });
     describe('filtering integration', function(){
       var socket, createSocket;
@@ -247,7 +267,7 @@ module.exports = function(options){
           var callCount = 0;
           var callEmails = [];
           socket.on('add', function(data){
-            callEmails.push(data.data.email);
+            callEmails.push(data.people[0].email);
             callCount++;
           });
           request(baseUrl).post('/people')
@@ -276,7 +296,7 @@ module.exports = function(options){
           var callCount = 0;
           var callEmails = [];
           socket.on('add', function(data){
-            callEmails.push(data.data.email);
+            callEmails.push(data.people[0].email);
             callCount++;
           });
           request(baseUrl).post('/people')
@@ -305,7 +325,7 @@ module.exports = function(options){
           var callCount = 0;
           var callEmails = [];
           socket.on('add', function(data){
-            callEmails.push(data.data.email);
+            callEmails.push(data.people[0].email);
             callCount++;
           });
           request(baseUrl).post('/people')
@@ -336,7 +356,7 @@ module.exports = function(options){
           var callCount = 0;
           var callEmails = [];
           socket.on('add', function(data){
-            callEmails.push(data.data.email);
+            callEmails.push(data.people[0].email);
             callCount++;
           });
           request(baseUrl).post('/people')
@@ -360,6 +380,42 @@ module.exports = function(options){
                 callEmails.should.eql(['test@test.com', 'matched@test.com']);
                 done();
               }, 100);
+            });
+        });
+      });
+    });
+    describe('includes' , function(){
+      var socket, createSocket;
+      beforeEach(function(){
+        createSocket = function(qs, done){
+          socket = io.connect("http://localhost:" + options.ioPort + "/people", {query: qs, forceNew: true});
+          socket.on('connect', done);
+          socket.on('error', done);
+        }
+      });
+      afterEach(function(){
+        socket.off('add');
+        socket.off('update');
+        socket.off('delete');
+      });
+      it('should be able to include related documents to the same payload', function(done){
+        createSocket('include=pets',function(err){
+          should.not.exist(err);
+          socket.on('update', function(data){
+            data.people.should.be.an.Array;
+            data.linked.should.be.an.Object;
+            data.linked.pets.should.be.an.Array;
+            data.linked.pets.length.should.equal(2);
+            done();
+          });
+          request(baseUrl).patch('/people/' + ids.people[0])
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'replace', path: '/people/0/pets', value: [ids.pets[0], ids.pets[1]]}
+            ]))
+            .expect(200)
+            .end(function(err, res){
+              should.not.exist(err);
             });
         });
       });
