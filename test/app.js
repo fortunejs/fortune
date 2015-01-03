@@ -46,7 +46,7 @@ function createApp(options) {
             else {
                 return foobar;
             }
-        
+        }
     )
         .resource('bla', {
             name: String
