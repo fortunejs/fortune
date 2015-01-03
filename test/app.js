@@ -10,7 +10,9 @@ function createApp(options) {
             appearances: Number,
             pets: ['pet'],
             soulmate: {ref: 'person', inverse: 'soulmate'},
-            lovers: [{ref: 'person', inverse: 'lovers'}]
+            lovers: [
+                {ref: 'person', inverse: 'lovers'}
+            ]
         })
 
         .resource('pet', {
@@ -23,35 +25,46 @@ function createApp(options) {
             foo: String
         })
         .before(
-            function (req, res) {
-                var foobar = this;
+        function (req, res) {
+            var foobar = this;
 
-                if (foobar.foo && foobar.foo === 'bar') {
-                    // promise
-                    return new RSVP.Promise(function (resolve, reject) {
-                        reject(new JSONProblemError({
-                            status: 400,
-                            detail: 'Foo was bar'
-                        }));
-                    });
-                } else if (foobar.foo && foobar.foo === 'baz') {
-                    // non-promise
-                    throw new JSONProblemError({
+            if (foobar.foo && foobar.foo === 'bar') {
+                // promise
+                return new RSVP.Promise(function (resolve, reject) {
+                    reject(new JSONProblemError({
                         status: 400,
-                        detail: 'Foo was baz'
-                    });
-                }
-                else {
-                    return foobar;
-                }
+                        detail: 'Foo was bar'
+                    }));
+                });
+            } else if (foobar.foo && foobar.foo === 'baz') {
+                // non-promise
+                throw new JSONProblemError({
+                    status: 400,
+                    detail: 'Foo was baz'
+                });
             }
-        )
+            else {
+                return foobar;
+            }
+        
+    )
         .resource('bla', {
             name: String
         })
-        .onChange(function(doc) {
-            console.log('received doc '+ JSON.stringify(doc));
-            // do some action here e.g. fire off a request to another http endpoint
+        .onChange({
+            insert: function (resource) {
+                console.log('inserted resource : ' + JSON.stringify(resource));
+                // do some action here e.g. fire off a request to another http endpoint
+            },
+            update: function (resource) {
+                console.log('updated resource : ' + JSON.stringify(resource));
+                // do some action here e.g. fire off a request to another http endpoint
+            },
+            delete: function (id) {
+                console.log('deleted resource with id ' + id);
+                // do some action here e.g. fire off a request to another http endpoint
+                // should be avoided in most cases. soft deletes are preferred
+            }
         });
 
 
@@ -65,11 +78,11 @@ function createApp(options) {
 
 
     return RSVP.all([
-        fortuneApp.onRouteCreated('pet'),
-        fortuneApp.onRouteCreated('person'),
-        fortuneApp.onRouteCreated('foobar'),
-        fortuneApp.onRouteCreated('bla')
-    ])
+            fortuneApp.onRouteCreated('pet'),
+            fortuneApp.onRouteCreated('person'),
+            fortuneApp.onRouteCreated('foobar'),
+            fortuneApp.onRouteCreated('bla')
+        ])
         .then(function () {
             return fortuneApp;
         });
