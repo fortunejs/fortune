@@ -22,7 +22,7 @@ describe('onChange', function () {
             })
             .catch(function (err) {
                 console.trace(err);
-                done();
+                done(err);
             })
     });
 
