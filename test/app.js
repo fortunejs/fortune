@@ -51,6 +51,7 @@ function createApp(options) {
         })
         .onChange(function(doc) {
             console.log('received doc '+ JSON.stringify(doc));
+            // do some action here e.g. fire off a request to another http endpoint
         });
 
 
