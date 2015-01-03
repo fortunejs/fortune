@@ -3,12 +3,13 @@
 
 var options = {
     adapter: 'mongodb',
-    connectionString: process.argv[2] || "‌mongodb://127.0.0.1:27017/testDB",
+    connectionString: process.argv[2] || process.env.MONGODB_URL || "‌mongodb://127.0.0.1:27017/testDB",
     db: 'testDB',
     inflect: true
 };
 
 before(function (done) {
+    this.timeout(30000);
     this.app = require('./app')(options)
         .catch(function (error) {
             done(error);

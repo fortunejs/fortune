@@ -45,7 +45,13 @@ function createApp(options) {
                     return foobar;
                 }
             }
-        );
+        )
+        .resource('bla', {
+            name: String
+        })
+        .onChange(function(doc) {
+            console.log('received doc '+ JSON.stringify(doc));
+        });
 
 
     fortuneApp.router.get('/random-error', function (req, res, next) {
@@ -60,10 +66,10 @@ function createApp(options) {
     return RSVP.all([
         fortuneApp.onRouteCreated('pet'),
         fortuneApp.onRouteCreated('person'),
-        fortuneApp.onRouteCreated('foobar')
+        fortuneApp.onRouteCreated('foobar'),
+        fortuneApp.onRouteCreated('bla')
     ])
         .then(function () {
-            fortuneApp.listen(process.env.PORT);
             return fortuneApp;
         });
 }

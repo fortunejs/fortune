@@ -91,11 +91,12 @@ describe('using mongodb adapter', function () {
     });
 
 
-    require("./resources")(baseUrl,keys,ids);
+/*    require("./resources")(baseUrl,keys,ids);
     require("./associations")(baseUrl,keys,ids);
     require("./limits")(baseUrl,keys,ids);
     require("./includes")(baseUrl,keys,ids);
-    require("./jsonapi_error")(baseUrl,keys,ids);
+    require("./jsonapi_error")(baseUrl,keys,ids);*/
+    /*require("./onChange")(baseUrl);*/
 
 
     after(function (done) {
