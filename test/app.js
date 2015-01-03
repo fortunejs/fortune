@@ -3,6 +3,7 @@ var JSONProblemError = require('../lib/jsonapi-error');
 var RSVP = require('rsvp');
 
 function createApp(options) {
+
     var fortuneApp = fortune(options)
 
         .resource('person', {
@@ -51,21 +52,17 @@ function createApp(options) {
         .resource('bla', {
             name: String
         })
-        .onChange({
-            insert: function (resource) {
-                console.log('inserted resource : ' + JSON.stringify(resource));
-                // do some action here e.g. fire off a request to another http endpoint
-            },
-            update: function (resource) {
-                console.log('updated resource : ' + JSON.stringify(resource));
-                // do some action here e.g. fire off a request to another http endpoint
-            },
-            delete: function (id) {
-                console.log('deleted resource with id ' + id);
-                // do some action here e.g. fire off a request to another http endpoint
-                // should be avoided in most cases. soft deletes are preferred
-            }
-        });
+        .onChange({insert: esSync, update: esSync})
+        .onChange({insert: someSync});
+
+
+    function esSync(resource) {
+        console.log('insert/update es resource : ' + JSON.stringify(resource));
+    }
+
+    function someSync(resource) {
+        console.log('insert some resource : ' + JSON.stringify(resource));
+    }
 
 
     fortuneApp.router.get('/random-error', function (req, res, next) {
