@@ -25,6 +25,7 @@ Pluggable with an [agco-adm JSON-API search profile](https://github.com/agco-adm
 - Extended filter operators : lt, gt, lte, gte
 - Mongodb change events - oplog integration 
 - External links
+- UUIDs 
 - [Patch](http://jsonapi.org/format/#patch) fully supported
 - [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
