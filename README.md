@@ -1,85 +1,30 @@
-# Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
+# Harvest.js 
 
-Hello nerds. Fortune is a web framework for prototyping hypermedia APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for [NeDB](//github.com/louischatriot/nedb) (built-in), [MongoDB](//github.com/daliwali/fortune-mongodb), [MySQL](//github.com/daliwali/fortune-relational), [Postgres](//github.com/daliwali/fortune-relational), & [SQLite](//github.com/daliwali/fortune-relational).
+[Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
 
-Get it by installing from npm:
-```
-$ npm install fortune
-```
+Pluggable with a [agco-adm JSON-API search profile](https://github.com/agco-adm/json-api-search-profile) compliant extension : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest) to offer additional features such as linked resource filtering and aggregation.   
 
-### Road to 1.0
+### JSON-API Features 
 
-There is a release tag for `v1.0` of JSON API, though Fortune does not yet implement the entire feature set. What needs to be done:
+- [Resource Relationships](http://jsonapi.org/format/#document-structure-resource-relationships) 
+- [URL Templates](http://jsonapi.org/format/#document-structure-url-templates)
+- [Filtering](http://jsonapi.org/format/#fetching-filtering)
+- [Inclusion of Linked Resources](http://jsonapi.org/format/#fetching-includes)
+- [Sparse fieldsets](http://jsonapi.org/format/#fetching-sparse-fieldsets)
+- [Sorting](http://jsonapi.org/format/#fetching-sorting)
+- [CRUD](http://jsonapi.org/format/#crud)
+- [Errors](http://jsonapi.org/format/#errors)
 
-- Querying, pagination, sorting
-- Compound documents
-- Content negotiation between different formats (future, planned)
-- Ensuring specification compliance
+### Other Features 
 
-Contributions welcome.
+- Offset based pagination
+- node-swagger-express ready
 
-### Features
+### Roadmap
 
-Fortune implements everything you need to get started with JSON API, with a few extra features:
+- Extended filter operators : lt, gt, lte, gte
+- Mongodb change events - oplog integration 
+- External links
+- [Patch](http://jsonapi.org/format/#patch) fully supported
+- [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
-- Batteries included, Fortune handles routing and database interactions so you don't have to.
-- Serializers and deserializers for JSON API, and other hypermedia formats (in the future).
-- Hooks to implement application specific logic before/after interacting with resources.
-
-It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](//github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
-
-## Guide & Documentation
-
-The full guide and API documentation are located at [fortunejs.com](http://fortunejs.com/).
-
-### Basic Usage
-
-Here is a minimal application:
-
-```javascript
-var fortune = require('fortune');
-var app = fortune();
-
-app.resource('person', {
-  name: String,
-  age: Number,
-  pets: ['pet'] // "has many" relationship to pets
-});
-
-app.resource('pet', {
-  name: String,
-  age: Number,
-  owner: 'person' // "belongs to" relationship to a person
-});
-
-app.listen(1337);
-```
-
-This exposes a few routes for the `person` and `pet` resources, as defined by the JSON API specification:
-
-| HTTP   | Person             | Pet               | Notes                                                        |
-|--------|--------------------|-------------------|--------------------------------------------------------------|
-| GET    | /people            | /pets             | Get a collection of resources, accepts query `?ids=1,2,3...` |
-| POST   | /people            | /pets             | Create a resource                                            |
-| GET    | /people/`:id`      | /pets/`:id`       | Get a specific resource, or multiple: `1,2,3`                |
-| PUT    | /people/`:id`      | /pets/`:id`       | Create or update a resource                                  |
-| PATCH  | /people/`:id`      | /pets/`:id`       | Patch a resource (see [RFC 6902](//tools.ietf.org/html/rfc6902)) |
-| DELETE | /people/`:id`      | /pets/`:id`       | Delete a resource                                            |
-| GET    | /people/`:id`/pets | /pets/`:id`/owner | Get a related resource (one level deep)                      |
-
-### Unit Testing
-
-Tests are written with Mocha, and are run against the built-in NeDB adapter, plus MongoDB & MySQL on Travis. You will also need to have the developer dependencies installed. To run tests:
-
-```
-$ npm test
-```
-
-### Client-side Implementations
-- [Ember Data](//github.com/emberjs/data): the original implementation, it needs a [custom adapter](//github.com/daliwali/ember-json-api) to actually work.
-
-### Meta
-
-For release history and roadmap, see [CHANGELOG.md](//github.com/daliwali/fortune/blob/master/CHANGELOG.md).
-
-Fortune is licensed under the MIT license, see [LICENSE.md](//github.com/daliwali/fortune/blob/master/LICENSE.md).
