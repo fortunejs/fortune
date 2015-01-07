@@ -1,5 +1,5 @@
-var fortune = require('../lib/fortune');
-var JSONProblemError = require('../lib/jsonapi-error');
+var fortune = require('../../lib/fortune');
+var JSONProblemError = require('../../lib/jsonapi-error');
 var RSVP = require('rsvp');
 
 function createApp(options) {
@@ -48,21 +48,7 @@ function createApp(options) {
                 return foobar;
             }
         }
-    )
-        .resource('bla', {
-            name: String
-        })
-        .onChange({insert: esSync, update: esSync})
-        .onChange({insert: someSync});
-
-
-    function esSync(resource) {
-        console.log('insert/update es resource : ' + JSON.stringify(resource));
-    }
-
-    function someSync(resource) {
-        console.log('insert some resource : ' + JSON.stringify(resource));
-    }
+    );
 
 
     fortuneApp.router.get('/random-error', function (req, res, next) {
@@ -77,8 +63,7 @@ function createApp(options) {
     return RSVP.all([
             fortuneApp.onRouteCreated('pet'),
             fortuneApp.onRouteCreated('person'),
-            fortuneApp.onRouteCreated('foobar'),
-            fortuneApp.onRouteCreated('bla')
+            fortuneApp.onRouteCreated('foobar')
         ])
         .then(function () {
             return fortuneApp;

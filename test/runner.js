@@ -7,9 +7,8 @@ var mocha = new Mocha()
     .reporter('spec')
     .ui('bdd');
 
-mocha.addFile(path.join(location, 'global.spec.js'));
-//mocha.addFile(path.join(location, 'fortune/all.js'));
-mocha.addFile(path.join(location, 'fortune/onChange.js'));
+mocha.addFile(path.join(location, 'fortune/all.js'));
+
 
 mocha.run(function (failures) {
     process.exit(failures);

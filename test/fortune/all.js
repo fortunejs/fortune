@@ -5,7 +5,7 @@ var RSVP = require('rsvp');
 var request = require('supertest');
 
 var Promise = RSVP.Promise;
-var fixtures = require('./../fixtures.json');
+var fixtures = require('./fixtures.json');
 
 var baseUrl = 'http://localhost:' + process.env.PORT;
 var keys = {};
@@ -14,27 +14,44 @@ _.each(fixtures, function (resources, collection) {
     keys[collection] = inflect.pluralize(collection);
 });
 
+var options = {
+    adapter: 'mongodb',
+    connectionString: process.argv[2] || process.env.MONGODB_URL || "‌mongodb://127.0.0.1:27017/testDB",
+    db: 'testDB',
+    inflect: true
+};
+
+
 describe('using mongodb adapter', function () {
     var ids = {};
     this.timeout(50000);
 
+
     before(function (done) {
+
+        this.app = require('./app')(options)
+            .catch(function (error) {
+                done(error);
+                process.exit(1);
+            });
+
         this.app
-            .then(function (fortuneApp){
+            .then(function (fortuneApp) {
+                fortuneApp.listen(process.env.PORT);
                 var expectedDbName = fortuneApp.options.db;
 
-                return new Promise(function(resolve){
-                    fortuneApp.adapter.mongoose.connections[1].db.collectionNames(function(err, collections){
-                        resolve(_.compact(_.map(collections, function(collection){
+                return new Promise(function (resolve) {
+                    fortuneApp.adapter.mongoose.connections[1].db.collectionNames(function (err, collections) {
+                        resolve(_.compact(_.map(collections, function (collection) {
 
                             var collectionParts = collection.name.split(".");
                             var name = collectionParts[1];
                             var db = collectionParts[0];
 
-                            if(name && (name !== "system") && db && (db === expectedDbName)){
-                                return new RSVP.Promise(function(resolve){
-                                    fortuneApp.adapter.mongoose.connections[1].db.collection(name, function(err, collection){
-                                        collection.remove({},null, function(){
+                            if (name && (name !== "system") && db && (db === expectedDbName)) {
+                                return new RSVP.Promise(function (resolve) {
+                                    fortuneApp.adapter.mongoose.connections[1].db.collection(name, function (err, collection) {
+                                        collection.remove({}, null, function () {
                                             console.log("Wiped collection", name);
                                             resolve();
                                         });
@@ -45,7 +62,7 @@ describe('using mongodb adapter', function () {
                         })));
                     });
                 });
-            }).then(function(wipeFns){
+            }).then(function (wipeFns) {
                 console.log("Wiping collections:");
                 return RSVP.all(wipeFns);
             })
@@ -81,7 +98,7 @@ describe('using mongodb adapter', function () {
                     }));
                 });
 
-                return RSVP.all(createResources).then(function() {
+                return RSVP.all(createResources).then(function () {
                     done();
                 });
             })
@@ -91,33 +108,37 @@ describe('using mongodb adapter', function () {
     });
 
 
-/*    require("./resources")(baseUrl,keys,ids);
-    require("./associations")(baseUrl,keys,ids);
-    require("./limits")(baseUrl,keys,ids);
-    require("./includes")(baseUrl,keys,ids);
-    require("./jsonapi_error")(baseUrl,keys,ids);*/
-    /*require("./onChange")(baseUrl);*/
+    require("./resources")(baseUrl, keys, ids);
+    require("./associations")(baseUrl, keys, ids);
+    require("./limits")(baseUrl, keys, ids);
+    require("./includes")(baseUrl, keys, ids);
+    require("./jsonapi_error")(baseUrl, keys, ids);
 
 
     after(function (done) {
+        var that = this;
         _.each(fixtures, function (resources, collection) {
             var key = keys[collection];
 
             RSVP.all(ids[key].map(function (id) {
-                return new Promise(function (resolve) {
-                    request(baseUrl)
-                        .del('/' + key + '/' + id)
-                        .expect(204)
-                        .end(function (error) {
-                            should.not.exist(error);
-                            resolve();
-                        });
+                    return new Promise(function (resolve) {
+                        request(baseUrl)
+                            .del('/' + key + '/' + id)
+                            .expect(204)
+                            .end(function (error) {
+                                should.not.exist(error);
+                                resolve();
+                            });
+                    });
+                })).then(function () {
+                    return that.app.then(function (fortuneApp) {
+                        fortuneApp.router.close();
+                        that.app = null;
+                    });
+                })
+                .finally(function () {
+                    done();
                 });
-            })).then(function () {
-                done();
-            }, function () {
-                throw new Error('Failed to delete resources.');
-            });
         });
     });
 
