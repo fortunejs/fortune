@@ -3,7 +3,7 @@
 
 [Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
 
-Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offer sadditional features such as linked resource filtering and aggregation.   
+Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offers additional features such as linked resource filtering and aggregation.   
 
 ### JSON-API Features 
 
