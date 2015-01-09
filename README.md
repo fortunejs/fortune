@@ -13,4 +13,4 @@ For release history, see [CHANGELOG.md](https://github.com/daliwali/fortune/blob
 
 Fortune is licensed under the MIT license, see [LICENSE.md](https://github.com/daliwali/fortune/blob/master/LICENSE.md).
 
-Why is it named Fortune? It has to do with storing vast amounts of data.
+The name Fortune was chosen to convey that it provides an interface for a vast quantity of resources. *CRUD* is its purpose.

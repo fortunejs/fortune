@@ -7,7 +7,7 @@ var enforcer = require('../lib/schemas/enforcer');
 
 
 // suppress warnings
-console.warn = function () {};
+console.warn = require('../lib/utils/noop');
 
 
 var schema = parser('person', {
@@ -19,6 +19,7 @@ var schema = parser('person', {
   friends: {link: ['person'], inverse: 'friends'},
   spouse: {link: 'person', inverse: 'spouse'},
   nonexistent: NaN,
+  null_edge_case: null,
   fake: [],
   nested: {thing: String}
 });
@@ -65,6 +66,7 @@ vows.describe('schema').addBatch({
 
     'drops invalid fields': function (topic) {
       assert.equal(topic.nonexistent, undefined);
+      assert.equal(topic.null_edge_case, undefined);
       assert.equal(topic.fake, undefined);
       assert.equal(topic.nested, undefined);
     }
