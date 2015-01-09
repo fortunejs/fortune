@@ -6,7 +6,7 @@ var request = require('supertest');
 var Promise = RSVP.Promise;
 var BSON = require('mongodb').BSONPure;
 
-require('longjohn');
+//require('longjohn');
 
 var baseUrl = 'http://localhost:' + process.env.PORT;
 var telemetryBaseUri = 'http://localhost:9988';
@@ -82,10 +82,6 @@ describe('onChange', function () {
                             console.log('resolved');
                             createCanAlaramResponseDfd.resolve(response);
                         })
-                        .catch(function (err) {
-                            console.log('rejected');
-                            createCanAlaramResponseDfd.reject(err);
-                        });
                 });
         }
 
@@ -95,7 +91,7 @@ describe('onChange', function () {
                 that.fortuneApp.listen(process.env.PORT);
                 that.fortuneApp.adapter.db.db.dropDatabase();
 
-                 return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL)
+                return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL || process.argv[3])
                     .then(function (eventsReader) {
                         that.eventsReader = eventsReader;
 
@@ -106,9 +102,9 @@ describe('onChange', function () {
                                 }); // no need to add a catch here, events-reader exits in case of an error
                         }
 
-                         var now = BSON.Timestamp(0, (new Date() / 1000));
-                         console.log('creating checkpoint with ts ' + now.getHighBits());
-                         return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                        var now = BSON.Timestamp(0, (new Date() / 1000));
+                        console.log('creating checkpoint with ts ' + now.getHighBits());
+                        return that.fortuneApp.adapter.create('checkpoint', {ts: now})
                             .then(function () {
                                 setTimeout(tailAndDone, 500);
                             });
@@ -124,53 +120,75 @@ describe('onChange', function () {
 
     });
 
-    describe('Scenario: insert a alarmDetail in EM API domain', function () {
+    function test(done, mockCanAlarms) {
+        var that = this;
+        that.timeout(100000);
+        var chaiExpress = chai.request(that.fortuneApp.router);
+
+        options = {allowUnmocked: true};
+        mockCanAlarms();
+
+        chaiExpress.post('/alarmDetails')
+            .send(
+            {
+                alarmDetails: [
+                    {
+                        comparator: 1,
+                        valueThreshold: 100,
+                        timeThreshold: 20,
+                        createDate: new Date(),
+                        createdBy: 'kristof'
+                    }
+                ]
+            })
+            .then(function (res) {
+                expect(res).to.have.status(201);
+                console.log(res.body);
+                that.createCanAlarmResponsePromise
+                    .then(function (createCanAlarmResponse) {
+                        expect(createCanAlarmResponse).to.have.status(201);
+                        done();
+                    })
+                    .catch(function (err) {
+                        console.trace(err);
+                        done(err)
+                    });
+            })
+            .catch(function (err) {
+                done(err);
+            });
+    }
+
+    describe('Scenario: insert resources in 2 different APIs with eventual consistency', function () {
         describe('Given no pre-existing alarmDetails', function () {
-            describe('When a new alarmDetail is posted to the alarmDetails resource', function () {
-                it('Then a new alarmDetail is created and a subsequent call is made to the telemetry API to create a canAlarm', function (done) {
-
-                    var that = this;
-                    that.timeout(100000);
-                    var chaiExpress = chai.request(that.fortuneApp.router);
-
-                    options = {allowUnmocked: true};
-                    var scope = nock(telemetryBaseUri, options)
-                        .post('/canAlarms')
-                        .reply(201, function (uri, requestBody) {
-                            return requestBody;
-                        });
-
-                    chaiExpress.post('/alarmDetails')
-                        .send(
-                        {
-                            alarmDetails: [
-                                {
-                                    comparator: 1,
-                                    valueThreshold: 100,
-                                    timeThreshold: 20,
-                                    createDate: new Date(),
-                                    createdBy: 'kristof'
-                                }
-                            ]
-                        })
-                        .then(function (res) {
-                            expect(res).to.have.status(201);
-                            console.log(res.body);
-                            that.createCanAlarmResponsePromise
-                                .then(function (createCanAlarmResponse) {
-                                    expect(createCanAlarmResponse).to.have.status(201);
-                                    done();
-                                })
-                                .catch(function (err) {
-                                    done(err)
+            describe('When a new alarmDetail is posted to the alarmDetails resource, ' +
+                'an onchange handler is defined which calls out to the canAlarms resource, ', function () {
+                describe('and that resource responds with a 201 created', function () {
+                    it('Then the onChange handler should complete successfully', function (done) {
+                        test.call(this, done, function () {
+                            nock(telemetryBaseUri, options)
+                                .post('/canAlarms')
+                                .reply(201, function (uri, requestBody) {
+                                    return requestBody;
                                 });
-                        })
-                        .catch(function (err) {
-                            done(err);
                         });
-
+                    });
+                });
+                describe('and that resource responds with a 500 the first time, a 201 created the second time', function () {
+                    it('Then the onChange handler should complete successfully', function (done) {
+                        test.call(this, done, function () {
+                            nock(telemetryBaseUri, options)
+                                .post('/canAlarms')
+                                .reply(500)
+                                .post('/canAlarms')
+                                .reply(201, function (uri, requestBody) {
+                                    return requestBody;
+                                });
+                        });
+                    });
                 });
             });
+
         });
     });
 

@@ -13,7 +13,7 @@
     "url": "https://github.com/agco-adm/fortune"
   },
   "scripts": {
-    "test": "node test/runner mongodb://127.0.0.1:27017/testDB"
+    "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1:27017/local"
   },
   "dependencies": {
     "body-parser": "~1.4.3",
