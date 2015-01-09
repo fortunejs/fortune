@@ -65,7 +65,7 @@ module.exports = function(baseUrl,keys,ids) {
         //Todo: add test for "," support.
 
         describe("repeated entities", function() {
-            it('should deduplicate included soulmate & lovers when querying people', function(done) {
+            it.skip('should deduplicate included soulmate & lovers when querying people', function(done) {
                 request(baseUrl).get('/people?include=soulmate,lovers')
                     .expect(200)
                     .end(function (err, res) {

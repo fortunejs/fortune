@@ -1,8 +1,14 @@
 language: node_js
 node_js:
   - '0.10'
-before_script:
-  - mysql -e 'create database fortune_test;'
-#  - psql -c 'create database fortune_test;' -U postgres
 services:
   - mongodb
+deploy:
+  provider: npm
+  email: stephensebro@yahoo.com
+  api_key:
+    secure: GORhsjTrkg5UFhKbnCjPGtDHkbz7LH1x2brO6Q4npfimN9VQB7lzqpaTGYrUZsiODOE1/x7BIwc9tYVeQW4hZpdF2emf79FYw6sC3bMSdTmGwtyfhX8OHIC3MQISZ0EBBStriOURV0llPhyHF9uboI0I8HueoRSuAmgkuu/Hf8c=
+  on:
+    tags: true
+    repo: agco-adm/harvest
+    branch: develop
