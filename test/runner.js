@@ -9,6 +9,7 @@ var mocha = new Mocha()
 
 //mocha.addFile(path.join(location, 'fortune/all.js'));
 mocha.addFile(path.join(location, 'fortune/events-reader.js'));
+// todo find a way to make both work
 
 
 mocha.run(function (failures) {
