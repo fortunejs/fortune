@@ -30,7 +30,7 @@ describe('onChange', function () {
     before(function (done) {
 
         var that = this;
-        that.timeout(50000);
+        that.timeout(100000);
 
         var createCanAlaramResponseDfd = RSVP.defer();
         that.createCanAlarmResponsePromise = createCanAlaramResponseDfd.promise;
@@ -56,9 +56,9 @@ describe('onChange', function () {
             .onChange({insert: createTelemetryAlarm});
 
         function createTelemetryAlarm(id) {
+            console.log('handler triggered : alarmDetail ' + id);
             return that.fortuneApp.adapter.find('alarmDetail', id.toString())
                 .then(function (alarmDetail) {
-
                     rp.debug = true;
                     return rp(
                         {
@@ -66,7 +66,7 @@ describe('onChange', function () {
                             uri: telemetryBaseUri + '/canAlarms',
                             method: 'POST',
                             json: {
-                                "canAlarms": [
+                                canAlarms: [
                                     {
                                         id: alarmDetail.alarmId,
                                         comparator: alarmDetail.comparator,
@@ -76,14 +76,14 @@ describe('onChange', function () {
                                 ]
                             }
                         })
-                        // code below is added to be able to assert results
-                        // production code
+                        // then catch handlers below are added to be able to assert results
+                        // this is not common for production code
                         .then(function (response) {
-                            console.log('bla');
+                            console.log('resolved');
                             createCanAlaramResponseDfd.resolve(response);
                         })
                         .catch(function (err) {
-                            console.log('bla2');
+                            console.log('rejected');
                             createCanAlaramResponseDfd.reject(err);
                         });
                 });
@@ -106,7 +106,9 @@ describe('onChange', function () {
                                 }); // no need to add a catch here, events-reader exits in case of an error
                         }
 
-                        return that.fortuneApp.adapter.create('checkpoint', {ts: BSON.Timestamp(0, (Date.now() / 1000) - 5)})
+                         var now = BSON.Timestamp(0, (new Date() / 1000));
+                         console.log('creating checkpoint with ts ' + now.getHighBits());
+                         return that.fortuneApp.adapter.create('checkpoint', {ts: now})
                             .then(function () {
                                 setTimeout(tailAndDone, 500);
                             });
@@ -128,7 +130,7 @@ describe('onChange', function () {
                 it('Then a new alarmDetail is created and a subsequent call is made to the telemetry API to create a canAlarm', function (done) {
 
                     var that = this;
-                    that.timeout(50000);
+                    that.timeout(100000);
                     var chaiExpress = chai.request(that.fortuneApp.router);
 
                     options = {allowUnmocked: true};
