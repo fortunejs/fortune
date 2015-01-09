@@ -125,7 +125,6 @@ describe('onChange', function () {
         that.timeout(100000);
         var chaiExpress = chai.request(that.fortuneApp.router);
 
-        options = {allowUnmocked: true};
         mockCanAlarms();
 
         chaiExpress.post('/alarmDetails')
@@ -166,7 +165,8 @@ describe('onChange', function () {
                 describe('and that resource responds with a 201 created', function () {
                     it('Then the onChange handler should complete successfully', function (done) {
                         test.call(this, done, function () {
-                            nock(telemetryBaseUri, options)
+
+                            nock(telemetryBaseUri, {allowUnmocked: true})
                                 .post('/canAlarms')
                                 .reply(201, function (uri, requestBody) {
                                     return requestBody;
@@ -177,7 +177,7 @@ describe('onChange', function () {
                 describe('and that resource responds with a 500 the first time, a 201 created the second time', function () {
                     it('Then the onChange handler should complete successfully', function (done) {
                         test.call(this, done, function () {
-                            nock(telemetryBaseUri, options)
+                            nock(telemetryBaseUri, {allowUnmocked: true})
                                 .post('/canAlarms')
                                 .reply(500)
                                 .post('/canAlarms')
