@@ -1,7 +1,7 @@
+var RSVP = require('rsvp');
 var inflect = require('i')();
 var should = require('should');
 var _ = require('lodash');
-var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var BSON = require('mongodb').BSONPure;
@@ -24,6 +24,8 @@ var expect = chai.expect;
 
 var fortune = require('../../lib/fortune');
 
+var createCanAlarmResponsePromise;
+var createCanAlaramResponseDfd;
 
 describe('onChange', function () {
 
@@ -31,9 +33,6 @@ describe('onChange', function () {
 
         var that = this;
         that.timeout(100000);
-
-        var createCanAlaramResponseDfd = RSVP.defer();
-        that.createCanAlarmResponsePromise = createCanAlaramResponseDfd.promise;
 
         var options = {
             adapter: 'mongodb',
@@ -88,33 +87,12 @@ describe('onChange', function () {
         that.fortuneApp
             .onRouteCreated('alarmDetail')
             .then(function () {
+                // do once
                 that.fortuneApp.listen(process.env.PORT);
-                that.fortuneApp.adapter.db.db.dropDatabase();
-
-                return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL || process.argv[3])
-                    .then(function (eventsReader) {
-                        that.eventsReader = eventsReader;
-
-                        function tailAndDone() {
-                            that.eventsReader.tail()
-                                .then(function () {
-                                    done();
-                                }); // no need to add a catch here, events-reader exits in case of an error
-                        }
-
-                        var now = BSON.Timestamp(0, (new Date() / 1000));
-                        console.log('creating checkpoint with ts ' + now.getHighBits());
-                        return that.fortuneApp.adapter.create('checkpoint', {ts: now})
-                            .then(function () {
-                                setTimeout(tailAndDone, 500);
-                            });
-
-                    });
+                done();
             })
             .catch(function (err) {
                 done(err);
-                // todo find a more elegant solution for this,
-                // investigate how to easy wrap the promise chain with catch done handler
             });
 
 
@@ -143,7 +121,7 @@ describe('onChange', function () {
             .then(function (res) {
                 expect(res).to.have.status(201);
                 console.log(res.body);
-                that.createCanAlarmResponsePromise
+                createCanAlarmResponsePromise
                     .then(function (createCanAlarmResponse) {
                         expect(createCanAlarmResponse).to.have.status(201);
                         done();
@@ -158,12 +136,61 @@ describe('onChange', function () {
             });
     }
 
+
     describe('Scenario: insert resources in 2 different APIs with eventual consistency', function () {
         describe('Given no pre-existing alarmDetails', function () {
             describe('When a new alarmDetail is posted to the alarmDetails resource, ' +
                 'an onchange handler is defined which calls out to the canAlarms resource, ', function () {
-                describe('and that resource responds with a 201 created', function () {
-                    it('Then the onChange handler should complete successfully', function (done) {
+
+                beforeEach(function(done) {
+                    var that = this;
+                    that.timeout(100000);
+
+
+                    createCanAlaramResponseDfd = RSVP.defer();
+                    createCanAlarmResponsePromise = createCanAlaramResponseDfd.promise;
+
+                    that.fortuneApp.adapter.db.db.dropDatabase();
+
+                    return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL || process.argv[3])
+                        .then(function (eventsReader) {
+                            that.eventsReader = eventsReader;
+
+                            function tailAndDone() {
+                                that.eventsReader.tail()
+                                    .then(function () {
+                                        done();
+                                    }); // no need to add a catch here, events-reader exits in case of an error
+                            }
+
+                            var now = BSON.Timestamp(0, (new Date() / 1000));
+                            console.log('creating checkpoint with ts ' + now.getHighBits());
+                            return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                                .then(function () {
+                                    setTimeout(tailAndDone, 500);
+                                });
+
+                        })
+                        .catch(function (err) {
+                            done(err);
+                        });
+                });
+
+                afterEach(function() {
+                    this.eventsReader.stop()
+                        .then(function() {
+                            done();
+                        })
+                        .catch(function (err) {
+                            done(err);
+                        });
+                });
+
+
+                    it('and that resource responds with a 201 created' +
+                        'Then the onChange handler should complete successfully', function (done) {
+                        console.log('foo');
+                        //done();
                         test.call(this, done, function () {
 
                             nock(telemetryBaseUri, {allowUnmocked: true})
@@ -173,9 +200,11 @@ describe('onChange', function () {
                                 });
                         });
                     });
-                });
-                describe('and that resource responds with a 500 the first time, a 201 created the second time', function () {
-                    it('Then the onChange handler should complete successfully', function (done) {
+
+
+                    it('and that resource responds with a 500 the first time, a 201 created the second time' +
+                        'Then the onChange handler should complete successfully', function (done) {
+                        console.log('bar');
                         test.call(this, done, function () {
                             nock(telemetryBaseUri, {allowUnmocked: true})
                                 .post('/canAlarms')
@@ -186,7 +215,7 @@ describe('onChange', function () {
                                 });
                         });
                     });
-                });
+
             });
 
         });

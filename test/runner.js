@@ -7,8 +7,8 @@ var mocha = new Mocha()
     .reporter('spec')
     .ui('bdd');
 
-mocha.addFile(path.join(location, 'fortune/all.js'));
-//mocha.addFile(path.join(location, 'fortune/events-reader.js'));
+//mocha.addFile(path.join(location, 'fortune/all.js'));
+mocha.addFile(path.join(location, 'fortune/events-reader.js'));
 // todo find a way to make both work
 
 
