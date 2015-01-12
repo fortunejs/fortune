@@ -28,7 +28,7 @@ var createCanAlarmResponsePromise;
 var createCanAlaramResponseDfd;
 
 
-describe('onChange', function () {
+describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     before(function (done) {
 
@@ -138,10 +138,9 @@ describe('onChange', function () {
     }
 
 
-    describe('Scenario: insert resources in 2 different APIs with eventual consistency', function () {
-        describe('Given no pre-existing alarmDetails', function () {
-            describe('When a new alarmDetail is posted to the alarmDetails resource, ' +
-                'an onchange handler is defined which calls out to the canAlarms resource, ', function () {
+        describe('Given a resource foo ', function () {
+            describe('When a new foo is posted ' +
+                ', ', function () {
 
                 beforeEach(function (done) {
                     var that = this;
@@ -192,8 +191,8 @@ describe('onChange', function () {
                 });
 
 
-                it('and that resource responds with a 201 created' +
-                    'Then the onChange handler should complete successfully', function (done) {
+                it('the onChange callback calls another resource bar which responds with a 201 created' +
+                    'Then the callback should complete successfully', function (done) {
                     test.call(this, done, function () {
 
                         nock(telemetryBaseUri, {allowUnmocked: true})
@@ -205,8 +204,9 @@ describe('onChange', function () {
                 });
 
 
-                it('and that resource responds with a 500 the first time, a 201 created the second time' +
-                    'Then the onChange handler should complete successfully', function (done) {
+                it('the onChange callback calls another resource bar which responds with a 500 the first time ' +
+                    'and a 201 created when the event is retried' +
+                    'Then the callback should complete successfully', function (done) {
                     test.call(this, done, function () {
                         nock(telemetryBaseUri, {allowUnmocked: true})
                             .post('/canAlarms')
@@ -221,8 +221,6 @@ describe('onChange', function () {
             });
 
         });
-    });
-
 
 });
 
