@@ -150,6 +150,7 @@ describe('onChange', function () {
                     createCanAlaramResponseDfd = RSVP.defer();
                     createCanAlarmResponsePromise = createCanAlaramResponseDfd.promise;
 
+                    console.log('drop database');
                     that.fortuneApp.adapter.db.db.dropDatabase();
 
                     return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL || process.argv[3])
