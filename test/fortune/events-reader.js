@@ -88,7 +88,7 @@ describe('onChange', function () {
             .onRouteCreated('alarmDetail')
             .then(function () {
                 // do once
-                that.fortuneApp.listen(process.env.PORT);
+                that.fortuneApp.listen(8001);
                 done();
             })
             .catch(function (err) {

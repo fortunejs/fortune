@@ -37,7 +37,7 @@ describe('using mongodb adapter', function () {
 
         this.app
             .then(function (fortuneApp) {
-                fortuneApp.listen(process.env.PORT);
+                fortuneApp.listen(8000);
                 var expectedDbName = fortuneApp.options.db;
 
                 return new Promise(function (resolve) {
