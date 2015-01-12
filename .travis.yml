@@ -3,6 +3,12 @@ node_js:
   - '0.10'
 services:
   - mongodb
+before_script:
+  - echo "replSet = myReplSetName" | sudo tee -a /etc/mongodb.conf
+  - sudo service mongodb restart
+  - sleep 20
+  - mongo --eval 'rs.initiate()'
+  - sleep 15
 deploy:
   provider: npm
   email: stephensebro@yahoo.com
