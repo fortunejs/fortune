@@ -8,7 +8,7 @@ var BSON = require('mongodb').BSONPure;
 
 //require('longjohn');
 
-var baseUrl = 'http://localhost:' + process.env.PORT;
+var baseUrl = 'http://localhost:' + 8001;
 var telemetryBaseUri = 'http://localhost:9988';
 
 var rp = require('request-promise');

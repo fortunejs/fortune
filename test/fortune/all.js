@@ -7,7 +7,7 @@ var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
 
-var baseUrl = 'http://localhost:' + process.env.PORT;
+var baseUrl = 'http://localhost:' + 8000;
 var keys = {};
 
 _.each(fixtures, function (resources, collection) {
