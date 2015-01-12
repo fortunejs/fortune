@@ -1,58 +1,62 @@
 {
-  "name": "fortune-agco",
-  "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.2.11",
-  "license": "MIT",
-  "author": {
-    "name": "Dali Zheng",
-    "email": "dali@series.ac"
-  },
-  "homepage": "http://fortunejs.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/agco-adm/fortune"
-  },
-  "scripts": {
-      "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1:27017/local"
-  },
-  "dependencies": {
-    "body-parser": "~1.4.3",
-    "deasync": "0.0.7",
-    "debug": "^2.1.1",
-    "express": "~4.6.1",
-    "harvest-mongodb": "agco-adm/harvest-mongodb",
-    "i": "~0.3.2",
-    "lodash": "~2.4.1",
-    "longjohn": "^0.2.4",
-    "mkdirp": "~0.5.0",
-    "mongo-oplog": "^0.1.5",
-    "mongodb": "^1.4.26",
-    "mongojs": "^0.18.0",
-    "nedb": "~0.10.6",
-    "rsvp": "~3.0.9",
-    "sync": "^0.2.3",
-    "underscore.string": "^2.4.0"
-  },
-  "devDependencies": {
-    "mocha": "~1.20.1",
-    "should": "~4.0.4",
-    "supertest": "~0.13.0",
-    "request-promise": "^0.3.2",
-    "nock": "^0.56.0",
-    "chai": "^1.10.0",
-    "chai-http": "^1.0.0",
-      "sleep": "^1.2.0"
-  },
-  "engines": {
-    "node": ">=0.10"
-  },
-  "keywords": [
-    "json",
-    "api",
-    "jsonapi",
-    "json-api",
-    "framework",
-    "rest",
-    "restful"
-  ]
+    "name": "harvest",
+    "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
+    "version": "0.3.0",
+    "license": "MIT",
+    "author": {
+        "name": "Kristof Sajdak",
+        "email": "kristof.sajdak@gmail.com"
+    },
+    "contributors": [{
+        "name": "Stephen Sebro",
+        "email": "stephensebro@yahoo.com"
+    }],
+    "homepage": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/agco-adm/harvest"
+    },
+    "scripts": {
+        "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
+    },
+    "dependencies": {
+        "body-parser": "~1.4.3",
+        "deasync": "0.0.7",
+        "debug": "^2.1.1",
+        "express": "~4.6.1",
+        "harvest-mongodb": "agco-adm/harvest-mongodb",
+        "i": "~0.3.2",
+        "lodash": "~2.4.1",
+        "longjohn": "^0.2.4",
+        "mkdirp": "~0.5.0",
+        "mongo-oplog": "^0.1.5",
+        "mongodb": "^1.4.26",
+        "mongojs": "^0.18.0",
+        "nedb": "~0.10.6",
+        "rsvp": "~3.0.9",
+        "sync": "^0.2.3",
+        "underscore.string": "^2.4.0"
+    },
+    "devDependencies": {
+        "mocha": "~1.20.1",
+        "should": "~4.0.4",
+        "supertest": "~0.13.0",
+        "request-promise": "^0.3.2",
+        "nock": "^0.56.0",
+        "chai": "^1.10.0",
+        "chai-http": "^1.0.0",
+        "sleep": "^1.2.0"
+    },
+    "engines": {
+        "node": ">=0.10"
+    },
+    "keywords": [
+        "json",
+        "api",
+        "jsonapi",
+        "json-api",
+        "framework",
+        "rest",
+        "restful"
+    ]
 }
