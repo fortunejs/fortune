@@ -189,8 +189,6 @@ describe('onChange', function () {
 
                     it('and that resource responds with a 201 created' +
                         'Then the onChange handler should complete successfully', function (done) {
-                        console.log('foo');
-                        //done();
                         test.call(this, done, function () {
 
                             nock(telemetryBaseUri, {allowUnmocked: true})
@@ -204,7 +202,6 @@ describe('onChange', function () {
 
                     it('and that resource responds with a 500 the first time, a 201 created the second time' +
                         'Then the onChange handler should complete successfully', function (done) {
-                        console.log('bar');
                         test.call(this, done, function () {
                             nock(telemetryBaseUri, {allowUnmocked: true})
                                 .post('/canAlarms')
