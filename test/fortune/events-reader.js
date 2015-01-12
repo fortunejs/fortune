@@ -27,6 +27,8 @@ var fortune = require('../../lib/fortune');
 var createCanAlarmResponsePromise;
 var createCanAlaramResponseDfd;
 
+// todo checkpoints, todo check skipping
+
 
 describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
