@@ -40,7 +40,8 @@
     "request-promise": "^0.3.2",
     "nock": "^0.56.0",
     "chai": "^1.10.0",
-    "chai-http": "^1.0.0"
+    "chai-http": "^1.0.0",
+      "sleep": "^1.2.0"
   },
   "engines": {
     "node": ">=0.10"
