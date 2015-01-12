@@ -6,7 +6,7 @@ services:
 before_script:
   - echo "replSet = myReplSetName" | sudo tee -a /etc/mongodb.conf
   - sudo service mongodb restart
-  - sleep 20
+  - sleep 45
   - mongo --eval 'rs.initiate()'
   - sleep 15
 deploy:
