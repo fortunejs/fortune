@@ -1,4 +1,4 @@
-var fortune = require('./fortune/lib/fortune');
+var fortune = require('./lib/fortune');
 var app = fortune();
 
 app
