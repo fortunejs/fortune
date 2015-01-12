@@ -153,7 +153,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     console.log('drop database');
                     that.fortuneApp.adapter.db.db.dropDatabase();
 
-                    return require('../../lib/events-reader')(that.fortuneApp, process.env.OPLOG_MONGODB_URL || process.argv[3])
+                    return that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
                         .then(function (eventsReader) {
                             that.eventsReader = eventsReader;
 
