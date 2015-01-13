@@ -43,7 +43,7 @@ module.exports = function(baseUrl,keys,ids) {
                         var body = JSON.parse(res.text);
                         (body.linked).should.be.an.Object;
                         (body.linked.people).should.be.an.Array;
-                        (body.linked.people.length).should.equal(1);
+                        (body.linked.people.length).should.be.above(0);
                         done();
                     });
             });
