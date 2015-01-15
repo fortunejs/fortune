@@ -1,18 +1,20 @@
-var vows = require('vows');
-var assert = require('assert');
-
-
-var parser = require('../lib/schemas/parser');
-var enforcer = require('../lib/schemas/enforcer');
-
+// Let there be ES6!
+require('6to5/register');
 
 // suppress warnings
 console.warn = require('../lib/utils/noop');
 
 
+var vows = require('vows');
+var assert = require('assert');
+
+var parser = require('../lib/schemas/parser');
+var enforcer = require('../lib/schemas/enforcer');
+
+
 var schema = parser('person', {
   name: String,
-  birthdate: {type: Date},
+  birthdate: {type: Date, junk: 'asdf'},
   mugshot: {type: 'buffer'},
   lucky_numbers: [Number],
   toys: {type: [Object]},
@@ -36,6 +38,7 @@ vows.describe('schema').addBatch({
 
     'parses object with native type': function (topic) {
       assert.equal(topic.birthdate.type, 'date');
+      assert.equal(topic.birthdate.junk, 'asdf');
     },
 
     'parses object with string type': function (topic) {

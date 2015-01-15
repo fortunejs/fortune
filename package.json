@@ -13,17 +13,17 @@
     "url": "https://github.com/daliwali/fortune"
   },
   "scripts": {
-    "test": "vows tests/*",
-    "coverage": "istanbul cover tests/*"
+    "test": "vows test/*",
+    "coverage": "istanbul cover npm test"
   },
   "dependencies": {
-    "inflection": "^1.5.1",
-    "negotiator": "^0.4.9",
-    "promise": "^6.0.1"
+    "6to5": "^2.12.3",
+    "inflection": "^1.5.3",
+    "negotiator": "^0.5.0"
   },
   "devDependencies": {
-    "istanbul": "^0.3.2",
-    "vows": "^0.7.0"
+    "istanbul": "^0.3.5",
+    "vows": "^0.8.1"
   },
   "engines": {
     "node": ">=0.10"
