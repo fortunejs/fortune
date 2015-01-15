@@ -1,7 +1,9 @@
 import Fortune from '../';
 
-var App = new Fortune({
+const PORT = 1337;
 
+var App = new Fortune({
+	inflect: false
 });
 
 App.resource('user', {
@@ -10,5 +12,7 @@ App.resource('user', {
 });
 
 App.init().then(() => {
-	App.listen(1337);
+	App.listen(PORT);
+	console.log('Listening on port ' + PORT + '...');
+	console.log(App);
 });
