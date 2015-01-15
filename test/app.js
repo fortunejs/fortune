@@ -110,7 +110,8 @@ module.exports = function(options, port, ioPort) {
         }
       },
       actions: {
-        'reset-password': require('./testing-actions').peopleResetPassword
+        'reset-password': require('./testing-actions').peopleResetPassword,
+        'send-through': require('./testing-actions').genericSendThrough
       }
     })
     .beforeRead([{

@@ -70,5 +70,17 @@ module.exports = function(options){
           done();
         });
     });
+    it('should send returned document from custom action complying to jsonapi syntax', function(done){
+      request(baseUrl).post('/people/' + ids.people[0] + '/send-through')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.should.be.an.Array;
+          body.people.length.should.equal(1);
+          body.links.should.be.an.Object;
+          done();
+        });
+    });
   });
 };

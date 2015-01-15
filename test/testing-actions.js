@@ -17,3 +17,13 @@ exports.peopleResetPassword = {
     }
   }
 };
+
+exports.genericSendThrough = {
+  name: 'send-through',
+  method: 'GET',
+  init: function(){
+    return function(){
+      return this;
+    }
+  }
+};
