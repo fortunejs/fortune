@@ -1,5 +1,5 @@
 var fortune = require('../../lib/fortune');
-var JSONProblemError = require('../../lib/jsonapi-error');
+var JSONAPI_Error = require('../../lib/jsonapi-error');
 var RSVP = require('rsvp');
 
 function createApp(options) {
@@ -32,14 +32,14 @@ function createApp(options) {
             if (foobar.foo && foobar.foo === 'bar') {
                 // promise
                 return new RSVP.Promise(function (resolve, reject) {
-                    reject(new JSONProblemError({
+                    reject(new JSONAPI_Error({
                         status: 400,
                         detail: 'Foo was bar'
                     }));
                 });
             } else if (foobar.foo && foobar.foo === 'baz') {
                 // non-promise
-                throw new JSONProblemError({
+                throw new JSONAPI_Error({
                     status: 400,
                     detail: 'Foo was baz'
                 });
@@ -56,7 +56,7 @@ function createApp(options) {
     });
 
     fortuneApp.router.get('/json-errors-error', function (req, res, next) {
-        next(new JSONProblemError({status: 400, detail: 'Bar was not foo'}));
+        next(new JSONAPI_Error({status: 400, detail: 'Bar was not foo'}));
     });
 
 
