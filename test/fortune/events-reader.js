@@ -9,7 +9,7 @@ var BSON = require('mongodb').BSONPure;
 //require('longjohn');
 
 var baseUrl = 'http://localhost:' + 8001;
-var telemetryBaseUri = 'http://localhost:9988';
+var reportAPI_baseUri = 'http://localhost:9988';
 
 var rp = require('request-promise');
 var nock = require('nock');
@@ -20,15 +20,21 @@ var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.request.addPromises(RSVP.Promise);
 
+var $http = require('http-as-promised');
+
+$http.debug = true;
+$http.request = require('request-debug')($http.request);
+
+var debug = require('debug')('events-reader-test');
+
 var expect = chai.expect;
 
 var fortune = require('../../lib/fortune');
 
-var createCanAlarmResponsePromise;
-var createCanAlaramResponseDfd;
+var createReportPromise;
+var createReportResponseDfd;
 
 // todo checkpoints, todo check skipping
-
 
 describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
@@ -44,51 +50,49 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             inflect: true
         };
 
-        that.fortuneApp = fortune(options)
+        that.fortuneApp =
+            fortune(options)
+                .resource('post', {
+                    title: String
+                })
+                .resource('comment', {
+                    body: String,
+                    post: 'post'
+                })
+                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
 
-            .resource('alarmDetail', {
-                comparator: Number,
-                valueThreshold: Number,
-                timeThreshold: Number,
-                createDate: Date,
-                createdBy: String,
-                alarmId: String,
-                prevAlarmId: String
-            })
-            .onChange({insert: createTelemetryAlarm});
+        var profanity = require('profanity-util');
 
-        function createTelemetryAlarm(id) {
-            console.log('handler triggered : alarmDetail ' + id);
-            return that.fortuneApp.adapter.find('alarmDetail', id.toString())
-                .then(function (alarmDetail) {
-                    rp.debug = true;
-                    return rp(
-                        {
-                            resolveWithFullResponse: true,
-                            uri: telemetryBaseUri + '/canAlarms',
-                            method: 'POST',
-                            json: {
-                                canAlarms: [
-                                    {
-                                        id: alarmDetail.alarmId,
-                                        comparator: alarmDetail.comparator,
-                                        valueThreshold: alarmDetail.valueThreshold,
-                                        timeThreshold: alarmDetail.timeThreshold
-                                    }
-                                ]
-                            }
-                        })
-                        // then catch handlers below are added to be able to assert results
-                        // this is not common for production code
-                        .then(function (response) {
-                            console.log('resolved');
-                            createCanAlaramResponseDfd.resolve(response);
-                        })
+        function reportAbusiveLanguage(id) {
+            return that.fortuneApp.adapter.find('comment', id.toString())
+                .then(function (comment) {
+                    var check = profanity.check(comment);
+                    if (!!check && check.length > 0) {
+                        return $http(
+                            {
+                                uri: reportAPI_baseUri + '/reports',
+                                method: 'POST',
+                                json: {
+                                    reports: [
+                                        {
+                                            content: comment.body
+                                        }
+                                    ]
+                                }
+                            })
+                            // then catch handlers below are added to be able to assert results
+                            // this is not common for production code
+                            .spread(function (response, reports) {
+                                createReportResponseDfd.resolve(response);
+                            })
+                    } else {
+                        return false;
+                    }
                 });
         }
 
         that.fortuneApp
-            .onRouteCreated('alarmDetail')
+            .onRouteCreated('comment')
             .then(function () {
                 // do once
                 that.fortuneApp.listen(8001);
@@ -101,128 +105,136 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
     });
 
-    function test(done, mockCanAlarms) {
+    function test(done, mockBars) {
         var that = this;
         that.timeout(100000);
         var chaiExpress = chai.request(that.fortuneApp.router);
 
-        mockCanAlarms();
+        mockBars();
 
-        chaiExpress.post('/alarmDetails')
-            .send(
-            {
-                alarmDetails: [
-                    {
-                        comparator: 1,
-                        valueThreshold: 100,
-                        timeThreshold: 20,
-                        createDate: new Date(),
-                        createdBy: 'kristof'
-                    }
-                ]
+        chaiExpress.post('/posts')
+            .send({
+                posts: [{
+                    title: "a very controversial topic"
+                }]
             })
-            .then(function (res) {
-                expect(res).to.have.status(201);
-                console.log(res.body);
-                createCanAlarmResponsePromise
-                    .then(function (createCanAlarmResponse) {
-                        expect(createCanAlarmResponse).to.have.status(201);
-                        done();
+            .then(function (postResponse) {
+                expect(postResponse).to.have.status(201);
+                return chaiExpress.post('/comments')
+                    .send(
+                    {
+                        comments: [
+                            {
+                                body: 'shit ! what are you talking about !?',
+                                links: {
+                                    post: postResponse.body.id
+                                }
+                            }
+                        ]
                     })
-                    .catch(function (err) {
-                        console.trace(err);
-                        done(err)
-                    });
+                    .then(function (commentResponse) {
+                        expect(commentResponse).to.have.status(201);
+                        debug(commentResponse.body);
+                        return createReportPromise
+                            .then(function (createReportResponse) {
+                                expect(createReportResponse).to.have.status(201);
+                                done();
+                            })
+                    })
             })
             .catch(function (err) {
+                console.trace(err);
                 done(err);
             });
     }
 
 
-        describe('Given a resource foo ', function () {
-            describe('When a new foo is posted ' +
-                ', ', function () {
+    describe('Given a post on a very controversial topic ', function () {
+        describe('and a new comment is posted or updated with content which contains profanity, ' +
+        'the comment is reported as abusive to another API. ' +
+        ', ', function () {
 
-                beforeEach(function (done) {
-                    var that = this;
-                    that.timeout(100000);
+            beforeEach(function (done) {
+                var that = this;
+                that.timeout(100000);
 
 
-                    createCanAlaramResponseDfd = RSVP.defer();
-                    createCanAlarmResponsePromise = createCanAlaramResponseDfd.promise;
+                createReportResponseDfd = RSVP.defer();
+                createReportPromise = createReportResponseDfd.promise;
 
-                    console.log('drop database');
-                    that.fortuneApp.adapter.db.db.dropDatabase();
+                console.log('drop database');
+                that.fortuneApp.adapter.db.db.dropDatabase();
 
-                    return that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
-                        .then(function (eventsReader) {
-                            that.eventsReader = eventsReader;
+                return that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
+                    .then(function (eventsReader) {
+                        that.eventsReader = eventsReader;
 
-                            function tailAndDone() {
-                                that.eventsReader.tail()
-                                    .then(function () {
-                                        done();
-                                    }); // no need to add a catch here, events-reader exits in case of an error
-                            }
-
-                            // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
-                            // precision for an oplog ts is 1s
-                            require('sleep').sleep(1);
-                            var now = BSON.Timestamp(0, (new Date() / 1000));
-                            console.log('creating checkpoint with ts ' + now.getHighBits());
-                            return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                        function tailAndDone() {
+                            that.eventsReader.tail()
                                 .then(function () {
-                                    setTimeout(tailAndDone, 500);
-                                });
+                                    done();
+                                }); // no need to add a catch here, events-reader exits in case of an error
+                        }
 
-                        })
-                        .catch(function (err) {
-                            done(err);
-                        });
-                });
+                        // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
+                        // precision for an oplog ts is 1s
+                        require('sleep').sleep(1);
+                        var now = BSON.Timestamp(0, (new Date() / 1000));
 
-                afterEach(function () {
-                    this.eventsReader.stop()
-                        .then(function () {
-                            done();
-                        })
-                        .catch(function (err) {
-                            done(err);
-                        });
-                });
-
-
-                it('the onChange callback calls another resource bar which responds with a 201 created' +
-                    'Then the callback should complete successfully', function (done) {
-                    test.call(this, done, function () {
-
-                        nock(telemetryBaseUri, {allowUnmocked: true})
-                            .post('/canAlarms')
-                            .reply(201, function (uri, requestBody) {
-                                return requestBody;
+                        console.log('creating checkpoint with ts ' + now.getHighBits());
+                        return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                            .then(function () {
+                                setTimeout(tailAndDone, 500);
                             });
+
+                    })
+                    .catch(function (err) {
+                        done(err);
                     });
-                });
+            });
 
-
-                it('the onChange callback calls another resource bar which responds with a 500 the first time ' +
-                    'and a 201 created when the event is retried' +
-                    'Then the callback should complete successfully', function (done) {
-                    test.call(this, done, function () {
-                        nock(telemetryBaseUri, {allowUnmocked: true})
-                            .post('/canAlarms')
-                            .reply(500)
-                            .post('/canAlarms')
-                            .reply(201, function (uri, requestBody) {
-                                return requestBody;
-                            });
+            afterEach(function () {
+                this.eventsReader.stop()
+                    .then(function () {
+                        done();
+                    })
+                    .catch(function (err) {
+                        done(err);
                     });
-                });
+            });
 
+
+            it('When that abuse report API resource responds with a 201 created' +
+            'Then the event is considered as handled and should complete successfully with an updated checkpoint', function (done) {
+                test.call(this, done, function () {
+
+                    nock(reportAPI_baseUri, {allowUnmocked: true})
+                        .post('/reports')
+                        .reply(201, function (uri, requestBody) {
+                            return requestBody;
+                        });
+                    //todo add verify checkpoint
+                });
+            });
+
+
+            it('When that abuse report API resource responds the first time with a 500' +
+            'Then the event is retried and should complete successfully if the abuse report API responds with a 201 this time', function (done) {
+                test.call(this, done, function () {
+                    nock(reportAPI_baseUri, {allowUnmocked: true})
+                        .post('/reports')
+                        .reply(500)
+                        .post('/reports')
+                        .reply(201, function (uri, requestBody) {
+                            return requestBody;
+                        });
+                    //todo add verify checkpoint
+                });
             });
 
         });
+
+    });
 
 });
 
