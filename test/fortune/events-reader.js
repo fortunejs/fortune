@@ -149,89 +149,86 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
     }
 
 
-    describe('Given a post on a very controversial topic ', function () {
-        describe('and a new comment is posted or updated with content which contains profanity, ' +
-        'the comment is reported as abusive to another API. ' +
-        ', ', function () {
+    describe('Given a post on a very controversial topic, ' +
+    'and a new comment is posted or updated with content which contains profanity, ' +
+    'the comment is reported as abusive to another API. ', function () {
 
-            beforeEach(function (done) {
-                var that = this;
-                that.timeout(100000);
+        beforeEach(function (done) {
+            var that = this;
+            that.timeout(100000);
 
 
-                createReportResponseDfd = RSVP.defer();
-                createReportPromise = createReportResponseDfd.promise;
+            createReportResponseDfd = RSVP.defer();
+            createReportPromise = createReportResponseDfd.promise;
 
-                console.log('drop database');
-                that.fortuneApp.adapter.db.db.dropDatabase();
+            console.log('drop database');
+            that.fortuneApp.adapter.db.db.dropDatabase();
 
-                return that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
-                    .then(function (eventsReader) {
-                        that.eventsReader = eventsReader;
+            return that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
+                .then(function (eventsReader) {
+                    that.eventsReader = eventsReader;
 
-                        function tailAndDone() {
-                            that.eventsReader.tail()
-                                .then(function () {
-                                    done();
-                                }); // no need to add a catch here, events-reader exits in case of an error
-                        }
-
-                        // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
-                        // precision for an oplog ts is 1s
-                        require('sleep').sleep(1);
-                        var now = BSON.Timestamp(0, (new Date() / 1000));
-
-                        console.log('creating checkpoint with ts ' + now.getHighBits());
-                        return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                    function tailAndDone() {
+                        that.eventsReader.tail()
                             .then(function () {
-                                setTimeout(tailAndDone, 500);
-                            });
+                                done();
+                            }); // no need to add a catch here, events-reader exits in case of an error
+                    }
 
-                    })
-                    .catch(function (err) {
-                        done(err);
-                    });
-            });
+                    // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
+                    // precision for an oplog ts is 1s
+                    require('sleep').sleep(1);
+                    var now = BSON.Timestamp(0, (new Date() / 1000));
 
-            afterEach(function () {
-                this.eventsReader.stop()
-                    .then(function () {
-                        done();
-                    })
-                    .catch(function (err) {
-                        done(err);
-                    });
-            });
-
-
-            it('When that abuse report API resource responds with a 201 created' +
-            'Then the event is considered as handled and should complete successfully with an updated checkpoint', function (done) {
-                test.call(this, done, function () {
-
-                    nock(reportAPI_baseUri, {allowUnmocked: true})
-                        .post('/reports')
-                        .reply(201, function (uri, requestBody) {
-                            return requestBody;
+                    console.log('creating checkpoint with ts ' + now.getHighBits());
+                    return that.fortuneApp.adapter.create('checkpoint', {ts: now})
+                        .then(function () {
+                            setTimeout(tailAndDone, 500);
                         });
-                    //todo add verify checkpoint
+
+                })
+                .catch(function (err) {
+                    done(err);
                 });
-            });
+        });
 
-
-            it('When that abuse report API resource responds the first time with a 500' +
-            'Then the event is retried and should complete successfully if the abuse report API responds with a 201 this time', function (done) {
-                test.call(this, done, function () {
-                    nock(reportAPI_baseUri, {allowUnmocked: true})
-                        .post('/reports')
-                        .reply(500)
-                        .post('/reports')
-                        .reply(201, function (uri, requestBody) {
-                            return requestBody;
-                        });
-                    //todo add verify checkpoint
+        afterEach(function () {
+            this.eventsReader.stop()
+                .then(function () {
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
-            });
+        });
 
+
+        it('When that abuse report API resource responds with a 201 created' +
+        'Then the event is considered as handled and should complete successfully with an updated checkpoint', function (done) {
+            test.call(this, done, function () {
+
+                nock(reportAPI_baseUri, {allowUnmocked: true})
+                    .post('/reports')
+                    .reply(201, function (uri, requestBody) {
+                        return requestBody;
+                    });
+                //todo add verify checkpoint
+            });
+        });
+
+
+        it('When that abuse report API resource responds the first time with a 500' +
+        'Then the event is retried and should complete successfully if the abuse report API responds with a 201 this time', function (done) {
+            test.call(this, done, function () {
+                nock(reportAPI_baseUri, {allowUnmocked: true})
+                    .post('/reports')
+                    .reply(500)
+                    .post('/reports')
+                    .reply(201, function (uri, requestBody) {
+                        return requestBody;
+                    });
+                //todo add verify checkpoint
+            });
         });
 
     });
