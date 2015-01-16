@@ -1,6 +1,6 @@
 # Fortune.js
 
-Fortune is a framework for prototyping hypermedia-driven applications.
+Fortune is a framework for hypermedia applications.
 
 Get it by installing from npm:
 ```

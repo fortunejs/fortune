@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Framework for prototyping hypermedia-driven applications.",
+  "description": "A framework for hypermedia applications.",
   "version": "0.3.0",
   "license": "MIT",
   "author": {
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "vows test/*",
-    "coverage": "istanbul cover npm test"
+    "coverage": "istanbul cover test/*"
   },
   "dependencies": {
     "6to5": "^2.12.3",
