@@ -13,8 +13,9 @@
     "url": "https://github.com/daliwali/fortune"
   },
   "scripts": {
-    "test": "vows test/*",
-    "coverage": "istanbul cover test/*"
+    "test": "npm run compile && vows test/*",
+    "coverage": "npm run compile && istanbul cover test/*",
+    "compile": "6to5 lib --out-dir dist"
   },
   "dependencies": {
     "6to5": "^2.12.3",

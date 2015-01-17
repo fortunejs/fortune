@@ -1,28 +1,25 @@
-// Let there be ES6!
-require('6to5/register');
-
 // suppress warnings
-console.warn = require('../lib/utils/noop');
-
+console.warn = require('../dist/utils/noop');
 
 var vows = require('vows');
 var assert = require('assert');
 
-var parser = require('../lib/schemas/parser');
-var enforcer = require('../lib/schemas/enforcer');
+var parser = require('../dist/schemas/parser');
+var enforcer = require('../dist/schemas/enforcer');
 
 
 var schema = parser('person', {
-  name: String,
+  name: 'string',
   birthdate: {type: Date, junk: 'asdf'},
-  mugshot: {type: 'buffer'},
-  lucky_numbers: [Number],
+  mugshot: {type: 'buffer', link: null, inverse: null},
+  lucky_numbers: [Number, 42],
   toys: {type: [Object]},
   friends: {link: ['person'], inverse: 'friends'},
-  spouse: {link: 'person', inverse: 'spouse'},
+  spouse: {type: 'z', link: 'person', inverse: 'spouse'},
   nonexistent: NaN,
   null_edge_case: null,
   fake: [],
+  bad_type: 'string',
   nested: {thing: String}
 });
 
@@ -83,7 +80,7 @@ vows.describe('schema').addBatch({
         name: {},
         birthdate: 0,
         mugshot: 'SGVsbG8gd29ybGQh',
-        lucky_numbers: [1, '2', 3],
+        lucky_numbers: '2',
         toys: [{foo: 'bar'}, {foo: 'baz'}, 'qq'],
         friends: ['a', 'b', 'c']
       }, schema);
@@ -102,7 +99,7 @@ vows.describe('schema').addBatch({
     },
 
     'casts into number': function (topic) {
-      assert.deepEqual(topic.lucky_numbers, [1, 2, 3]);
+      assert.deepEqual(topic.lucky_numbers, [2]);
     },
 
     'casts into object': function (topic) {
@@ -123,12 +120,17 @@ vows.describe('schema').addBatch({
     topic: function () {
       return enforcer({
         birthdate: new Date(0),
+        lucky_numbers: ['1', 2, '3'],
         mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64')
       }, schema, true);
     },
 
     'date outputs timestamp as number': function (topic) {
       assert.equal(topic.birthdate, 0);
+    },
+
+    'types are mangled': function (topic) {
+      assert.deepEqual(topic.lucky_numbers, [1, 2, 3]);
     },
 
     'buffer outputs base64': function (topic) {
