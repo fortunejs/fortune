@@ -4,7 +4,7 @@ var _ = require('lodash');
 var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
-var fixtures = require('./../fixtures.json');
+var fixtures = require('./fixtures.json');
 
 module.exports = function(baseUrl,keys,ids) {
     describe('resources', function () {

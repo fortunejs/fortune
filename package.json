@@ -1,34 +1,52 @@
 {
-  "name": "fortune-agco",
-  "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.2.11",
+  "name": "harvest",
+  "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
+  "version": "0.3.0",
   "license": "MIT",
   "author": {
-    "name": "Dali Zheng",
-    "email": "dali@series.ac"
+    "name": "Kristof Sajdak",
+    "email": "kristof.sajdak@gmail.com"
   },
-  "homepage": "http://fortunejs.com",
+  "contributors": [
+    {
+      "name": "Stephen Sebro",
+      "email": "stephensebro@yahoo.com"
+    }
+  ],
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agco-adm/fortune"
+    "url": "https://github.com/agco-adm/harvest"
   },
   "scripts": {
-    "test": "node test/runner mongodb://127.0.0.1:27017/testDB"
+    "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
   },
   "dependencies": {
-    "body-parser": "1.4.x",
-    "express": "4.6.x",
-    "i": "0.3.x",
-    "lodash": "2.4.x",
-    "mkdirp": "0.5.x",
-    "nedb": "0.10.x",
-    "rsvp": "3.0.x",
-    "mongoose": "3.8.x"
+    "body-parser": "~1.4.3",
+    "express": "~4.6.1",
+    "debug": "^2.1.1",
+    "harvest-mongodb": "agco-adm/harvest-mongodb",
+    "i": "~0.3.2",
+    "lodash": "~2.4.1",
+    "mkdirp": "~0.5.0",
+    "nedb": "~0.10.6",
+    "rsvp": "~3.0.9",
+    "longjohn": "^0.2.4",
+    "mongodb": "^1.4.26",
+    "mongojs": "^0.18.0",
+    "underscore.string": "^2.4.0"
   },
   "devDependencies": {
-    "mocha": "1.20.x",
-    "should": "4.0.x",
-    "supertest": "0.13.x"
+    "mocha": "~1.20.1",
+    "should": "~4.0.4",
+    "supertest": "~0.13.0",
+    "http-as-promised": "^0.1.0",
+    "request-debug": "^0.1.1",
+    "nock": "^0.56.0",
+    "chai": "^1.10.0",
+    "chai-http": "^1.0.0",
+    "sleep": "^1.2.0",
+    "profanity-util": "0.0.2"
   },
   "engines": {
     "node": ">=0.10"
