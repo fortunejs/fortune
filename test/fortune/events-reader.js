@@ -11,7 +11,6 @@ var BSON = require('mongodb').BSONPure;
 var baseUrl = 'http://localhost:' + 8001;
 var reportAPI_baseUri = 'http://localhost:9988';
 
-var rp = require('request-promise');
 var nock = require('nock');
 
 var chai = require('chai');
