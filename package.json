@@ -34,7 +34,8 @@
     "longjohn": "^0.2.4",
     "mongodb": "^1.4.26",
     "mongojs": "^0.18.0",
-    "underscore.string": "^2.4.0"
+    "underscore.string": "^2.4.0",
+    "mongoose": "^3.8.0"
   },
   "devDependencies": {
     "mocha": "~1.20.1",
