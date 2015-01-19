@@ -74,7 +74,7 @@ module.exports = function(baseUrl,keys,ids) {
             });
         });
 
-        describe('raise ramdom error in the express req/res chain', function () {
+        describe('raise random error in the express req/res chain', function () {
             it('should respond with a 500 error and content-type set to application/vnd.api+json', function (done) {
                 request(baseUrl)
                     .get('/random-error')
