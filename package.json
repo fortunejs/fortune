@@ -18,7 +18,7 @@
     "compile": "6to5 lib --out-dir dist"
   },
   "dependencies": {
-    "6to5": "^2.12.3",
+    "6to5": "^2.12.6",
     "inflection": "^1.5.3",
     "nedb": "^1.1.1",
     "negotiator": "^0.5.0"
