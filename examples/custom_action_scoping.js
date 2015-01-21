@@ -5,13 +5,6 @@ var fortune = require('../lib/fortune');
  * Note that this implementation does not include access control,
  * so it's more like a wiki but without the moderation.
  */
-fortune({
-
-  adapter: "mongodb",
-  db: 'relationships_minimal'
-
-})
-
 
 var adminUsers = {
   name: 'admin-users',
@@ -22,6 +15,13 @@ var adminUsers = {
     configHeader: 'set from init function'
   }
 };
+
+fortune({
+
+  adapter: "mongodb",
+  db: 'relationships_minimal'
+
+})
 
 /*!
  * Define resources
