@@ -3,3 +3,4 @@ data/
 *.log
 .idea
 *.iml
+*.DS_Store
