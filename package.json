@@ -21,11 +21,11 @@
   "scripts": {
     "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
   },
+  "main": "./lib/harvest.js",
   "dependencies": {
     "body-parser": "~1.4.3",
     "express": "~4.6.1",
     "debug": "^2.1.1",
-    "harvest-mongodb": "agco-adm/harvest-mongodb",
     "i": "~0.3.2",
     "lodash": "~2.4.1",
     "mkdirp": "~0.5.0",

@@ -1,10 +1,10 @@
-var fortune = require('../../lib/fortune');
+var harvest = require('../../lib/harvest');
 var JSONAPI_Error = require('../../lib/jsonapi-error');
 var RSVP = require('rsvp');
 
 function createApp(options) {
 
-    var fortuneApp = fortune(options)
+    var harvestApp = harvest(options)
 
         .resource('person', {
             name: String,
@@ -51,22 +51,22 @@ function createApp(options) {
     );
 
 
-    fortuneApp.router.get('/random-error', function (req, res, next) {
+    harvestApp.router.get('/random-error', function (req, res, next) {
         next(new Error('this is an error'));
     });
 
-    fortuneApp.router.get('/json-errors-error', function (req, res, next) {
+    harvestApp.router.get('/json-errors-error', function (req, res, next) {
         next(new JSONAPI_Error({status: 400, detail: 'Bar was not foo'}));
     });
 
 
     return RSVP.all([
-            fortuneApp.onRouteCreated('pet'),
-            fortuneApp.onRouteCreated('person'),
-            fortuneApp.onRouteCreated('foobar')
+            harvestApp.onRouteCreated('pet'),
+            harvestApp.onRouteCreated('person'),
+            harvestApp.onRouteCreated('foobar')
         ])
         .then(function () {
-            return fortuneApp;
+            return harvestApp;
         });
 }
 
