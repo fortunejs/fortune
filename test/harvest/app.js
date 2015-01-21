@@ -1,5 +1,4 @@
 var harvest = require('../../lib/harvest');
-var harvest = require('../../lib/fortune');
 var JSONAPI_Error = harvest.JSONAPI_Error;
 var RSVP = require('rsvp');
 
