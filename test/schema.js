@@ -1,3 +1,5 @@
+require('6to5/polyfill');
+
 // suppress warnings
 console.warn = require('../dist/utils/noop');
 

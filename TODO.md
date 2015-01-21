@@ -6,5 +6,5 @@
 
 ### Done
 
-- Remove `require` calls in Serializer and Adapter. (resolved by removing strings)
+- Remove `require` calls in Serializer and Adapter. Resolved by removing strings.
 - Nothing
