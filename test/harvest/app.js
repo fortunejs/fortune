@@ -1,5 +1,6 @@
 var harvest = require('../../lib/harvest');
-var JSONAPI_Error = require('../../lib/jsonapi-error');
+var harvest = require('../../lib/fortune');
+var JSONAPI_Error = harvest.JSONAPI_Error;
 var RSVP = require('rsvp');
 
 function createApp(options) {
