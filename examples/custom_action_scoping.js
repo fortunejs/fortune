@@ -35,9 +35,9 @@ fortune({
   addresses: [{ref: "address", inverse: "user"}]
 }, {
   model: {pk:"email"},
-  actions: {
-    'admin-users': adminUsers
-  }
+  // actions: {
+  //   'admin-users': adminUsers
+  // }
 })
 
 .resource("address", {
