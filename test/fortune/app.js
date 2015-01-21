@@ -1,10 +1,10 @@
-var fortune = require('../../lib/fortune');
-var JSONAPI_Error = require('../../lib/jsonapi-error');
+var harvest = require('../../lib/fortune');
+var JSONAPI_Error = harvest.JSONAPI_Error;
 var RSVP = require('rsvp');
 
 function createApp(options) {
 
-    var fortuneApp = fortune(options)
+    var fortuneApp = harvest(options)
 
         .resource('person', {
             name: String,
