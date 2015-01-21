@@ -1,6 +1,6 @@
-var fortune = require('../lib/fortune');
+var harvest = require('../lib/harvest');
 
-fortune({
+harvest({
 
   db: '1337chan'
 
