@@ -108,6 +108,10 @@ module.exports = function(options, port, ioPort) {
           header: 'afterReadPerson',
           value: 'ok'
         }
+      },
+      actions: {
+        'reset-password': require('./testing-actions').peopleResetPassword,
+        'send-through': require('./testing-actions').genericSendThrough
       }
     })
     .beforeRead([{
