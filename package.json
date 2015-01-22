@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A framework for hypermedia applications.",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",

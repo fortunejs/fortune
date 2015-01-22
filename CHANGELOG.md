@@ -1,6 +1,6 @@
 ## Changelog
-**v0.3.0 (9/30/2014)**
-* Complete rewrite.
+**v1.0.0 (2/1/2015)**
+* Complete rewrite. The major version increment does not mean it's stable, just a complete overhaul.
 * Redone schema definitions. It is now very verbose about possible mistakes. `ref` is now `link` to keep the terminology consistent.
 * Introducing serializers for multiple content types.
 * Removed Express as a dependency, it now uses a built-in server, or its internal router can be used directly.
