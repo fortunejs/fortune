@@ -25,10 +25,10 @@ App.init().then(() => {
   console.log('Listening on port ' + PORT + '...');
 
   App.router.request({
-    action: 'read',
+    action: 'find',
     type: 'user',
-    ids: ['1234'],
-    //relatedField: 'pets',
+    ids: ['xyz'],
+    include: [['pets', 'owner']],
     serializerOutput: 'application/vnd.api+json'
   }).then((result) => {
     console.log(result);

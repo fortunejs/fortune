@@ -2,8 +2,8 @@
 **v0.3.0 (9/30/2014)**
 * Complete rewrite.
 * Redone schema definitions. It is now very verbose about possible mistakes. `ref` is now `link` to keep the terminology consistent.
-* Introducing serializers and deserializers for multiple content types.
-* Removed Express as a dependency, it now uses a built-in server, or its internal routes can be mounted as part of a larger app.
+* Introducing serializers for multiple content types.
+* Removed Express as a dependency, it now uses a built-in server, or its internal router can be used directly.
 
 **v0.2.2 (4/15/2014)**
 * Add resource creation with `linked` entities.
