@@ -1,6 +1,8 @@
 # Fortune.js
 
-Fortune is a framework for hypermedia applications. It provides modular interfaces for database adapters, serializers, and I/O which can be implemented in protocols such as HTTP. A baseline of defaults are included: Node Embedded Database (NeDB), JSON API serializer, and HTTP server.
+Fortune is a framework for hypermedia applications. It provides a modular system for database adapters, serializers, and I/O which can be implemented in protocols such as HTTP. A baseline of defaults are included: Node Embedded Database (NeDB), JSON API serializer, and HTTP server.
+
+The purpose is to provide an adequate abstraction for a web application server in the same spirit as Rails, Sails, Django, et al. but with a focus on building robust applications using hypermedia.
 
 Get it by installing from npm:
 ```
