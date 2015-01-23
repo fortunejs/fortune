@@ -4,7 +4,7 @@ const PORT = 1337;
 
 var App = new Fortune({
   router: {
-    inflect: false
+    prefix: '/shitlord'
   }
 });
 
@@ -13,6 +13,11 @@ App.resource('user', {
   age: {type: Number, min: 0, max: 100},
   friends: {link: 'user', inverse: 'friends'},
   pets: {link: ['animal'], inverse: 'owner'}
+}).after(function (context) {
+  this.timestamp = Date.now();
+  return new Promise(resolve => {
+    setTimeout(() => resolve(this), 1000);
+  });
 });
 
 App.resource('animal', {
@@ -28,11 +33,12 @@ App.init().then(() => {
     action: 'find',
     type: 'user',
     ids: ['xyz'],
-    include: [['pets', 'owner']],
+    include: [['pets']],
     serializerOutput: 'application/vnd.api+json'
   }).then((result) => {
     console.log(result);
   }, (error) => {
+    console.log('FAIL');
     console.log(error);
   });
 });
