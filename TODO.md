@@ -1,5 +1,6 @@
 # To-do list
 
+- Minimize or eliminate instances of `indexOf`.
 - Create linked entity if there was a related field.
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe?
 - Write tests with tape.
