@@ -1,5 +1,7 @@
 # To-do list
 
+- Create linked entity if there was a related field.
+- Should serializer process query strings? Leaning towards no since that is HTTP, but maybe?
 - Write tests with tape.
 - Server initialization method.
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object).
