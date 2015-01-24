@@ -13,7 +13,7 @@ App.resource('user', {
   age: {type: Number, min: 0, max: 100},
   friends: {link: 'user', inverse: 'friends'},
   pets: {link: ['animal'], inverse: 'owner'}
-}).after(function (context) {
+}).after(function () {
   this.timestamp = Date.now();
   return new Promise(resolve => {
     setTimeout(() => resolve(this), 1000);
@@ -23,6 +23,9 @@ App.resource('user', {
 App.resource('animal', {
   name: String,
   owner: {link: 'user', inverse: 'pets'}
+}).after(function () {
+  this.a = 123;
+  return this;
 });
 
 App.init().then(() => {
@@ -30,13 +33,14 @@ App.init().then(() => {
   console.log('Listening on port ' + PORT + '...');
 
   App.router.request({
-    action: 'find',
+    action: 'create',
     type: 'user',
-    ids: ['xyz'],
+    ids: [],
     include: [['pets']],
+    serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
   }).then((result) => {
-    console.log(result);
+    console.log(JSON.stringify(result, null, 2));
   }, (error) => {
     console.log('FAIL');
     console.log(error);
