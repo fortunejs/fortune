@@ -33,14 +33,15 @@ App.init().then(() => {
   console.log('Listening on port ' + PORT + '...');
 
   App.router.request({
-    action: 'create',
+    action: 'find',
     type: 'user',
-    ids: [],
-    include: [['pets']],
+    ids: [1, 1, 2],
+    include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
   }).then((result) => {
     console.log(JSON.stringify(result, null, 2));
+    //console.log(result);
   }, (error) => {
     console.log('FAIL');
     console.log(error);

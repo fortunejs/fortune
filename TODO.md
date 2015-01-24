@@ -1,6 +1,5 @@
 # To-do list
 
-- ID requirement? Primary key? Problem with checking object sameness for includes by ID.
 - Write tests with tape.
 - Server initialization method.
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object).
@@ -8,6 +7,7 @@
 
 ### Done
 
+- ID requirement? Primary key? Problem with checking object sameness for includes by ID. Resolved with ID lookup hash table.
 - Schema enforcement during I/O.
 - Ordered serializers by priority.
 - Typed errors.
