@@ -1,7 +1,7 @@
 require('6to5/polyfill');
 
 // suppress warnings
-console.warn = require('../dist/utils/noop');
+console.warn = function () {};
 
 var vows = require('vows');
 var assert = require('assert');

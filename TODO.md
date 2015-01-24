@@ -1,6 +1,6 @@
 # To-do list
 
-- Minimize or eliminate instances of `indexOf`.
+- Include uniqueness problem if original request does not supply IDs.
 - Create linked entity if there was a related field.
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe?
 - Write tests with tape.
@@ -10,6 +10,7 @@
 
 ### Done
 
+- Minimize or eliminate `indexOf`, `map`, `reduce` calls.
 - ID requirement? Primary key? Problem with checking object sameness for includes by ID. Resolved with ID lookup hash table.
 - Schema enforcement during I/O.
 - Ordered serializers by priority.

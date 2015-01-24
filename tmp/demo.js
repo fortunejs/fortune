@@ -35,7 +35,7 @@ App.init().then(() => {
   App.router.request({
     action: 'find',
     type: 'user',
-    ids: [1, 1, 2],
+    //ids: [1, 1, 2],
     include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
