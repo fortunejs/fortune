@@ -3,9 +3,7 @@ import Fortune from '../';
 const PORT = 1337;
 
 var App = new Fortune({
-  router: {
-    prefix: '/shitlord'
-  }
+  prefix: '/shitlord'
 });
 
 App.resource('user', {
@@ -35,7 +33,8 @@ App.init().then(() => {
   App.router.request({
     action: 'find',
     type: 'user',
-    //ids: [1, 1, 2],
+    ids: [1, 1, 2],
+    //relatedField: 'pets',
     include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
