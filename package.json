@@ -15,7 +15,7 @@
   "scripts": {
     "test": "npm run compile && vows test/*",
     "coverage": "npm run compile && istanbul cover test/*",
-    "compile": "6to5 lib --out-dir dist"
+    "compile": "6to5 lib --out-dir dist/lib --source-maps-inline"
   },
   "dependencies": {
     "6to5": "^2.13.7",

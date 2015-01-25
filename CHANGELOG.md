@@ -1,5 +1,5 @@
 ## Changelog
-**v1.0.0 (2/1/2015)**
+**v1.0.0-alpha.1 (2/1/2015)**
 * Complete rewrite. The major version increment does not mean it's stable, just a complete overhaul.
 * Redone schema definitions. It is now very verbose about possible mistakes. `ref` is now `link` to keep the terminology consistent.
 * Introducing serializers for multiple content types.

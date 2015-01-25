@@ -1,6 +1,5 @@
 # To-do list
 
-- Make serializer methods return things and restrict their parameters, this makes life easier.
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though.
 - Write tests with tape.
 - Server initialization method.
@@ -9,6 +8,7 @@
 
 ### Done
 
+- Make serializer methods return context, this makes life easier.
 - Create linked entity if there was a related field.
 - Include uniqueness problem if original request does not supply IDs.
 - Primary key configuration.
