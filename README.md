@@ -9,6 +9,8 @@ Get it by installing from npm:
 $ npm install --save fortune
 ```
 
+## Practical Concerns
+
 ### Adapters
 
 Adapters in Fortune belong to class that must implement a baseline of `init`, `create`, `find`, `update`, and `delete` methods. These methods have well-defined parameters and return values. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the adapter methods. They are also responsible for interpreting the options and schemas provided to it.
@@ -20,6 +22,8 @@ Serializers format data in and out of a Fortune app. Like adapters, they belong 
 ### Input / Output
 
 Internally, Fortune uses a request and response model much like how HTTP operates. Like the adapter and serializer, it also has well-defined parameters and return values. Users of Fortune should not have to care about this layer unless they want to implement how it maps to a protocol.
+
+## Philosophy
 
 ### What is hypermedia and why does it matter?
 
