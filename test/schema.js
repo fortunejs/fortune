@@ -6,8 +6,8 @@ console.warn = function () {};
 var vows = require('vows');
 var assert = require('assert');
 
-var parser = require('../dist/schemas/parser');
-var enforcer = require('../dist/schemas/enforcer');
+var parser = require('../dist/lib/schemas/parser');
+var enforcer = require('../dist/lib/schemas/enforcer');
 
 
 var schema = parser('person', {
