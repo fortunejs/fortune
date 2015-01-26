@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/agco-adm/harvest.svg?branch=develop)](https://travis-ci.org/agco-adm/harvest)
+[![Build Status](https://travis-ci.org/agco/harvest.svg?branch=develop)](https://travis-ci.org/agco-adm/harvest)
 # Harvest.js 
 
 [Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
