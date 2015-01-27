@@ -108,7 +108,7 @@ vows.describe('schema').addBatch({
       assert.equal(topic.toys.length, 3);
       assert.equal(topic.toys[0].foo, 'bar');
       assert.equal(topic.toys[1].foo, 'baz');
-      assert.equal(!!topic.toys[2], false);
+      assert.equal(typeof topic.toys[2], 'object');
     },
 
     'casts into link': function (topic) {

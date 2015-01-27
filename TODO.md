@@ -1,5 +1,7 @@
 # To-do list
 
+- Stub for atomic transactions?
+- Router should do all adapter calls to sync inverse relationships.
 - Option to disable mangling of buffers?
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though.
 - Write tests with tape.
