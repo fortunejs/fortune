@@ -1,5 +1,6 @@
 # To-do list
 
+- Option to disable mangling of buffers?
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though.
 - Write tests with tape.
 - Server initialization method.

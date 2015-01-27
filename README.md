@@ -1,6 +1,6 @@
 # Fortune.js
 
-Fortune is a framework for hypermedia applications. It provides a system of database adapters, serializers, and asynchronous I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb), [JSON API](http://jsonapi.org) serializer, and HTTP server.
+Fortune is a framework for hypermedia applications. It provides a system of database adapters, serializers, and asynchronous I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb) adapter, [JSON API](http://jsonapi.org) serializer, and HTTP server.
 
 The purpose is to provide an adequate abstraction for a networked application server in the same spirit as Rails, Sails, Django, et al. but with a focus on building robust applications using hypermedia.
 
@@ -13,7 +13,7 @@ $ npm install --save fortune
 
 ### Adapters
 
-Adapters in Fortune belong to class that must implement a baseline of `init`, `create`, `find`, `update`, and `delete` methods. These methods have well-defined parameters and return values. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the adapter methods. They are also responsible for interpreting the options and schemas provided to it.
+Adapters belong to class that must implement a baseline of `init`, `create`, `find`, `update`, and `delete` methods. These methods have well-defined parameters and return values. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the adapter methods. They are also responsible for interpreting the options and schemas provided to it.
 
 ### Serializers
 
@@ -31,8 +31,10 @@ First, a little history lesson. The earliest concept of hypermedia was a [mechan
 
 > "REST is software design on the scale of decades: every detail is intended to promote software longevity and independent evolution. Many of the constraints are directly opposed to short-term efficiency." -- Roy T. Fielding
 
+Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing it already. Fortune aims to present simple options for those who wish to build hypermedia APIs.
+
 ### Meta
 
 For release history, see [CHANGELOG.md](https://github.com/daliwali/fortune/blob/master/CHANGELOG.md).
 
-Fortune is licensed under the MIT license, see [LICENSE.md](https://github.com/daliwali/fortune/blob/master/LICENSE.md).
+Fortune is licensed under the MIT License, see [LICENSE.md](https://github.com/daliwali/fortune/blob/master/LICENSE.md).
