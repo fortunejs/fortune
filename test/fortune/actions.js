@@ -82,5 +82,15 @@ module.exports = function(options){
           done();
         });
     });
+    it('should be able to run action on many resources ', function(done){
+      request(baseUrl).post('/people/' + ids.people.join(',') + '/send-through')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.length.should.equal(ids.people.length);
+          done();
+        });
+    });
   });
 };
