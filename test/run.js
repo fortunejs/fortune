@@ -52,6 +52,8 @@ function runTests(adapters) {
       .reporter('spec')
       .ui('bdd')
       .addFile(path.join(location, 'all.js'))
+      .addFile(path.join(location, 'post.js'))
+      .addFile(path.join(location, 'put.js'))
       .run(function (code) {
         process.exit(code);
       });
