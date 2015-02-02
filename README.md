@@ -17,7 +17,7 @@ Adapters belong to class that must implement a baseline of `init`, `create`, `fi
 
 ### Serializers
 
-Serializers format data in and out of a Fortune app. Like adapters, they belong to a class that implements a baseline of methods with well-defined parameters and return values. Serializers are responsible for interpreting and displaying media types such as JSON.
+Serializers format data in and out of a Fortune app. Like adapters, they belong to a class that implements a baseline of methods with well-defined parameters and return values. Serializers are responsible for interpreting and displaying media types such as JSON. They are not concerned with any protocol, so it is not guaranteed that they will output links that are consistent with any router.
 
 ### Input / Output
 
@@ -36,5 +36,7 @@ Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing
 ### Meta
 
 For release history, see [CHANGELOG.md](https://github.com/daliwali/fortune/blob/master/CHANGELOG.md).
+
+For internal implementation, see [ARCHITECTURE.md](https://github.com/daliwali/fortune/blob/master/ARCHITECTURE.md)
 
 Fortune is licensed under the MIT License, see [LICENSE.md](https://github.com/daliwali/fortune/blob/master/LICENSE.md).

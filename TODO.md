@@ -1,6 +1,7 @@
 # To-do list
 
-- Stub for atomic transactions?
+- Request options should be specific to a type.
+- Make router call stubs to adapter for ACID transactions.
 - Router should do all adapter calls to sync inverse relationships.
 - Option to disable mangling of buffers?
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though.
@@ -11,6 +12,7 @@
 
 ### Done
 
+- Removed `inflect` and `prefix` options, these should be handled per serializer and by routers.
 - Make serializer methods return context, this makes life easier.
 - Create linked entity if there was a related field.
 - Include uniqueness problem if original request does not supply IDs.
