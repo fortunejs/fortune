@@ -1,5 +1,5 @@
 import http from 'http';
-import Fortune from '../';
+import Fortune from '../lib';
 
 const PORT = 1337;
 
@@ -26,7 +26,7 @@ App.resource('animal', {
 });
 
 App.init().then(() => {
-  http.createServer(Fortune.Net.httpRequest.bind(App)).listen(PORT);
+  http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
   console.log('Listening on port ' + PORT + '...');
 
   App.request({

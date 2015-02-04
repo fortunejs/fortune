@@ -17,7 +17,7 @@ Adapters belong to class that must implement a baseline of `init`, `create`, `fi
 
 | Adapter          | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| NeDB | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
+| NeDB (included, [link](https://github.com/louischatriot/nedb)) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
 
 
 ### Serializers
@@ -26,16 +26,16 @@ Serializers format data in and out of a Fortune app. Like adapters, they belong 
 
 | Serializer       | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| JSON API | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch. Default. |
+| JSON API (included, [link](http://jsonapi.org)) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch. Default. |
 
 
 ### Input / Output
 
-Internally, Fortune uses a request and response model much like how HTTP operates. Like the adapter and serializer, it also has well-defined parameters and return values. Users of Fortune should not have to care about this layer unless they want to implement how it maps to a protocol.
+Internally, Fortune uses a request and response model much like how HTTP operates. Like the adapter and serializer, it also has well-defined parameters and return values. Users of Fortune should not have to care about this layer unless they want to implement how it maps to a protocol or external framework.
 
 | Implementation   | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| Node.js `requestListener` | [Dali Zheng](http://daliwa.li) | A function that takes `request` and `response` parameters. Included as `Fortune.Net.requestListener`. |
+| requestListener (included) | [Dali Zheng](http://daliwa.li) | A function that takes `request` and `response` parameters, useful for `http.createServer`. Included as `Fortune.Net.requestListener`. |
 
 
 ### Philosophy
