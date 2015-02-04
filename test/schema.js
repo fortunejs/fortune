@@ -17,7 +17,7 @@ let schema = Schema.Parser({
   nonexistent: NaN,
   null_edge_case: null,
   fake: [],
-  bad_type: 'string',
+  bad_type: 'asdf',
   nested: {thing: String}
 });
 
@@ -45,6 +45,7 @@ export default () => {
     t.equal(schema.null_edge_case, undefined, 'Drops null.');
     t.equal(schema.fake, undefined, 'Drops empty array.');
     t.equal(schema.nested, undefined, 'Drops object without link or type.');
+    t.equal(schema.bad_type, undefined, 'Drops invalid type.');
     t.end();
   });
 

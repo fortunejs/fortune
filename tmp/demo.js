@@ -3,9 +3,7 @@ import Fortune from '../';
 
 const PORT = 1337;
 
-var App = new Fortune({
-  prefix: '/shitlord'
-});
+var App = new Fortune();
 
 App.resource('user', {
   name: String,
