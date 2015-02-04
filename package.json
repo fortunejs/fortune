@@ -10,24 +10,25 @@
   "homepage": "http://fortunejs.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/daliwali/fortune"
+    "url": "https://github.com/fortunejs/fortune"
   },
   "scripts": {
-    "test": "npm run compile && vows test/*",
-    "coverage": "npm run compile && istanbul cover test/*",
-    "compile": "6to5 lib --out-dir dist/lib --source-maps-inline"
+    "test": "[ \"$CI\" = true ] && 6to5-node test || 6to5-node test | tap-spec",
+    "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
+    "compile-lib": "6to5 lib --out-dir dist/lib --source-maps-inline",
+    "compile-test": "6to5 test --out-dir dist/test"
   },
   "dependencies": {
-    "6to5": "^3.1.1",
+    "6to5": "^3.3.9",
     "inflection": "^1.5.3",
     "nedb": "^1.1.1",
     "negotiator": "^0.5.0"
   },
   "devDependencies": {
     "istanbul": "^0.3.5",
-    "request": "^2.51.0",
-    "tape": "^3.4.0",
-    "vows": "^0.8.1"
+    "request": "^2.53.0",
+    "tap-spec": "^2.2.0",
+    "tape": "^3.5.0"
   },
   "engines": {
     "node": ">=0.10"

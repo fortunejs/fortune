@@ -1,17 +1,18 @@
 # To-do list
 
+- Router should do all adapter calls to sync inverse relationships.
+- Write tests with tape.
+
+## Done
+
+- Pagination (limit and offset options in the adapter).
+- Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
+- Reorganize file/folder structure.
+- Server initialization method? This is now handled separately from Core module.
+- Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though. Now it is implemented as `Serializer.processRequest`.
 - Request options should be specific to a type.
 - Make router call stubs to adapter for ACID transactions.
-- Router should do all adapter calls to sync inverse relationships.
-- Option to disable mangling of buffers?
-- Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though.
-- Write tests with tape.
-- Server initialization method.
-- Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object).
-- Pagination.
-
-### Done
-
+- Option to disable casting and mangling of buffers? Now this option exists.
 - Removed `inflect` and `prefix` options, these should be handled per serializer and by routers.
 - Make serializer methods return context, this makes life easier.
 - Create linked entity if there was a related field.

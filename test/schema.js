@@ -1,16 +1,12 @@
-require('6to5/polyfill');
+import Test from 'tape';
+import * as Schema from '../lib/schema';
 
-// suppress warnings
-console.warn = function () {};
+// Suppress warnings.
+console.warn = () => {};
 
-var vows = require('vows');
-var assert = require('assert');
+Schema.Parser.type = 'Person';
 
-var parser = require('../dist/lib/schemas/parser');
-var enforcer = require('../dist/lib/schemas/enforcer');
-
-
-var schema = parser('person', {
+let schema = Schema.Parser({
   name: 'string',
   birthdate: {type: Date, junk: 'asdf'},
   mugshot: {type: 'buffer', link: null, inverse: null},
@@ -25,119 +21,69 @@ var schema = parser('person', {
   nested: {thing: String}
 });
 
+// set encoding
+Schema.Enforcer.bufferEncoding = 'base64';
 
-vows.describe('schema').addBatch({
-  'parser': {
+export default () => {
 
-    topic: schema,
+  Test('Schema.Parser', t => {
+    t.equal(schema.name.type, 'string', 'Parses native type.');
+    t.equal(schema.birthdate.type, 'date', 'Parses object with native type.');
+    t.equal(schema.birthdate.junk, 'asdf', 'Extra keys are not dropped.');
+    t.equal(schema.mugshot.type, 'buffer', 'Parses object with string type.');
+    t.equal(schema.lucky_numbers.type, 'number', 'Parses array of native type.');
+    t.equal(schema.lucky_numbers.isArray, true, 'Parses array as array.');
+    t.equal(schema.toys.type, 'object', 'Parses object with array of native type.');
+    t.equal(schema.toys.isArray, true, 'Parses array as array.');
+    t.equal(schema.friends.link, 'person', 'Parses link.');
+    t.equal(schema.friends.inverse, 'friends', 'Parses inverse of link.');
+    t.equal(schema.friends.isArray, true, 'Parses array of links.');
+    t.equal(schema.spouse.link, 'person', 'Parses link.');
+    t.equal(schema.spouse.inverse, 'spouse', 'Parses inverse of link.');
+    t.equal(schema.spouse.isArray, false, 'Parses single link.');
+    t.equal(schema.nonexistent, undefined, 'Drops NaN.');
+    t.equal(schema.null_edge_case, undefined, 'Drops null.');
+    t.equal(schema.fake, undefined, 'Drops empty array.');
+    t.equal(schema.nested, undefined, 'Drops object without link or type.');
+    t.end();
+  });
 
-    'parses native type': function (topic) {
-      assert.equal(topic.name.type, 'string');
-    },
+  Test('Schema.Enforcer input', t => {
+    let enforced = Schema.Enforcer({
+      name: {},
+      birthdate: 0,
+      mugshot: 'SGVsbG8gd29ybGQh',
+      lucky_numbers: '2',
+      toys: [{foo: 'bar'}, {foo: 'baz'}, 'qq'],
+      friends: ['a', 'b', 'c']
+    }, schema);
 
-    'parses object with native type': function (topic) {
-      assert.equal(topic.birthdate.type, 'date');
-      assert.equal(topic.birthdate.junk, 'asdf');
-    },
+    t.equal(enforced.name, '[object Object]', 'Casts into string.');
+    t.assert(enforced.birthdate instanceof Date, 'Casts into date.');
+    t.assert(Buffer.isBuffer(enforced.mugshot), 'Casts into buffer.');
+    t.deepEqual(enforced.lucky_numbers, [2], 'Casts into number.');
+    t.equal(enforced.toys.length, 3, 'Casts into array.');
+    t.deepEqual([enforced.toys[0].foo, enforced.toys[1].foo],
+      ['bar', 'baz'], 'Objects are objects.');
+    t.assert(typeof enforced.toys[2] === 'object', 'Casts into object.');
+    t.deepEqual(enforced.friends, ['a', 'b', 'c']);
+    t.end();
+  });
 
-    'parses object with string type': function (topic) {
-      assert.equal(topic.mugshot.type, 'buffer');
-    },
+  Test('Schema.Enforcer output', t => {
+    let enforced = Schema.Enforcer({
+      birthdate: new Date(0),
+      lucky_numbers: ['1', 2, '3'],
+      mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64'),
+      toys: 2
+    }, schema, true);
 
-    'parses array of native type': function (topic) {
-      assert.equal(topic.lucky_numbers.type, 'number');
-      assert.equal(topic.lucky_numbers.isArray, true);
-    },
+    t.equal(enforced.birthdate, 0, 'Date casted to number.');
+    t.deepEqual(enforced.lucky_numbers, [1, 2, 3], 'Types are mangled.');
+    t.equal(enforced.mugshot, 'SGVsbG8gd29ybGQh', 'Buffer casted to base64.');
+    t.assert(enforced.toys.length === 1 &&
+      typeof enforced.toys[0] === 'object', 'Mangled to array of objects.');
+    t.end();
+  });
 
-    'parses object with array of native type': function (topic) {
-      assert.equal(topic.toys.type, 'object');
-      assert.equal(topic.toys.isArray, true);
-    },
-
-    'parses array of links': function (topic) {
-      assert.equal(topic.friends.link, 'person');
-      assert.equal(topic.friends.inverse, 'friends');
-      assert.equal(topic.friends.isArray, true);
-    },
-
-    'parses link': function (topic) {
-      assert.equal(topic.spouse.link, 'person');
-      assert.equal(topic.spouse.inverse, 'spouse');
-      assert.equal(!!topic.spouse.isArray, false);
-    },
-
-    'drops invalid fields': function (topic) {
-      assert.equal(topic.nonexistent, undefined);
-      assert.equal(topic.null_edge_case, undefined);
-      assert.equal(topic.fake, undefined);
-      assert.equal(topic.nested, undefined);
-    }
-
-  }
-}).addBatch({
-  'enforcer': {
-
-    topic: function () {
-      return enforcer({
-        name: {},
-        birthdate: 0,
-        mugshot: 'SGVsbG8gd29ybGQh',
-        lucky_numbers: '2',
-        toys: [{foo: 'bar'}, {foo: 'baz'}, 'qq'],
-        friends: ['a', 'b', 'c']
-      }, schema);
-    },
-
-    'casts into string': function (topic) {
-      assert.equal(topic.name, '[object Object]');
-    },
-
-    'casts into date': function (topic) {
-      assert.equal(topic.birthdate, new Date(0).toString());
-    },
-
-    'casts into buffer': function (topic) {
-      assert.equal(topic.mugshot.toString('utf8'), 'Hello world!');
-    },
-
-    'casts into number': function (topic) {
-      assert.deepEqual(topic.lucky_numbers, [2]);
-    },
-
-    'casts into object': function (topic) {
-      assert.equal(topic.toys.length, 3);
-      assert.equal(topic.toys[0].foo, 'bar');
-      assert.equal(topic.toys[1].foo, 'baz');
-      assert.equal(typeof topic.toys[2], 'object');
-    },
-
-    'casts into link': function (topic) {
-      assert.deepEqual(topic.friends, ['a', 'b', 'c']);
-    }
-
-  }
-}).addBatch({
-  'output': {
-
-    topic: function () {
-      return enforcer({
-        birthdate: new Date(0),
-        lucky_numbers: ['1', 2, '3'],
-        mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64')
-      }, schema, true);
-    },
-
-    'date outputs timestamp as number': function (topic) {
-      assert.equal(topic.birthdate, 0);
-    },
-
-    'types are mangled': function (topic) {
-      assert.deepEqual(topic.lucky_numbers, [1, 2, 3]);
-    },
-
-    'buffer outputs base64': function (topic) {
-      assert.equal(topic.mugshot, 'SGVsbG8gd29ybGQh');
-    }
-
-  }
-}).export(module);
+};

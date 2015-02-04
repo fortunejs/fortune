@@ -1,4 +1,4 @@
-## Changelog
+# Changelog
 
 **v1.0.0-alpha.1 (2/1/2015)**
 * Complete rewrite. The major version increment does not mean it's stable, just a complete overhaul.
