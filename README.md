@@ -16,7 +16,7 @@ Adapters belong to class that must implement a baseline of `init`, `create`, `fi
 
 
 | Adapter          | Maintainer     | Description                             |
-|------------------|----------------|-----------------------------------------|
+|:-----------------|:---------------|:----------------------------------------|
 | NeDB | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
 
 
@@ -25,7 +25,7 @@ Adapters belong to class that must implement a baseline of `init`, `create`, `fi
 Serializers format data in and out of a Fortune app. Like adapters, they belong to a class that implements a baseline of methods with well-defined parameters and return values. Serializers are responsible for interpreting and displaying media types such as JSON. They are not concerned with any protocol, so it is not guaranteed that they will output links that are consistent with any router.
 
 | Serializer       | Maintainer     | Description                             |
-|------------------|----------------|-----------------------------------------|
+|:-----------------|:---------------|:----------------------------------------|
 | JSON API | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch. Default. |
 
 
@@ -34,7 +34,7 @@ Serializers format data in and out of a Fortune app. Like adapters, they belong 
 Internally, Fortune uses a request and response model much like how HTTP operates. Like the adapter and serializer, it also has well-defined parameters and return values. Users of Fortune should not have to care about this layer unless they want to implement how it maps to a protocol.
 
 | Implementation   | Maintainer     | Description                             |
-|------------------|----------------|-----------------------------------------|
+|:-----------------|:---------------|:----------------------------------------|
 | Node.js `requestListener` | [Dali Zheng](http://daliwa.li) | A function that takes `request` and `response` parameters. Included as `Fortune.Net.requestListener`. |
 
 
