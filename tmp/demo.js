@@ -33,7 +33,7 @@ App.init().then(() => {
     action: 'find',
     type: 'user',
     ids: [1, 1, 2],
-    //relatedField: 'pets',
+    relatedField: 'pets',
     include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'

@@ -35,7 +35,7 @@ Internally, Fortune uses a request and response model much like how HTTP operate
 
 | Implementation   | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| requestListener (included) | [Dali Zheng](http://daliwa.li) | A function that takes `request` and `response` parameters, useful for `http.createServer`. Included as `Fortune.Net.requestListener`. |
+| requestListener (included) | [Dali Zheng](http://daliwa.li) | A bare-bones function that takes `request` and `response` parameters, useful for `http.createServer`. Included as `Fortune.Net.requestListener`. |
 
 
 ### Philosophy

@@ -34,11 +34,12 @@
     "node": ">=0.10"
   },
   "keywords": [
+    "hypermedia",
+    "framework",
     "json",
     "api",
     "jsonapi",
     "json-api",
-    "framework",
     "rest",
     "restful"
   ]
