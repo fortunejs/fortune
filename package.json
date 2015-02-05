@@ -13,7 +13,7 @@
     "url": "https://github.com/fortunejs/fortune"
   },
   "scripts": {
-    "test": "6to5-node test | tap-spec",
+    "test": "6to5-node test",
     "prepublish": "rm -rf dist && npm run compile-lib",
     "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
     "compile-lib": "6to5 lib --out-dir dist/lib --source-maps-inline",

@@ -2,10 +2,11 @@
 
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Router should do all adapter calls to sync inverse relationships.
-- Write tests with tape.
+- Write more tests with tape, and integration test using the default stack.
 
 ## Done
 
+- Remove `bufferEncoding` option. Superceded by `schema` options object.
 - Remove 6to5 from distribution.
 - Pagination (limit and offset options in the adapter).
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
@@ -14,7 +15,7 @@
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though. Now it is implemented as `Serializer.processRequest`.
 - Request options should be specific to a type.
 - Make router call stubs to adapter for ACID transactions.
-- Option to disable casting and mangling of buffers? Now this option exists.
+- Option to disable casting and mangling of buffers? Now this option exists on `Schema.Enforcer`.
 - Removed `inflect` and `prefix` options, these should be handled per serializer and by routers.
 - Make serializer methods return context, this makes life easier.
 - Create linked entity if there was a related field.

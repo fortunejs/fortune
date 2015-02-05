@@ -28,7 +28,7 @@ App.init().then(() => {
   //console.log(`Listening on port ${PORT}...`);
 
   App.request({
-    action: 'create',
+    action: 'find',
     type: 'user',
     //ids: [1, 1, 2],
     //relatedField: 'pets',

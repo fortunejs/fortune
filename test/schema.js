@@ -4,8 +4,6 @@ import * as Schema from '../lib/schema';
 // Suppress warnings.
 console.warn = () => {};
 
-Schema.Parser.type = 'Person';
-
 let schema = Schema.Parser({
   name: 'string',
   birthdate: {type: Date, junk: 'asdf'},
@@ -21,8 +19,10 @@ let schema = Schema.Parser({
   nested: {thing: String}
 });
 
-// set encoding
-Schema.Enforcer.bufferEncoding = 'base64';
+let options = {
+  bufferEncoding: 'base64',
+  dropArbitraryFields: true
+};
 
 export default () => {
 
@@ -57,7 +57,7 @@ export default () => {
       lucky_numbers: '2',
       toys: [{foo: 'bar'}, {foo: 'baz'}, 'qq'],
       friends: ['a', 'b', 'c']
-    }, schema);
+    }, schema, Object.assign(options, { output: false }));
 
     t.equal(enforced.name, '[object Object]', 'Casts into string.');
     t.assert(enforced.birthdate instanceof Date, 'Casts into date.');
@@ -77,7 +77,7 @@ export default () => {
       lucky_numbers: ['1', 2, '3'],
       mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64'),
       toys: 2
-    }, schema, true);
+    }, schema, Object.assign(options, { output: true }));
 
     t.equal(enforced.birthdate, 0, 'Date casted to number.');
     t.deepEqual(enforced.lucky_numbers, [1, 2, 3], 'Types are mangled.');
