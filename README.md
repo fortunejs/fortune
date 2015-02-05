@@ -1,11 +1,10 @@
 # Fortune.js [![Build Status](https://travis-ci.org/fortunejs/fortune.png?branch=rewrite)](https://travis-ci.org/fortunejs/fortune)
 
-Fortune is a framework for hypermedia applications. It provides a system of database adapters, serializers, and asynchronous I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb) adapter, [JSON API](http://jsonapi.org) serializer, and HTTP server.
+Fortune is a framework for hypermedia applications. It provides a system of database adapters, serializers, and I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb) adapter, [JSON API](http://jsonapi.org) serializer, and HTTP `requestListener`.
 
-The purpose is to provide an adequate abstraction for a networked application server in the same spirit as Rails, Sails, Django, et al. but with a focus on building robust applications using hypermedia.
+Get it by installing from `npm`:
 
-Get it by installing from npm:
-```
+```sh
 $ npm install --save fortune
 ```
 
@@ -35,7 +34,7 @@ Internally, Fortune uses a request and response model much like how HTTP operate
 
 | Implementation   | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| requestListener (included) | [Dali Zheng](http://daliwa.li) | A bare-bones function that takes `request` and `response` parameters, useful for `http.createServer`. Included as `Fortune.Net.requestListener`. |
+| requestListener (included) | [Dali Zheng](http://daliwa.li) | A bare-bones function that takes `request` and `response` parameters, useful for `http.createServer`. |
 
 
 ### Philosophy
@@ -44,13 +43,9 @@ The earliest concept of hypermedia was a [mechanical device that created trails 
 
 > "REST is software design on the scale of decades: every detail is intended to promote software longevity and independent evolution. Many of the constraints are directly opposed to short-term efficiency." -- Roy T. Fielding
 
-Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing it already. Fortune aims to present simple options for those who wish to build hypermedia APIs.
+Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing it already. Fortune aims to present simple options for building hypermedia APIs, with most of the hard work done already.
 
 
-### Meta
+### License
 
-For release history, see [CHANGELOG.md](https://github.com/daliwali/fortune/blob/master/CHANGELOG.md).
-
-For internal implementation, see [ARCHITECTURE.md](https://github.com/daliwali/fortune/blob/master/ARCHITECTURE.md)
-
-Fortune is licensed under the MIT License, see [LICENSE.md](https://github.com/daliwali/fortune/blob/master/LICENSE.md).
+Fortune is licensed under the [MIT License](https://github.com/daliwali/fortune/blob/rewrite/docs/LICENSE.md).

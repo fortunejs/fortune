@@ -24,13 +24,13 @@ App.resource('animal', {
 });
 
 App.init().then(() => {
-  http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
-  console.log('Listening on port ' + PORT + '...');
+  //http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
+  //console.log(`Listening on port ${PORT}...`);
 
   App.request({
-    action: 'find',
+    action: 'create',
     type: 'user',
-    ids: [1, 1, 2],
+    //ids: [1, 1, 2],
     //relatedField: 'pets',
     include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',

@@ -1,12 +1,12 @@
 # To-do list
 
-- Remove 6to5 step from distribution.
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Router should do all adapter calls to sync inverse relationships.
 - Write tests with tape.
 
 ## Done
 
+- Remove 6to5 from distribution.
 - Pagination (limit and offset options in the adapter).
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
 - Reorganize file/folder structure.
