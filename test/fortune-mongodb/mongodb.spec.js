@@ -243,6 +243,22 @@ module.exports = function(options){
       });
     });
     describe('Select', function(){
+      describe('count @now', function(){
+        it('should provide interface for counting resources', function(done){
+          var projection = {
+            select: ['name']
+          };
+          (function(){
+            adapter.count('person', {}, projection)
+              .then(function(docs){
+                console.log(docs);
+                should.exist(docs);
+                done();
+              });
+          }).should.not.throw();
+        });
+      });
+
       describe('findMany', function(){
         it('should provide interface for selecting fields to return', function(done){
           var projection = {
