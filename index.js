@@ -1,4 +1,3 @@
-// Let there be ES6!
-require('6to5/register');
+require('core-js/shim');
 
-module.exports = require('./lib');
+module.exports = require('./dist/lib');

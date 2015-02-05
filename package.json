@@ -14,17 +14,19 @@
   },
   "scripts": {
     "test": "[ \"$CI\" = true ] && 6to5-node test || 6to5-node test | tap-spec",
+    "prepublish": "rm -rf dist && npm run compile-lib",
     "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
     "compile-lib": "6to5 lib --out-dir dist/lib --source-maps-inline",
     "compile-test": "6to5 test --out-dir dist/test"
   },
   "dependencies": {
-    "6to5": "^3.3.9",
+    "core-js": "^0.4.10",
     "inflection": "^1.5.3",
     "nedb": "^1.1.1",
     "negotiator": "^0.5.0"
   },
   "devDependencies": {
+    "6to5": "^3.3.12",
     "istanbul": "^0.3.5",
     "request": "^2.53.0",
     "tap-spec": "^2.2.0",

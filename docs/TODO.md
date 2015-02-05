@@ -1,5 +1,6 @@
 # To-do list
 
+- Remove 6to5 step from distribution.
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Router should do all adapter calls to sync inverse relationships.
 - Write tests with tape.

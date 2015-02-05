@@ -12,9 +12,7 @@ App.resource('user', {
   pets: {link: ['animal'], inverse: 'owner'}
 }).after(function () {
   this.timestamp = Date.now();
-  return new Promise(resolve => {
-    setTimeout(() => resolve(this), 1000);
-  });
+  return Promise.resolve(this);
 });
 
 App.resource('animal', {
@@ -33,7 +31,7 @@ App.init().then(() => {
     action: 'find',
     type: 'user',
     ids: [1, 1, 2],
-    relatedField: 'pets',
+    //relatedField: 'pets',
     include: [['pets'], ['pets', 'owner']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
