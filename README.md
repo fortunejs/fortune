@@ -11,7 +11,7 @@ $ npm install --save fortune
 
 ### Adapters
 
-Adapters belong to class that must implement a baseline of `init`, `create`, `find`, `update`, and `delete` methods. These methods have well-defined parameters and return values. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the adapter methods. They are also responsible for interpreting the options and schemas provided to it.
+Adapters belong to class that must implement a baseline of methods that have well-defined parameters and return values. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the adapter methods. They are responsible for interpreting the options and schemas provided to it.
 
 
 | Adapter          | Maintainer     | Description                             |

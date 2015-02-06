@@ -7,6 +7,7 @@
 ## Done
 
 - Remove `bufferEncoding` option. Superceded by `schema` options object.
+- How to remove `_entities` and `_include` from response object? Done in `_processResponse` now.
 - Remove 6to5 from distribution.
 - Pagination (limit and offset options in the adapter).
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
