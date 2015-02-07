@@ -6,6 +6,7 @@
 
 ## Done
 
+- Changed signature of transform function. Now entity is accepted as second parameter and `this` is no longer bound.
 - Add optional `processRequest` and `processResponse` in serializer.
 - Remove `bufferEncoding` option. Superceded by `schema` options object.
 - How to remove `_entities` and `_include` from response object? Done in `_processResponse` now.
@@ -13,7 +14,7 @@
 - Pagination (limit and offset options in the adapter).
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
 - Reorganize file/folder structure.
-- Server initialization method? This is now handled separately from Core module.
+- Server initialization method? This is now handled separately from core module.
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though. Now it is implemented as `Serializer.processRequest`.
 - Request options should be specific to a type.
 - Make router call stubs to adapter for ACID transactions.

@@ -23,6 +23,7 @@
     "accepts": "^1.2.3",
     "core-js": "^0.4.10",
     "inflection": "^1.5.3",
+    "media-typer": "^0.3.0",
     "nedb": "^1.1.1"
   },
   "devDependencies": {
