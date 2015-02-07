@@ -6,6 +6,7 @@
 
 ## Done
 
+- Add optional `processRequest` and `processResponse` in serializer.
 - Remove `bufferEncoding` option. Superceded by `schema` options object.
 - How to remove `_entities` and `_include` from response object? Done in `_processResponse` now.
 - Remove 6to5 from distribution.
