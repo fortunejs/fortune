@@ -5,7 +5,7 @@ Fortune is a framework for hypermedia applications. It provides a system of data
 Get it by installing from `npm`:
 
 ```sh
-$ npm install --save fortune
+$ npm install fortune
 ```
 
 
