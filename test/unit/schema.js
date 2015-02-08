@@ -1,5 +1,5 @@
 import Test from 'tape';
-import * as Schema from '../lib/schema';
+import * as Schema from '../../lib/schema';
 
 // Suppress warnings.
 console.warn = () => {};

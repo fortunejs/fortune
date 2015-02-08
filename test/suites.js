@@ -1,1 +1,1 @@
-export { default as Schema } from './schema';
+export { default as Schema } from './unit/schema';

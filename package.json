@@ -16,7 +16,7 @@
     "test": "6to5-node test | tap-spec",
     "prepublish": "rm -rf dist && npm run compile-lib",
     "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
-    "compile-lib": "6to5 lib --out-dir dist/lib --source-maps-inline",
+    "compile-lib": "6to5 lib --out-dir dist/lib --source-maps",
     "compile-test": "6to5 test --out-dir dist/test"
   },
   "dependencies": {
@@ -25,10 +25,11 @@
     "inflection": "^1.5.3",
     "media-typer": "^0.3.0",
     "nedb": "^1.1.1",
+    "regenerator-6to5": "^0.8.9-8",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "6to5": "^3.4.1",
+    "6to5": "^3.5.0",
     "istanbul": "^0.3.5",
     "request": "^2.53.0",
     "tap-spec": "^2.2.1",
