@@ -1,11 +1,11 @@
 # To-do list
 
-- Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Router should do all adapter calls to sync inverse relationships.
 - Write more tests with tape, and integration test using the default stack.
 
 ## Done
 
+- Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Changed signature of transform function. Now entity is accepted as second parameter and `this` is no longer bound.
 - Add optional `processRequest` and `processResponse` in serializer.
 - Remove `bufferEncoding` option. Superceded by `schema` options object.

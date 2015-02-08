@@ -11,7 +11,7 @@ App.resource('user', {
   age: {type: Number, min: 0, max: 100},
   friends: {link: 'user', inverse: 'friends'},
   pets: {link: ['animal'], inverse: 'owner'}
-}).after(function (context, entity) {
+}).after((context, entity) => {
   entity.timestamp = Date.now();
   return Promise.resolve(entity);
 });
@@ -19,7 +19,7 @@ App.resource('user', {
 App.resource('animal', {
   name: String,
   owner: {link: 'user', inverse: 'pets'}
-}).after(function (context, entity) {
+}).after((context, entity) => {
   entity.a = 123;
   return entity;
 });
@@ -45,7 +45,7 @@ App.init().then(() => {
   });*/
 
   request({
-    uri: `http://localhost:${PORT}/users/1,2,3/pets`,
+    uri: `http:${'//'}localhost:${PORT}/users/1,2,3`,
     method: 'get',
     headers: {
       Accepts: 'application/*'
