@@ -21,7 +21,7 @@ Adapters belong to class that must implement a baseline of methods that have wel
 
 ### Serializers
 
-Serializers format data in and out of a Fortune app. Like adapters, they belong to a class that implements a baseline of methods with well-defined parameters and return values. Serializers are responsible for interpreting and displaying media types such as JSON. They are not concerned with any protocol, so it is not guaranteed that they will output links that are consistent with any router.
+Serializers format data in and out of a Fortune app. Like adapters, they belong to a class that implements a baseline of methods with well-defined parameters and return values. Serializers are responsible for interpreting and displaying media types such as JSON. They may also be concerned with routing requests, though this is optional.
 
 | Serializer       | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
@@ -35,6 +35,28 @@ Internally, Fortune uses a request and response model much like how HTTP operate
 | Implementation   | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | requestListener (included) | [Dali Zheng](http://daliwa.li) | A bare-bones function that takes `request` and `response` parameters, useful for `http.createServer`. |
+
+
+### Example
+
+Fortune should work out of the box with no configuration using the defaults. For example:
+
+```js
+import http from 'http';
+import Fortune from 'fortune';
+
+let app = new Fortune();
+
+app.resource('user', {
+  name: String,
+  createdAt: Date
+});
+
+app.init().then(() => {
+  http.createServer(Fortune.Net.requestListener.bind(app))
+  	.listen(1337);
+});
+```
 
 
 ### Philosophy

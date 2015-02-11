@@ -21,20 +21,25 @@
   },
   "dependencies": {
     "accepts": "^1.2.3",
-    "core-js": "^0.5.0",
-    "inflection": "^1.5.3",
-    "media-typer": "^0.3.0",
+    "content-type": "^1.0.0",
+    "core-js": "^0.5.2",
+    "inflection": "^1.6.0",
     "nedb": "^1.1.1",
-    "regenerator-6to5": "^0.8.9-8",
+    "regenerator-6to5": "^0.8.10-1",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "6to5": "^3.5.0",
+    "6to5": "^3.5.3",
     "istanbul": "^0.3.5",
     "request": "^2.53.0",
     "tap-spec": "^2.2.1",
     "tape": "^3.5.0"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "index.js"
+  ],
   "engines": {
     "node": ">=0.10"
   },
