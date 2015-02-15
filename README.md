@@ -1,6 +1,6 @@
 # Fortune.js [![Build Status](https://travis-ci.org/fortunejs/fortune.png?branch=rewrite)](https://travis-ci.org/fortunejs/fortune)
 
-Fortune is a framework for hypermedia applications. It provides a system of database adapters, serializers, and I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb) adapter, [JSON API](http://jsonapi.org) serializer, and HTTP `requestListener`.
+Fortune is a framework for data-driven applications. It provides a system of database adapters, serializers, and I/O which can be exposed using protocols such as HTTP. A baseline of defaults are included: [Node Embedded Database (NeDB)](https://github.com/louischatriot/nedb) adapter, [JSON API](http://jsonapi.org) serializer, and HTTP `requestListener`.
 
 Get it by installing from `npm`:
 
@@ -61,13 +61,15 @@ app.init().then(() => {
 
 ### Philosophy
 
+The goal is to compartmentalize data flowing through a system. Fortune is concerned with the sequence of that flow from the client through to the data adapter, and back to the client again, or simply from the adapter to the client. The serializers are flexible enough to allow any style of API to be implemented (REST, RPC, etc.), while the schemas and internal router allow for [Xanadu](http://www.xanadu.com/)-like links between entities, that is bi-directional relationships and transclusions.
+
 The earliest concept of hypermedia was a [mechanical device that created trails of links between microfilms](https://en.wikipedia.org/wiki/Memex). It wasn't until 1965 that Ted Nelson [coined the term "hypermedia"](http://www.historyofinformation.com/expanded.php?id=1055) as a digital system of hyperlinks and media. Fast forward to today and we have the world wide web, and along with it, [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol), [REST](https://en.wikipedia.org/wiki/Representational_state_transfer), etc. [Hypertext](https://en.wikipedia.org/wiki/Hypertext) provides a fundamental layer of understanding which REST builds upon. RESTful services resemble web pages in that links are present in the media, which a client can discover and follow. This promotes decoupling of server and client, and discovery of new information.
 
 > "REST is software design on the scale of decades: every detail is intended to promote software longevity and independent evolution. Many of the constraints are directly opposed to short-term efficiency." -- Roy T. Fielding
 
-Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing it already. Fortune aims to present simple options for building hypermedia APIs, with most of the hard work done already.
+Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing it already. Fortune aims to present simple options for building hypermedia APIs, with most of the hard work done already. Of course, it is also possible to build other types of APIs using Fortune, but it focuses on the most difficult use case first.
 
 
 ### License
 
-Fortune is licensed under the [MIT License](https://github.com/daliwali/fortune/blob/rewrite/docs/LICENSE.md).
+Fortune is licensed under the [GNU Affero GPL v3 License](https://github.com/daliwali/fortune/blob/rewrite/docs/LICENSE.md). What this means is that if you modify the source code and use it to run on a network server, you must make the modified source code available to everyone. This license does not apply to external modules such as adapters, serializers, or I/O.

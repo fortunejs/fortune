@@ -1,8 +1,8 @@
 {
   "name": "fortune",
-  "description": "A framework for hypermedia applications.",
+  "description": "A framework for data-driven applications.",
   "version": "1.0.0-alpha.1",
-  "license": "MIT",
+  "license": "AGPLv3",
   "author": {
     "name": "Dali Zheng",
     "email": "d@liwa.li"
@@ -13,23 +13,22 @@
     "url": "https://github.com/fortunejs/fortune"
   },
   "scripts": {
-    "test": "6to5-node test | tap-spec",
+    "test": "babel-node test | tap-spec",
     "prepublish": "rm -rf dist && npm run compile-lib",
     "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
-    "compile-lib": "6to5 lib --out-dir dist/lib --source-maps",
-    "compile-test": "6to5 test --out-dir dist/test"
+    "compile-lib": "babel lib --out-dir dist/lib --source-maps",
+    "compile-test": "babel test --out-dir dist/test"
   },
   "dependencies": {
-    "accepts": "^1.2.3",
-    "content-type": "^1.0.0",
-    "core-js": "^0.5.2",
+    "accepts": "^1.2.4",
+    "content-type": "^1.0.1",
+    "core-js": "^0.5.4",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
-    "regenerator-6to5": "^0.8.10-1",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "6to5": "^3.5.3",
+    "babel": "^4.0.1",
     "istanbul": "^0.3.5",
     "request": "^2.53.0",
     "tap-spec": "^2.2.1",
