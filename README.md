@@ -72,4 +72,4 @@ Building hypermedia APIs is hard. If it wasn't hard then everyone would be doing
 
 ### License
 
-Fortune is licensed under the [GNU Affero GPL v3 License](https://github.com/daliwali/fortune/blob/rewrite/docs/LICENSE.md). What this means is that if you modify the source code and use it to run on a network server, you must make the modified source code available to everyone. This license does not apply to external modules such as adapters, serializers, or I/O.
+Fortune is licensed under the MIT license.

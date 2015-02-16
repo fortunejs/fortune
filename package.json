@@ -2,7 +2,7 @@
   "name": "fortune",
   "description": "A framework for data-driven applications.",
   "version": "1.0.0-alpha.1",
-  "license": "AGPLv3",
+  "license": "MIT",
   "author": {
     "name": "Dali Zheng",
     "email": "d@liwa.li"
@@ -36,6 +36,7 @@
   },
   "files": [
     "dist/",
+    "doc/",
     "README.md",
     "index.js"
   ],
