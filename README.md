@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/agco/harvest.svg?branch=develop)](https://travis-ci.org/agco-adm/harvest)
-# Harvest.js 
+[![Build Status](https://travis-ci.org/agco/harvester.svg?branch=develop)](https://travis-ci.org/agco-adm/harvester)
+# Harvester.js 
 
 [Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
 
-Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile implementation : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md).   
+Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile implementation : [Elastic Harvester](https://github.com/agco-adm/elastic-harvester), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md).   
 
 ### JSON-API Features 
 
