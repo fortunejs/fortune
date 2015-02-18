@@ -5,6 +5,7 @@
 
 Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile implementation : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md).   
 
+##### Documentation : http://agco.github.io/harvest
 ### JSON-API Features 
 
 - [Resource Relationships](http://jsonapi.org/format/#document-structure-resource-relationships) 
