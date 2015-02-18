@@ -36,12 +36,12 @@ describe('using mongodb adapter', function () {
             });
 
         this.app
-            .then(function (fortuneApp) {
-                fortuneApp.listen(8000);
-                var expectedDbName = fortuneApp.options.db;
+            .then(function (harvesterApp) {
+                harvesterApp.listen(8000);
+                var expectedDbName = harvesterApp.options.db;
 
                 return new Promise(function (resolve) {
-                    fortuneApp.adapter.mongoose.connections[1].db.collectionNames(function (err, collections) {
+                    harvesterApp.adapter.mongoose.connections[1].db.collectionNames(function (err, collections) {
                         resolve(_.compact(_.map(collections, function (collection) {
 
                             var collectionParts = collection.name.split(".");
@@ -50,7 +50,7 @@ describe('using mongodb adapter', function () {
 
                             if (name && (name !== "system") && db && (db === expectedDbName)) {
                                 return new RSVP.Promise(function (resolve) {
-                                    fortuneApp.adapter.mongoose.connections[1].db.collection(name, function (err, collection) {
+                                    harvesterApp.adapter.mongoose.connections[1].db.collection(name, function (err, collection) {
                                         collection.remove({}, null, function () {
                                             console.log("Wiped collection", name);
                                             resolve();
@@ -134,8 +134,8 @@ describe('using mongodb adapter', function () {
                             });
                     });
                 })).then(function () {
-                    return that.app.then(function (fortuneApp) {
-                        fortuneApp.router.close();
+                    return that.app.then(function (harvesterApp) {
+                        harvesterApp.router.close();
                         that.app = null;
                     });
                 })

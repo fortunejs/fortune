@@ -14,5 +14,5 @@ deploy:
     secure: GORhsjTrkg5UFhKbnCjPGtDHkbz7LH1x2brO6Q4npfimN9VQB7lzqpaTGYrUZsiODOE1/x7BIwc9tYVeQW4hZpdF2emf79FYw6sC3bMSdTmGwtyfhX8OHIC3MQISZ0EBBStriOURV0llPhyHF9uboI0I8HueoRSuAmgkuu/Hf8c=
   on:
     tags: true
-    repo: agco-adm/harvest
+    repo: agco-adm/harvester
     branch: develop

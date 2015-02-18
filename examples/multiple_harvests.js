@@ -1,5 +1,5 @@
-var harvest = require('../lib/harvest')
-  , express = harvest.express;
+var harvester = require('../lib/harvester')
+  , express = harvester.express;
 
 /**
  * Example demonstrating two different databases being
@@ -11,7 +11,7 @@ var harvest = require('../lib/harvest')
 var container = express()
   , port = process.argv[2] || 1337;
 
-var peopleAPI = harvest({
+var peopleAPI = harvester({
   db: 'people'
 })
 .resource('person', {
@@ -19,7 +19,7 @@ var peopleAPI = harvest({
   age: Number
 });
 
-var animalsAPI = harvest({
+var animalsAPI = harvester({
   db: 'animals'
 })
 .resource('animal', {
