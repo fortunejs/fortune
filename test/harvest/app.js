@@ -22,9 +22,14 @@ function createApp(options) {
             owner: 'person'
         })
 
+        .resource('cat', {
+            name: String
+        }, {namespace: 'animals'})
+
         .resource('foobar', {
             foo: String
         })
+
         .before(
         function (req, res) {
             var foobar = this;
