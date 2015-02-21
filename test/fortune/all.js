@@ -17,18 +17,6 @@ describe('Fortune', function () {
     app = options.app;
   });
 
-  describe("Init", function() {
-    it("should pass 'debug' option to underlying adapter", function(done) {
-      var app = fortune({
-        adapter: 'mongodb',
-        debug: true
-      });
-
-      app.adapter.mongoose.options.debug.should.equal(true);
-      app.adapter.mongoose.options.debug = false; // Set the global variable back to not log all requests in test env
-      done();
-    });
-  });
 
   require('./actions')(options);
   require('./routing')(options);
@@ -69,5 +57,21 @@ describe('Fortune', function () {
     });
   });
 
+  describe("Init", function() {
+    it("should pass 'debug' option to underlying adapter", function(done) {
+      var remoteDB = process.env.WERCKER_MONGODB_URL ? process.env.WERCKER_MONGODB_URL + '/fortune' : null;
+      var app = fortune({
+        adapter: 'mongodb',
+        debug: true,
+        connectionString: remoteDB || "mongodb://localhost/fortune_test",
+        inflect: true,
+        enableWebsockets: true
+      });
+
+      app.adapter.mongoose.options.debug.should.equal(true);
+      app.adapter.mongoose.options.debug = false; // Set the global variable back to not log all requests in test env
+      done();
+    });
+  });
 });
 };
