@@ -5,6 +5,7 @@ var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('../fixtures.json');
+var fortune = require('../../')
 
 module.exports = function(options){
 
@@ -57,6 +58,17 @@ describe('Fortune', function () {
     });
   });
 
-});
+  describe("Init", function() {
+    it("Should pass 'debug' option to underlying adapter", function(done) {
+      var app = fortune({
+        adapter: 'mongodb',
+        debug: true
+      });
 
+      app.adapter.mongoose.options.debug.should.equal(true);
+      app.adapter.mongoose.options.debug = false; // Set the global variable back to not log all requests in test env
+      done();
+    });
+  });
+});
 };
