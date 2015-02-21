@@ -4,8 +4,7 @@ var _ = require('lodash');
 var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
-var fixtures = require('../fixtures.json');
-var fortune = require('../../')
+var fortune = require('../../lib/fortune.js')
 
 module.exports = function(options){
 
@@ -18,6 +17,18 @@ describe('Fortune', function () {
     app = options.app;
   });
 
+  describe("Init", function() {
+    it("should pass 'debug' option to underlying adapter", function(done) {
+      var app = fortune({
+        adapter: 'mongodb',
+        debug: true
+      });
+
+      app.adapter.mongoose.options.debug.should.equal(true);
+      app.adapter.mongoose.options.debug = false; // Set the global variable back to not log all requests in test env
+      done();
+    });
+  });
 
   require('./actions')(options);
   require('./routing')(options);
@@ -58,17 +69,5 @@ describe('Fortune', function () {
     });
   });
 
-  describe("Init", function() {
-    it("Should pass 'debug' option to underlying adapter", function(done) {
-      var app = fortune({
-        adapter: 'mongodb',
-        debug: true
-      });
-
-      app.adapter.mongoose.options.debug.should.equal(true);
-      app.adapter.mongoose.options.debug = false; // Set the global variable back to not log all requests in test env
-      done();
-    });
-  });
 });
 };
