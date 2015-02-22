@@ -1,5 +1,5 @@
 <a href="http://fortunejs.com">
-  <img alt="Fortune.js" src="https://raw.githubusercontent.com/fortunejs/fortune/rewrite/media/fortune_logo.svg" width="350">
+  <img alt="Fortune.js" src="https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg" width="350">
 </a>
 
 **Fortune.js** is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a separate layer on top.
