@@ -1,6 +1,7 @@
-# Implementation of Fortune.js
+# Architecture
 
 This document explains the inner workings of Fortune.
+
 
 ## Adapter
 
@@ -12,9 +13,11 @@ There are stub methods to start and end a transaction, which are optional to imp
 
 The responsibility of the `init` method is to ensure that the resources defined are consistent with the backing data store. For relational databases this means tables either exist or are created, schemas exist or are created, and if there is any mismatch it should fail. At that point the differences between the application and the database should be reconciled.
 
+
 ## Serializer
 
 Serializers parse and render external input and output. The input parsing methods accept the `context` and should return arrays of objects, while the output rendering methods accept arrays of objects and should mutate the `context`. The schema is enforced before parsing and after rendering, so that types from input to output will be consistent.
+
 
 ## Router
 
