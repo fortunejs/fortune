@@ -1,7 +1,13 @@
-<a href="http://fortunejs.com">
-  <img alt="Fortune.js" src="https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg" width="350">
-</a>
+<p align="center">
+  <a href="http://fortunejs.com">
+    <img alt="Fortune.js" src="https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg" width="300">
+  </a>
+</p>
 
-**Fortune.js** is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a separate layer on top.
+<p align="center">
+  **Fortune.js** is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a separate layer on top.
+</p>
 
-[View the website](http://fortunejs.com) for documentation. Fortune.js is licensed under the [MIT license](https://github.com/fortunejs/fortune/blob/rewrite/LICENSE).
+<p align="center">
+  [View the website](http://fortunejs.com) for documentation.
+</p>
