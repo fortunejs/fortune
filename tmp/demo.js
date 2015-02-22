@@ -28,8 +28,8 @@ App.init().then(() => {
   http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
   console.log(`Listening on port ${PORT}...`);
 
-  /*App.request({
-    action: 'find',
+  App.request({
+    action: 'create',
     type: 'user',
     //ids: [1, 1, 2],
     //relatedField: 'pets',
@@ -42,9 +42,9 @@ App.init().then(() => {
   }, (error) => {
     console.log('FAIL');
     console.log(error);
-  });*/
+  });
 
-  request({
+  /*request({
     uri: `http:${'//'}localhost:${PORT}/users/1,2,3`,
     method: 'get',
     headers: {
@@ -52,5 +52,5 @@ App.init().then(() => {
     }
   }, (error, response, body) => {
     console.log(body);
-  });
+  });*/
 });

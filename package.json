@@ -14,31 +14,29 @@
   },
   "scripts": {
     "test": "babel-node test | tap-spec",
-    "prepublish": "rm -rf dist && npm run compile-lib",
-    "coverage": "npm run compile-lib && npm run compile-test && istanbul cover dist/test",
-    "compile-lib": "babel lib --out-dir dist/lib --source-maps",
-    "compile-test": "babel test --out-dir dist/test"
+    "prepublish": "make clean && make compile-lib",
+    "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
     "accepts": "^1.2.4",
+    "babel-runtime": "^4.4.3",
     "content-type": "^1.0.1",
-    "core-js": "^0.5.4",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.0.1",
-    "istanbul": "^0.3.5",
+    "babel": "^4.4.3",
+    "istanbul": "^0.3.6",
     "request": "^2.53.0",
     "tap-spec": "^2.2.1",
     "tape": "^3.5.0"
   },
+  "main": "dist/index.js",
   "files": [
     "dist/",
-    "doc/",
     "README.md",
-    "index.js"
+    "LICENSE"
   ],
   "engines": {
     "node": ">=0.10"
