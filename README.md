@@ -9,5 +9,5 @@
 </p>
 
 <p align="center">
-  <a href="http://fortunejs.com">View the website</p> for documentation.
+  <a href="http://fortunejs.com">View the website</a> for documentation.
 </p>
