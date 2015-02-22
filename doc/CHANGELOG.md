@@ -4,7 +4,7 @@
 * Complete rewrite. The major version increment does not mean it's stable, just a complete overhaul.
 * Redone schema definitions. It is now very verbose about possible mistakes. `ref` is now `link` to keep the terminology consistent.
 * Introducing serializers for multiple content types.
-* Removed Express as a dependency, it now uses a built-in server, or its internal router can be used directly.
+* Removed Express as a dependency, it now uses a built-in server, or its internal dispatcher can be used directly.
 
 **v0.2.2 (4/15/2014)**
 * Add resource creation with `linked` entities.

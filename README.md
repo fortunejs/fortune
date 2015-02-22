@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Fortune.js</strong> is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a separate layer on top.
+  <strong>Fortune.js</strong> is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a thin layer on top.
 </p>
 
 <p align="center">

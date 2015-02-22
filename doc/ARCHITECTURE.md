@@ -19,8 +19,8 @@ The responsibility of the `init` method is to ensure that the resources defined 
 Serializers parse and render external input and output. The input parsing methods accept the `context` and should return arrays of objects, while the output rendering methods accept arrays of objects and should mutate the `context`. The schema is enforced before parsing and after rendering, so that types from input to output will be consistent.
 
 
-## Router
+## Dispatcher
 
-This is the central core of the system. The router moves data around in a request lifecycle, by passing a `context` object through its internal methods. The internal methods mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
+This is the central core of the system. The dispatcher passes data to the next handler in a request lifecycle, using the `context` object through its internal methods. The internal methods mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
 
 Schema enforcement happens here, types are casted before `before` transforms and after `after` transforms, so that types should be consistent with the schema.

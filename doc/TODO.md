@@ -1,6 +1,6 @@
 # To-do list
 
-- Router should do all adapter calls to sync inverse relationships.
+- Dispatcher should do all adapter calls to sync inverse relationships.
 - Write more tests with tape, and integration test using the default stack.
 
 ## Done
@@ -17,9 +17,9 @@
 - Server initialization method? This is now handled separately from core module.
 - Should serializer process query strings? Leaning towards no since that is HTTP, but maybe? Actually I think it should though. Now it is implemented as `Serializer.processRequest`.
 - Request options should be specific to a type.
-- Make router call stubs to adapter for ACID transactions.
+- Make dispatcher call stubs to adapter for ACID transactions.
 - Option to disable casting and mangling of buffers? Now this option exists on `Schema.Enforcer`.
-- Removed `inflect` and `prefix` options, these should be handled per serializer and by routers.
+- Removed `inflect` and `prefix` options, these should be handled per serializer.
 - Make serializer methods return context, this makes life easier.
 - Create linked entity if there was a related field.
 - Include uniqueness problem if original request does not supply IDs.
@@ -30,5 +30,5 @@
 - Ordered serializers by priority.
 - Typed errors.
 - Remove the `_relatedType` and `_relatedIds`.
-- Router abstraction from HTTP, consolidate `request` and `response` in the `context` object.
+- Dispatcher abstraction from HTTP, consolidate `request` and `response` in the `context` object.
 - Remove `require` calls in Serializer and Adapter. Resolved by removing strings.
