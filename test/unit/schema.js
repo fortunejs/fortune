@@ -1,10 +1,12 @@
 import Test from 'tape';
-import * as Schema from '../../lib/schema';
+import parser from '../../lib/schema/parser';
+import enforcer from '../../lib/schema/enforcer';
+import stderr from '../../lib/common/stderr';
 
-// Suppress warnings.
-console.warn = () => {};
+// Suppress parser warnings.
+stderr.warn = function () {};
 
-let schema = Schema.Parser({
+let schema = parser({
   name: 'string',
   birthdate: {type: Date, junk: 'asdf'},
   mugshot: {type: 'buffer', link: null, inverse: null},
@@ -50,7 +52,7 @@ export default () => {
   });
 
   Test('Schema.Enforcer input', t => {
-    let enforced = Schema.Enforcer({
+    let enforced = enforcer({
       name: {},
       birthdate: 0,
       mugshot: 'SGVsbG8gd29ybGQh',
@@ -72,7 +74,7 @@ export default () => {
   });
 
   Test('Schema.Enforcer output', t => {
-    let enforced = Schema.Enforcer({
+    let enforced = enforcer({
       birthdate: new Date(0),
       lucky_numbers: ['1', 2, '3'],
       mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64'),

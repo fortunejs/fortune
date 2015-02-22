@@ -1,4 +1,5 @@
 import http from 'http';
+import chalk from 'chalk';
 import request from 'request';
 import Fortune from '../lib';
 
@@ -31,7 +32,7 @@ App.resource('animal', {
 
 App.init().then(() => {
   http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
-  console.log(`Listening on port ${PORT}...`);
+  console.log(chalk.magenta(`Listening on port ${chalk.bold(PORT)}...`));
 
   App.request({
     action: 'create',

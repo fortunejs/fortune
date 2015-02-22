@@ -3,33 +3,33 @@
   "description": "A framework for data-driven applications.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
-  "author": {
-    "name": "Dali Zheng",
-    "email": "d@liwa.li"
-  },
+  "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
+  "contributors": [],
   "homepage": "http://fortunejs.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fortunejs/fortune"
+    "url": "git@github.com:fortunejs/fortune.git"
   },
+  "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "babel-node test | tap-spec",
+    "test": "babel-node test | tap-dot",
     "prepublish": "make clean && make compile-lib",
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
     "accepts": "^1.2.4",
-    "babel-runtime": "^4.4.3",
+    "babel-runtime": "^4.4.5",
+    "chalk": "^0.5.1",
     "content-type": "^1.0.1",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.4.3",
+    "babel": "^4.4.5",
     "istanbul": "^0.3.6",
     "request": "^2.53.0",
-    "tap-spec": "^2.2.1",
+    "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },
   "main": "dist/index.js",
@@ -39,7 +39,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=0.10"
+    "node": ">=0.10.0"
   },
   "keywords": [
     "api",
