@@ -1,8 +1,7 @@
-# Fortune.js [![Build Status](https://travis-ci.org/fortunejs/fortune.png?branch=rewrite)](https://travis-ci.org/fortunejs/fortune)
+<a href="http://fortunejs.com">
+  <img alt="Fortune.js" src="https://raw.githubusercontent.com/fortunejs/fortune/rewrite/media/fortune_logo.svg" width="350">
+</a>
 
-**Fortune** is a framework for data-driven applications. It provides a flow for database adapters and serializers, with networking as a layer on top.
+**Fortune.js** is a framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a separate layer on top.
 
-
-## License
-
-Fortune is licensed under the MIT license.
+[View the website](http://fortunejs.com) for documentation. Fortune.js is licensed under the [MIT license](https://github.com/fortunejs/fortune/blob/rewrite/LICENSE).
