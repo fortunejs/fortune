@@ -237,7 +237,6 @@ module.exports = function(options){
               .end(function(err, res){
                 should.not.exist(err);
                 var body = JSON.parse(res.text);
-                console.log(body.people);
                 body.people.length.should.be.greaterThan(0);
                 done();
               });

@@ -10,6 +10,7 @@ Contributions welcome.
 
 ### Changes since fork of daliwali/fortune
 
+- Debug option for logging all db requests
 - Select fields to return: `/people?fields=name,age`  (see [acdb09b](//github.com/flyvictor/fortune/commit/acdb09b2cad568c0dd0e7e27fc22b6362e996f2c))
 - Specif express instance in fortune options (see [0413a74](//github.com/flyvictor/fortune/commit/0413a74f3c1a7c9971f8cac4eecf77284503e2f1))
 - Control if linked documents are included in the response `/people?include=pets` (see [92c80f3](//github.com/flyvictor/fortune/commit/92c80f3b8363242a8cb57a33e20f6d4b57a04055))
@@ -49,7 +50,7 @@ Here is a minimal application:
 
 ```javascript
 var fortune = require('fortune');
-var app = fortune();
+var app = fortune({ /* debug: true */ });
 
 app.resource('person', {
   name: String,
