@@ -21,6 +21,6 @@ Serializers parse and render external input and output. The input parsing method
 
 ## Dispatcher
 
-This is the central core of the system. The dispatcher passes data to the next handler in a request lifecycle, using the `context` object through its internal methods. The internal methods mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
+This is the central workflow. The dispatcher passes data to the next handler in a request lifecycle, using the `context` object through its internal methods. The internal methods mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
 
 Schema enforcement happens here, types are casted before `before` transforms and after `after` transforms, so that types should be consistent with the schema.

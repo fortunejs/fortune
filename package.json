@@ -42,10 +42,12 @@
     "node": ">=0.10"
   },
   "keywords": [
-    "hypermedia",
-    "framework",
-    "json",
     "api",
+    "data",
+    "data-driven",
+    "framework",
+    "hypermedia",
+    "json",
     "jsonapi",
     "json-api",
     "rest",

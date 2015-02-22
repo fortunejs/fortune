@@ -1,5 +1,5 @@
-import * as Suites from './suites';
+import * as Unit from './unit';
 
-for (let suite in Suites) {
-  Suites[suite]();
+for (let suite in Unit) {
+  Unit[suite]();
 }

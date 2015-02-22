@@ -19,4 +19,4 @@ compile-test:
 		--out-dir $(DIST_DIR)$(TEST_DIR)
 
 clean:
-	rm -rf $(DIST_DIR)
+	rm -rf $(DIST_DIR) coverage/

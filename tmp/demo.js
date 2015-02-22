@@ -4,7 +4,12 @@ import Fortune from '../lib';
 
 const PORT = 1337;
 
-var App = new Fortune();
+var App = new Fortune({
+  primaryKeyPerType: {
+    user: '_id',
+    animal: '__id'
+  }
+});
 
 App.resource('user', {
   name: String,
@@ -30,17 +35,19 @@ App.init().then(() => {
 
   App.request({
     action: 'create',
-    type: 'user',
-    //ids: [1, 1, 2],
-    //relatedField: 'pets',
-    include: [['pets'], ['pets', 'owner']],
+    type: 'animal',
+    payload: [{
+      _id: 'foo'
+    }],
+    ids: [2],
+    relatedField: 'owner',
+    include: [['owner'], ['pets']],
     serializerInput: 'application/vnd.api+json',
     serializerOutput: 'application/vnd.api+json'
   }).then((result) => {
-    console.log(JSON.stringify(result, null, 2));
-    //console.log(result);
+    //console.log(JSON.stringify(result, null, 2));
+    console.log(result);
   }, (error) => {
-    console.log('FAIL');
     console.log(error);
   });
 
