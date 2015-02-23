@@ -2,6 +2,7 @@ import http from 'http';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
 import Fortune from '../lib';
+import stderr from '../lib/common/stderr';
 
 const PORT = 1337;
 
@@ -34,15 +35,16 @@ App.init().then(() => {
   http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
   console.log(chalk.magenta(`Listening on port ${chalk.bold(PORT)}...`));
 
-  fetch(`http:${'//'}localhost:${PORT}/animals/5,6/owner`, {
+  fetch(`http:${'//'}localhost:${PORT}/users/5/pets`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/*',
+      'Accept': '*/*',
       'Content-Type': 'application/vnd.api+json'
     },
     body: JSON.stringify({data: [{
-      _id: 'foo'
+      __id: 'foo'
     }]})
-  }).then(response => response.json())
+  }).then(response => response.json(),
+    error => stderr.debug(error))
   .then(json => console.log(JSON.stringify(json, null, 2)));
 });
