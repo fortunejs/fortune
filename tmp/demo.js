@@ -31,6 +31,10 @@ App.resource('animal', {
   return entity;
 });
 
+App.dispatcher.on('change', function (event) {
+  stderr.debug(event);
+});
+
 App.init().then(() => {
   http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
   console.log(chalk.magenta(`Listening on port ${chalk.bold(PORT)}...`));
