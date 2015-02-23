@@ -31,8 +31,8 @@ App.resource('animal', {
   return entity;
 });
 
-App.dispatcher.on('change', function (event) {
-  stderr.debug(event);
+App.dispatcher.on('change', function () {
+  stderr.info(...arguments);
 });
 
 App.init().then(() => {
