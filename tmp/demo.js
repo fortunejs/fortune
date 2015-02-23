@@ -44,7 +44,9 @@ App.init().then(() => {
     body: JSON.stringify({data: [{
       __id: 'foo'
     }]})
-  }).then(response => response.json(),
-    error => stderr.debug(error))
-  .then(json => console.log(JSON.stringify(json, null, 2)));
+  }).then(response => {
+    stderr.debug(chalk.bold(response.status), response.headers.raw());
+    return response.json();
+  }).then(json =>
+    console.log(JSON.stringify(json, null, 2)));
 });
