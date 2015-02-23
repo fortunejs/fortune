@@ -1,5 +1,5 @@
 {
-  "name": "harvest",
+  "name": "harvesterjs",
   "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
   "version": "0.3.0",
   "license": "MIT",
@@ -16,12 +16,12 @@
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agco-adm/harvest"
+    "url": "https://github.com/agco-adm/harvester"
   },
   "scripts": {
     "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
   },
-  "main": "./lib/harvest.js",
+  "main": "./lib/harvester.js",
   "dependencies": {
     "body-parser": "~1.4.3",
     "express": "~4.6.1",
