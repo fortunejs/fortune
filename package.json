@@ -28,7 +28,7 @@
   "devDependencies": {
     "babel": "^4.4.5",
     "istanbul": "^0.3.6",
-    "request": "^2.53.0",
+    "node-fetch": "^1.0.4",
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },
