@@ -39,7 +39,7 @@ App.init().then(() => {
   http.createServer(Fortune.Net.requestListener.bind(App)).listen(PORT);
   console.log(chalk.magenta(`Listening on port ${chalk.bold(PORT)}...`));
 
-  fetch(`http:${'//'}localhost:${PORT}/users/5/pets`, {
+  fetch(`http:\/\/localhost:${PORT}/users/5/pets`, {
     method: 'POST',
     headers: {
       'Accept': '*/*',

@@ -21,6 +21,7 @@
     "babel-runtime": "^4.4.5",
     "chalk": "^0.5.1",
     "content-type": "^1.0.1",
+    "etag": "^1.5.1",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
     "uri-templates": "^0.1.5"
