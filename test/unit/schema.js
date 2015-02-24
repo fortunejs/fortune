@@ -3,6 +3,7 @@ import parser from '../../lib/schema/parser';
 import enforcer from '../../lib/schema/enforcer';
 import stderr from '../../lib/common/stderr';
 
+
 // Suppress parser warnings.
 stderr.warn = function () {};
 
@@ -25,6 +26,7 @@ let options = {
   bufferEncoding: 'base64',
   dropArbitraryFields: true
 };
+
 
 export default () => {
 

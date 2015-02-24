@@ -1,6 +1,5 @@
 # To-do list
 
-- Specify primary key type per adapter.
 - Dispatcher should do all adapter calls to sync inverse relationships.
 - Write more tests with tape, and integration test using the default stack.
 
