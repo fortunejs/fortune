@@ -19,7 +19,7 @@
   "dependencies": {
     "accepts": "^1.2.4",
     "babel-runtime": "^4.4.5",
-    "chalk": "^0.5.1",
+    "chalk": "^1.0.0",
     "content-type": "^1.0.1",
     "etag": "^1.5.1",
     "inflection": "^1.6.0",

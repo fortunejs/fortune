@@ -27,7 +27,7 @@ App.resource('animal', {
   name: String,
   owner: {link: 'user', inverse: 'pets'}
 }).after((context, entity) => {
-  entity.a = 123;
+  entity.ageOfPet = 123;
   return entity;
 });
 
