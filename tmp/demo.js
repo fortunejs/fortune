@@ -42,7 +42,7 @@ App.init().then(() => {
   fetch(`http:\/\/localhost:${PORT}/users/5/pets`, {
     method: 'POST',
     headers: {
-      'Accept': '*/*',
+      'Accept': 'application/*',
       'Content-Type': 'application/vnd.api+json'
     },
     body: JSON.stringify({data: [{
@@ -50,7 +50,9 @@ App.init().then(() => {
     }]})
   }).then(response => {
     stderr.debug(chalk.bold(response.status), response.headers.raw());
-    return response.json();
-  }).then(json =>
-    console.log(JSON.stringify(json, null, 2)));
+    return response.text();
+  }).then(text => {
+    try { text = JSON.parse(text); } catch (error) {}
+    stderr.log(text);
+  });
 });
