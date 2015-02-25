@@ -1,5 +1,8 @@
 import * as Unit from './unit';
+import * as Integration from './integration';
 
-for (let suite in Unit) {
-  Unit[suite]();
-}
+[Unit, Integration].forEach(suites => {
+  for (let suite in suites) {
+    suites[suite]();
+  }
+});
