@@ -101,18 +101,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     });
             }
 
-            that.harvesterApp
-                .onRouteCreated('comment')
-                .then(function () {
-                    // do once
-                    that.harvesterApp.listen(8001);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-
-
+            that.harvesterApp.listen(8001);
+            done();
         });
 
         beforeEach(function (done) {
