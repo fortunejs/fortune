@@ -3,6 +3,7 @@ import stderr from '../../lib/common/stderr';
 
 
 export default () => {
+
   let App = new Fortune({
     primaryKeyPerType: {
       user: '_id',
@@ -33,4 +34,5 @@ export default () => {
   });
 
   return App;
+
 };
