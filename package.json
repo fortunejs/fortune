@@ -31,7 +31,7 @@
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },
-  "main": "dist/index.js",
+  "main": "dist/lib/index.js",
   "files": [
     "dist/",
     "README.md",

@@ -9,9 +9,9 @@ TEST_DIR = test/
 all: compile-lib compile-test
 
 compile-lib:
-	mkdir -p $(DIST_DIR)
+	mkdir -p $(DIST_DIR)$(LIB_DIR)
 	$(COMPILE_CMD) --optional runtime $(LIB_DIR) \
-		--out-dir $(DIST_DIR)
+		--out-dir $(DIST_DIR)$(LIB_DIR)
 
 compile-test:
 	mkdir -p $(DIST_DIR)$(TEST_DIR)

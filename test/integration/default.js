@@ -31,6 +31,7 @@ export default () => {
           __id: 'foo'
         }]})
       }).then(response => {
+        server.close();
         stderr.debug(chalk.bold(response.status), response.headers.raw());
         return response.text();
       }).then(text => {
@@ -38,7 +39,7 @@ export default () => {
         stderr.log(text);
         t.equal(text.data.type, 'animal', 'Type is correct.');
         t.equal(text.data.links.owner.id, '5', 'Link is correct.');
-        server.close(() => t.end());
+        t.end();
       });
     });
   });

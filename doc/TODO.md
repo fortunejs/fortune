@@ -1,5 +1,6 @@
 # To-do list
 
+- Known bug: Array.prototype.find doesn't work correctly with babel-runtime.
 - Dispatcher should do all adapter calls to sync inverse relationships.
 - Write more tests with tape, and integration test using the default stack.
 
