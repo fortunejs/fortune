@@ -11,7 +11,7 @@ export default () => {
     }
   });
 
-  App.resource('user', {
+  App.model('user', {
     name: String,
     age: {type: Number, min: 0, max: 100},
     friends: {link: 'user', inverse: 'friends'},
@@ -21,7 +21,7 @@ export default () => {
     return Promise.resolve(entity);
   });
 
-  App.resource('animal', {
+  App.model('animal', {
     name: String,
     owner: {link: 'user', inverse: 'pets'}
   }).after((context, entity) => {
