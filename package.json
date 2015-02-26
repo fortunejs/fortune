@@ -17,7 +17,7 @@
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "^4.4.6",
+    "babel-runtime": "^4.5.5",
     "chalk": "^1.0.0",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
@@ -25,7 +25,7 @@
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.4.6",
+    "babel": "^4.5.5",
     "istanbul": "^0.3.6",
     "node-fetch": "^1.0.4",
     "tap-dot": "^1.0.0",

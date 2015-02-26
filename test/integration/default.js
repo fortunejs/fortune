@@ -25,7 +25,7 @@ export default () => {
         method: 'POST',
         headers: {
           'Accept': `${mediaType}; ext=bulk`,
-          'Content-Type': mediaType
+          'Content-Type': `${mediaType}`
         },
         body: JSON.stringify({data: [{
           __id: 'foo'
