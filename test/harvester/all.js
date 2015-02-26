@@ -34,36 +34,11 @@ describe('using mongodb adapter', function () {
         var expectedDbName = this.app.options.db;
         var harvesterApp = this.app;
         return new Promise(function (resolve) {
-            return resolve([]);
-            console.log('here', harvesterApp.adapter.mongoose.connections[1].db.collectionNames())
-            harvesterApp.adapter.mongoose.connections[1].db.collectionNames(function (err, collections) {
-                console.log(err, collections)
-                resolve(_.compact(_.map(collections, function (collection) {
-
-                    var collectionParts = collection.name.split(".");
-                    var name = collectionParts[1];
-                    var db = collectionParts[0];
-
-                    if (name && (name !== "system") && db && (db === expectedDbName)) {
-                        return new RSVP.Promise(function (resolve) {
-                            harvesterApp.adapter.mongoose.connections[1].db.collection(name, function (err, collection) {
-                                collection.remove({}, null, function () {
-                                    console.log("Wiped collection", name);
-                                    resolve();
-                                });
-                            });
-                        });
-                    }
-                    return null;
-                })));
-            });
-        })
-        .then(function (wipeFns) {
-            console.log("Wiping collections:");
-            return RSVP.all(wipeFns);
-        })
-
-
+            harvesterApp.adapter.awaitConnection().then(function() {
+                harvesterApp.adapter.db.db.dropDatabase();
+                return resolve()
+            })
+         })
         .then(function () {
             console.log("--------------------");
             console.log("Running tests:");
@@ -99,6 +74,7 @@ describe('using mongodb adapter', function () {
             });
         })
         .catch(function (err) {
+            console.log(err.stack)
             done(err);
         });
     });
