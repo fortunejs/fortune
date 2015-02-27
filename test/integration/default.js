@@ -33,12 +33,15 @@ export default () => {
       }).then(response => {
         server.close();
         stderr.debug(chalk.bold(response.status), response.headers.raw());
-        return response.text();
-      }).then(text => {
-        try { text = JSON.parse(text); } catch (error) {}
-        stderr.log(text);
-        t.equal(text.data.type, 'animal', 'Type is correct.');
-        t.equal(text.data.links.owner.id, '5', 'Link is correct.');
+        return response.json();
+      }).then(response => {
+        stderr.log(response);
+        t.equal(response.data.type, 'animal', 'Type is correct.');
+        t.equal(response.data.links.owner.id, '5', 'Link is correct.');
+        t.end();
+      }).catch(error => {
+        server.close();
+        stderr.error(error);
         t.end();
       });
     });
