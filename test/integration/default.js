@@ -13,7 +13,7 @@ const mediaType = 'application/vnd.api+json';
 export default () => {
 
   Test('Integration.create', t => {
-    let App = generateApp();
+    let App = generateApp(Fortune);
 
     App.init().then(() => {
       let server = http.createServer(

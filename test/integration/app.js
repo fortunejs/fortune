@@ -1,8 +1,7 @@
-import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 
 
-export default () => {
+export default (Fortune) => {
 
   let App = new Fortune({
     primaryKeyPerType: {
