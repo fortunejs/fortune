@@ -5,6 +5,7 @@
 
 ## Done
 
+- Dependency injection for adapter/serializer.
 - Known bug: Array.prototype.find doesn't work correctly with babel-runtime. Resolved by using proxy method for find.
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
 - Changed signature of transform function. Now entity is accepted as second parameter and `this` is no longer bound.
