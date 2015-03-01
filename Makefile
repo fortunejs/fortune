@@ -1,12 +1,18 @@
 # Commands
 COMPILE_CMD = node_modules/.bin/babel
+LINT_CMD = node_modules/.bin/eslint
 
 # Directories
 LIB_DIR = lib/
 DIST_DIR = dist/
 TEST_DIR = test/
 
+.PHONY: all lint compile-lib compile-test clean
+
 all: compile-lib compile-test
+
+lint:
+	$(LINT_CMD) $(LIB_DIR) $(TEST_DIR)
 
 compile-lib:
 	mkdir -p $(DIST_DIR)$(LIB_DIR)

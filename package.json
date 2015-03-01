@@ -12,12 +12,12 @@
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "make && node dist/test",
+    "test": "make lint && make && node dist/test",
     "prepublish": "make clean && make compile-lib",
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "^4.5.5",
+    "babel-runtime": "^4.6.3",
     "chalk": "^1.0.0",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
@@ -25,7 +25,9 @@
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.5.5",
+    "babel": "^4.6.3",
+    "babel-eslint": "^1.0.12",
+    "eslint": "^0.15.1",
     "istanbul": "^0.3.6",
     "node-fetch": "^1.0.4",
     "tap-dot": "^1.0.0",
