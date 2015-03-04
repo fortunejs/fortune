@@ -2,12 +2,17 @@ import Test from 'tape';
 import http from 'http';
 import chalk from 'chalk';
 import fetch from 'node-fetch';
+import promisePolyfill from 'es6-promise';
 import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 import generateApp from './app';
 
 const PORT = 1337;
 const mediaType = 'application/vnd.api+json';
+
+// Set promise polyfill for old versions of Node.
+if (typeof Promise === 'undefined')
+  fetch.Promise = promisePolyfill.Promise;
 
 
 export default () => {

@@ -42,7 +42,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=0.10.0"
   },
   "keywords": [
     "api",
