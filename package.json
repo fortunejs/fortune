@@ -44,15 +44,8 @@
     "node": ">=0.10.0"
   },
   "keywords": [
-    "api",
-    "data",
-    "data-driven",
-    "framework",
-    "hypermedia",
-    "json",
-    "jsonapi",
-    "json-api",
-    "rest",
-    "restful"
+    "api", "composable", "data", "data-driven", "framework",
+    "hypermedia", "json", "jsonapi", "json-api",
+    "rest", "restful", "workflow"
   ]
 }
