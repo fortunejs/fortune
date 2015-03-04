@@ -10,9 +10,9 @@
 
 At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on what is in the request.
 
-There are two components that are entirely pluggable, the **adapter** and **serializer**. Each Fortune instance may only have one database adapter, but can have multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
+There are two components that are entirely pluggable, the **adapter** and **serializer**. Each Fortune instance may only have one database adapter, and multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
 
-Fortune itself is *agnostic* about networking, so it is not a web framework but actually a framework for data-driven applications. A network layer is expected to be minimally responsible for passing requests into Fortune and sending responses. The responsibility of routing, parsing protocol parameters, is delegated to serializers which may mutate the request based on additional arguments. There is a basic `requestListener` function for HTTP(S) included for convenience.
+Fortune itself is *agnostic* about networking. A network layer is expected to be minimally responsible for making requests and sending responses. The responsibility of routing, parsing protocol parameters, may be delegated to serializers which may mutate the request based on additional arguments. There is a basic `requestListener` function for HTTP included for convenience.
 
 ## Example
 
@@ -20,25 +20,27 @@ Fortune itself is *agnostic* about networking, so it is not a web framework but 
 import Fortune from 'fortune';
 import http from 'http';
 
-const PORT = 1337;
+new Fortune()
 
-let App = new Fortune();
+.model('user', {
+  firstName: String, lastName: String,
+  group: { link: 'group', inverse: 'members' }})
+.after((context, entity) => {
+  entity.fullName = `${firstName} ${lastName}`;
+  return entity;
+})
 
-App.model('user', {
+.model('group', {
   name: String,
-  group: { link: 'group', inverse: 'members' }
-});
+  members: { link: ['user'], inverse: 'group' }})
 
-App.model('group', {
-  name: String,
-  members: { link: ['user'], inverse: 'group' }
-});
-
-App.init().then(() => {
-  let listener = Fortune.net.requestListener.bind(App);
+.init().then(app => {
+  let listener = Fortune.net.requestListener.bind(app);
   let server = http.createServer(listener);
+  let port = process.env.PORT || 1337;
 
-  server.listen(PORT);
+  server.listen(port);
+  console.log(`Fortune is listening on port ${port}...`);
 });
 
 ```
@@ -51,4 +53,4 @@ The [main repository is on GitHub](https://github.com/fortunejs/fortune). Fork i
 
 ## License
 
-Fortune is licensed under the MIT license.
+Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE).
