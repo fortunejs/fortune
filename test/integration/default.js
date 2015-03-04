@@ -17,7 +17,7 @@ export default () => {
 
     App.init().then(() => {
       let server = http.createServer(
-        Fortune.Net.requestListener.bind(App)).listen(PORT);
+        Fortune.net.requestListener.bind(App)).listen(PORT);
 
       console.log(chalk.magenta(`Listening on port ${chalk.bold(PORT)}...`));
 

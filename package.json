@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A framework for data-driven applications.",
+  "description": "A composable framework for data-driven applications.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
@@ -17,7 +17,7 @@
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "^4.6.3",
+    "babel-runtime": "^4.6.6",
     "chalk": "^1.0.0",
     "inflection": "^1.6.0",
     "nedb": "^1.1.1",
@@ -25,7 +25,7 @@
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.6.3",
+    "babel": "^4.6.6",
     "babel-eslint": "^1.0.12",
     "eslint": "^0.15.1",
     "istanbul": "^0.3.6",
