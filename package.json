@@ -27,9 +27,10 @@
   "devDependencies": {
     "babel": "^4.6.6",
     "babel-eslint": "^1.0.12",
+    "es6-promise": "^2.0.1",
     "eslint": "^0.15.1",
+    "isomorphic-fetch": "^2.0.0",
     "istanbul": "^0.3.6",
-    "node-fetch": "^1.0.4",
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },
@@ -41,7 +42,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=0.12.0"
+    "node": ">=0.10.0"
   },
   "keywords": [
     "api",

@@ -1,13 +1,17 @@
 import Test from 'tape';
 import http from 'http';
 import chalk from 'chalk';
-import fetch from 'node-fetch';
+import fetch from 'isomorphic-fetch';
+import promise from 'es6-promise';
 import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 import generateApp from './app';
 
 const PORT = 1337;
 const mediaType = 'application/vnd.api+json';
+
+// Needed for old versions of Node.
+promise.polyfill();
 
 
 export default () => {
@@ -40,6 +44,8 @@ export default () => {
         t.equal(response.data.type, 'animal', 'Type is correct.');
         t.equal(response.data.links.owner.id, '5', 'Link is correct.');
         t.end();
+      }).catch(error => {
+        t.fail(error);
       });
     });
   });
