@@ -36,7 +36,7 @@ describe('using mongodb adapter', function () {
         return new Promise(function (resolve) {
             harvesterApp.adapter.awaitConnection().then(function() {
                 harvesterApp.adapter.db.db.dropDatabase();
-                return resolve()
+                return resolve();
             })
          })
         .then(function () {
@@ -74,7 +74,6 @@ describe('using mongodb adapter', function () {
             });
         })
         .catch(function (err) {
-            console.log(err.stack)
             done(err);
         });
     });
