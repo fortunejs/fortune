@@ -27,7 +27,6 @@
   "devDependencies": {
     "babel": "^4.6.6",
     "babel-eslint": "^1.0.12",
-    "es6-promise": "^2.0.1",
     "eslint": "^0.15.1",
     "istanbul": "^0.3.6",
     "node-fetch": "^1.0.4",
