@@ -1,16 +1,17 @@
+import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 
 
-export default (Fortune) => {
+export default () => {
 
-  let App = new Fortune({
+  let app = new Fortune({
     primaryKeyPerType: {
       user: '_id',
       animal: '__id'
     }
   });
 
-  App.model('user', {
+  app.model('user', {
     name: String,
     age: {type: Number, min: 0, max: 100},
     friends: {link: 'user', inverse: 'friends'},
@@ -20,7 +21,7 @@ export default (Fortune) => {
     return Promise.resolve(entity);
   });
 
-  App.model('animal', {
+  app.model('animal', {
     name: String,
     owner: {link: 'user', inverse: 'pets'}
   }).after((context, entity) => {
@@ -28,10 +29,10 @@ export default (Fortune) => {
     return entity;
   });
 
-  App.dispatcher.on('change', function () {
+  app.dispatcher.on('change', function () {
     stderr.info('Change', ...arguments);
   });
 
-  return App;
+  return app.init();
 
 };
