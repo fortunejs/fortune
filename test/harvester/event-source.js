@@ -45,14 +45,14 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
         describe('When I create a new resource', function () {
             it('Then a "change" route should be added to that resource', function (done) {
-              console.log('here')
-                $http({
-                  uri: baseUrl + '/posts',
-                  method: 'GET',
-                }).then(function() {
-                  
-                  console.log('XXXXXXXX)');
-                });
+              var that = this;
+              that.timeout(100000);
+              var ess = require('event-source-stream');
+               
+              ess(baseUrl + '/posts/changes')
+              .on('data', function(data) {
+                console.log('received event:', data)
+              });
             });
         })
     });
