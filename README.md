@@ -2,17 +2,17 @@
   <img alt="Fortune.js" src="https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg" width="280">
 </a>
 
-**Fortune.js** is a composable framework for data-driven applications. It provides a workflow for database adapters and serializers, with networking as a thin layer on top.
+**Fortune.js** is a composable framework for data-driven applications. It provides a workflow that integrates database adapters and serializers, with networking as an optional, thin layer on top.
 
 [View the website](http://fortunejs.com) for documentation.
 
 ## Key Concepts
 
-At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on what is in the request.
+At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on the request.
 
-There are two components that are entirely pluggable, the **adapter** and **serializer**. Each Fortune instance may only have one database adapter, and multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
+There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may only have one database adapter, and multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
 
-Fortune itself is *agnostic* about networking. A network layer is expected to be minimally responsible for making requests and sending responses. The responsibility of routing, parsing protocol parameters, may be delegated to serializers which may mutate the request based on additional arguments. There is a basic `requestListener` function for HTTP included for convenience.
+Fortune itself is *agnostic* about networking. The responsibility of routing, parsing protocol-specific parameters, may be delegated to serializers which may mutate the request based on arbitrary arguments. There is a basic `requestListener` function for HTTP included for convenience.
 
 ## Example
 
@@ -23,12 +23,8 @@ import http from 'http';
 new Fortune()
 
 .model('user', {
-  firstName: String, lastName: String,
+  name: String,
   group: { link: 'group', inverse: 'members' }})
-.after((context, entity) => {
-  entity.fullName = `${firstName} ${lastName}`;
-  return entity;
-})
 
 .model('group', {
   name: String,
