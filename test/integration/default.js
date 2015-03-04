@@ -11,8 +11,7 @@ const PORT = 1337;
 const mediaType = 'application/vnd.api+json';
 
 // Set promise polyfill for old versions of Node.
-if (typeof Promise === 'undefined')
-  fetch.Promise = promisePolyfill.Promise;
+fetch.Promise = promisePolyfill.Promise;
 
 
 export default () => {
@@ -46,8 +45,11 @@ export default () => {
         t.equal(response.data.links.owner.id, '5', 'Link is correct.');
         t.end();
       }).catch(error => {
+        server.close();
         t.fail(error);
       });
+    }).catch(error => {
+      t.fail(error);
     });
   });
 
