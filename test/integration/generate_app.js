@@ -33,6 +33,6 @@ export default () => {
     stderr.info('Change', ...arguments);
   });
 
-  return app.init();
+  return app.initialize();
 
 };

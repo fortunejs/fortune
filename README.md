@@ -14,13 +14,13 @@ $ npm install fortune
 
 At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on the request.
 
-There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may only have one database adapter, and multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
+There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers. Both of these components must subclass and implement the contracts described by their respective superclasses.
 
-Fortune itself is *agnostic* about networking. The responsibility of routing, parsing protocol-specific parameters, may be delegated to serializers which may mutate the request based on arbitrary arguments. There is a basic `requestListener` function for HTTP included for convenience.
+Fortune itself is *agnostic* about networking. The responsibility of parsing protocol-specific parameters may be delegated to serializers which may mutate the request based on arbitrary arguments. There is a basic `requestListener` function for HTTP included for convenience.
 
 ## Example
 
-Implementers do not need to know anything of its internal workings to get started. Here is a basic CRUD example:
+Implementers do not need to know much of its internal workings to get started. Here is a basic CRUD example:
 
 ```js
 import Fortune from 'fortune';
@@ -36,7 +36,7 @@ new Fortune()
   name: String,
   members: { link: ['user'], inverse: 'group' }})
 
-.init().then(app => {
+.initialize().then(app => {
   let listener = Fortune.net.requestListener.bind(app);
   let server = http.createServer(listener);
   let port = process.env.PORT || 1337;

@@ -13,7 +13,7 @@ new Fortune();
   createdAt: Date
 })
 
-.init().then(app => {
+.initialize().then(app => {
   let listener = Fortune.net.requestListener.bind(app);
   let server = http.createServer(listener);
 
