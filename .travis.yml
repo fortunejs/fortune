@@ -15,4 +15,5 @@ deploy:
   on:
     tags: true
     repo: agco/harvesterjs
+    branch: master
 
