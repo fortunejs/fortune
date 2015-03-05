@@ -26,9 +26,9 @@
   },
   "devDependencies": {
     "babel": "^4.6.6",
-    "babel-eslint": "^1.0.12",
+    "babel-eslint": "^1.0.13",
     "eslint": "^0.15.1",
-    "istanbul": "^0.3.6",
+    "istanbul": "^0.3.7",
     "node-fetch": "^1.0.4",
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
