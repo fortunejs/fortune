@@ -1,6 +1,8 @@
 var $http = require('http-as-promised');
 var harvester = require('../../lib/harvester');
 var baseUrl = 'http://localhost:' + 8001;
+var chai = require('chai');
+var expect = chai.expect;
 
 /*$http.debug = true;*/
 //$http.request = require('request-debug')($http.request);
@@ -40,25 +42,23 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
               var that = this;
               that.timeout(100000);
               var ess = require('event-source-stream');
-               
+              var dataReceived; 
               ess(baseUrl + '/posts/changes')
               .on('data', function(data) {
+                if (dataReceived) return;
+                dataReceived = true;
                 console.log('received event:', data)
+                expect(data).to.exist;
+                done();
               });
 
-              return $http(
-                  {
-                      uri: baseUrl + '/posts',
-                      method: 'POST',
-                      json: {
+              return $http({uri: baseUrl + '/posts', method: 'POST',json: {
                           posts: [
                               {
                                   title : 'test title'
                               }
                           ]
-                      }
-                  });
-
+                      }});
             });
         })
     });
