@@ -20,6 +20,8 @@ Fortune itself is *agnostic* about networking. The responsibility of routing, pa
 
 ## Example
 
+Implementers do not need to know anything of its internal workings to get started. Here is a basic CRUD example:
+
 ```js
 import Fortune from 'fortune';
 import http from 'http';
@@ -45,7 +47,7 @@ new Fortune()
 
 ```
 
-This yields a basic CRUD API with users and groups that conforms to JSON API, and backed by NeDB, an embedded database. Authorization is left as an exercise to the implementer.
+This yields a HTTP API that conforms to [JSON API](http://jsonapi.org), and backed by an in-memory database. Authorization is left as an exercise to the implementer.
 
 ## Contributing
 

@@ -19,8 +19,8 @@ There are two special methods, `processRequest` and `processResponse` which take
 
 ## Dispatcher
 
-The goal of the dispatcher is to dynamically dispatch functions based on the input. The dispatcher is concerned with the sequence of that flow from the client through to the data adapter, and back to the client again, or from the dispatcher to the client via the `change` event.
+The goal of the dispatcher is to dynamically dispatch functions based on the request. The dispatcher is concerned with the sequence of that flow from the client through to the data adapter, and back to the client again, or from the dispatcher to the client via the `change` event.
 
-It passes data to the next handler in a request lifecycle, using the `context` object through its internal methods. The internal methods mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
+It passes control to the next handler using the `context` object through its internal middleware. The middleware mutate the `context` until the end of the request is reached, and returns the `response` part of the `context`.
 
-Schema enforcement happens here, types are casted before `before` transforms and after `after` transforms, so that types should be consistent with the schema.
+Schema enforcement happens here, types are casted before `before` transforms and after `after` transforms, so that types should be consistent with the schema by the time that transform functions are executed.

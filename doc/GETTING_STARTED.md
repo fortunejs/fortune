@@ -6,15 +6,17 @@ Fortune should work out of the box with no configuration using the defaults. For
 import http from 'http';
 import Fortune from 'fortune';
 
-let app = new Fortune();
+new Fortune();
 
-app.resource('user', {
+.resource('user', {
   name: String,
   createdAt: Date
-});
+})
 
-app.init().then(() => {
-  http.createServer(Fortune.Net.requestListener.bind(app))
-  	.listen(1337);
+.init().then(app => {
+  let listener = Fortune.net.requestListener.bind(app);
+  let server = http.createServer(listener);
+
+  server.listen(1337);
 });
 ```

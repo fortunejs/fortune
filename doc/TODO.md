@@ -1,10 +1,13 @@
 # To-do list
 
+- Consider if Fortune can be isomorphic (run on server and client).
+- HTTP miscellaneous features.
 - Dispatcher should do all adapter calls to sync inverse relationships.
 - Write more tests with tape, and integration test using the default stack.
 
 ## Done
 
+- Internal refactor of actions into flows.
 - Dependency injection for adapter/serializer.
 - Known bug: Array.prototype.find doesn't work correctly with babel-runtime. Resolved by using proxy method for find.
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
