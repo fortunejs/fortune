@@ -2,8 +2,8 @@ var $http = require('http-as-promised');
 var harvester = require('../../lib/harvester');
 var baseUrl = 'http://localhost:' + 8001;
 
-$http.debug = true;
-$http.request = require('request-debug')($http.request);
+/*$http.debug = true;*/
+//$http.request = require('request-debug')($http.request);
 
 describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
@@ -30,16 +30,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                   title: String
               });
 
-            that.harvesterApp
-                .onRouteCreated('post')
-                .then(function () {
-                    // do once
-                    that.harvesterApp.listen(8001);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
+            that.harvesterApp.listen(8001);
+            done();
         });
 
 
@@ -53,6 +45,20 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
               .on('data', function(data) {
                 console.log('received event:', data)
               });
+
+              return $http(
+                  {
+                      uri: baseUrl + '/posts',
+                      method: 'POST',
+                      json: {
+                          posts: [
+                              {
+                                  title : 'test title'
+                              }
+                          ]
+                      }
+                  });
+
             });
         })
     });
