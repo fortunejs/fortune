@@ -6,7 +6,7 @@ Fortune should work out of the box with no configuration using the defaults. For
 import http from 'http';
 import Fortune from 'fortune';
 
-new Fortune();
+new Fortune()
 
 .resource('user', {
   name: String,

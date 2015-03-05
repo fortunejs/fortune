@@ -9,7 +9,7 @@ Adapters must subclass and implement the contracts of the Adapter superclass. Th
 
 | Adapter          | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| NeDB (included, [link](https://github.com/louischatriot/nedb)) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
+| [NeDB](https://github.com/louischatriot/nedb) (included) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
 
 
 ## Serializers
@@ -18,7 +18,7 @@ Serializers format data in and out of a Fortune app. Like adapters, they must su
 
 | Serializer       | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| JSON API (included, [link](http://jsonapi.org)) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
+| [JSON API](http://jsonapi.org) (included) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
 
 
 ## Networking

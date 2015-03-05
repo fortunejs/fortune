@@ -1,6 +1,4 @@
-<a href="http://fortunejs.com">
-  <img alt="Fortune.js" src="https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg" width="280">
-</a>
+[![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
 
 **Fortune.js** is a [composable](https://en.wikipedia.org/wiki/Composability) framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a workflow that integrates database adapters and serializers, with networking as an optional, thin layer on top.
 

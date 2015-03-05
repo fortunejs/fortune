@@ -7,6 +7,7 @@
 - HTTP miscellaneous features.
 - Write more tests with tape, and integration test using the default stack.
 
+
 ## Done
 
 - Dispatcher should do all adapter calls to sync inverse relationships.
