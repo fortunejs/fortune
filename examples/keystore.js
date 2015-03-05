@@ -1,5 +1,5 @@
-var fortune = require('../lib/fortune')
-  , RSVP = fortune.RSVP
+var harvester = require('../lib/harvester')
+  , RSVP = harvester.RSVP
   , crypto = require('crypto');
 
 var pbkdf2 = {
@@ -12,7 +12,7 @@ var pbkdf2 = {
  * This example highlights a lot of custom application logic that
  * can be used for transforming resources as requests come in.
  */
-var app = fortune({
+var app = harvester({
   db: 'keystore'
 })
 

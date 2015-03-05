@@ -9,10 +9,11 @@ before_script:
   - sleep 20
 deploy:
   provider: npm
-  email: stephensebro@yahoo.com
+  email: developer@agcocorp.com
   api_key:
-    secure: GORhsjTrkg5UFhKbnCjPGtDHkbz7LH1x2brO6Q4npfimN9VQB7lzqpaTGYrUZsiODOE1/x7BIwc9tYVeQW4hZpdF2emf79FYw6sC3bMSdTmGwtyfhX8OHIC3MQISZ0EBBStriOURV0llPhyHF9uboI0I8HueoRSuAmgkuu/Hf8c=
+    secure: ehXWO5DfnyHQcdHkNlECfAEFSY1p4yTuWAkOkFRk53oD2l7XMhq9hwK+VbF2uaVR0xzFml2gDNz0Zd7KiR4qaJAptEYPKzXMW/BT4vP+DnODmf3+khKdQcbNlUcoRPOOVVIKDnAZQijWP1+funpAQiYe/BwoL3cF0r8vHuBnQc4=
   on:
     tags: true
-    repo: agco-adm/harvest
-    branch: develop
+    repo: agco/harvesterjs
+    branch: master
+

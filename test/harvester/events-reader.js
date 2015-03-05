@@ -28,7 +28,7 @@ var debug = require('debug')('events-reader-test');
 
 var expect = chai.expect;
 
-var fortune = require('../../lib/fortune');
+var harvester = require('../../lib/harvester');
 
 var createReportPromise;
 var createReportResponseDfd;
@@ -53,8 +53,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 inflect: true
             };
 
-            that.fortuneApp =
-                fortune(options)
+            that.harvesterApp =
+                harvester(options)
                     .resource('post', {
                         title: String
                     })
@@ -69,12 +69,12 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     })
                     .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
 
-            that.chaiExpress = chai.request(that.fortuneApp.router);
+            that.chaiExpress = chai.request(that.harvesterApp.router);
 
             var profanity = require('profanity-util');
 
             function reportAbusiveLanguage(id) {
-                return that.fortuneApp.adapter.find('comment', id.toString())
+                return that.harvesterApp.adapter.find('comment', id.toString())
                     .then(function (comment) {
                         var check = profanity.check(comment);
                         if (!!check && check.length > 0) {
@@ -101,18 +101,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     });
             }
 
-            that.fortuneApp
-                .onRouteCreated('comment')
-                .then(function () {
-                    // do once
-                    that.fortuneApp.listen(8001);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-
-
+            that.harvesterApp.listen(8001);
+            done();
         });
 
         beforeEach(function (done) {
@@ -123,20 +113,20 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             createReportPromise = createReportResponseDfd.promise;
 
             console.log('drop database');
-            that.fortuneApp.adapter.db.db.dropDatabase();
+            that.harvesterApp.adapter.db.db.dropDatabase();
 
-            that.checkpointCreated = that.fortuneApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
+            that.checkpointCreated = that.harvesterApp.eventsReader(process.env.OPLOG_MONGODB_URL || process.argv[3])
                 .then(function (EventsReader) {
 
                     that.eventsReader = new EventsReader();
 
-                    // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
+                    // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
                     // precision for an oplog ts is 1s
                     require('sleep').sleep(1);
                     var now = BSON.Timestamp(0, (new Date() / 1000));
 
                     console.log('creating checkpoint with ts ' + now.getHighBits());
-                    return that.fortuneApp.adapter.create('checkpoint', {ts: now}).then(function () {
+                    return that.harvesterApp.adapter.create('checkpoint', {ts: now}).then(function () {
                         return done();
                     });
 

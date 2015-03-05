@@ -1,5 +1,5 @@
-var fortune = require('../lib/fortune')
-  , express = fortune.express;
+var harvester = require('../lib/harvester')
+  , express = harvester.express;
 
 /**
  * Example demonstrating two different databases being
@@ -11,7 +11,7 @@ var fortune = require('../lib/fortune')
 var container = express()
   , port = process.argv[2] || 1337;
 
-var peopleAPI = fortune({
+var peopleAPI = harvester({
   db: 'people'
 })
 .resource('person', {
@@ -19,7 +19,7 @@ var peopleAPI = fortune({
   age: Number
 });
 
-var animalsAPI = fortune({
+var animalsAPI = harvester({
   db: 'animals'
 })
 .resource('animal', {

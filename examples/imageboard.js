@@ -1,11 +1,11 @@
-var fortune = require('../lib/fortune');
+var harvester = require('../lib/harvester');
 
 /**
  * Example application. It implements an imageboard with boards & posts.
  * Note that this implementation does not include access control,
  * so it's more like a wiki but without the moderation.
  */
-fortune({
+harvester({
 
   db: '1337chan'
 

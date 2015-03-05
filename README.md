@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/agco-adm/harvest.svg?branch=develop)](https://travis-ci.org/agco-adm/harvest)
-# Harvest.js 
+# Harvester.js 
 
 [Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
 
-Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile implementation : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md).   
+Pluggable with the [agco JSON-API search](https://github.com/agco/json-api-search-profile) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/json-api-search-profile/blob/master/public/profile.md).   
 
+##### Documentation : http://agco.github.io/harvest
 ### JSON-API Features 
 
 - [Resource Relationships](http://jsonapi.org/format/#document-structure-resource-relationships) 
@@ -29,4 +29,9 @@ Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-a
 - UUIDs 
 - [Patch](http://jsonapi.org/format/#patch) fully supported
 - [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
+- 
+[![Build Status](https://travis-ci.org/agco/harvesterjs.svg?branch=master)](https://travis-ci.org/agco/harvesterjs)
+
+[![NPM](https://nodei.co/npm/harvesterjs.png)](https://nodei.co/npm/harvesterjs/)
+
 
