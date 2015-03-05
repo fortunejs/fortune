@@ -1,6 +1,6 @@
-var harvest = require('../lib/harvest');
+var harvester = require('../lib/harvester');
 
-harvest({
+harvester({
 
   db: '1337chan'
 
