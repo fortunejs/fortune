@@ -65,14 +65,7 @@ function createApp(options) {
     });
 
 
-    return RSVP.all([
-            harvesterApp.onRouteCreated('pet'),
-            harvesterApp.onRouteCreated('person'),
-            harvesterApp.onRouteCreated('foobar')
-        ])
-        .then(function () {
-            return harvesterApp;
-        });
+    return harvesterApp;
 }
 
 module.exports = createApp;
