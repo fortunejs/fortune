@@ -102,21 +102,21 @@ describe('EventSource implementation for resource changes', function () {
         });
     });
 
-    describe('When I request certain types of events only', function () {
-        it('Then I should receive that sort of event only', function (done) {
-          var that = this;
-          that.timeout(100000);
-          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
-          var dataReceived; 
-          ess(baseUrl + '/books/changes?event=d', {retry : false})
-          .on('data', function(data) {
-            if (dataReceived) return;
-            dataReceived = true;
-            var data = JSON.parse(data.data);
-            expect(_.omit(data, 'id')).to.deep.equal({});
-            done();
-          });
-          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
-        });
-    });
+    /*describe('When I request certain types of events only', function () {*/
+        //it('Then I should receive that sort of event only', function (done) {
+          //var that = this;
+          //that.timeout(100000);
+          //$http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
+          //var dataReceived; 
+          //ess(baseUrl + '/books/changes?event=d', {retry : false})
+          //.on('data', function(data) {
+            //if (dataReceived) return;
+            //dataReceived = true;
+            //var data = JSON.parse(data.data);
+            //expect(_.omit(data, 'id')).to.deep.equal({});
+            //done();
+          //});
+          //$http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
+        //});
+    /*});*/
 });
