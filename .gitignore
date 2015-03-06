@@ -5,3 +5,4 @@ data/
 *.iml
 *.DS_Store
 .c9/
+coverage/
