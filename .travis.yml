@@ -11,7 +11,7 @@ deploy:
   provider: npm
   email: developer@agcocorp.com
   api_key:
-    secure: ehXWO5DfnyHQcdHkNlECfAEFSY1p4yTuWAkOkFRk53oD2l7XMhq9hwK+VbF2uaVR0xzFml2gDNz0Zd7KiR4qaJAptEYPKzXMW/BT4vP+DnODmf3+khKdQcbNlUcoRPOOVVIKDnAZQijWP1+funpAQiYe/BwoL3cF0r8vHuBnQc4=
+    secure: "ZOFUbJMY9nu1ekRB51bpSMm3DgOsIf3TrqFrW4YflLnLzWIGQTT/K7p+Fjw+uf3GMNojrH8sTT1TyBustt08fobm0iRQq1FhT0xRzz+NsAqGC+DdbbNyUYoKvKGJ3sFvX0XJc65eFu5Zafaf9XidubG9l44INEkNGmpzwY5zy+M="
   on:
     tags: true
     repo: agco/harvesterjs
