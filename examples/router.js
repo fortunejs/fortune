@@ -12,7 +12,8 @@ fortune({
 
   adapter: "mongodb",
   db: 'router_1',
-  router: app
+  router: app,
+  serviceName: "user-service"
 
 })
 
@@ -40,7 +41,8 @@ fortune({
 
   adapter: "mongodb",
   db: 'router_2',
-  router: app
+  router: app,
+  serviceName: "flight-service"
 
 })
 
