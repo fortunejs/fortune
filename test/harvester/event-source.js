@@ -12,6 +12,7 @@ describe('EventSource implementation for resource changes', function () {
 
     describe('Server Sent Events', function () {
       var lastEventId;
+      var lastDataId;
       
       before(function (done) {
 
@@ -100,10 +101,24 @@ describe('EventSource implementation for resource changes', function () {
             if (dataReceived) return;
             dataReceived = true;
             var data = JSON.parse(data.data);
+            lastDataId = data.id;
             expect(_.omit(data, 'id')).to.deep.equal({title : 'test title y'});
             done();
           });
         });
     });
 
+    describe('When I request certain types of events only', function () {
+        it('Then I should receive that sort of event only', function (done) {
+          var that = this;
+          that.timeout(100000);
+          $http({uri: baseUrl + '/posts/' + lastDataId, method: 'DELETE'});
+          ess(baseUrl + '/posts/changes?event=d', {retry : false})
+          .on('data', function(data) {
+            var data = JSON.parse(data.data);
+            expect(_.omit(data, 'id')).to.deep.equal({});
+            done();
+          });
+        });
+    });
 });
