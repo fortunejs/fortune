@@ -105,6 +105,8 @@ describe('EventSource implementation for resource changes', function () {
     describe('When I request certain types of events only', function () {
         it('Then I should receive that sort of event only', function (done) {
           var that = this;
+          that.timeout(100000);
+          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
           var dataReceived; 
           ess(baseUrl + '/books/changes?event=d', {retry : false})
           .on('data', function(data) {
