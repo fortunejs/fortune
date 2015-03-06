@@ -37,16 +37,19 @@
     "longjohn": "^0.2.4"
   },
   "devDependencies": {
-    "mocha": "~1.20.1",
-    "should": "~4.0.4",
-    "supertest": "~0.13.0",
-    "http-as-promised": "^0.1.0",
-    "request-debug": "^0.1.1",
-    "nock": "^0.56.0",
     "chai": "^1.10.0",
     "chai-http": "^1.0.0",
+    "coveralls": "^2.11.2",
+    "http-as-promised": "^0.1.0",
+    "istanbul": "^0.3.7",
+    "mocha": "~1.20.1",
+    "mocha-lcov-reporter": "0.0.2",
+    "nock": "^0.56.0",
+    "profanity-util": "0.0.2",
+    "request-debug": "^0.1.1",
+    "should": "~4.0.4",
     "sleep": "^1.2.0",
-    "profanity-util": "0.0.2"
+    "supertest": "~0.13.0"
   },
   "engines": {
     "node": ">=0.10"
