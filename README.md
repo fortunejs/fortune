@@ -30,9 +30,8 @@ Pluggable with the [agco JSON-API search](https://github.com/agco/json-api-searc
 * [Patch](http://jsonapi.org/format/#patch) fully supported
 * [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
- 
-[![Build Status](https://travis-ci.org/agco/harvesterjs.svg?branch=master)](https://travis-ci.org/agco/harvesterjs)
 
 [![NPM](https://nodei.co/npm/harvesterjs.png)](https://nodei.co/npm/harvesterjs/)
-
-
+ 
+[![Build Status](https://travis-ci.org/agco/harvesterjs.svg?branch=master)](https://travis-ci.org/agco/harvesterjs)
+[![Coverage Status](https://coveralls.io/repos/agco/harvesterjs/badge.svg)](https://coveralls.io/r/agco/harvesterjs)
