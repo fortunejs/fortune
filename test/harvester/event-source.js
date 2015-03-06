@@ -61,7 +61,6 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             });
         });
     });
-
     describe('When I post to the newly created resource', function () {
         it('Then I should receive a change event with data equal to what I posted', function (done) {
           var that = this;
@@ -76,13 +75,10 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
           ess(baseUrl + '/posts/changes?limit=1') 
           .on('data', function(data) {
             dataReceived = true;
-            var data = JSON.parse(data);
-            console.log(data)
+            var data = JSON.parse(data.data);
             expect(_.omit(data, 'id')).to.deep.equal({title : 'test titlex'});
             done();
           });
-
-          
         });
     });
 
