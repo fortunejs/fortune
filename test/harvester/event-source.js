@@ -33,6 +33,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
               });
 
             that.harvesterApp.listen(8001);
+            that.harvesterApp.adapter.db.db.dropDatabase();
             done();
         });
 
@@ -40,12 +41,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
         describe('When I create a new resource', function () {
             it('Then a "change" route should be added to that resource', function (done) {
               var that = this;
-              that.timeout(100000);
-              var dataReceived; 
-              ess(baseUrl + '/posts/changes')
+              ess(baseurl + '/posts/changes', {retry : false})
               .on('data', function(data) {
-                if (dataReceived) return;
-                dataReceived = true;
                 expect(data).to.exist;
                 done();
               });
@@ -65,23 +62,22 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
         it('Then I should receive a change event with data equal to what I posted', function (done) {
           var that = this;
           that.timeout(100000);
-          var dataReceived; 
-          ess(baseUrl + '/posts/changes')
-          .on('data', function(data) {
-            if (dataReceived) return;
-            dataReceived = true;
-            var data = JSON.parse(data);
-            expect(_.omit(data, 'id')).to.deep.equal({title : 'test title'});
-            done();
-          });
-
-          return $http({uri: baseUrl + '/posts', method: 'POST',json: {
+          $http({uri: baseUrl + '/posts', method: 'POST',json: {
                   posts: [
                       {
-                          title : 'test title'
+                          title : 'test titlex'
                       }
                   ]
               }});
+          ess(baseUrl + '/posts/changes?limit=1', {retry : false})
+          .on('data', function(data) {
+            dataReceived = true;
+            var data = JSON.parse(data);
+            expect(_.omit(data, 'id')).to.deep.equal({title : 'test titlex'});
+            //done();
+          });
+
+          
         });
     });
 
