@@ -41,8 +41,12 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
         describe('When I create a new resource', function () {
             it('Then a "change" route should be added to that resource', function (done) {
               var that = this;
-              ess(baseurl + '/posts/changes', {retry : false})
+              that.timeout(100000);
+              var dataReceived; 
+              ess(baseUrl + '/posts/changes', {retry : false})
               .on('data', function(data) {
+                if (dataReceived) return;
+                dataReceived = true;
                 expect(data).to.exist;
                 done();
               });
@@ -69,12 +73,13 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                       }
                   ]
               }});
-          ess(baseUrl + '/posts/changes?limit=1', {retry : false})
+          ess(baseUrl + '/posts/changes?limit=1') 
           .on('data', function(data) {
             dataReceived = true;
             var data = JSON.parse(data);
+            console.log(data)
             expect(_.omit(data, 'id')).to.deep.equal({title : 'test titlex'});
-            //done();
+            done();
           });
 
           
