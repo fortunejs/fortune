@@ -627,9 +627,45 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            // console.log(body);
             (body.people.length).should.equal(2);
             _.pluck(body.people, "name").should.eql(["Sally", "Wally"]);
+            done();
+          });
+      });
+    });
+    describe('counting', function() {
+      it('should not return any counts if not requested', function(done) {
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.not.exist(body.meta);
+            done();
+          });
+      });
+      it('should return total count in if meta requested', function(done) {
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.exist(body.meta);
+            should.exist(body.meta.count);
+            (body.meta.count).should.eql(4);
+            done();
+          });
+      });
+      it('should return filter total count in if meta requested and any filter used', function(done) {
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true&filter[birthday][gte]=1995-01-01')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.exist(body.meta);
+            should.exist(body.meta.count);
+            (body.meta.count).should.eql(4);
+            (body.meta.filterCount).should.eql(3);
             done();
           });
       });

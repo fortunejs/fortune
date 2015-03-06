@@ -226,11 +226,21 @@ module.exports = function(options){
     describe('Select', function(){
       describe('count', function(){
         it('should provide interface for counting resources', function(){
-          var projection = {
-            select: ['name']
-          };
-          return adapter.count('person', {}, projection).then(function(docs){
+          return adapter.count('person').then(function(docs){
             should.exist(docs);
+            docs.should.eql(4);
+          });
+        });
+        it("should count results falling under query", function() {
+          return adapter.count('person', { birthday: { $gte: new Date(1995, 0, 1)}}).then(function(docs){
+            should.exist(docs);
+            docs.should.eql(3);
+          });
+        });
+        it("should ignore not valid queries", function() {
+          return adapter.count('person', 'some').then(function(docs){
+            should.exist(docs);
+            docs.should.eql(4);
           });
         });
       });
