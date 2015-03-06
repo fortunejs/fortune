@@ -42,6 +42,13 @@ describe('EventSource implementation for resource changes', function () {
               var that = this;
               that.timeout(100000);
               var dataReceived; 
+              $http({uri: baseUrl + '/posts', method: 'POST',json: {
+                      posts: [
+                          {
+                              title : 'test title'
+                          }
+                      ]
+                  }});
               ess(baseUrl + '/posts/changes', {retry : false})
               .on('data', function(data) {
                 if (dataReceived) return;
@@ -50,13 +57,7 @@ describe('EventSource implementation for resource changes', function () {
                 done();
               });
 
-              return $http({uri: baseUrl + '/posts', method: 'POST',json: {
-                      posts: [
-                          {
-                              title : 'test title'
-                          }
-                      ]
-                  }});
+             
             });
         });
     });
@@ -81,6 +82,7 @@ describe('EventSource implementation for resource changes', function () {
           });
         });
     });
+
     describe('when I ask for events with ids greater than a certain id', function () {
         it('I should get only one event without setting a limit', function (done) {
           var that = this;
