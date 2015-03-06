@@ -5,8 +5,6 @@ var chai = require('chai');
 var expect = chai.expect;
 var ess = require('event-source-stream');
 var _ = require('lodash');
-/*$http.debug = true;*/
-//$http.request = require('request-debug')($http.request);
 
 describe('EventSource implementation for resource changes', function () {
 
@@ -28,7 +26,7 @@ describe('EventSource implementation for resource changes', function () {
 
             that.harvesterApp =
               harvester(options)
-              .resource('post', {
+              .resource('book', {
                   title: String
               });
 
@@ -43,14 +41,14 @@ describe('EventSource implementation for resource changes', function () {
               var that = this;
               that.timeout(100000);
               var dataReceived; 
-              $http({uri: baseUrl + '/posts', method: 'POST',json: {
-                      posts: [
+              $http({uri: baseUrl + '/books', method: 'POST',json: {
+                      books: [
                           {
                               title : 'test title'
                           }
                       ]
                   }});
-              ess(baseUrl + '/posts/changes', {retry : false})
+              ess(baseUrl + '/books/changes', {retry : false})
               .on('data', function(data) {
                 if (dataReceived) return;
                 dataReceived = true;
@@ -66,14 +64,14 @@ describe('EventSource implementation for resource changes', function () {
         it('Then I should receive a change event with data equal to what I posted', function (done) {
           var that = this;
           that.timeout(100000);
-          $http({uri: baseUrl + '/posts', method: 'POST',json: {
-                  posts: [
+          $http({uri: baseUrl + '/books', method: 'POST',json: {
+                  books: [
                       {
                           title : 'test titlex'
                       }
                   ]
               }});
-          ess(baseUrl + '/posts/changes?limit=1', {retry : false}) 
+          ess(baseUrl + '/books/changes?limit=1', {retry : false}) 
           .on('data', function(data) {
 
             lastEventId = data.id;
@@ -88,15 +86,15 @@ describe('EventSource implementation for resource changes', function () {
         it('I should get only one event without setting a limit', function (done) {
           var that = this;
           that.timeout(100000);
-          $http({uri: baseUrl + '/posts', method: 'POST',json: {
-                  posts: [
+          $http({uri: baseUrl + '/books', method: 'POST',json: {
+                  books: [
                       {
                           title : 'test title y'
                       }
                   ]
               }});
           var dataReceived; 
-          ess(baseUrl + '/posts/changes?seq=gt=' + lastEventId, {retry : false}) 
+          ess(baseUrl + '/books/changes?seq=gt=' + lastEventId, {retry : false}) 
           .on('data', function(data) {
             if (dataReceived) return;
             dataReceived = true;
@@ -112,9 +110,9 @@ describe('EventSource implementation for resource changes', function () {
         it('Then I should receive that sort of event only', function (done) {
           var that = this;
           that.timeout(100000);
-          $http({uri: baseUrl + '/posts/' + lastDataId, method: 'DELETE'});
+          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
           var dataReceived; 
-          ess(baseUrl + '/posts/changes?event=d', {retry : false})
+          ess(baseUrl + '/books/changes?event=d', {retry : false})
           .on('data', function(data) {
             if (dataReceived) return;
             dataReceived = true;
