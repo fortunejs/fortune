@@ -7,6 +7,7 @@ import stderr from '../../lib/common/stderr';
 
 const PORT = 1337;
 const mediaType = 'application/vnd.api+json';
+const extensions = ['patch', 'bulk'];
 
 // Set promise polyfill for old versions of Node.
 fetch.Promise = Promise;
@@ -19,13 +20,16 @@ export default (path, request, fn) => {
 
     fetch(`http:\/\/localhost:${PORT}${path}`, Object.assign({
       headers: {
-        'Accept': mediaType,
-        'Content-Type': mediaType
+        'Accept': mediaType + (extensions.length ?
+          `; ext=${extensions.join(',')}` : ''),
+        'Content-Type': mediaType,
+        'Connection': 'Keep-Alive'
       }
     }, request, typeof request.body === 'object' ? {
       body: JSON.stringify(request.body)
     } : null)).then(response => {
       server.close();
+      stderr.debug(chalk.bold(response.status), response.headers.raw());
       return response.json();
     }).then(json => fn(json));
   });
