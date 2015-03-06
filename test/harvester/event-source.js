@@ -8,13 +8,12 @@ var _ = require('lodash');
 /*$http.debug = true;*/
 //$http.request = require('request-debug')($http.request);
 
-describe('onChange callback, event capture and at-least-once delivery semantics', function () {
+describe('EventSource implementation for resource changes', function () {
 
-    describe('Given a post on a very controversial topic, ' +
-    'and a new comment is posted or updated with content which contains profanity, ' +
-    'the comment is reported as abusive to another API. ', function () {
-
-        before(function (done) {
+    describe('Server Sent Events', function () {
+      var lastEventId;
+      
+      before(function (done) {
 
             var that = this;
             that.timeout(100000);
@@ -72,11 +71,34 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                       }
                   ]
               }});
-          ess(baseUrl + '/posts/changes?limit=1') 
+          ess(baseUrl + '/posts/changes?limit=1', {retry : false}) 
           .on('data', function(data) {
-            dataReceived = true;
+
+            lastEventId = data.id;
             var data = JSON.parse(data.data);
             expect(_.omit(data, 'id')).to.deep.equal({title : 'test titlex'});
+            done();
+          });
+        });
+    });
+    describe('when I ask for events with ids greater than a certain id', function () {
+        it('I should get only one event without setting a limit', function (done) {
+          var that = this;
+          that.timeout(100000);
+          $http({uri: baseUrl + '/posts', method: 'POST',json: {
+                  posts: [
+                      {
+                          title : 'test title y'
+                      }
+                  ]
+              }});
+          var dataReceived; 
+          ess(baseUrl + '/posts/changes?seq=gt=' + lastEventId, {retry : false}) 
+          .on('data', function(data) {
+            if (dataReceived) return;
+            dataReceived = true;
+            var data = JSON.parse(data.data);
+            expect(_.omit(data, 'id')).to.deep.equal({title : 'test title y'});
             done();
           });
         });
