@@ -113,8 +113,11 @@ describe('EventSource implementation for resource changes', function () {
           var that = this;
           that.timeout(100000);
           $http({uri: baseUrl + '/posts/' + lastDataId, method: 'DELETE'});
+          var dataReceived; 
           ess(baseUrl + '/posts/changes?event=d', {retry : false})
           .on('data', function(data) {
+            if (dataReceived) return;
+            dataReceived = true;
             var data = JSON.parse(data.data);
             expect(_.omit(data, 'id')).to.deep.equal({});
             done();
