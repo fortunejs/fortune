@@ -1,6 +1,6 @@
 var $http = require('http-as-promised');
 var harvester = require('../../lib/harvester');
-var baseUrl = 'http://localhost:' + 8001;
+var baseUrl = 'http://localhost:' + 8002;
 var chai = require('chai');
 var expect = chai.expect;
 var ess = require('event-source-stream');
@@ -15,7 +15,6 @@ describe('EventSource implementation for resource changes', function () {
       before(function (done) {
 
             var that = this;
-            that.timeout(100000);
 
             var options = {
                 adapter: 'mongodb',
@@ -30,7 +29,7 @@ describe('EventSource implementation for resource changes', function () {
                   title: String
               });
 
-            that.harvesterApp.listen(8001);
+            that.harvesterApp.listen(8002);
             that.harvesterApp.adapter.db.db.dropDatabase();
             done();
         });
@@ -39,7 +38,6 @@ describe('EventSource implementation for resource changes', function () {
         describe('When I create a new resource', function () {
             it('Then a "change" route should be added to that resource', function (done) {
               var that = this;
-              that.timeout(100000);
               var dataReceived; 
               $http({uri: baseUrl + '/books', method: 'POST',json: {
                       books: [
@@ -63,7 +61,6 @@ describe('EventSource implementation for resource changes', function () {
     describe('When I post to the newly created resource', function () {
         it('Then I should receive a change event with data equal to what I posted', function (done) {
           var that = this;
-          that.timeout(100000);
           $http({uri: baseUrl + '/books', method: 'POST',json: {
                   books: [
                       {
@@ -85,7 +82,6 @@ describe('EventSource implementation for resource changes', function () {
     describe('when I ask for events with ids greater than a certain id', function () {
         it('I should get only one event without setting a limit', function (done) {
           var that = this;
-          that.timeout(100000);
           $http({uri: baseUrl + '/books', method: 'POST',json: {
                   books: [
                       {
@@ -109,8 +105,6 @@ describe('EventSource implementation for resource changes', function () {
     describe('When I request certain types of events only', function () {
         it('Then I should receive that sort of event only', function (done) {
           var that = this;
-          that.timeout(100000);
-          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
           var dataReceived; 
           ess(baseUrl + '/books/changes?event=d', {retry : false})
           .on('data', function(data) {
@@ -120,6 +114,7 @@ describe('EventSource implementation for resource changes', function () {
             expect(_.omit(data, 'id')).to.deep.equal({});
             done();
           });
+          $http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
         });
     });
 });
