@@ -9,6 +9,7 @@ var _ = require('lodash');
 describe('EventSource implementation for resource changes', function () {
 
     describe('Server Sent Events', function () {
+      this.timeout(100000);
       var lastEventId;
       var lastDataId;
       
@@ -41,21 +42,28 @@ describe('EventSource implementation for resource changes', function () {
           var that = this;
             var dataReceived;
           $http({uri: baseUrl + '/books', method: 'POST',json: {
-                  books: [
-                      {
-                          title : 'test titlex'
-                      }
-                  ]
-              }});
+              books: [
+                  {
+                      title : 'test title'
+                  }
+              ]
+          }});
           ess(baseUrl + '/books/changes/stream', {retry : false})
           .on('data', function(data) {
 
             lastEventId = data.id;
             var data = JSON.parse(data.data);
-                  if (dataReceived) return;
-                  dataReceived = true;
+            if (dataReceived) return;
+            dataReceived = true;
             done();
           });
+          $http({uri: baseUrl + '/books', method: 'POST',json: {
+              books: [
+                  {
+                      title : 'test title'
+                  }
+              ]
+          }});
         });
     });
 
@@ -63,12 +71,12 @@ describe('EventSource implementation for resource changes', function () {
         it('I should get only one event without setting a limit', function (done) {
           var that = this;
           $http({uri: baseUrl + '/books', method: 'POST',json: {
-                  books: [
-                      {
-                          title : 'test title y'
-                      }
-                  ]
-              }});
+              books: [
+                  {
+                      title : 'test title y'
+                  }
+              ]
+          }});
           var dataReceived;
           ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
               'Last-Event-ID' : lastEventId
