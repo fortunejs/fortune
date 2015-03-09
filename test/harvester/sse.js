@@ -46,7 +46,7 @@ describe('EventSource implementation for resource changes', function () {
                           }
                       ]
                   }});
-              ess(baseUrl + '/books/changes', {retry : false})
+              ess(baseUrl + '/books/changes/stream', {retry : false})
               .on('data', function(data) {
                 if (dataReceived) return;
                 dataReceived = true;
@@ -68,7 +68,7 @@ describe('EventSource implementation for resource changes', function () {
                       }
                   ]
               }});
-          ess(baseUrl + '/books/changes?limit=1', {retry : false}) 
+          ess(baseUrl + '/books/changes/stream?limit=1', {retry : false}) 
           .on('data', function(data) {
 
             lastEventId = data.id;
@@ -89,14 +89,20 @@ describe('EventSource implementation for resource changes', function () {
                       }
                   ]
               }});
-          var dataReceived; 
-          ess(baseUrl + '/books/changes?seq=gt=' + lastEventId, {retry : false}) 
-          .on('data', function(data) {
+          var dataReceived;
+          $http.get(baseUrl + '/books/changes/stream', {headers : {
+            'Last-Event-ID' : lastEventId
+          }})
+          .then(function(data) {
+            var regex = /(\d*_\d*)/gi;
+            var ids = [];
+            while ((result = regex.exec(data)) ) {
+                ids.push(result[0]);
+            }
             if (dataReceived) return;
             dataReceived = true;
-            var data = JSON.parse(data.data);
             lastDataId = data.id;
-            expect(_.omit(data, 'id')).to.deep.equal({title : 'test title y'});
+            expect(ids.length).to.equal(1);
             done();
           });
         });
@@ -108,7 +114,7 @@ describe('EventSource implementation for resource changes', function () {
           //that.timeout(100000);
           //$http({uri: baseUrl + '/books/' + lastDataId, method: 'DELETE'});
           //var dataReceived; 
-          //ess(baseUrl + '/books/changes?event=d', {retry : false})
+          //ess(baseUrl + '/books/changes/stream?event=d', {retry : false})
           //.on('data', function(data) {
             //if (dataReceived) return;
             //dataReceived = true;
