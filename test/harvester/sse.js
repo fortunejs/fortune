@@ -15,27 +15,25 @@ describe('EventSource implementation for resource changes', function () {
       
       before(function (done) {
 
-            var that = this;
+        var that = this;
 
-            var options = {
-                adapter: 'mongodb',
-                connectionString: process.argv[2] || process.env.MONGODB_URL || "‌mongodb://127.0.0.1:27017/test",
-                db: 'test',
-                inflect: true
-            };
+        var options = {
+            adapter: 'mongodb',
+            connectionString: process.argv[2] || process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/test",
+            db: 'test',
+            inflect: true
+        };
 
-            that.harvesterApp =
-              harvester(options)
-              .resource('book', {
-                  title: String
-              });
+        that.harvesterApp =
+          harvester(options)
+          .resource('book', {
+              title: String
+          });
 
-            that.harvesterApp.listen(8002);
-            that.harvesterApp.adapter.db.db.dropDatabase();
-            done();
-        });
-
-
+        that.harvesterApp.listen(8002);
+        that.harvesterApp.adapter.db.db.dropDatabase();
+        done();
+      });
 
     describe('When I post to the newly created resource', function () {
         it('Then I should receive a change event with data', function (done) {
@@ -44,7 +42,7 @@ describe('EventSource implementation for resource changes', function () {
           $http({uri: baseUrl + '/books', method: 'POST',json: {
               books: [
                   {
-                      title : 'test title'
+                      title : 'test title 1'
                   }
               ]
           }});
@@ -53,18 +51,25 @@ describe('EventSource implementation for resource changes', function () {
 
             lastEventId = data.id;
             var data = JSON.parse(data.data);
+            //ignore ticker data
+            if(_.isNumber(data)) { 
+              //post data after we've hooked into change events and receive a ticker
+              return $http({uri: baseUrl + '/books', method: 'POST',json: {
+                books: [
+                    {
+                        title : 'test title 2'
+                    }
+                ]
+              }});
+            }
             if (dataReceived) return;
+            expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 2'});
             dataReceived = true;
             done();
           });
-          $http({uri: baseUrl + '/books', method: 'POST',json: {
-              books: [
-                  {
-                      title : 'test title'
-                  }
-              ]
-          }});
-        });
+          
+          }
+       );
     });
 
     describe('when I ask for events with ids greater than a certain id', function () {
@@ -73,23 +78,19 @@ describe('EventSource implementation for resource changes', function () {
           $http({uri: baseUrl + '/books', method: 'POST',json: {
               books: [
                   {
-                      title : 'test title y'
+                      title : 'test title 3'
                   }
               ]
           }});
-          var dataReceived;
           ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
               'Last-Event-ID' : lastEventId
           }}).on('data', function(data) {
-            var regex = /(\d*_\d*)/gi;
-            var ids = [];
-            while ((result = regex.exec(data)) ) {
-                ids.push(result[0]);
-            }
-            if (dataReceived) return;
+            console.log('---------->', data)
+            var data = JSON.parse(data.data);
+            //ignore ticker data
+            if(_.isNumber(data)) return;
+            expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 3'});
             dataReceived = true;
-                  console.log(JSON.stringify(data));
-
             done();
           });
         });
