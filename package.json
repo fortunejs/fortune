@@ -34,6 +34,7 @@
     "mongojs": "^0.18.0",
     "mongoose": "^3.8.0",
     "rsvp": "~3.0.9",
+    "tiny-sse": "0.0.0",
     "underscore.string": "^2.4.0"
   },
   "devDependencies": {
