@@ -18,7 +18,9 @@ var options = {
     adapter: 'mongodb',
     connectionString: process.argv[2] || process.env.MONGODB_URL || "‌mongodb://127.0.0.1:27017/testDB",
     db: 'testDB',
-    inflect: true
+    inflect: true,
+    oplogConnectionString : (process.env.OPLOG_MONGODB_URL || process.argv[3]) + '?slaveOk=true'
+
 };
 
 
