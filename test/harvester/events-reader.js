@@ -120,7 +120,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
                     that.eventsReader = new EventsReader();
 
-                    // sleep 1000 to prevent we are reprocessing oplgo entries from the previous test
+                    // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
                     // precision for an oplog ts is 1s
                     require('sleep').sleep(1);
                     var now = BSON.Timestamp(0, (new Date() / 1000));
