@@ -2,14 +2,7 @@ var should = require('should');
 
 var adapter = require('../../lib/adapters/mongodb');
 
-var RSVP = require('rsvp');
-var Promise = RSVP.Promise;
 var _ = require('lodash');
-
-RSVP.on('error', function(err){
-  console.log('rsvp err handler', err);
-  throw err;
-});
 
 module.exports = function(options){
   describe('MongoDB adapter', function(){
@@ -111,29 +104,23 @@ module.exports = function(options){
     });
     describe('Relationships', function(){
       describe('synchronizing many-to-many', function(){
-        it('should keep in sync many-to-many relationship', function(done){
-          adapter.update('person', ids.people[0], {$pushAll: {houses: [ids.houses[0]]}})
-
+        it('should keep in sync many-to-many relationship', function(){
+          return adapter.update('person', ids.people[0], {$pushAll: {houses: [ids.houses[0]]}})
             .then(function(created){
               (created.links.houses[0].toString()).should.equal(ids.houses[0].toString());
-            }, done)
-
-            .then(function(){
+            }).then(function(){
               return adapter.find('house', {id: ids.houses[0]});
-            }, done)
-
-            .then(function(found){
+            }).then(function(found){
               (found.links.owners[0]).should.equal(ids.people[0]);
-              done();
-            }, done);
+            });
         });
-        it('should sync correctly when many docs have reference', function(done){
+        it('should sync correctly when many docs have reference', function(){
           var upd =  {
             $pushAll: {
               houses: ids.houses
             }
           };
-          adapter.update('person', ids.people[0], upd)
+          return adapter.update('person', ids.people[0], upd)
 
             //Prove successful initial association
             .then(function(updated){
@@ -168,12 +155,11 @@ module.exports = function(options){
               found.forEach(function(item){
                 (item.id.toString()).should.not.equal(ids.houses[0].toString());
               });
-              done();
             });
         });
       });
       describe('sync path selection', function(){
-        it('should have a method to identify changed paths', function(done){
+        it('should have a method to identify changed paths', function(){
           (adapter._getModifiedRefs).should.be.a.Function;
           var update = {
             refPath: 'some new value',
@@ -196,9 +182,8 @@ module.exports = function(options){
           (modifiedPaths.indexOf('manyRefTwo')).should.not.equal(-1);
           (modifiedPaths.indexOf('manyRefThree')).should.not.equal(-1);
           (modifiedPaths.indexOf('nested.ref')).should.not.equal(-1);
-          done();
         });
-        it('should not run updates on related documents which binding path were not modified during the update', function(done){
+        it('should not run updates on related documents which binding path were not modified during the update', function(){
           var oto = adapter._updateOneToOne;
           var otm = adapter._updateOneToMany;
           var mtm = adapter._updateManyToMany;
@@ -216,91 +201,91 @@ module.exports = function(options){
           adapter._updateManyToOne = function(){
             mockCalled = true;
           };
-          adapter.update('person', ids.people[0], {$set: {name: 'Filbert'}})
-            .then(function(){
-              mockCalled.should.equal(false);
-              adapter._updateOneToOne = oto;
-              adapter._updateOneToMany = otm;
-              adapter._updateManyToMany = mtm;
-              adapter._updateManyToOne = mto;
-              done();
-            });
+          return adapter.update('person', ids.people[0], {$set: {name: 'Filbert'}}).then(function(){
+            mockCalled.should.equal(false);
+            adapter._updateOneToOne = oto;
+            adapter._updateOneToMany = otm;
+            adapter._updateManyToMany = mtm;
+            adapter._updateManyToOne = mto;
+          });
         });
-        it('should update references if ref path was changed', function(done){
+        it('should update references if ref path was changed', function(){
           var oto = adapter._updateOneToOne;
           var mockCalled = false;
           adapter._updateOneToOne = function(){
             mockCalled = true;
             return oto.apply(null, arguments);
           };
-          adapter.update('person', ids.people[0], {$set: {soulmate: ids.people[1]}})
-            .then(function(){
-              mockCalled.should.equal(true);
-              adapter._updateOneToOne = oto;
-              done();
-            });
+          return adapter.update('person', ids.people[0], {$set: {soulmate: ids.people[1]}}).then(function(){
+            mockCalled.should.equal(true);
+            adapter._updateOneToOne = oto;
+          });
         });
       });
     });
     describe('Select', function(){
+      describe('count', function(){
+        it('should provide interface for counting resources', function(){
+          return adapter.count('person').then(function(docs){
+            should.exist(docs);
+            docs.should.eql(4);
+          });
+        });
+        it("should count results falling under query", function() {
+          return adapter.count('person', { birthday: { $gte: new Date(1995, 0, 1)}}).then(function(docs){
+            should.exist(docs);
+            docs.should.eql(3);
+          });
+        });
+        it("should ignore not valid queries", function() {
+          return adapter.count('person', 'some').then(function(docs){
+            should.exist(docs);
+            docs.should.eql(4);
+          });
+        });
+      });
+
       describe('findMany', function(){
-        it('should provide interface for selecting fields to return', function(done){
+        it('should provide interface for selecting fields to return', function(){
           var projection = {
             select: ['name']
           };
-          (function(){
-            adapter.findMany('person', {}, projection)
-              .then(function(docs){
-                should.exist(docs);
-                done();
-              });
-          }).should.not.throw();
+          return adapter.findMany('person', {}, projection).then(function(docs){
+            should.exist(docs);
+          });
         });
-        it('should select specified fields for a collection', function(done){
+        it('should select specified fields for a collection', function(){
           var projection = {
             select: ['name', 'appearances', 'pets']
           };
-          adapter.findMany('person', {}, projection)
-            .then(function(docs){
-              (Object.keys(docs[0]).length).should.equal(3);
-              should.exist(docs[0].name);
-              should.exist(docs[0].appearances);
-              should.exist(docs[0].id);
-              done();
-            });
+          return adapter.findMany('person', {}, projection).then(function(docs){
+            (Object.keys(docs[0]).length).should.equal(3);
+            should.exist(docs[0].name);
+            should.exist(docs[0].appearances);
+            should.exist(docs[0].id);
+          });
         });
-        it('should return all existing fields when no select is specified', function(done){
-          adapter.findMany('person')
-            .then(function(docs){
-              //hooks add their black magic here.
-              //See what you have in fixtures + what beforeWrite hooks assign in addiction
-              var keys = Object.keys(docs[0]).length;
-              (keys).should.equal(9);
-              done();
-            });
+        it('should return all existing fields when no select is specified', function(){
+          return adapter.findMany('person').then(function(docs){
+            //hooks add their black magic here.
+            //See what you have in fixtures + what beforeWrite hooks assign in addiction
+            var keys = Object.keys(docs[0]).length;
+            (keys).should.equal(9);
+          });
         });
-        it('should not affect business id selection', function(done){
-          adapter.findMany('person', [ids.people[0]], {select: ['name']})
-            .then(function(docs){
-              (docs[0].id).should.equal(ids.people[0]);
-              should.not.exist(docs[0].email);
-              done();
-            });
+        it('should not affect business id selection', function(){
+          return adapter.findMany('person', [ids.people[0]], {select: ['name']}).then(function(docs){
+            docs[0].id.should.equal(ids.people[0]);
+            should.not.exist(docs[0].email);
+          });
         });
-        it('should apply be able to apply defaults for query and projection', function(done){
-          (function(){
-            adapter.findMany('person');
-          }).should.not.throw();
-          done();
+        it('should apply be able to apply defaults for query and projection', function(){
+          return adapter.findMany('person');
         });
-        it('should be able to work with numerical limits', function(done){
-          (function(){
-            adapter.findMany('person', 1)
-              .then(function(docs){
-                (docs.length).should.equal(1);
-                done();
-              });
-          }).should.not.throw();
+        it('should be able to work with numerical limits', function(){
+          return adapter.findMany('person', 1).then(function(docs){
+            docs.length.should.equal(1);
+          });
         });
       });
       describe('find', function(){
@@ -446,7 +431,7 @@ module.exports = function(options){
         adapter.findMany("person", query).then(function(){ done(); });
       });
 
-      it('should be able to run regex query with default options', function(done){
+      it('should be able to run regex query with default options', function(){
         var queryLowercase = {
           email: {
             regex: 'bert@'
@@ -457,19 +442,13 @@ module.exports = function(options){
             regex: 'Bert@'
           }
         };
-        new Promise(function(resolve){
-          adapter.findMany('person', queryLowercase)
-            .then(function(docs){
-              (docs.length).should.equal(2);
-              resolve();
-            });
+        return adapter.findMany('person', queryLowercase).then(function(docs){
+          docs.length.should.equal(2);
         }).then(function(){
-            adapter.findMany('person',queryUppercase)
-              .then(function(docs){
-                (docs.length).should.equal(0);
-                done();
-              });
+          return adapter.findMany('person',queryUppercase).then(function(docs){
+            (docs.length).should.equal(0);
           });
+        });
       });
       it('should be possible to specify custom options', function(done){
         var query = {
