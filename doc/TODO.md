@@ -16,10 +16,10 @@
 - Dependency injection for adapter/serializer.
 - Known bug: Array.prototype.find doesn't work correctly with babel-runtime. Resolved by using proxy method for find.
 - Consider using [URI Template](http://tools.ietf.org/html/rfc6570).
-- Changed signature of transform function. Now entity is accepted as second parameter and `this` is no longer bound.
+- Changed signature of transform function. Now record is accepted as second parameter and `this` is no longer bound.
 - Add optional `processRequest` and `processResponse` in serializer.
 - Remove `bufferEncoding` option. Superceded by `schema` options object.
-- How to remove `_entities` and `_include` from response object? Done in `_processResponse` now.
+- How to remove `_records` and `_include` from response object? Done in `_processResponse` now.
 - Remove 6to5 from distribution.
 - Pagination (limit and offset options in the adapter).
 - Add serializer hooks to allow the entire request/response payload to be transformed (useful for "meta" object). Implemented as `Serializer.processRequest`.
@@ -31,7 +31,7 @@
 - Option to disable casting and mangling of buffers? Now this option exists on `Schema.Enforcer`.
 - Removed `inflect` and `prefix` options, these should be handled per serializer.
 - Make serializer methods return context, this makes life easier.
-- Create linked entity if there was a related field.
+- Create linked record if there was a related field.
 - Include uniqueness problem if original request does not supply IDs.
 - Primary key configuration.
 - Minimize or eliminate `indexOf`, `map`, `reduce` calls.

@@ -1,8 +1,11 @@
 import * as Unit from './unit';
 import * as Integration from './integration';
 
-[Unit, Integration].forEach(suites => {
-  for (let suite in suites) {
-    suites[suite]();
+const tests = { Unit, Integration };
+
+Object.keys(tests).forEach(test => {
+  test = tests[test];
+  for (let suite in test) {
+    test[suite]();
   }
 });

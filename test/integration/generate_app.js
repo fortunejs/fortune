@@ -16,17 +16,17 @@ export default () => {
     age: {type: Number, min: 0, max: 100},
     friends: {link: 'user', inverse: 'friends'},
     pets: {link: ['animal'], inverse: 'owner'}
-  }).after((context, entity) => {
-    entity.timestamp = Date.now();
-    return Promise.resolve(entity);
+  }).after((context, record) => {
+    record.timestamp = Date.now();
+    return Promise.resolve(record);
   });
 
   app.model('animal', {
     name: String,
     owner: {link: 'user', inverse: 'pets'}
-  }).after((context, entity) => {
-    entity.ageOfPet = 123;
-    return entity;
+  }).after((context, record) => {
+    record.ageOfPet = 123;
+    return record;
   });
 
   app.dispatcher.on('change', function () {
