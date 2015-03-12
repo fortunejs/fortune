@@ -1,6 +1,7 @@
 import Test from 'tape';
 import fetchTest from './fetch_test';
 import stderr from '../../lib/common/stderr';
+import primaryKey from '../../lib/common/primary_key';
 
 
 export default () => {
@@ -9,7 +10,7 @@ export default () => {
     method: 'post',
     body: {
       data: [{
-        __id: 'foo'
+        [primaryKey]: 'foo'
       }]
     }
   }, json => {
