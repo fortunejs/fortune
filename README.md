@@ -10,6 +10,7 @@ Contributions welcome.
 
 ### Changes since fork of daliwali/fortune
 
+- Keyword style filtering on dates like today, yesterday, year ago, etc. Example: `/people?filter[birthday]=yesterday`
 - Debug option for logging all db requests
 - Select fields to return: `/people?fields=name,age`  (see [acdb09b](//github.com/flyvictor/fortune/commit/acdb09b2cad568c0dd0e7e27fc22b6362e996f2c))
 - Specif express instance in fortune options (see [0413a74](//github.com/flyvictor/fortune/commit/0413a74f3c1a7c9971f8cac4eecf77284503e2f1))

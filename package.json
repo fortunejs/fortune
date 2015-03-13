@@ -12,6 +12,7 @@
     "url": "git@github.com:flyvictor/fortune.git"
   },
   "dependencies": {
+    "datejs": "^1.0.0-rc3",
     "express": "~3.5.1",
     "i": "~0.3.2",
     "lodash": "~2.4.1",
