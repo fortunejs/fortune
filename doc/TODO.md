@@ -1,7 +1,9 @@
 # To-do list
 
+- Move `transaction` instance to `context`, make `change` event data from transaction.
 - Update and delete workflows.
 - NeDB Adapter.
+- Micro API Serializer.
 - JSON API Serializer.
 - Replace `idCache` with `Set` type.
 - HTTP miscellaneous features.

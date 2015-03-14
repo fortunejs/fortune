@@ -1,15 +1,12 @@
 import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 
+const defaults = {};
 
-export default () => {
 
-  let app = new Fortune({
-    primaryKeyPerType: {
-      user: '_id',
-      animal: '__id'
-    }
-  });
+export default options => {
+
+  let app = new Fortune(Object.assign(defaults, options));
 
   app.model('user', {
     name: String,
