@@ -12,7 +12,7 @@
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "make && node dist/test",
+    "test": "make lint && make && node dist/test",
     "prepublish": "make clean && make compile-lib",
     "coverage": "make && istanbul cover dist/test"
   },
