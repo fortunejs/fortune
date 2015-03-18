@@ -15,8 +15,8 @@ fetch.Promise = Promise;
 
 export default (path, request, fn) => {
   generateApp().then(app => {
-    let server = http.createServer(
-      Fortune.net.requestListener.bind(app)).listen(PORT);
+    let listener = Fortune.net.requestListener.bind(app);
+    let server = http.createServer(listener).listen(PORT);
 
     fetch(`http:\/\/localhost:${PORT}${path}`, Object.assign({
       headers: {

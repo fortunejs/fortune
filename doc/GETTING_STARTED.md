@@ -8,7 +8,7 @@ import Fortune from 'fortune';
 
 new Fortune()
 
-.resource('user', {
+.model('user', {
   name: String,
   createdAt: Date
 })
