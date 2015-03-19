@@ -22,7 +22,7 @@ describe('EventSource implementation for resource changes', function () {
             connectionString: process.argv[2] || process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/test",
             db: 'test',
             inflect: true,
-            oplogConnectionString : (process.env.OPLOG_MONGODB_URL || process.argv[3] || "mongodb://127.0.0.1:27017/local") + '?slaveOk=true'
+            oplogConnectionString : (process.argv[3] || process.env.OPLOG_MONGODB_URL || "mongodb://127.0.0.1:27017/local") + '?slaveOk=true'
         };
 
         that.harvesterApp =
