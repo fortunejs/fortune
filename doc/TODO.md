@@ -1,17 +1,17 @@
 # To-do list
 
-- Move `transaction` instance to `context`, make `change` event data from transaction.
 - Update and delete workflows.
 - NeDB Adapter.
 - Micro API Serializer.
 - JSON API Serializer.
-- Replace `idCache` with `Set` type.
-- HTTP miscellaneous features.
 - Write more tests with tape, and integration test using the default stack.
 
 
 ## Done
 
+- HTTP miscellaneous features.
+- Replace `idCache` with `Set` type.
+- Move `transaction` instance to `context`, make `change` event data from transaction (won't do, not a good idea).
 - Dispatcher should do all adapter calls to sync inverse relationships.
 - Consider if Fortune can be isomorphic (run on server and client). Answer: it already should.
 - Internal refactor of actions into flows.

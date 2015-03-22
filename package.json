@@ -29,7 +29,7 @@
     "babel-eslint": "^2.0.2",
     "eslint": "^0.17.1",
     "istanbul": "^0.3.8",
-    "node-fetch": "^1.0.4",
+    "node-fetch": "^1.0.5",
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },
