@@ -2,7 +2,7 @@
 
 Easily create [JSONAPI](http://jsonapi.org/)-compliant APIs on top of node.js and mongoDB.
 
-Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/json-api-search-profile/blob/master/public/profile.md).   
+Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md).
 
 ##### Documentation : http://agco.github.io/harvesterjs
 ### JSON-API Features 
