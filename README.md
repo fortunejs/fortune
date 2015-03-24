@@ -27,12 +27,12 @@ import http from 'http';
 new Fortune()
 
 .model('user', {
-  name: String,
+  name: { type: String },
   group: { link: 'group', inverse: 'members' }})
 
 .model('group', {
-  name: String,
-  members: { link: ['user'], inverse: 'group' }})
+  name: { type: String },
+  members: { link: 'user', isArray: true, inverse: 'group' }})
 
 .initialize().then(app =>
   http.createServer(

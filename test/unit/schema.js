@@ -1,93 +1,74 @@
 import Test from 'tape';
-import parser from '../../lib/schema/parser';
-import enforcer from '../../lib/schema/enforcer';
+import validate from '../../lib/schema/validate';
+import enforce from '../../lib/schema/enforce';
 import stderr from '../../lib/common/stderr';
 
 
-// Suppress parser warnings.
-stderr.warn = function () {};
+// Suppress validation warnings.
+// stderr.warn = function () {};
 
-let schema = parser({
-  name: 'string',
-  birthdate: {type: Date, junk: 'asdf'},
-  mugshot: {type: 'buffer', link: null, inverse: null},
-  luckyNumbers: [Number, 42],
-  toys: {type: [Object]},
-  friends: {link: ['person'], inverse: 'friends'},
-  spouse: {type: 'z', link: 'person', inverse: 'spouse'},
+let schema = validate({
+  name: { type: String },
+  birthdate: { type: Date, junk: 'asdf' },
+  mugshot: { type: Buffer },
+  luckyNumbers: { type: Number, isArray: true },
+  friends: {link: 'person', isArray: true, inverse: 'friends'},
+  toys: { type: Object, isArray: true },
+
+  // The following fields are invalid.
+  typeAndLink: { type: String, link: 'y' },
   nonexistent: NaN,
   nullEdgeCase: null,
-  fake: [],
+  fake: { type: Array },
   badType: 'asdf',
-  nested: {thing: String}
+  nested: { thing: { type: String } }
 });
-
-let options = {
-  bufferEncoding: 'base64',
-  dropArbitraryFields: true
-};
 
 
 export default () => {
 
-  Test('Schema.Parser', t => {
-    t.equal(schema.name.type, 'string', 'Parses native type.');
-    t.equal(schema.birthdate.type, 'date', 'Parses object with native type.');
-    t.equal(schema.birthdate.junk, 'asdf', 'Extra keys are not dropped.');
-    t.equal(schema.mugshot.type, 'buffer', 'Parses object with string type.');
-    t.equal(schema.luckyNumbers.type, 'number', 'Parses array of native type.');
-    t.equal(schema.luckyNumbers.isArray, true, 'Parses array as array.');
-    t.equal(schema.toys.type, 'object', 'Parses object with array of native type.');
-    t.equal(schema.toys.isArray, true, 'Parses array as array.');
-    t.equal(schema.friends.link, 'person', 'Parses link.');
-    t.equal(schema.friends.inverse, 'friends', 'Parses inverse of link.');
-    t.equal(schema.friends.isArray, true, 'Parses array of links.');
-    t.equal(schema.spouse.link, 'person', 'Parses link.');
-    t.equal(schema.spouse.inverse, 'spouse', 'Parses inverse of link.');
-    t.equal(schema.spouse.isArray, false, 'Parses single link.');
-    t.equal(schema.nonexistent, undefined, 'Drops NaN.');
-    t.equal(schema.nullEdgeCase, undefined, 'Drops null.');
-    t.equal(schema.fake, undefined, 'Drops empty array.');
-    t.equal(schema.nested, undefined, 'Drops object without link or type.');
-    t.equal(schema.badType, undefined, 'Drops invalid type.');
+  Test('schema validate', t => {
+    t.equal(schema.name.type, String, 'string is allowed');
+    t.equal(schema.birthdate.type, Date, 'date is allowed');
+    t.equal(schema.birthdate.junk, 'asdf', 'extra keys not dropped');
+    t.equal(schema.mugshot.type, Buffer, 'buffer is allowed');
+    t.equal(schema.luckyNumbers.type, Number, 'number is allowed');
+    t.equal(schema.luckyNumbers.isArray, true, 'array is allowed');
+    t.equal(schema.friends.link, 'person', 'link is allowed');
+    t.equal(schema.friends.inverse, 'friends', 'inverse is allowed');
+    t.equal(schema.friends.isArray, true, 'array is allowed');
+    t.equal(schema.toys.type, Object, 'object is allowed');
+    t.equal(schema.toys.isArray, true, 'array is allowed');
+
+    /// Test for invalid fields.
+    t.equal(schema.typeAndLink, undefined, 'invalid field is empty');
+    t.equal(schema.nonexistent, undefined, 'invalid field is empty');
+    t.equal(schema.nullEdgeCase, undefined, 'invalid field is empty');
+    t.equal(schema.fake, undefined, 'invalid field is empty');
+    t.equal(schema.nested, undefined, 'invalid field is empty');
+    t.equal(schema.badType, undefined, 'invalid field is empty');
     t.end();
   });
 
-  Test('Schema.Enforcer input', t => {
-    let enforced = enforcer({
+  Test('schema enforce', t => {
+    let record = enforce({
       name: {},
       birthdate: 0,
       mugshot: 'SGVsbG8gd29ybGQh',
       luckyNumbers: '2',
       toys: [{foo: 'bar'}, {foo: 'baz'}, 'qq'],
       friends: ['a', 'b', 'c']
-    }, schema, Object.assign(options, { output: false }));
+    }, schema);
 
-    t.equal(enforced.name, '[object Object]', 'Casts into string.');
-    t.assert(enforced.birthdate instanceof Date, 'Casts into date.');
-    t.assert(Buffer.isBuffer(enforced.mugshot), 'Casts into buffer.');
-    t.deepEqual(enforced.luckyNumbers, [2], 'Casts into number.');
-    t.equal(enforced.toys.length, 3, 'Casts into array.');
-    t.deepEqual([enforced.toys[0].foo, enforced.toys[1].foo],
-      ['bar', 'baz'], 'Objects are objects.');
-    t.assert(typeof enforced.toys[2] === 'object', 'Casts into object.');
-    t.deepEqual(enforced.friends, ['a', 'b', 'c']);
-    t.end();
-  });
-
-  Test('Schema.Enforcer output', t => {
-    let enforced = enforcer({
-      birthdate: new Date(0),
-      luckyNumbers: ['1', 2, '3'],
-      mugshot: new Buffer('SGVsbG8gd29ybGQh', 'base64'),
-      toys: 2
-    }, schema, Object.assign(options, { output: true }));
-
-    t.equal(enforced.birthdate, 0, 'Date casted to number.');
-    t.deepEqual(enforced.luckyNumbers, [1, 2, 3], 'Types are mangled.');
-    t.equal(enforced.mugshot, 'SGVsbG8gd29ybGQh', 'Buffer casted to base64.');
-    t.assert(enforced.toys.length === 1 &&
-      typeof enforced.toys[0] === 'object', 'Mangled to array of objects.');
+    t.equal(record.constructor, Object, 'record is object');
+    t.assert(record.birthdate instanceof Date, 'date is enforced');
+    t.assert(Buffer.isBuffer(record.mugshot), 'buffer is enforced');
+    t.deepEqual(record.luckyNumbers, [2], 'array is enforced');
+    t.equal(record.toys.length, 3, 'array length is preserved');
+    t.deepEqual([record.toys[0].foo, record.toys[1].foo],
+      ['bar', 'baz'], 'objects are preserved');
+    t.assert(record.toys[2] instanceof Object, 'object is enforced');
+    t.deepEqual(record.friends, ['a', 'b', 'c'], 'links are untouched');
     t.end();
   });
 

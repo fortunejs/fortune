@@ -9,18 +9,20 @@ export default options => {
   let app = new Fortune(Object.assign(defaults, options));
 
   app.model('user', {
-    name: String,
-    age: {type: Number, min: 0, max: 100},
-    friends: {link: 'user', inverse: 'friends'},
-    pets: {link: ['animal'], inverse: 'owner'}
+    name: { type: String },
+    age: { type: Number, min: 0, max: 100 },
+    friends: { link: 'user', inverse: 'friends' },
+    pets: { link: 'animal', isArray: true, inverse: 'owner' }
+
   }).after((context, record) => {
     record.timestamp = Date.now();
     return Promise.resolve(record);
   });
 
   app.model('animal', {
-    name: String,
+    name: { type: String },
     owner: {link: 'user', inverse: 'pets'}
+
   }).after((context, record) => {
     record.ageOfPet = 123;
     return record;
