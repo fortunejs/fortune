@@ -5,7 +5,7 @@ import stderr from '../../lib/common/stderr';
 
 
 // Suppress validation warnings.
-// stderr.warn = function () {};
+stderr.warn = function () {};
 
 let schema = validate({
   name: { type: String },
