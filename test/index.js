@@ -1,8 +1,6 @@
-import * as Unit from './unit';
-import * as Integration from './integration';
+// Unit tests.
+import './unit/adapter';
+import './unit/schema';
 
-const tests = { Unit, Integration };
-
-for (let test in tests)
-  for (let suite in tests[test])
-    tests[test][suite]();
+// Integration tests.
+import './integration/default';
