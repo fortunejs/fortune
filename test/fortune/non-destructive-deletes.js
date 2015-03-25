@@ -102,6 +102,19 @@ module.exports = function(options){
           });
         });
     });
+    it('should be able to destroy resource marked as deleted previously', function(done){
+      request(baseUrl).del('/people/' + ids.people[0])
+        .expect(204)
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).del('/people/' + ids.people[0] + '?destroy=1')
+            .expect(204)
+            .end(function(err){
+              should.not.exist(err);
+              done();
+            });
+        });
+    });
     it('should not delete resource if beforeHook returns false', function(done){
       request(baseUrl).del('/people/' + ids.people[0] + '?failbeforeAll=1')
         .expect(321)
@@ -196,6 +209,27 @@ module.exports = function(options){
               });
           });
         });
+    });
+    it('should update resource on PATCH requests even if it is deleted', function(done){
+      request(baseUrl).del('/people/' + ids.people[0]).end(function(err){
+        should.not.exist(err);
+        request(baseUrl).patch('/people/' + ids.people[0] + '?includeDeleted=true')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/name', value: 'DOA'}
+          ]))
+          .expect(200)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=true')
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people[0].name.should.equal('DOA');
+                done();
+              });
+          });
+      })
     });
     it.skip('should allow PUT request replacing old document with new one', function(done){
       request(baseUrl).del('/people/' + ids.people[0]).end(function(err){
