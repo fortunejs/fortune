@@ -63,6 +63,7 @@ Test('schema enforce', t => {
   t.doesNotThrow(testRecord({ mugshot: new Buffer(1) }), good);
   t.throws(testRecord({ luckyNumbers: 1 }), bad);
   t.doesNotThrow(testRecord({ luckyNumbers: [1] }), good);
+  t.throws(testRecord({ friends: 1 }), bad);
   t.deepEqual(enforce({ friends: ['a', 'b', 'c'] }, schema).friends,
     ['a', 'b', 'c'], 'links are untouched');
   t.equal(enforce({ random: 'abc' }, schema).random,
