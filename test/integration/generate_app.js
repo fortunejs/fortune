@@ -1,6 +1,7 @@
 import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 
+
 const defaults = {};
 
 

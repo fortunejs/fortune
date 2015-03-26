@@ -5,6 +5,7 @@ import fetch from 'node-fetch';
 import Fortune from '../../lib';
 import stderr from '../../lib/common/stderr';
 
+
 const PORT = 1337;
 const mediaType = 'application/vnd.api+json';
 const extensions = ['patch', 'bulk'];

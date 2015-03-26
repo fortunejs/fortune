@@ -1,8 +1,9 @@
 import Test from 'tape';
 import Adapter from '../../lib/adapter';
-import stderr from '../../lib/common/stderr';
 import primaryKey from '../../lib/common/primary_key';
+import stderr from '../../lib/common/stderr';
 import * as adapters from '../../lib/adapter/adapters';
+
 
 const schemas = {
   user: {
@@ -22,11 +23,13 @@ const records = [{
   name: 'bob',
   alive: true,
   junk: { things: ['a', 'b', 'c'] },
-  birthday: new Date()
+  birthday: new Date(),
+  friends: [1, 2, 3]
 }, {
   name: 'john',
   alive: false,
-  picture: new Buffer('deadbeef')
+  picture: new Buffer('deadbeef'),
+  bestFriend: 4
 }];
 
 
@@ -38,10 +41,12 @@ catch (error) {}
 
 Test('adapter CRUD', t => {
   let adapter = new A({ schemas, options: {} });
+  let ids;
 
   adapter.initialize()
     .then(() => adapter.create('user', records))
     .then(createdRecords => {
+      ids = createdRecords.map(record => record[primaryKey]);
       t.equal(
         records.length, createdRecords.length,
         'created records has correct length');
@@ -52,6 +57,11 @@ Test('adapter CRUD', t => {
       t.equal(
         createdRecords.filter(record => record[primaryKey]).length,
         records.length, 'created records have primary keys');
+    })
+    .then(() => adapter.delete('user', ids))
+    .then(() => adapter.find('user', ids))
+    .then(records => {
+      t.equal(records.length, 0, 'records have been deleted');
       t.end();
     })
     .catch(error => {

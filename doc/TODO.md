@@ -1,7 +1,7 @@
 # To-do list
 
-- Update and delete workflows.
-- NeDB Adapter.
+- Remove `fetchRelated` and `relatedField` from the dispatcher. This feature belongs in serializers.
+- Update workflow.
 - Micro API Serializer.
 - JSON API Serializer.
 - Write more tests with tape, and integration test using the default stack.
@@ -9,6 +9,9 @@
 
 ## Done
 
+- Make serializer process methods asynchronous.
+- NeDB Adapter.
+- Delete workflow.
 - HTTP miscellaneous features.
 - Replace `idCache` with `Set` type.
 - Move `transaction` instance to `context`, make `change` event data from transaction (won't do, not a good idea).
