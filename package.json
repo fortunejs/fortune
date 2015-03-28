@@ -19,7 +19,7 @@
   "dependencies": {
     "babel-runtime": "^4.7.16",
     "chalk": "^1.0.0",
-    "inflection": "^1.6.0",
+    "inflection": "^1.7.0",
     "nedb": "^1.1.1",
     "negotiator": "^0.5.1",
     "uri-templates": "^0.1.5"
@@ -28,8 +28,8 @@
     "babel": "^4.7.16",
     "babel-eslint": "^2.0.2",
     "eslint": "^0.17.1",
-    "istanbul": "^0.3.8",
-    "node-fetch": "^1.0.5",
+    "istanbul": "^0.3.11",
+    "node-fetch": "^1.0.6",
     "tap-dot": "^1.0.0",
     "tape": "^3.5.0"
   },

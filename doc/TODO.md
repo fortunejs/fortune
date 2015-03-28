@@ -1,14 +1,15 @@
 # To-do list
 
-- Remove `fetchRelated` and `relatedField` from the dispatcher. This feature belongs in serializers.
+- Refactor `do_create` now that `relatedField` is removed.
 - Update workflow.
 - Micro API Serializer.
-- JSON API Serializer.
+- JSON API Serializer: cast input values, parse create & update, show included records.
 - Write more tests with tape, and integration test using the default stack.
 
 
 ## Done
 
+- Remove `fetchRelated` and `relatedField` from the dispatcher. This feature belongs in serializers.
 - Make serializer process methods asynchronous.
 - NeDB Adapter.
 - Delete workflow.
