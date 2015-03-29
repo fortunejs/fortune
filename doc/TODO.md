@@ -1,5 +1,6 @@
 # To-do list
 
+- Make sure a record cannot link to itself.
 - Refactor `do_create` now that `relatedField` is removed.
 - Update workflow.
 - Micro API Serializer.

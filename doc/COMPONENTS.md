@@ -1,11 +1,11 @@
 # Components
 
-Fortune comes with some defaults to work out of the box, namely the NeDB adapter, JSON API serializer, and requestListener function.
+Fortune comes with some defaults to work out of the box, there are alternatives to the defaults.
 
 
 ## Adapters
 
-Adapters must subclass and implement the contracts of the Adapter superclass. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the contract. They are responsible for interpreting the options and schemas provided to it.
+Adapters must subclass and implement the Adapter superclass (which is really just an interface). The adapter could be backed by anything from a text file to a distributed database, as long as it implements the class.
 
 | Adapter          | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
@@ -14,7 +14,7 @@ Adapters must subclass and implement the contracts of the Adapter superclass. Th
 
 ## Serializers
 
-Serializers format data in and out of a Fortune app. Like adapters, they must subclass and implement the contracts of the Serializer superclass. Serializers are responsible for interpreting and displaying media types such as JSON. They may also be concerned with routing requests, though this is optional.
+Serializers process data, they must subclass and implement the Serializer superclass.
 
 | Serializer       | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
@@ -23,8 +23,8 @@ Serializers format data in and out of a Fortune app. Like adapters, they must su
 
 ## Networking
 
-Map network requests into Fortune requests. Using Fortune with a network protocol is optional.
+Map external input to the dispatcher and map the response to an output. Using Fortune with a network protocol is optional.
 
 | Implementation   | Maintainer     | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| requestListener (included) | [Dali Zheng](http://daliwa.li) | A bare-bones function that takes `request` and `response` parameters, useful for `http.createServer`. |
+| requestListener (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`. |
