@@ -40,7 +40,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "chai-http": "^1.0.0",
-    "event-source-stream": "git+https://github.com/mavdi/event-source-stream.git",
+    "event-source-stream": "git+https://github.com/agco/event-source-stream.git",
     "mocha": "~1.20.1",
     "coveralls": "^2.11.2",
     "http-as-promised": "^0.1.0",
