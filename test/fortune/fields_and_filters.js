@@ -210,12 +210,22 @@ module.exports = function(options){
           });
       });
       it("should correctly accept $exists: true", function(done) {
-        request(baseUrl).get('/people?filter[birthday][$exists]=true')
+        request(baseUrl).get('/people?filter[birthday][$exists]=tRue')
           .expect(200)
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             (body.people).length.should.eql(4);
+            done();
+          });
+      });
+      it("should correctly accept $exists: false", function(done) {
+        request(baseUrl).get('/people?filter[birthday][$exists]=faLse')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            (body.people).length.should.eql(0);
             done();
           });
       });
