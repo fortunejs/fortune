@@ -17,21 +17,21 @@
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "^4.7.16",
+    "babel-runtime": "^5.0.8",
     "chalk": "^1.0.0",
     "inflection": "^1.7.0",
-    "nedb": "^1.1.1",
+    "nedb": "^1.1.2",
     "negotiator": "^0.5.1",
     "uri-templates": "^0.1.5"
   },
   "devDependencies": {
-    "babel": "^4.7.16",
+    "babel": "^5.0.8",
     "babel-eslint": "^2.0.2",
-    "eslint": "^0.17.1",
-    "istanbul": "^0.3.11",
+    "eslint": "^0.18.0",
+    "istanbul": "^0.3.13",
     "node-fetch": "^1.0.6",
     "tap-dot": "^1.0.0",
-    "tape": "^3.5.0"
+    "tape": "^4.0.0"
   },
   "main": "dist/lib/index.js",
   "files": [

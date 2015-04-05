@@ -1,7 +1,7 @@
 # To-do list
 
-- Make sure a record cannot link to itself.
-- Refactor `do_create` now that `relatedField` is removed.
+- Attach IDs to related records on related creation for JSON API.
+- Make sure a record cannot link to itself on update.
 - Update workflow.
 - Micro API Serializer.
 - JSON API Serializer: cast input values, parse create & update, show included records.
@@ -10,6 +10,8 @@
 
 ## Done
 
+- Refactor `do_create` now that `relatedField` is removed.
+- Make `inverse` field required for links, run static analysis on linking ontology when `initialize` is called.
 - Remove `fetchRelated` and `relatedField` from the dispatcher. This feature belongs in serializers.
 - Make serializer process methods asynchronous.
 - NeDB Adapter.

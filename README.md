@@ -5,14 +5,14 @@
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
 ```sh
-$ npm install fortune
+$ npm install fortune --save
 ```
 
 
 ## Key Concepts
 
 - At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on the request.
-- There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers. Both of these components must implement the contracts described in the adapter and serializer.
+- There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers. Both of these components must implement the interfaces described in the adapter and serializer.
 - Fortune itself is *agnostic* about networking. The responsibility of parsing protocol-specific parameters may be delegated to serializers which may mutate the request based on arbitrary arguments. There is a basic `requestListener` function for HTTP included for convenience.
 
 
@@ -21,23 +21,23 @@ $ npm install fortune
 Here is a basic CRUD example:
 
 ```js
-import Fortune from 'fortune';
+import fortune from 'fortune';
 import http from 'http';
 
-new Fortune()
+fortune.create()
 
-.model('user', {
-  name: { type: String },
-  group: { link: 'group', inverse: 'members' }})
+  .model('user', {
+    name: { type: String },
+    group: { link: 'group', inverse: 'members' }})
 
-.model('group', {
-  name: { type: String },
-  members: { link: 'user', isArray: true, inverse: 'group' }})
+  .model('group', {
+    name: { type: String },
+    members: { link: 'user', isArray: true, inverse: 'group' }})
 
-.initialize().then(app =>
-  http.createServer(
-    Fortune.net.requestListener.bind(app)
-  ).listen(1337));
+  .initialize().then(app =>
+    http.createServer(
+      Fortune.net.requestListener.bind(app)
+    ).listen(1337));
 ```
 
 This yields a HTTP API that conforms to [JSON API](http://jsonapi.org), and backed by an in-memory database. Authorization is left as an exercise to the implementer.

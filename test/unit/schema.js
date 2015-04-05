@@ -2,6 +2,7 @@ import Test from 'tape';
 import validate from '../../lib/schema/validate';
 import enforce from '../../lib/schema/enforce';
 import stderr from '../../lib/common/stderr';
+import primaryKey from '../../lib/common/primary_key';
 
 
 // Suppress validation warnings.
@@ -16,11 +17,12 @@ const schema = validate({
   toys: { type: Object, isArray: true },
 
   // The following fields are invalid and should be dropped.
-  typeAndLink: { type: String, link: 'y' },
+  typeAndLink: { type: String, link: 'y', inverse: 'friends' },
   nonexistent: NaN,
   nullEdgeCase: null,
   fake: { type: Array },
   badType: 'asdf',
+  noInverse: { link: 'person' },
   nested: { thing: { type: String } }
 });
 
@@ -44,6 +46,7 @@ Test('schema validate', t => {
   t.equal(schema.nonexistent, undefined, invalid);
   t.equal(schema.nullEdgeCase, undefined, invalid);
   t.equal(schema.fake, undefined, invalid);
+  t.equal(schema.noInverse, undefined, invalid);
   t.equal(schema.nested, undefined, invalid);
   t.equal(schema.badType, undefined, invalid);
   t.end();
@@ -64,8 +67,12 @@ Test('schema enforce', t => {
   t.throws(testRecord({ luckyNumbers: 1 }), bad);
   t.doesNotThrow(testRecord({ luckyNumbers: [1] }), good);
   t.throws(testRecord({ friends: 1 }), bad);
-  t.deepEqual(enforce({ friends: ['a', 'b', 'c'] }, schema).friends,
-    ['a', 'b', 'c'], 'links are untouched');
+  t.throws(testRecord({
+    [primaryKey]: 1,
+    friends: [0, 1, 2] }
+  ), 'record cannot link to itself');
+  t.deepEqual(enforce({ friends: ['a', 'b', 'c', 1, 2, 3] }, schema).friends,
+    ['a', 'b', 'c', 1, 2, 3], 'links are untouched');
   t.equal(enforce({ random: 'abc' }, schema).random,
     undefined, 'arbitrary fields are dropped');
   t.end();
