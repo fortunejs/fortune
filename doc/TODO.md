@@ -1,15 +1,17 @@
 # To-do list
 
+- Consider removing `include` and `optionsPerType` and moving them to the serializer.
 - Attach IDs to related records on related creation for JSON API.
-- Make sure a record cannot link to itself on update.
+- Make sure that a record cannot link to itself on update.
 - Update workflow.
 - Micro API Serializer.
-- JSON API Serializer: cast input values, parse create & update, show included records.
+- JSON API Serializer: cast complex input values, parse create & update, show included records.
 - Write more tests with tape, and integration test using the default stack.
 
 
 ## Done
 
+- Inverse fields can only be bi-directional.
 - Refactor `do_create` now that `relatedField` is removed.
 - Make `inverse` field required for links, run static analysis on linking ontology when `initialize` is called.
 - Remove `fetchRelated` and `relatedField` from the dispatcher. This feature belongs in serializers.
