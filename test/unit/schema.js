@@ -1,4 +1,5 @@
 import Test from 'tape';
+import checkSchemas from '../../lib/schema/check_schemas';
 import validate from '../../lib/schema/validate';
 import enforce from '../../lib/schema/enforce';
 import stderr from '../../lib/common/stderr';
@@ -75,5 +76,48 @@ Test('schema enforce', t => {
     ['a', 'b', 'c', 1, 2, 3], 'links are untouched');
   t.equal(enforce({ random: 'abc' }, schema).random,
     undefined, 'arbitrary fields are dropped');
+  t.end();
+});
+
+
+Test('check schema', t => {
+  const check = schemas => () => checkSchemas(schemas);
+
+  t.throws(check({
+    post: {
+      comments: { link: 'comment', isArray: true }
+    }
+  }), 'type must exist');
+
+  t.throws(check({
+    post: {
+      comments: { link: 'comment', isArray: true, inverse: 'post' }
+    }
+  }), 'inverse must exist');
+
+  t.throws(check({
+    post: {
+      comments: { link: 'comment', isArray: true, inverse: 'post' }
+    },
+    comment: {
+      post: { link: 'post', inverse: 'foo' }
+    }
+  }), 'inverse is incorrect');
+
+  t.doesNotThrow(check({
+    post: {
+      comments: { link: 'comment', isArray: true, inverse: 'post' }
+    },
+    comment: {
+      post: { link: 'post', inverse: 'comments' }
+    }
+  }), 'valid linking');
+
+  t.doesNotThrow(check({
+    user: {
+      friends: { link: 'user', isArray: true, inverse: 'friends' }
+    }
+  }), 'self inverse is valid');
+
   t.end();
 });
