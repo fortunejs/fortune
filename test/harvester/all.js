@@ -88,6 +88,7 @@ describe('using mongodb adapter', function () {
     require("./limits")(baseUrl,keys,ids);
     require("./includes")(baseUrl,keys,ids);
     require("./jsonapi_error")(baseUrl,keys,ids);
+    require("./deletes")(baseUrl,keys,ids);
 
 
     after(function (done) {
