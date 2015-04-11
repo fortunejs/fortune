@@ -21,8 +21,8 @@ $ npm install fortune --save
 Here is a basic CRUD example:
 
 ```js
-import fortune from 'fortune';
-import http from 'http';
+import fortune from 'fortune'
+import http from 'http'
 
 fortune.create()
 
@@ -35,9 +35,8 @@ fortune.create()
     members: { link: 'user', isArray: true, inverse: 'group' }})
 
   .initialize().then(app =>
-    http.createServer(
-      Fortune.net.requestListener.bind(app)
-    ).listen(1337));
+    http.createServer(fortune.net.requestListener.bind(app))
+      .listen(1337))
 ```
 
 This yields a HTTP API that conforms to [JSON API](http://jsonapi.org), and backed by an in-memory database. Authorization is left as an exercise to the implementer.

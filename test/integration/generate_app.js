@@ -1,13 +1,13 @@
-import Fortune from '../../lib';
-import stderr from '../../lib/common/stderr';
+import Fortune from '../../lib'
+import stderr from '../../lib/common/stderr'
 
 
-const defaults = {};
+const defaults = {}
 
 
 export default options => {
 
-  let app = new Fortune(Object.assign(defaults, options));
+  let app = new Fortune(Object.assign(defaults, options))
 
   app.model('user', {
     name: { type: String },
@@ -16,23 +16,23 @@ export default options => {
     pets: { link: 'animal', isArray: true, inverse: 'owner' }
 
   }).after((context, record) => {
-    record.timestamp = Date.now();
-    return Promise.resolve(record);
-  });
+    record.timestamp = Date.now()
+    return Promise.resolve(record)
+  })
 
   app.model('animal', {
     name: { type: String },
     owner: {link: 'user', inverse: 'pets'}
 
   }).after((context, record) => {
-    record.ageOfPet = 123;
-    return record;
-  });
+    record.ageOfPet = 123
+    return record
+  })
 
   app.dispatcher.on('change', function () {
-    stderr.info('Change', ...arguments);
-  });
+    stderr.info('Change', ...arguments)
+  })
 
-  return app.initialize();
+  return app.initialize()
 
-};
+}

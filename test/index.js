@@ -1,6 +1,6 @@
 // Unit tests.
-import './unit/adapter';
-import './unit/schema';
+import './unit/adapter'
+import './unit/schema'
 
 // Integration tests.
-import './integration/default';
+import './integration/default'

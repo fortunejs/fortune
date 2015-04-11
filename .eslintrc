@@ -7,7 +7,9 @@
     "no-empty": 0,
     "no-use-before-define": 0,
     "no-underscore-dangle": 0,
-    "quotes": [1, "single"]
+    "quotes": [2, "single"],
+    "semi": [2, "never"],
+    "semi-spacing": 0
   },
   "env": {
     "node": true
