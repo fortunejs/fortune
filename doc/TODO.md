@@ -1,6 +1,5 @@
 # To-do list
 
-- Consider removing `include` and `optionsPerType` and moving them to the serializer.
 - Attach IDs to related records on related creation for JSON API.
 - Make sure that a record cannot link to itself on update.
 - Update workflow.
@@ -11,6 +10,7 @@
 
 ## Done
 
+- Consider removing `include` and `optionsPerType` and moving them to the serializer (Answer: No, serializers have to define display of included records).
 - Add `setAdapter` and `addSerializer` methods.
 - Inverse fields can only be bi-directional.
 - Refactor `do_create` now that `relatedField` is removed.
