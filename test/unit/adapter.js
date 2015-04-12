@@ -65,7 +65,7 @@ Test('adapter CRUD', t => {
       t.end()
     })
     .catch(error => {
-      stderr.error(error.stack)
+      stderr.error(error)
       throw error
     })
 })

@@ -1,6 +1,6 @@
 # Codebase
 
-Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), instantiating classes using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html), but Fortune uses them anyways. Deal with it.
+Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), instantiating classes using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html). Everything sucks, so deal with it.
 
 
 ## Adapter
@@ -22,6 +22,8 @@ There are two (optionally) asynchronous methods, `processRequest` and `processRe
 The goal of the dispatcher is to dynamically dispatch functions that mutate state based on the request.
 
 It runs a series of middleware functions that mutate state, the `context` object, until the end of the request is reached, and returns the `response` key of the `context`.
+
+The dispatcher subclasses `EventEmitter` and emits a `change` event whenever a request that modifies records is completed.
 
 
 ## Schema

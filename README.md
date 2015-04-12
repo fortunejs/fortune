@@ -1,6 +1,6 @@
 [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
 
-**Fortune.js** is a [composable](https://en.wikipedia.org/wiki/Composability) framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a request and response workflow, with networking as an optional, thin layer on top.
+**Fortune.js** is a [composable](https://en.wikipedia.org/wiki/Composability) framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a [workflow](https://en.wikipedia.org/wiki/Workflow) for manipulating data, with networking as an external layer on top.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -12,7 +12,7 @@ $ npm install fortune --save
 ## Key Concepts
 
 - At the core of Fortune is the **dispatcher**, which controls the flow of a request through middleware functions.
-- There are two components that are swappable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers.
+- There are two components that are swappable: the **adapter** and the **serializer**. Each instance may have one adapter and multiple serializers.
 - Networking is *external* to Fortune. There is a basic `requestListener` function for HTTP that works out of the box, included for convenience.
 
 
