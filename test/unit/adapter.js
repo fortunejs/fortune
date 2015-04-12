@@ -14,8 +14,8 @@ const schemas = {
     junk: { type: Object },
     picture: { type: Buffer },
     nicknames: { type: String, isArray: true },
-    friends: { link: 'user', isArray: true },
-    bestFriend: { link: 'user' }
+    friends: { link: 'user', isArray: true, inverse: 'friends' },
+    bestFriend: { link: 'user', inverse: 'bestFriend' }
   }
 }
 
@@ -40,7 +40,7 @@ if (Object.getOwnPropertyNames(A.prototype).length === 1)
 
 
 Test('adapter CRUD', t => {
-  const adapter = new A({ schemas, options: {} })
+  const adapter = new A({ schemas })
   let ids
 
   adapter.initialize()

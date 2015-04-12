@@ -29,11 +29,14 @@ export default options => {
     return record
   })
 
-  app.dispatcher.on('change', function () {
-    if (!process.env.REPORTER)
-      stderr.info('Change', ...arguments)
-  })
 
-  return app.initialize()
+  return app.initialize().then(app => {
+    app.dispatcher.on('change', function () {
+      if (!process.env.REPORTER)
+        stderr.info('Change', ...arguments)
+    })
+
+    return app
+  })
 
 }

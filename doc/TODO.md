@@ -11,6 +11,7 @@
 
 ## Done
 
+- Add `setAdapter` and `addSerializer` methods.
 - Inverse fields can only be bi-directional.
 - Refactor `do_create` now that `relatedField` is removed.
 - Make `inverse` field required for links, run static analysis on linking ontology when `initialize` is called.
