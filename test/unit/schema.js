@@ -2,8 +2,8 @@ import Test from 'tape'
 import checkSchemas from '../../lib/schema/check_schemas'
 import validate from '../../lib/schema/validate'
 import enforce from '../../lib/schema/enforce'
-import stderr from '../../lib/common/stderr'
 import primaryKey from '../../lib/common/primary_key'
+import * as stderr from '../../lib/common/stderr'
 
 
 // Suppress validation warnings.

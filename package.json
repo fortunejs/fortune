@@ -12,8 +12,8 @@
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "make lint && make && node dist/test",
-    "prepublish": "make clean && make compile-lib",
+    "test": "make lint all && REPORTER=true node dist/test | tap-dot",
+    "prepublish": "make clean compile-lib",
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {

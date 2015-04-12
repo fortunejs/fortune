@@ -1,5 +1,5 @@
-import Fortune from '../../lib'
-import stderr from '../../lib/common/stderr'
+import fortune from '../../lib'
+import * as stderr from '../../lib/common/stderr'
 
 
 const defaults = {}
@@ -7,7 +7,7 @@ const defaults = {}
 
 export default options => {
 
-  let app = new Fortune(Object.assign(defaults, options))
+  const app = fortune.create(Object.assign(defaults, options))
 
   app.model('user', {
     name: { type: String },
@@ -30,7 +30,8 @@ export default options => {
   })
 
   app.dispatcher.on('change', function () {
-    stderr.info('Change', ...arguments)
+    if (!process.env.REPORTER)
+      stderr.info('Change', ...arguments)
   })
 
   return app.initialize()

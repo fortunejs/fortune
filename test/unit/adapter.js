@@ -1,7 +1,7 @@
 import Test from 'tape'
 import Adapter from '../../lib/adapter'
 import primaryKey from '../../lib/common/primary_key'
-import stderr from '../../lib/common/stderr'
+import * as stderr from '../../lib/common/stderr'
 import * as adapters from '../../lib/adapter/adapters'
 
 
@@ -35,12 +35,12 @@ const records = [{
 
 let A = adapters.NeDB
 
-try { A = A(Adapter) }
-catch (error) {}
+if (Object.getOwnPropertyNames(A.prototype).length === 1)
+  A = A(Adapter)
 
 
 Test('adapter CRUD', t => {
-  let adapter = new A({ schemas, options: {} })
+  const adapter = new A({ schemas, options: {} })
   let ids
 
   adapter.initialize()
