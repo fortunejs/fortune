@@ -11,9 +11,9 @@ $ npm install fortune --save
 
 ## Key Concepts
 
-- At the core of Fortune is the **dispatcher**, which accepts a `request` object, and returns a `response` object. At intermediate states of a request, a `context` object that encapsulates the request and response is mutated. Control is passed through middleware functions depending on the request.
-- There are two required components that are pluggable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers. Both of these components must implement the interfaces described in the adapter and serializer.
-- Fortune itself is *agnostic* about networking. The responsibility of parsing protocol-specific parameters may be delegated to serializers which may mutate the request based on arbitrary arguments. There is a basic `requestListener` function for HTTP included for convenience.
+- At the core of Fortune is the **dispatcher**, which controls the flow of a request through middleware functions.
+- There are two components that are swappable: the **adapter** and the **serializer**. Each Fortune instance may have only one database adapter, and multiple serializers.
+- Networking is *external* to Fortune. There is a basic `requestListener` function for HTTP that works out of the box, included for convenience.
 
 
 ## Example
@@ -28,18 +28,18 @@ fortune.create()
 
   .model('user', {
     name: { type: String },
-    group: { link: 'group', inverse: 'members' }})
+    groups: { link: 'group', isArray: true, inverse: 'members' }})
 
   .model('group', {
     name: { type: String },
     members: { link: 'user', isArray: true, inverse: 'group' }})
 
-  .initialize().then(app =>
-    http.createServer(fortune.net.requestListener.bind(app))
-      .listen(1337))
+  .initialize().then(app => {
+    const listener = fortune.net.requestListener.bind(app)
+    http.createServer(listener).listen(1337) })
 ```
 
-This yields a HTTP API that conforms to [JSON API](http://jsonapi.org), and backed by an in-memory database. Authorization is left as an exercise to the implementer.
+This yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and [Micro API](http://micro-api.org) specification. By default, it is backed by an in-memory database, NeDB.
 
 
 ## Contributing
