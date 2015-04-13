@@ -5,7 +5,7 @@
 - Make sure that a record cannot link to itself on update.
 - Update workflow.
 - Micro API Serializer.
-- JSON API Serializer: cast complex input values, parse create & update, show included records.
+- JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
 - Write more tests with tape, and integration test using the default stack.
 
 
