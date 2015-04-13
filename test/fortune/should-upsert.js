@@ -71,7 +71,7 @@ module.exports = function(options){
         done();
       });
     });
-    it.only('should not overwrite embedded documents', function(done){
+    it('should not overwrite embedded documents', function(done){
         request(baseUrl).post('/people')
           .set('content-type', 'application/json')
           .send(JSON.stringify({
