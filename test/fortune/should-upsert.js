@@ -71,5 +71,50 @@ module.exports = function(options){
         done();
       });
     });
+    it.only('should not overwrite embedded documents', function(done){
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({
+            people: [
+              {
+                "email": "test@test.com",
+                upsertTest: 'match',
+                nested: {
+                  field1: "first"
+                }
+              }
+            ]
+          }))
+          .expect(201)
+          .end(function(err){
+            should.not.exist(err);
+            request(baseUrl).post('/people')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify({
+                people: [
+                  {
+                    "email": "test@test.com",
+                    upsertTest: 'match',
+                    nested: {
+                      field2: "second"
+                    }
+                  }
+                ]
+              }))
+              .expect(201)
+              .end(function(err){
+                should.not.exist(err);
+                request(baseUrl).get('/people/test@test.com')
+                  .expect(200)
+                  .end(function(err, res){
+                    should.not.exist(err);
+                    var body = JSON.parse(res.text);
+                    should.exist(body.people[0].nested.field1);
+                    should.exist(body.people[0].nested.field2);
+                    done();
+                  });
+              });
+          });
+    });
   });
 };
