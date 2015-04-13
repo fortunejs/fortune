@@ -116,5 +116,27 @@ module.exports = function(options){
               });
           });
     });
+    it('should not cast arrays to objects', function(done){
+      request(baseUrl).post('/people')
+        .set('content-type', 'application/json')
+        .send(JSON.stringify({
+          people: [
+            {
+              "email": "test@test.com",
+              upsertTest: 'match',
+              links: {
+                cars: [ids.cars[0]]
+              }
+            }
+          ]
+        }))
+        .expect(201)
+        .end(function(err, res) {
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people[0].links.cars.should.be.an.Array;
+          done();
+        });
+    });
   });
 };
