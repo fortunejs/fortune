@@ -1,5 +1,6 @@
 # To-do list
 
+- Add `update` test for adapter.
 - Attach IDs to related records on related creation for JSON API.
 - Make sure that a record cannot link to itself on update.
 - Update workflow.

@@ -58,6 +58,34 @@ Test('adapter CRUD', t => {
         createdRecords.filter(record => record[primaryKey]).length,
         records.length, 'created records have primary keys')
     })
+    .then(() => {
+      return adapter.update('user', ids.map(id => ({
+        id,
+        set: { name: 'billy' }
+      })))
+    })
+    .then(() => adapter.find('user', ids))
+    .then(records => {
+      t.equal(
+        records.length, ids.length,
+        'updated records has correct length')
+      t.equal(records.filter(record => record.name !== 'billy').length,
+        0, 'field updated on set')
+    })
+    .then(() => {
+      return adapter.update('user', ids.map(id => ({
+        id,
+        unset: { name: true }
+      })))
+    })
+    .then(() => adapter.find('user', ids))
+    .then(records => {
+      t.equal(
+        records.length, ids.length,
+        'updated records has correct length')
+      t.equal(records.filter(record => record.name).length,
+        0, 'field updated on unset')
+    })
     .then(() => adapter.delete('user', ids))
     .then(() => adapter.find('user', ids))
     .then(records => {

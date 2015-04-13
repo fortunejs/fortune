@@ -1,6 +1,6 @@
 # Codebase
 
-Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), instantiating classes using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html). Everything sucks, so deal with it.
+Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html). Everything sucks, so deal with it.
 
 
 ## Adapter
