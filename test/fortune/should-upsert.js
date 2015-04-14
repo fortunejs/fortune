@@ -138,5 +138,40 @@ module.exports = function(options){
           done();
         });
     });
+    it('should not fail to set nested properties on key which value is "null"', function(done){
+      request(baseUrl).post('/people')
+        .set('content-type', 'application/json')
+        .send(JSON.stringify({
+          people: [{
+            email: 'test@test.com',
+            upsertTest: 'match',
+            nested: null
+          }]
+        }))
+        .expect(201)
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).post('/people')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify({
+              people: [{
+                email: 'test@test.com',
+                upsertTest: 'match',
+                nested: {
+                  field1: 'one',
+                  field2: 'two'
+                }
+              }]
+            }))
+            .expect(201)
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.people[0].nested.should.be.an.Object;
+              body.people[0].nested.should.have.keys(['field1', 'field2']);
+              done();
+            });
+        });
+    });
   });
 };
