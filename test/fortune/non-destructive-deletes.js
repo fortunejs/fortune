@@ -109,6 +109,32 @@ module.exports = function(options){
             });
         });
     });
+    it('should include referenced resources which are deleted for requests with includeDeleted set to true', function(done){
+      request(baseUrl).patch('/people/' + ids.people[0])
+        .set('content-type', 'application/json')
+        .send(JSON.stringify([
+          {op: 'replace', path: '/people/0/links/cars', value: [ids.cars[0], ids.cars[1]]}
+        ]))
+        .expect(200)
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).del('/people/' + ids.people[0]).expect(204).end(function(err){
+              should.not.exist(err);
+              request(baseUrl).del('/cars').expect(204).end(function(err){
+                  should.not.exist(err);
+                  request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=true&include=cars')
+                    .expect(200).end(function(err, res){
+                      should.not.exist(err);
+                      var body = JSON.parse(res.text);
+                      should.exist(body.linked);
+                      should.exist(body.linked.cars);
+                      body.linked.cars.length.should.equal(2);
+                      done();
+                    });
+                });
+            });
+        });
+    });
     it('should mark item with deletedAt', function(done){
       request(baseUrl).del('/people/' + ids.people[0])
         .end(function(err){
