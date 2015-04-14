@@ -25,6 +25,90 @@ module.exports = function(options){
           done();
         })
     });
+    it('should send deleted links in regular links namespace for one-way links', function(done){
+      request(baseUrl).patch('/people/' + ids.people[0])
+        .set('content-type', 'application/json')
+        .send(JSON.stringify([
+          {op: 'replace', path: '/people/0/links/pets', value: [ids.pets[0], ids.pets[1]]}
+        ]))
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).del('/people/' + ids.people[0])
+            .expect(204)
+            .end(function(err){
+              should.not.exist(err);
+              request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=true')
+                .expect(200)
+                .end(function(err, res){
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.people[0].links.should.be.an.Object;
+                  body.people[0].links.pets.should.eql([
+                    ids.pets[0],
+                    ids.pets[1]
+                  ]);
+                  done();
+                });
+            });
+        });
+    });
+    it('should send deleted links in regular links namespace for inverse links', function(done){
+      request(baseUrl).patch('/people/' + ids.people[0])
+        .set('content-type', 'application/json')
+        .send(JSON.stringify([
+          {op: 'replace', path: '/people/0/links/cars', value: [ids.cars[0], ids.cars[1]]}
+        ]))
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).del('/people/' + ids.people[0])
+            .expect(204)
+            .end(function(err){
+              should.not.exist(err);
+              request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=true')
+                .expect(200)
+                .end(function(err, res){
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.people[0].links.should.be.an.Object;
+                  body.people[0].links.cars.should.eql([
+                    ids.cars[0],
+                    ids.cars[1]
+                  ]);
+                  done();
+                });
+            });
+        });
+    });
+    it('should be able to include referenced resources of deleted resource', function(done){
+      request(baseUrl).patch('/people/' + ids.people[0])
+        .set('content-type', 'application/json')
+        .send(JSON.stringify([
+          {op: 'replace', path: '/people/0/links/cars', value: [ids.cars[0], ids.cars[1]]}
+        ]))
+        .end(function(err){
+          should.not.exist(err);
+          request(baseUrl).del('/people/' + ids.people[0])
+            .expect(204)
+            .end(function(err){
+              should.not.exist(err);
+              request(baseUrl).get('/people/' + ids.people[0] + '?include=cars&includeDeleted=true')
+                .expect(200)
+                .end(function(err, res){
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.people[0].links.should.be.an.Object;
+                  body.people[0].links.cars.should.eql([
+                    ids.cars[0],
+                    ids.cars[1]
+                  ]);
+                  body.linked.should.be.an.Object;
+                  should.exist(body.linked.cars);
+                  body.linked.cars.length.should.equal(2);
+                  done();
+                });
+            });
+        });
+    });
     it('should mark item with deletedAt', function(done){
       request(baseUrl).del('/people/' + ids.people[0])
         .end(function(err){
