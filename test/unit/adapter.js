@@ -22,9 +22,9 @@ const schemas = {
 const records = [{
   name: 'bob',
   alive: true,
-  junk: { things: ['a', 'b', 'c'] },
+  junk: { things: [ 'a', 'b', 'c' ] },
   birthday: new Date(),
-  friends: [1, 2, 3]
+  friends: [ 1, 2, 3 ]
 }, {
   name: 'john',
   alive: false,

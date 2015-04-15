@@ -14,11 +14,21 @@ const schema = {
   toys: { type: Object, isArray: true }
 }
 
+
 const testSchema = schema => () => validate(schema)
+const testField = field => () => validate({ [field]: schema[field] })
 
 
 Test('schema validate', t => {
-  t.doesNotThrow(testSchema(schema), 'valid schema is valid')
+  /// Test for valid fields.
+  const valid = 'valid field is valid'
+
+  t.doesNotThrow(testField('name'), valid)
+  t.doesNotThrow(testField('birthdate'), valid)
+  t.doesNotThrow(testField('mugshot'), valid)
+  t.doesNotThrow(testField('luckyNumbers'), valid)
+  t.doesNotThrow(testField('friends'), valid)
+  t.doesNotThrow(testField('toys'), valid)
 
   /// Test for invalid fields.
   const invalid = 'invalid field throws error'
@@ -71,10 +81,10 @@ Test('schema enforce', t => {
   t.throws(testRecord({ friends: 1 }), bad)
   t.throws(testRecord({
     [primaryKey]: 1,
-    friends: [0, 1, 2] }
+    friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  t.deepEqual(enforce({ friends: ['a', 'b', 'c', 1, 2, 3] }, schema).friends,
-    ['a', 'b', 'c', 1, 2, 3], 'links are untouched')
+  t.deepEqual(enforce({ friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
+    [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
   t.equal(enforce({ random: 'abc' }, schema).random,
     undefined, 'arbitrary fields are dropped')
   t.end()

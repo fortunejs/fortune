@@ -1,6 +1,5 @@
 import Test from 'tape'
 import fetchTest from './fetch_test'
-import * as stderr from '../../lib/common/stderr'
 
 
 Test('Integration.create', t => fetchTest('/animals', {

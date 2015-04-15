@@ -22,7 +22,7 @@ export default options => {
 
   app.model('animal', {
     name: { type: String },
-    owner: {link: 'user', inverse: 'pets'}
+    owner: { link: 'user', inverse: 'pets' }
 
   }).after((context, record) => {
     record.ageOfPet = 123

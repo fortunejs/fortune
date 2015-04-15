@@ -8,7 +8,7 @@ import * as stderr from '../../lib/common/stderr'
 
 const PORT = 1337
 const mediaType = 'application/vnd.api+json'
-const extensions = ['patch', 'bulk']
+const extensions = [ 'patch', 'bulk' ]
 
 
 // Set promise polyfill for old versions of Node.
