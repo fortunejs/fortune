@@ -1,4 +1,4 @@
-import fortune from '../../lib'
+import Fortune from '../../lib'
 import * as stderr from '../../lib/common/stderr'
 
 
@@ -7,7 +7,7 @@ const defaults = {}
 
 export default options => {
 
-  const app = fortune.create(Object.assign(defaults, options))
+  const app = new Fortune(Object.assign(defaults, options))
 
   app.model('user', {
     name: { type: String },
@@ -29,14 +29,11 @@ export default options => {
     return record
   })
 
-
-  return app.initialize().then(app => {
-    app.dispatcher.on('change', function () {
-      if (!process.env.REPORTER)
-        stderr.info('Change', ...arguments)
-    })
-
-    return app
+  app.dispatcher.on('change', function () {
+    if (!process.env.REPORTER)
+      stderr.info('Change', ...arguments)
   })
+
+  return app.initialize()
 
 }

@@ -11,6 +11,7 @@
 
 ## Done
 
+- Ensure created records have empty arrays for array fields.
 - Consider removing `include` and `optionsPerType` and moving them to the serializer (Answer: No, serializers have to define display of included records).
 - Add `setAdapter` and `addSerializer` methods.
 - Inverse fields can only be bi-directional.

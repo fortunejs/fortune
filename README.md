@@ -21,10 +21,10 @@ $ npm install fortune --save
 Here is a basic CRUD example:
 
 ```js
-import fortune from 'fortune'
+import Fortune from 'fortune'
 import http from 'http'
 
-fortune.create()
+new Fortune()
 
   .model('user', {
     name: { type: String },
