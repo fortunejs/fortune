@@ -1,6 +1,6 @@
 [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
 
-**Fortune.js** is a [composable](https://en.wikipedia.org/wiki/Composability) framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a [workflow](https://en.wikipedia.org/wiki/Workflow) for manipulating data, with networking as an external layer on top.
+**Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a [workflow](https://en.wikipedia.org/wiki/Workflow) for manipulating data, with networking as an external layer on top.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -9,10 +9,15 @@ $ npm install fortune --save
 ```
 
 
+## Motivation
+
+The goal is to automate CRUD interactions given a set of data models. Fortune facilitates the use of hypermedia and media types, and also provides functionality for building real-time applications.
+
+
 ## Key Concepts
 
 - At the core of Fortune is the **dispatcher**, which controls the flow of a request through middleware functions.
-- There are two components that are swappable: the **adapter** and the **serializer**. Each instance may have one adapter and multiple serializers.
+- There are two components that are interchangeable: the **adapter** and the **serializer**. Each instance may have one adapter and multiple serializers.
 - Networking is *external* to Fortune. There is a basic `requestListener` function for HTTP that works out of the box, included for convenience.
 
 
@@ -40,11 +45,6 @@ new Fortune()
 ```
 
 This yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and [Micro API](http://micro-api.org) specification. By default, it is backed by an in-memory database, NeDB.
-
-
-## Contributing
-
-The [main repository is on GitHub](https://github.com/fortunejs/fortune). Fork it, install development dependencies with `npm install`, commit changes, make sure the code lints and the tests pass by running `npm test`, and submit a pull request.
 
 
 ## License

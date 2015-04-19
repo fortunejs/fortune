@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A composable framework for data-driven applications.",
+  "description": "A framework for data-driven applications.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
