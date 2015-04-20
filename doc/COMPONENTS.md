@@ -28,4 +28,5 @@ Map external input to the dispatcher and map the response to an external output.
 
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| requestListener (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`. |
+| requestListener (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar middleware frameworks. |
+| Koa middleware (included) | [Dali Zheng](http://daliwa.li) | Middleware that wraps around the `requestListener` for use with the [Koa](http://koajs.com/) framework. |
