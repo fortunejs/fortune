@@ -38,6 +38,9 @@ export default (path, request, fn) => {
       if (!process.env.REPORTER)
         stderr.log(json)
       fn(json)
+    }, error => {
+      if (!process.env.REPORTER)
+        stderr.error(error)
     })
   })
 }
