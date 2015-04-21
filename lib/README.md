@@ -2,6 +2,8 @@
 
 Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html). Everything sucks, so deal with it.
 
+It is currently written in ES6 and transpiled down to ES5 using Babel. There is the `--stage 0` option which would add useful features but ES6 is a finished spec and proposals are not.
+
 
 ## Adapter
 
@@ -21,7 +23,7 @@ There are two (optionally) asynchronous methods, `processRequest` and `processRe
 
 The goal of the dispatcher is to dynamically dispatch functions that mutate state based on the request.
 
-It runs a series of middleware functions that mutate state, the `context` object, until the end of the request is reached, and returns the `response` key of the `context`.
+It runs a series of middleware functions that mutate the state of the `context` object, until the end of the request is reached, and returns the `response` key of the `context`.
 
 The dispatcher subclasses `EventEmitter` and emits a `change` event whenever a request that modifies records is completed.
 
@@ -33,4 +35,4 @@ Internal implementation for validating and enforcing the schema that is expected
 
 ## Net
 
-Currently there is only a basic HTTP `requestListener`. There may be a WebSocket implementation for the dispatcher in the future.
+External networking wrappers.

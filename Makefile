@@ -16,12 +16,12 @@ lint:
 
 compile-lib:
 	mkdir -p $(DIST_DIR)$(LIB_DIR)
-	$(COMPILE_CMD) --stage 0 --optional runtime $(LIB_DIR) \
+	$(COMPILE_CMD) --optional runtime $(LIB_DIR) \
 		--out-dir $(DIST_DIR)$(LIB_DIR)
 
 compile-test:
 	mkdir -p $(DIST_DIR)$(TEST_DIR)
-	$(COMPILE_CMD) --stage 0 --optional runtime $(TEST_DIR) \
+	$(COMPILE_CMD) --optional runtime $(TEST_DIR) \
 		--out-dir $(DIST_DIR)$(TEST_DIR)
 
 clean:

@@ -1,12 +1,12 @@
 # To-do list
 
-- Add `update` test for adapter.
-- Attach IDs to related records on related creation for JSON API.
 - Make sure that a record cannot link to itself on update.
 - Update workflow.
 - Micro API Serializer.
+- Add `update` test for adapter.
+- Attach IDs to related records on related creation for JSON API.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
-- Write more tests with tape, and integration test using the default stack.
+- Write more tests with tape, and integration test using all included components.
 
 
 ## Done
