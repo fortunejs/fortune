@@ -37,18 +37,18 @@ const server = http.createServer(listener)
 This sets up an instance of Fortune with default options, as well as a request listener which is used to start an HTTP server instance.
 
 ```js
-app.defineModel('user', {
+app.defineType('user', {
   name: { type: String },
   groups: { link: 'group', isArray: true, inverse: 'members' }
 })
 
-app.defineModel('group', {
+app.defineType('group', {
   name: { type: String },
   members: { link: 'user', isArray: true, inverse: 'group' }
 })
 ```
 
-Defining data models. There is a many-to-many relationship between `user` and `group` on the `groups` and `members` fields respectively.
+Defining record types. There is a many-to-many relationship between `user` and `group` on the `groups` and `members` fields respectively.
 
 ```js
 app.initialize().then(() => server.listen(1337))

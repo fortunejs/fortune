@@ -9,7 +9,7 @@ export default options =>
 
   new Fortune(Object.assign({}, defaults, options))
 
-  .defineModel('user', {
+  .defineType('user', {
     name: { type: String },
     age: { type: Number, min: 0, max: 100 },
     friends: { link: 'user', inverse: 'friends' },
@@ -21,7 +21,7 @@ export default options =>
     return Promise.resolve(record)
   })
 
-  .defineModel('animal', {
+  .defineType('animal', {
     name: { type: String },
     owner: { link: 'user', inverse: 'pets' }
   })

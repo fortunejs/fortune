@@ -11,7 +11,8 @@ const schema = {
   mugshot: { type: Buffer },
   luckyNumbers: { type: Number, isArray: true },
   friends: { link: 'person', isArray: true, inverse: 'friends' },
-  toys: { type: Object, isArray: true }
+  toys: { type: Object, isArray: true },
+  location: { type: Symbol('Geo-data') }
 }
 
 
@@ -29,6 +30,7 @@ Test('schema validate', t => {
   t.doesNotThrow(testField('luckyNumbers'), valid)
   t.doesNotThrow(testField('friends'), valid)
   t.doesNotThrow(testField('toys'), valid)
+  t.doesNotThrow(testField('location'), valid)
 
   /// Test for invalid fields.
   const invalid = 'invalid field throws error'
@@ -98,7 +100,7 @@ Test('check schema', t => {
     post: {
       comments: { link: 'comment', isArray: true }
     }
-  }), 'type must exist')
+  }), 'record type must exist')
 
   t.throws(check({
     post: {
