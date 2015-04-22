@@ -1,6 +1,6 @@
 [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
 
-**Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides a [workflow](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
+**Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -11,7 +11,7 @@ $ npm install fortune --save
 
 ## Motivation
 
-The goal is to automate data manipulation given a set of models that conform to some limitations. Fortune provides generic features of web applications, or *skins around databases* if you're a hater. It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
+The goal is to provide an integrated system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113). Fortune provides generic features of web applications, or *skins around databases* if you're a hater. It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
 ## Key Concepts
@@ -54,7 +54,7 @@ Defining data models. There is a many-to-many relationship between `user` and `g
 app.initialize().then(() => server.listen(1337))
 ```
 
-Finally we need to call `initialize` before we do anything with the instance, since the setup is not declarative. This yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and [Micro API](http://micro-api.org) specification. By default, it is backed by an in-memory database, NeDB.
+Finally we need to call `initialize` before we do anything with the instance, since the setup is not declarative. This yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an in-memory database, NeDB.
 
 
 ## License
