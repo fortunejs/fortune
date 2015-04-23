@@ -67,7 +67,7 @@ module.exports = function(options, port, ioPort) {
   }]);
 
 
-  return app.beforeAll(hooks.beforeAll)
+  app.beforeAll(hooks.beforeAll)
     .beforeAllRead(hooks.beforeAllRead)
     .beforeAllWrite(hooks.beforeAllWrite)
     .afterAll(hooks.afterAll)
@@ -202,6 +202,10 @@ module.exports = function(options, port, ioPort) {
       },
       init: Hook
     }])
+    .beforeRW([{
+      name: 'filtered-out',
+      init:function(){return function(){throw new Error("This hook should not run")}}
+    }])
     .beforeRead('house', [{
       name: 'div5',
       priority: 10,
@@ -278,6 +282,14 @@ module.exports = function(options, port, ioPort) {
     }])
     .listen(port)
     .ioListen(ioPort);
+
+  app.addHookFilter(function(hooks, resourceName, when, type, resource){
+    return _.filter(hooks, function(h){
+      return h.name !== 'filtered-out';
+    });
+  });
+
+  return app;
 };
 
 
