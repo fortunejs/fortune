@@ -1,5 +1,7 @@
 [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
 
+[![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg)]
+
 **Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
