@@ -1,9 +1,9 @@
 [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com)
 
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
-[![Node Version](https://img.shields.io/node/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
+[![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
-[![Piggu](https://img.shields.io/badge/pigs-flying-ff69b4.svg?style=flat-square)](http://fortunejs.com)
+[![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
 **Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
 
@@ -31,11 +31,11 @@ The goal is to provide an integrated system for automating data manipulation giv
 Here is how to get started:
 
 ```js
-import Fortune from 'fortune'
+import fortune from 'fortune'
 import http from 'http'
 
-const app = new Fortune()
-const listener = Fortune.net.requestListener.bind(app)
+const app = fortune.create()
+const listener = fortune.net.requestListener.bind(app)
 const server = http.createServer(listener)
 ```
 
