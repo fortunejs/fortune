@@ -3,7 +3,7 @@ import http from 'http'
 import chalk from 'chalk'
 import fetch from 'node-fetch'
 import fortune from '../../lib'
-import * as stderr from '../../lib/common/stderr'
+import * as stderr from '../stderr'
 
 
 const PORT = 1337

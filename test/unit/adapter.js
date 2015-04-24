@@ -1,7 +1,7 @@
 import Test from 'tape'
 import Adapter from '../../lib/adapter'
 import primaryKey from '../../lib/common/primary_key'
-import * as stderr from '../../lib/common/stderr'
+import * as stderr from '../stderr'
 import * as adapters from '../../lib/adapter/adapters'
 
 

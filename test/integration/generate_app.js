@@ -1,5 +1,5 @@
-import Fortune from '../../lib'
-import * as stderr from '../../lib/common/stderr'
+import fortune from '../../lib'
+import * as stderr from '../stderr'
 
 
 const defaults = {}
@@ -7,7 +7,7 @@ const defaults = {}
 
 export default options =>
 
-  new Fortune(Object.assign({}, defaults, options))
+  fortune.create(Object.assign({}, defaults, options))
 
   .defineType('user', {
     name: { type: String },

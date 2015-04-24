@@ -1,6 +1,9 @@
-[![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com/)
+[![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com)
 
-[![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg)]
+[![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
+[![Node Version](https://img.shields.io/node/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
+[![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
+[![Piggu](https://img.shields.io/badge/pigs-flying-ff69b4.svg?style=flat-square)](http://fortunejs.com)
 
 **Fortune** is a framework for [data-driven applications](https://groups.drupal.org/node/143074). It provides [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
 
