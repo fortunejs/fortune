@@ -105,7 +105,8 @@ Test('adapter CRUD', t => {
     .then(records => {
       t.equal(records.length, ids.length, 'fields length is correct')
       t.deepEqual(records.map(record => Object.keys(record).length),
-        new Array(ids.length).fill(3), // It's 3, because we always get ID.
+        // We expect 3 fields, because we always get ID.
+        Array.from({ length: ids.length }).map(() => 3),
         'fields length is correct')
     })
 
