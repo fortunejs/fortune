@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
-**Fortune** is a data manipulation library, useful for [data-driven web applications](https://groups.drupal.org/node/143074). It provides basic [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
+**Fortune** is a data manipulation library, intended to provide building blocks for [data-driven web applications](https://groups.drupal.org/node/143074). It provides basic [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -16,13 +16,15 @@ $ npm install fortune --save
 
 ## Motivation
 
-Fortune provides generic features ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)) intended to be used in web applications, or *skins around databases* if you're a hater. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
+Fortune provides generic features ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)) intended to be used in web applications, or *skins around databases* if you're a hater. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
 ## Key Concepts
 
 - Stateless request and response model.
-- Two interchangeable components: the **adapter** and the **serializer**. Adapters interact with data storage, and serializers parse requests and render responses.
+- Two interchangeable components: the **adapter** and the **serializer**.
+- Adapters interact with data storage.
+- Serializers parse requests and render responses.
 - Networking is optional, may be handled by serializers.
 
 
@@ -39,7 +41,7 @@ const listener = fortune.net.requestListener.bind(app)
 const server = http.createServer(listener)
 ```
 
-This sets up an instance of Fortune with default options, a request listener bound to the instance, and an HTTP server instance.
+This sets up an instance of Fortune with default options, a request listener bound to the instance, and an HTTP server instance. The `requestListener` does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
 
 ```js
 app.defineType('user', {
