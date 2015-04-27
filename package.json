@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A framework for data-driven applications.",
+  "description": "Data manipulation library.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
@@ -17,18 +17,18 @@
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "^5.1.11",
+    "babel-runtime": "^5.1.13",
     "inflection": "^1.7.0",
     "nedb": "^1.1.2",
     "negotiator": "^0.5.1",
     "uri-templates": "^0.1.7"
   },
   "devDependencies": {
-    "babel": "^5.1.11",
+    "babel": "^5.1.13",
     "babel-eslint": "^3.0.1",
     "chalk": "^1.0.0",
     "connect": "^3.3.5",
-    "eslint": "^0.19.0",
+    "eslint": "^0.20.0",
     "express": "^4.12.3",
     "istanbul": "^0.3.13",
     "koa": "^0.19.1",
