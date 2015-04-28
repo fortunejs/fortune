@@ -66,7 +66,7 @@ Finally we need to call `initialize` before we do anything with the instance. Th
 
 ## Hypermedia Applications
 
-Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology).
+Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology). This is useful for generating hyperlinks to entities that compose records and their relationships.
 
 
 ## Design Considerations
@@ -74,7 +74,7 @@ Fortune gives you a few hypermedia serializers for free. Given the definitions o
 Fortune enforces an undirected graph of relationships, for a few reasons:
 
 - An undirected graph makes it impossible to reach an orphan node without *a priori* knowledge. See [deep hypertext in Xanadu](http://xanadu.com/xuTheModel/) for the concept behind this.
-- Updating relationships may be more performant since the system can follow links to related records.
+- Showing relationships is more performant since there is no querying to be done, but writing relationships is slower depending on the amount of related records.
 - Undirected graphs are simpler to implement and easier to understand.
 
 This is a tradeoff that sacrifices flexibility in favor of visibility. It could be modified to support directed graphs however.
