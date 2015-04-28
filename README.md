@@ -23,7 +23,7 @@ Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/C
 
 - Stateless request and response model.
 - Two interchangeable components: the **adapter** and the **serializer**.
-- Adapters interact with data storage.
+- The adapter interacts with data storage.
 - Serializers parse requests and render responses.
 - Networking is optional, may be handled by serializers.
 
@@ -77,7 +77,7 @@ Fortune enforces an undirected graph of relationships, for a few reasons:
 - Showing relationships is more performant since there is no querying to be done, but writing relationships is slower depending on the amount of related records.
 - Undirected graphs are simpler to implement and easier to understand.
 
-This is a tradeoff that sacrifices flexibility in favor of visibility. It could be modified to support directed graphs however.
+This is a tradeoff that sacrifices flexibility and complicates [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity) in favor of visibility. The design also eliminates any guarantees of referential integrity in databases that do not support transactions. It could be modified to support directed graphs however.
 
 
 ## License
