@@ -2,14 +2,14 @@
 
 - Make sure that a record cannot link to itself on update (should use `enforce` function for this).
 - Update workflow.
-- Micro API Serializer.
-- Attach IDs to related records on related creation for JSON API.
+- Micro API Serializer: everything.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
 - Write more tests with tape, and integration test using all included components.
 
 
 ## Done
 
+- Attach IDs to related records on related creation for JSON API (handled in schema design and middleware).
 - Add `update` test for adapter.
 - Ensure created records have empty arrays for array fields.
 - Consider removing `include` and `optionsPerType` and moving them to the serializer (Answer: No, serializers have to define display of included records).

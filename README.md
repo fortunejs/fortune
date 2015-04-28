@@ -16,7 +16,7 @@ $ npm install fortune --save
 
 ## Motivation
 
-Fortune provides generic features ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)) intended to be used in web applications, or *skins around databases* if you're a hater. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
+Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or *skins around databases* if you're a hater. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
 ## Key Concepts
@@ -61,7 +61,23 @@ Defining record types. There is a many-to-many relationship between `user` and `
 app.initialize().then(() => server.listen(1337))
 ```
 
-Finally we need to call `initialize` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an in-memory database, NeDB.
+Finally we need to call `initialize` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
+
+
+## Hypermedia Applications
+
+Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology).
+
+
+## Design Considerations
+
+Fortune enforces an undirected graph of relationships, for a few reasons:
+
+- An undirected graph makes it impossible to reach an orphan node without *a priori* knowledge. See [deep hypertext in Xanadu](http://xanadu.com/xuTheModel/) for the concept behind this.
+- Updating relationships may be more performant since the system can follow links to related records.
+- Undirected graphs are simpler to implement and easier to understand.
+
+This is a tradeoff that sacrifices flexibility in favor of visibility. It could be modified to support directed graphs however.
 
 
 ## License
