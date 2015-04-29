@@ -36,5 +36,30 @@ module.exports = function(options){
           done();
         });
     });
+    it("should expose hooks set up on resource", function(done){
+      request(baseUrl).get('/resources')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.resources[0].hooks.beforeRead.should.be.an.Array;
+          body.resources[0].hooks.afterRead.should.be.an.Array;
+          body.resources[0].hooks.beforeWrite.should.be.an.Array;
+          body.resources[0].hooks.afterWrite.should.be.an.Array;
+          done();
+        });
+    });
+    it("should not expose hooks filtered out by hooks filters", function(done){
+      request(baseUrl).get('/resources')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          var car = _.find(body.resources, function(r){ return r.name === 'car'});
+          car.hooks.beforeRead.indexOf('filtered-out').should.equal(-1);
+          car.hooks.beforeWrite.indexOf('filtered-out').should.equal(-1);
+          done();
+        });
+    });
   });
 };
