@@ -1,6 +1,5 @@
 # To-do list
 
-- Make sure that a record cannot link to itself on update (should use `enforce` function for this).
 - Update workflow.
 - Micro API Serializer: everything.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
@@ -9,6 +8,7 @@
 
 ## Done
 
+- Make sure that a record cannot link to itself on update (should use `enforce` function for this).
 - Enforce referential integrity.
 - Attach IDs to related records on related creation for JSON API (handled in schema design and middleware).
 - Add `update` test for adapter.
