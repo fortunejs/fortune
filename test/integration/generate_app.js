@@ -1,8 +1,10 @@
+import chalk from 'chalk'
 import fortune from '../../lib'
 import * as stderr from '../stderr'
 
 
 const defaults = {}
+const inParens = /\(([^\)]+)\)/
 
 
 export default options =>
@@ -34,10 +36,23 @@ export default options =>
   .initialize()
 
   .then(app => {
-    app.dispatcher.on('change', function () {
-      if (!process.env.REPORTER)
-        stderr.info('Change', ...arguments)
+    const { events } = app.dispatcher
+
+    app.dispatcher.on(events.change, data => {
+      if (!process.env.REPORTER) {
+        for (let type in data)
+          Object.getOwnPropertySymbols(data[type])
+          .forEach(assignDescription.bind(null, data[type]))
+
+        stderr.info(chalk.bold('Change:'), data)
+      }
     })
 
     return app
   })
+
+
+function assignDescription (object, symbol) {
+  const description = (symbol.toString().match(inParens) || [])[1]
+  if (description) object[description] = object[symbol]
+}
