@@ -16,7 +16,7 @@ $ npm install fortune --save
 
 ## Motivation
 
-Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or *skins around databases* if you're a hater. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
+Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or *skins around databases* for the haters. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
 ## Key Concepts

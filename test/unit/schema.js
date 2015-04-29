@@ -2,7 +2,7 @@ import Test from 'tape'
 import checkSchemas from '../../lib/schema/check_schemas'
 import validate from '../../lib/schema/validate'
 import enforce from '../../lib/schema/enforce'
-import primaryKey from '../../lib/common/primary_key'
+import * as keys from '../../lib/common/reserved_keys'
 
 
 const schema = {
@@ -67,7 +67,7 @@ Test('schema validate', t => {
 })
 
 
-Test('schema enforce', t => {
+Test('schema enforce create', t => {
   const testRecord = record => () => enforce(record, schema)
   const bad = 'bad type is bad'
   const good = 'good type is good'
@@ -82,10 +82,11 @@ Test('schema enforce', t => {
   t.doesNotThrow(testRecord({ luckyNumbers: [1] }), good)
   t.throws(testRecord({ friends: 1 }), bad)
   t.throws(testRecord({
-    [primaryKey]: 1,
+    [keys.primary]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  t.deepEqual(enforce({ friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
+  t.deepEqual(
+    enforce({ friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
   t.equal(enforce({ random: 'abc' }, schema).random,
     undefined, 'arbitrary fields are dropped')

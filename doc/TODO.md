@@ -9,6 +9,7 @@
 
 ## Done
 
+- Enforce referential integrity.
 - Attach IDs to related records on related creation for JSON API (handled in schema design and middleware).
 - Add `update` test for adapter.
 - Ensure created records have empty arrays for array fields.

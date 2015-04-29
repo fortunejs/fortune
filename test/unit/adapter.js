@@ -1,9 +1,12 @@
 import Test from 'tape'
 import Adapter from '../../lib/adapter'
-import primaryKey from '../../lib/common/primary_key'
+import * as keys from '../../lib/common/reserved_keys'
+import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 import * as adapters from '../../lib/adapter/adapters'
 
+
+const options = {}
 
 const schemas = {
   user: {
@@ -42,7 +45,7 @@ if (Object.getOwnPropertyNames(A.prototype).length === 1)
 
 
 Test('adapter CRUD', t => {
-  const adapter = new A({ schemas })
+  const adapter = new A({ keys, errors, schemas, options })
   let ids
 
   adapter.initialize()
@@ -50,7 +53,7 @@ Test('adapter CRUD', t => {
     // Create.
     .then(() => adapter.create('user', records))
     .then(createdRecords => {
-      ids = createdRecords.map(record => record[primaryKey])
+      ids = createdRecords.map(record => record[keys.primary])
       t.equal(
         records.length, createdRecords.length,
         'created records has correct length')
@@ -59,7 +62,7 @@ Test('adapter CRUD', t => {
         createdRecords.map(record => record.name),
         'created records returned in the right order')
       t.equal(
-        createdRecords.filter(record => record[primaryKey]).length,
+        createdRecords.filter(record => record[keys.primary]).length,
         records.length, 'created records have primary keys')
     })
 
