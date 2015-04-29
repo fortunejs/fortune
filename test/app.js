@@ -289,6 +289,14 @@ module.exports = function(options, port, ioPort) {
     });
   });
 
+  app.addResourcesFilter(function(resources, req){
+    var hiddenResources = req.get('hide-resources') && req.get('hide-resources').split(',');
+    if (!hiddenResources) return resources;
+    return _.filter(resources, function(obj){
+      return hiddenResources.indexOf(obj.name) === -1;
+    })
+  });
+
   return app;
 };
 
