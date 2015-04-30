@@ -19,6 +19,7 @@
   "dependencies": {
     "babel-runtime": "^5.1.13",
     "inflection": "^1.7.0",
+    "mongodb": "^2.0.28",
     "nedb": "^1.1.2",
     "negotiator": "^0.5.1",
     "uri-templates": "^0.1.7"
@@ -31,8 +32,8 @@
     "eslint": "^0.20.0",
     "express": "^4.12.3",
     "istanbul": "^0.3.13",
-    "koa": "^0.19.1",
-    "node-fetch": "^1.1.1",
+    "koa": "^0.20.0",
+    "node-fetch": "^1.1.2",
     "tap-dot": "^1.0.0",
     "tape": "^4.0.0"
   },

@@ -10,6 +10,7 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 | Adapter          | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | [NeDB](https://github.com/louischatriot/nedb) (included, default) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
+| [MongoDB](https://mongodb.com) (included) | [Dali Zheng](http://daliwa.li) | Document data store. |
 
 
 ## Serializers
@@ -18,8 +19,8 @@ Serializers process data, they must subclass and implement the Serializer class.
 
 | Serializer       | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| [JSON API](http://jsonapi.org) (included, default) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
 | [Micro API](http://micro-api.org) (included, default) | [Dali Zheng](http://daliwa.li) | A minimal media type for hypermedia APIs. Default. |
+| [JSON API](http://jsonapi.org) (included, default) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
 
 
 ## Networking

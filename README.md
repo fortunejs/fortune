@@ -22,7 +22,7 @@ Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/C
 ## Key Concepts
 
 - Stateless request and response workflow.
-- Two interchangeable components: the **adapter** and the **serializer**.
+- Two interchangeable components: the **adapter** and **serializers**.
 - The adapter interacts with data storage.
 - Serializers parse requests and render responses.
 - Networking is optional, may be handled by serializers.

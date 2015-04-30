@@ -1,5 +1,7 @@
 sudo: false
 language: node_js
+services:
+  - mongodb
 node_js:
-  - '0.12'
-  - 'iojs'
+  - "0.12"
+  - "iojs"

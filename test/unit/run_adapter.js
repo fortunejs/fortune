@@ -1,12 +1,8 @@
 import Test from 'tape'
-import Adapter from '../../lib/adapter'
 import * as keys from '../../lib/common/reserved_keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
-import * as adapters from '../../lib/adapter/adapters'
 
-
-const options = {}
 
 const schemas = {
   user: {
@@ -22,6 +18,8 @@ const schemas = {
   }
 }
 
+const deadbeef = new Buffer('deadbeef')
+
 const records = [{
   name: 'bob',
   age: 42,
@@ -33,22 +31,17 @@ const records = [{
   name: 'john',
   age: 36,
   alive: false,
-  picture: new Buffer('deadbeef'),
+  picture: deadbeef,
   bestFriend: 4
 }]
 
 
-let A = adapters.NeDB
+export default (Adapter, options) =>
+  Test(`Adapter: ${Adapter.name}`, t => {
+    const adapter = new Adapter({ keys, errors, schemas, options })
+    let ids
 
-if (Object.getOwnPropertyNames(A.prototype).length === 1)
-  A = A(Adapter)
-
-
-Test('adapter CRUD', t => {
-  const adapter = new A({ keys, errors, schemas, options })
-  let ids
-
-  adapter.initialize()
+    adapter.initialize()
 
     // Create.
     .then(() => adapter.create('user', records))
@@ -57,10 +50,6 @@ Test('adapter CRUD', t => {
       t.equal(
         records.length, createdRecords.length,
         'created records has correct length')
-      t.deepEqual(
-        records.map(record => record.name),
-        createdRecords.map(record => record.name),
-        'created records returned in the right order')
       t.equal(
         createdRecords.filter(record => record[keys.primary]).length,
         records.length, 'created records have primary keys')
@@ -70,6 +59,7 @@ Test('adapter CRUD', t => {
     .then(() => adapter.find('user', ids, { match: { name: 'john' } }))
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
+      t.assert(records[0].picture.equals(deadbeef), 'buffer is correct')
       t.equal(records[0].name, 'john', 'matched correct record')
     })
 
@@ -141,7 +131,7 @@ Test('adapter CRUD', t => {
       t.equal(
         records.length, ids.length,
         'updated records has correct length')
-      t.equal(records.filter(record => record.name).length,
+      t.equal(records.filter(record => record.name !== null).length,
         0, 'field updated on unset')
     })
 
@@ -182,12 +172,13 @@ Test('adapter CRUD', t => {
     .then(() => adapter.find('user', ids))
     .then(records => {
       t.equal(records.length, 0, 'records have been deleted')
-      t.end()
+      return adapter.close()
     })
+    .then(t.end)
 
     // Anything goes wrong, it gets caught.
     .catch(error => {
       stderr.error(error)
       throw error
     })
-})
+  })
