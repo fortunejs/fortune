@@ -123,7 +123,7 @@ export default (Adapter, options) =>
     .then(() => {
       return adapter.update('user', ids.map(id => ({
         id,
-        unset: { name: true }
+        set: { name: null }
       })))
     })
     .then(() => adapter.find('user', ids))

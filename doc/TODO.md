@@ -1,6 +1,6 @@
 # To-do list
 
-- Update workflow.
+- Update workflow: consistency checks, change event.
 - Micro API Serializer: everything.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
 - Write more tests with tape, and integration test using all included components.

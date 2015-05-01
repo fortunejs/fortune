@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
-**Fortune** is a data manipulation library, intended to provide building blocks for [data-driven web applications](https://groups.drupal.org/node/143074). It provides basic [workflows](https://en.wikipedia.org/wiki/Workflow) for manipulating data.
+**Fortune** is a data manipulation library, intended to provide building blocks for [data-driven web applications](https://groups.drupal.org/node/143074).
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
