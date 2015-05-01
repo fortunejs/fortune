@@ -7,7 +7,7 @@ var ess = require('event-source-stream');
 var _ = require('lodash');
 var mongoose = require('mongoose');
 
-describe.only('EventSource implementation for resource changes', function () {
+describe('EventSource implementation for resource changes', function () {
 
     describe('Server Sent Events', function () {
         this.timeout(100000);
@@ -29,7 +29,8 @@ describe.only('EventSource implementation for resource changes', function () {
             that.harvesterApp =
                 harvester(options)
             .resource('book', {
-                title: String
+                title: String,
+                author: String
             });
 
             that.harvesterApp.listen(8002);
@@ -100,16 +101,20 @@ describe.only('EventSource implementation for resource changes', function () {
                         },
                         {
                             title : 'filtered',
+                        },
+                        {
+                            title : 'filtered',
+                            author : 'Asimov'
                         }
                     ]
                 }});
-                ess(baseUrl + '/books/changes/stream?filter.title=filtered&unrelevant=sillyvalue', {retry : false, headers : {
+                ess(baseUrl + '/books/changes/stream?filter.title=filtered&filter.author=Asimov&unrelevant=sillyvalue', {retry : false, headers : {
                     'Last-Event-ID' : lastEventId
                 }}).on('data', function(data) {
                     var data = JSON.parse(data.data);
                     //ignore ticker data
                     if(_.isNumber(data)) return;
-                    expect(_.omit(data, 'id')).to.deep.equal({title : 'filtered'});
+                    expect(_.omit(data, 'id')).to.deep.equal({title : 'filtered', author : 'Asimov'});
                     dataReceived = true;
                     done();
                 });
