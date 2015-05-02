@@ -1,21 +1,29 @@
 import chalk from 'chalk'
-import fortune from '../../lib'
+import Fortune from '../../lib'
 import * as stderr from '../stderr'
+import * as fixtures from '../fixtures'
 
 
 const defaults = {}
 const inParens = /\(([^\)]+)\)/
 
 
-export default options =>
+export default options => {
 
-  fortune.create(Object.assign({}, defaults, options))
+  const app = new Fortune(Object.assign({}, defaults, options))
 
   .defineType('user', {
     name: { type: String },
-    age: { type: Number, min: 0, max: 100 },
-    friends: { link: 'user', inverse: 'friends' },
-    pets: { link: 'animal', isArray: true, inverse: 'owner' }
+    birthday: { type: Date },
+
+    // Many to many
+    friends: { link: 'user', inverse: 'friends', isArray: true },
+
+    // One to one
+    spouse: { link: 'user', inverse: 'spouse' },
+
+    // Many to one
+    pets: { link: 'animal', inverse: 'owner', isArray: true }
   })
 
   .transformOutput((context, record) => {
@@ -25,31 +33,37 @@ export default options =>
 
   .defineType('animal', {
     name: { type: String },
+    birthday: { type: Date },
+
+    // One to many
     owner: { link: 'user', inverse: 'pets' }
   })
 
   .transformOutput((context, record) => {
-    record.ageOfPet = 123
+    record.virtualProperty = 123
     return record
   })
 
-  .initialize()
+  const { events } = app.dispatcher
 
-  .then(app => {
-    const { events } = app.dispatcher
+  app.dispatcher.on(events.change, data => {
+    if (!process.env.REPORTER) {
+      for (let type in data)
+        Object.getOwnPropertySymbols(data[type])
+        .forEach(assignDescription.bind(null, data[type]))
 
-    app.dispatcher.on(events.change, data => {
-      if (!process.env.REPORTER) {
-        for (let type in data)
-          Object.getOwnPropertySymbols(data[type])
-          .forEach(assignDescription.bind(null, data[type]))
-
-        stderr.info(chalk.bold('Change:'), data)
-      }
-    })
-
-    return app
+      stderr.info(chalk.bold('Change:'), data)
+    }
   })
+
+  return app.initialize()
+
+  .then(() => Promise.all(Object.keys(fixtures).map(type =>
+    app.adapter.create(type, fixtures[type])
+  )))
+
+  .then(() => app)
+}
 
 
 function assignDescription (object, symbol) {

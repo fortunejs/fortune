@@ -10,13 +10,13 @@
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
 ```sh
-$ npm install fortune --save
+$ npm install fortune
 ```
 
 
 ## Motivation
 
-Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L113-L150). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
+Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The goal is to provide a system for automating data manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L140-L177). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
 ## Key Concepts
@@ -33,11 +33,11 @@ Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/C
 Here is how to get started, including a web server implementation:
 
 ```js
-import fortune from 'fortune'
+import Fortune from 'fortune'
 import http from 'http'
 
-const app = fortune.create()
-const listener = fortune.net.requestListener.bind(app)
+const app = new Fortune()
+const listener = Fortune.net.requestListener.bind(app)
 const server = http.createServer(listener)
 ```
 
