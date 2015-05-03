@@ -28,6 +28,7 @@ Test('create record', t => fetchTest('/animals', {
 })
 .catch(t.end))
 
+
 Test('find non-existent record', t => fetchTest('/animals/404', {
   method: 'get',
   headers: {

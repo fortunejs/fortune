@@ -1,6 +1,6 @@
 # To-do list
 
-- Update workflow: consistency checks, change event.
+- Integration test for standard serializer.
 - Micro API Serializer: everything.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
 - Write more tests with tape, and integration test using all included components.
@@ -8,6 +8,7 @@
 
 ## Done
 
+- Update workflow: consistency checks, change event.
 - Make sure that a record cannot link to itself on update (should use `enforce` function for this).
 - Enforce referential integrity.
 - Attach IDs to related records on related creation for JSON API (handled in schema design and middleware).

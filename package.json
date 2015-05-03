@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Data manipulation library.",
+  "description": "Data persistence and manipulation library.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",

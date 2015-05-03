@@ -1,6 +1,6 @@
 import Test from 'tape'
 
-Test('update record', t => {
+Test('get index', t => {
   t.assert(true)
   t.end()
 })

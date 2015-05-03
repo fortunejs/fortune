@@ -4,13 +4,12 @@ import * as stderr from '../stderr'
 import * as fixtures from '../fixtures'
 
 
-const defaults = {}
 const inParens = /\(([^\)]+)\)/
 
 
 export default options => {
 
-  const app = new Fortune(Object.assign({}, defaults, options))
+  const app = new Fortune(options)
 
   .defineType('user', {
     name: { type: String },
