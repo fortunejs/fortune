@@ -278,6 +278,56 @@ Test('update one to one with former related record', t => {
 })
 
 
+Test('update one to one with same value', t => {
+  let app, events
+
+  t.plan(3)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+        [ 1, 2 ], 'change event shows updated IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'user',
+      method: events.update,
+      payload: [{
+        id: 2,
+        set: { spouse: 1 }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'user',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 1).spouse, 2,
+      'related field is same')
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 2).spouse, 1,
+      'field is same')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
 Test('update one to many', t => {
   let app, events
 
