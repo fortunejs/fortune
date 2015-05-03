@@ -225,7 +225,7 @@ Test('update one to one with 2nd degree unset', t => {
 })
 
 
-Test('update one to one', t => {
+Test('update one to one with former related record', t => {
   let app, events
 
   t.plan(4)
@@ -271,6 +271,253 @@ Test('update one to one', t => {
     t.equal(arrayProxy.find(response.payload.records,
       record => record.id === 3).spouse, 2,
       'related field set')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
+Test('update one to many', t => {
+  let app, events
+
+  t.plan(4)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.animal[events.update],
+        [1], 'change event shows updated IDs')
+      t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+        [ 1, 2 ], 'change event shows related update IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'animal',
+      method: events.update,
+      payload: [{
+        id: 1,
+        set: { owner: 2 }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'user',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).pets, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).pets.sort((a, b) => a - b),
+      [ 1, 2, 3 ], 'related field pushed')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
+Test('update many to one (pull)', t => {
+  let app, events
+
+  t.plan(4)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.user[events.update],
+        [2], 'change event shows updated IDs')
+      t.deepEqual(data.animal[events.update],
+        [ 2, 3 ], 'change event shows related update IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'user',
+      method: events.update,
+      payload: [{
+        id: 2,
+        pull: { pets: [ 2, 3 ] }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'animal',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 2).owner, null,
+      'related field set')
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 3).owner, null,
+      'related field set')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
+Test('update many to one (push)', t => {
+  let app, events
+
+  t.plan(3)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.user[events.update],
+        [2], 'change event shows updated IDs')
+      t.deepEqual(data.animal[events.update],
+        [1], 'change event shows related update IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'user',
+      method: events.update,
+      payload: [{
+        id: 2,
+        push: { pets: 1 }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'animal',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 1).owner, 2,
+      'related field set')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
+Test('update many to many (pull)', t => {
+  let app, events
+
+  t.plan(2)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+        [ 2, 3 ], 'change event shows updated IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'user',
+      method: events.update,
+      payload: [{
+        id: 3,
+        pull: { friends: 2 }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'user',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).friends, [],
+      'related ID pulled')
+    t.end()
+  })
+
+  .catch(t.fail)
+})
+
+
+Test('update many to many (push)', t => {
+  let app, events
+
+  t.plan(2)
+
+  generateApp({
+    serializers: [{ type: DefaultSerializer }]
+  })
+
+  .then(a => {
+    app = a
+    ;({ events } = app.dispatcher)
+
+    app.dispatcher.on(events.change, data => {
+      t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+        [ 1, 2 ], 'change event shows updated IDs')
+    })
+
+    return app.dispatcher.request({
+      serializerInput: DefaultSerializer.id,
+      serializerOutput: DefaultSerializer.id,
+      type: 'user',
+      method: events.update,
+      payload: [{
+        id: 1,
+        push: { friends: 2 }
+      }]
+    })
+  })
+
+  .then(() => app.dispatcher.request({
+    serializerOutput: DefaultSerializer.id,
+    type: 'user',
+    method: events.find
+  }))
+
+  .then(response => {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).friends.sort((a, b) => a - b),
+      [ 1, 3 ], 'related ID pushed')
     t.end()
   })
 

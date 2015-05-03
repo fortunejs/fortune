@@ -25,7 +25,7 @@ $ npm install fortune
 
 ## Hypermedia Applications
 
-Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology). This is useful for generating hyperlinks to entities that compose records and their relationships.
+Fortune gives you hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology). This is useful for generating hyperlinks to entities that compose records and their relationships.
 
 
 ## License
