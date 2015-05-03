@@ -3,15 +3,6 @@
 Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The goal is to provide a system for automating data persistence and manipulation given a set of models that conform to [some limitations](https://github.com/fortunejs/fortune/blob/rewrite/lib/index.js#L134-L171). It is intended to be used standalone or composed within Node.js web frameworks (Koa, Express, Hapi, etc).
 
 
-## Key Concepts
-
-- Stateless request and response workflow.
-- Two interchangeable components: the **adapter** and **serializers**.
-- The adapter interacts with data storage.
-- Serializers parse requests and render responses.
-- Networking is optional, may be handled by serializers.
-
-
 ## Example
 
 Here is an example application, including a web server implementation:
@@ -46,11 +37,6 @@ app.initialize().then(() => server.listen(1337))
 ```
 
 Finally we need to call `initialize` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
-
-
-## Hypermedia Applications
-
-Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology). This is useful for generating hyperlinks to entities that compose records and their relationships.
 
 
 ## Design Considerations

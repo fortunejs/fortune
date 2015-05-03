@@ -18,7 +18,7 @@
     "no-var": 2,
     "quotes": [2, "single"],
     "semi": [2, "never"],
-    "semi-spacing": 2,
+    "semi-spacing": 0,
     "space-before-blocks": [2, "always"],
     "space-before-function-parentheses": [2, "always"],
     #"space-in-brackets": [2, "always", {

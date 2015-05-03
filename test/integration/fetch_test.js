@@ -21,23 +21,25 @@ export default (path, request) => generateApp().then(app => {
     typeof request.body === 'object' ? {
       body: JSON.stringify(request.body)
     } : null))
-    .then(response => {
-      server.close()
-      if (!process.env.REPORTER)
-        stderr.debug(chalk.bold(response.status), response.headers.raw());
-      ({ headers, status } = response)
-      return response.json()
-    }).then(json => {
-      if (!process.env.REPORTER)
-        stderr.log(json)
-      return {
-        status,
-        headers,
-        body: json
-      }
-    }, error => {
-      if (!process.env.REPORTER)
-        stderr.error(error)
-      return null
-    })
+
+  .then(response => {
+    server.close()
+    stderr.debug(chalk.bold(response.status), response.headers.raw())
+    ;({ headers, status } = response)
+    return response.json()
+  })
+
+  .then(json => {
+    stderr.log(json)
+    return {
+      status,
+      headers,
+      body: json
+    }
+  })
+
+  .catch(error => {
+    stderr.error(error)
+    return null
+  })
 })

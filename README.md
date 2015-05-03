@@ -13,4 +13,21 @@
 $ npm install fortune
 ```
 
+
+## Key Concepts
+
+- Stateless request and response workflow.
+- Two interchangeable components: the **adapter** and **serializers**.
+- The adapter interacts with data storage.
+- Serializers parse requests and render responses.
+- Networking is optional, may be handled by serializers.
+
+
+## Hypermedia Applications
+
+Fortune gives you a few hypermedia serializers for free. Given the definitions of the record types, it is able to construct a [domain ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)#Domain_ontology). This is useful for generating hyperlinks to entities that compose records and their relationships.
+
+
+## License
+
 Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE).

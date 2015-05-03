@@ -2,31 +2,36 @@ import chalk from 'chalk'
 import util from 'util'
 
 
+const silent = process.env.REPORTER
 const newLine = '\n'
 
 
 export function warn () {
-  console.warn(chalk.yellow(...Array.from(arguments, inspect)))
+  if (!silent)
+    console.warn(chalk.yellow(...Array.from(arguments, inspect)))
 }
 
 
 export function log () {
-  console.warn(chalk.green(...Array.from(arguments, inspect)))
+  if (!silent)
+    console.warn(chalk.green(...Array.from(arguments, inspect)))
 }
 
 
 export function info () {
-  console.warn(chalk.blue(...Array.from(arguments, inspect)))
+  if (!silent)
+    console.warn(chalk.blue(...Array.from(arguments, inspect)))
 }
 
 
 export function debug () {
-  console.warn(chalk.cyan(...Array.from(arguments, inspect)))
+  if (!silent)
+    console.warn(chalk.cyan(...Array.from(arguments, inspect)))
 }
 
 
 export function error () {
-  console.error(...Array.from(arguments, argument => {
+  if (!silent) console.error(...Array.from(arguments, argument => {
     if (argument instanceof Error)
       argument = argument.stack || argument.name
 

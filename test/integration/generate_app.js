@@ -46,13 +46,12 @@ export default options => {
   const { events } = app.dispatcher
 
   app.dispatcher.on(events.change, data => {
-    if (!process.env.REPORTER) {
-      for (let type in data)
-        Object.getOwnPropertySymbols(data[type])
+    for (let type in data) {
+      Object.getOwnPropertySymbols(data[type])
         .forEach(assignDescription.bind(null, data[type]))
-
-      stderr.info(chalk.bold('Change:'), data)
     }
+
+    stderr.info(chalk.bold('Change:'), data)
   })
 
   return app.initialize()

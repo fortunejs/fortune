@@ -5,6 +5,7 @@ import enforce from '../../lib/schema/enforce'
 import * as keys from '../../lib/common/reserved_keys'
 
 
+const recordType = 'person'
 const schema = {
   name: { type: String },
   birthdate: { type: Date, junk: 'asdf' },
@@ -68,7 +69,7 @@ Test('schema validate', t => {
 
 
 Test('schema enforce create', t => {
-  const testRecord = record => () => enforce(record, schema)
+  const testRecord = record => () => enforce(recordType, record, schema)
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
@@ -85,10 +86,10 @@ Test('schema enforce create', t => {
     [keys.primary]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  t.deepEqual(
-    enforce({ friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
+  t.deepEqual(enforce(recordType,
+    { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
-  t.equal(enforce({ random: 'abc' }, schema).random,
+  t.equal(enforce(recordType, { random: 'abc' }, schema).random,
     undefined, 'arbitrary fields are dropped')
   t.end()
 })
