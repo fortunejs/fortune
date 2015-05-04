@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Data persistence and manipulation library.",
+  "description": "Data interface library.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
@@ -47,17 +47,10 @@
     "node": ">=0.12.0"
   },
   "keywords": [
+    "adapter",
     "api",
-    "composable",
     "data",
-    "data-driven",
-    "framework",
     "hypermedia",
-    "json",
-    "jsonapi",
-    "json-api",
-    "rest",
-    "restful",
-    "workflow"
+    "serializer"
   ]
 }

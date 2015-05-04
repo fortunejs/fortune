@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE)
 [![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
-**Fortune** is a library for persisting and manipulating data on the server-side, intended to provide building blocks for web applications.
+**Fortune** is a library for working with data on the server-side, intended to provide building blocks for web applications.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
