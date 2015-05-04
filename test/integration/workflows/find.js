@@ -1,7 +1,7 @@
 import Test from 'tape'
-import Serializer from '../../lib/serializer'
-import generateApp from './generate_app'
-import * as stderr from '../stderr'
+import Serializer from '../../../lib/serializer'
+import generateApp from '../generate_app'
+import * as stderr from '../../stderr'
 
 
 class DefaultSerializer extends Serializer {}

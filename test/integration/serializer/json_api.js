@@ -1,5 +1,5 @@
 import Test from 'tape'
-import fetchTest from './fetch_test'
+import fetchTest from '../fetch_test'
 
 
 const contentType = 'application/vnd.api+json'

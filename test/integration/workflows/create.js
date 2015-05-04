@@ -1,8 +1,8 @@
 import Test from 'tape'
-import Serializer from '../../lib/serializer'
-import generateApp from './generate_app'
-import * as stderr from '../stderr'
-import * as arrayProxy from '../../lib/common/array_proxy'
+import Serializer from '../../../lib/serializer'
+import generateApp from '../generate_app'
+import * as stderr from '../../stderr'
+import * as arrayProxy from '../../../lib/common/array_proxy'
 
 
 class DefaultSerializer extends Serializer {}
