@@ -8,7 +8,7 @@ import * as arrayProxy from '../../lib/common/array_proxy'
 Test('update one to one with 2nd degree unset', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -35,7 +35,7 @@ Test('update one to one with 2nd degree unset', updateTest.bind({
 Test('update one to one with former related record', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -62,7 +62,7 @@ Test('update one to one with former related record', updateTest.bind({
 Test('update one to one with same value', updateTest.bind({
   plan: 3,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -83,12 +83,12 @@ Test('update one to one with same value', updateTest.bind({
 }))
 
 
-Test('update one to many', updateTest.bind({
+Test('update one to many (set)', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
-    t.deepEqual(data.animal[events.update],
+    t.deepEqual(data[events.update].animal,
       [1], 'change event shows updated IDs')
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows related update IDs')
   },
   type: 'animal',
@@ -109,12 +109,35 @@ Test('update one to many', updateTest.bind({
 }))
 
 
+Test('update one to many (unset)', updateTest.bind({
+  plan: 3,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].animal,
+      [1], 'change event shows updated IDs')
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [1], 'change event shows related update IDs')
+  },
+  type: 'animal',
+  payload: [{
+    id: 1,
+    set: { owner: null }
+  }],
+  relatedType: 'user',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).pets, [],
+      'related field pulled')
+    t.end()
+  }
+}))
+
+
 Test('update many to one (pull)', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update],
+    t.deepEqual(data[events.update].user,
       [2], 'change event shows updated IDs')
-    t.deepEqual(data.animal[events.update],
+    t.deepEqual(data[events.update].animal,
       [ 2, 3 ], 'change event shows related update IDs')
   },
   type: 'user',
@@ -138,9 +161,9 @@ Test('update many to one (pull)', updateTest.bind({
 Test('update many to one (push)', updateTest.bind({
   plan: 3,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update],
+    t.deepEqual(data[events.update].user,
       [2], 'change event shows updated IDs')
-    t.deepEqual(data.animal[events.update],
+    t.deepEqual(data[events.update].animal,
       [1], 'change event shows related update IDs')
   },
   type: 'user',
@@ -161,7 +184,7 @@ Test('update many to one (push)', updateTest.bind({
 Test('update many to many (pull)', updateTest.bind({
   plan: 2,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -182,7 +205,7 @@ Test('update many to many (pull)', updateTest.bind({
 Test('update many to many (push)', updateTest.bind({
   plan: 2,
   change: function (t, events, data) {
-    t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',

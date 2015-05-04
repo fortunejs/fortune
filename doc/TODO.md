@@ -1,6 +1,5 @@
 # To-do list
 
-- Replace `indexOf` with `includes`, add to array proxy.
 - Micro API Serializer: everything.
 - JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
 - Write more tests with tape, and integration test using all included components.
@@ -8,6 +7,7 @@
 
 ## Done
 
+- Replace `indexOf` with `includes`, add to array proxy.
 - Integration test for standard serializer.
 - Update workflow: consistency checks, change event.
 - Make sure that a record cannot link to itself on update (should use `enforce` function for this).

@@ -23,9 +23,9 @@ Test('delete record', t => {
     ;({ events } = app.dispatcher)
 
     app.dispatcher.on(events.change, data => {
-      t.ok(arrayProxy.find(data.user[events.delete], id => id === 3),
+      t.ok(arrayProxy.find(data[events.delete].user, id => id === 3),
         'change event shows deleted ID')
-      t.deepEqual(data.user[events.update].sort((a, b) => a - b),
+      t.deepEqual(data[events.update].user.sort((a, b) => a - b),
         [ 1, 2 ], 'change event shows updated IDs')
     })
 

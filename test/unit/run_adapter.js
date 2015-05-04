@@ -1,4 +1,5 @@
 import Test from 'tape'
+import * as arrayProxy from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/reserved_keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
@@ -147,7 +148,8 @@ export default (Adapter, options) =>
       t.equal(
         records.length, ids.length,
         'updated records has correct length')
-      t.equal(records.filter(record => ~record.friends.indexOf(5)).length,
+      t.equal(records.filter(record =>
+        arrayProxy.includes(record.friends, 5)).length,
         ids.length, 'value pushed')
     })
 
@@ -163,7 +165,8 @@ export default (Adapter, options) =>
       t.equal(
         records.length, ids.length,
         'updated records has correct length')
-      t.equal(records.filter(record => ~record.friends.indexOf(5)).length,
+      t.equal(records.filter(record =>
+        arrayProxy.includes(record.friends, 5)).length,
         0, 'value pulled')
     })
 
