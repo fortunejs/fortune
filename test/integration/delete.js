@@ -52,8 +52,11 @@ Test('delete record', t => {
     t.deepEqual(response.payload.records.map(record =>
       arrayProxy.find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
-    t.end()
+
+    return app.close()
   })
+
+  .then(() => t.end())
 
   .catch(error => {
     stderr.error(error)
