@@ -12,34 +12,40 @@ const PORT = 1337
 fetch.Promise = Promise
 
 
-export default (path, request) => generateApp().then(app => {
-  const listener = Fortune.net.requestListener.bind(app)
-  const server = http.createServer(listener).listen(PORT)
-  let headers, status
+export default (path, request) => {
+  let app
 
-  return fetch(`http:\/\/localhost:${PORT}${path}`, Object.assign({}, request,
-    typeof request.body === 'object' ? {
-      body: JSON.stringify(request.body)
-    } : null))
+  return generateApp().then(a => {
+    app = a
 
-  .then(response => {
-    server.close()
-    stderr.debug(chalk.bold(response.status), response.headers.raw())
-    ;({ headers, status } = response)
-    return response.json()
+    const listener = Fortune.net.requestListener.bind(app)
+    const server = http.createServer(listener).listen(PORT)
+    let headers, status
+
+    return fetch(`http:\/\/localhost:${PORT}${path}`, Object.assign({}, request,
+      typeof request.body === 'object' ? {
+        body: JSON.stringify(request.body)
+      } : null))
+
+    .then(response => {
+      server.close()
+      stderr.debug(chalk.bold(response.status), response.headers.raw())
+      ;({ headers, status } = response)
+      return response.json()
+    })
+
+    .then(json => {
+      stderr.log(json)
+      return app.close().then(() => ({
+        status,
+        headers,
+        body: json
+      }))
+    })
+
+    .catch(error => {
+      stderr.error(error)
+      return null
+    })
   })
-
-  .then(json => {
-    stderr.log(json)
-    return {
-      status,
-      headers,
-      body: json
-    }
-  })
-
-  .catch(error => {
-    stderr.error(error)
-    return null
-  })
-})
+}

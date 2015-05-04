@@ -63,7 +63,8 @@ Test('create record', t => {
     t.deepEqual(response.payload.records.map(record =>
       arrayProxy.find(record.friends, id => id === 4)),
       [ 4, 4 ], 'related records updated')
-    t.end()
+
+    return app.close().then(() => t.end())
   })
 
   .catch(error => {
