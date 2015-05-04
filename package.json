@@ -26,7 +26,6 @@
   },
   "devDependencies": {
     "babel": "^5.2.7",
-    "babel-eslint": "^3.0.1",
     "chalk": "^1.0.0",
     "connect": "^3.3.5",
     "eslint": "^0.20.0",
