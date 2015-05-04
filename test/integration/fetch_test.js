@@ -6,7 +6,7 @@ import Fortune from '../../lib'
 import * as stderr from '../stderr'
 
 
-const PORT = 1337
+const port = 1337
 
 // Set promise polyfill for old versions of Node.
 fetch.Promise = Promise
@@ -19,10 +19,10 @@ export default (path, request) => {
     app = a
 
     const listener = Fortune.net.requestListener.bind(app)
-    const server = http.createServer(listener).listen(PORT)
+    const server = http.createServer(listener).listen(port)
     let headers, status
 
-    return fetch(`http:\/\/localhost:${PORT}${path}`, Object.assign({}, request,
+    return fetch(`http:\/\/localhost:${port}${path}`, Object.assign({}, request,
       typeof request.body === 'object' ? {
         body: JSON.stringify(request.body)
       } : null))
@@ -36,7 +36,7 @@ export default (path, request) => {
 
     .then(json => {
       stderr.log(json)
-      return app.close().then(() => ({
+      return app.stop().then(() => ({
         status,
         headers,
         body: json

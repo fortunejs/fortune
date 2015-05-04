@@ -53,7 +53,7 @@ Test('delete record', t => {
       arrayProxy.find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
 
-    return app.close()
+    return app.stop()
   })
 
   .then(() => t.end())

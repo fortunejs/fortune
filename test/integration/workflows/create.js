@@ -64,7 +64,7 @@ Test('create record', t => {
       arrayProxy.find(record.friends, id => id === 4)),
       [ 4, 4 ], 'related records updated')
 
-    return app.close().then(() => t.end())
+    return app.stop().then(() => t.end())
   })
 
   .catch(error => {

@@ -272,7 +272,7 @@ function updateTest (t) {
 
   .then(this.related.bind(this, t))
 
-  .then(() => app.close())
+  .then(() => app.stop())
 
   .then(() => t.end())
 

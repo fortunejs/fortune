@@ -76,7 +76,7 @@ function findTest (t) {
   .then(response => {
     this.response.call(this, t, response)
 
-    return app.close().then(() => t.end())
+    return app.stop().then(() => t.end())
   })
 
   .catch(error => {

@@ -42,7 +42,7 @@ export default (Adapter, options) =>
     const adapter = new Adapter({ keys, errors, schemas, options })
     let ids
 
-    adapter.initialize()
+    adapter.connect()
 
     // Create.
     .then(() => adapter.create('user', records))

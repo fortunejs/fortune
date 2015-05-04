@@ -3,6 +3,7 @@ import './unit/adapters'
 import './unit/schema'
 
 // Integration tests.
+import './integration/middlewares'
 import './integration/workflows/find'
 import './integration/workflows/create'
 import './integration/workflows/update'

@@ -52,7 +52,7 @@ export default options => {
     stderr.info(chalk.bold('Change:'), data)
   })
 
-  return app.initialize()
+  return app.start()
 
   .then(() => Promise.all(Object.keys(fixtures).map(type =>
     app.adapter.create(type, fixtures[type])
