@@ -108,7 +108,7 @@ describe('EventSource implementation for resource changes', function () {
                         }
                     ]
                 }});
-                ess(baseUrl + '/books/changes/stream?filter.title=filtered&filter.author=Asimov&unrelevant=sillyvalue', {retry : false, headers : {
+                ess(baseUrl + '/books/changes/stream?title=filtered&author=Asimov&limit=100', {retry : false, headers : {
                     'Last-Event-ID' : lastEventId
                 }}).on('data', function(data) {
                     var data = JSON.parse(data.data);
