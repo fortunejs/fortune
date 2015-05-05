@@ -245,6 +245,53 @@ Test('update many to one (set)', updateTest.bind({
 }))
 
 
+Test('update many to one (set) #2', updateTest.bind({
+  plan: 3,
+  type: 'user',
+  payload: [{
+    id: 3,
+    set: { pets: [ 1, 2, 3 ] }
+  }],
+  relatedType: 'animal',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).owner, 3,
+      'related field set')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).owner, 3,
+      'related field set')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 3).owner, 3,
+      'related field set')
+  }
+}))
+
+
+Test('update many to one (set) #3', updateTest.bind({
+  plan: 4,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [ 1, 2 ], 'change event shows updated IDs')
+    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+      [ 1, 3 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [{
+    id: 2,
+    set: { pets: [ 1, 2 ] }
+  }],
+  relatedType: 'user',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).pets, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).pets, [ 1, 2 ],
+      'field set')
+  }
+}))
+
+
 Test('update many to one (unset)', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
@@ -358,7 +405,8 @@ function updateTest (t) {
     app = a
     ;({ events } = app.dispatcher)
 
-    app.dispatcher.on(events.change, this.change.bind(this, t, events))
+    if (this.change)
+      app.dispatcher.on(events.change, this.change.bind(this, t, events))
 
     return app.dispatch({
       serializerInput: DefaultSerializer.id,
