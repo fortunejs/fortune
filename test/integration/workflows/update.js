@@ -217,6 +217,59 @@ Test('update many to many (pull)', updateTest.bind({
 }))
 
 
+Test('update many to one (set)', updateTest.bind({
+  plan: 5,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [ 1, 2, 3 ], 'change event shows updated IDs')
+    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+      [ 1, 2, 3 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [{
+    id: 3,
+    set: { pets: [ 1, 2, 3 ] }
+  }],
+  relatedType: 'user',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).pets, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).pets, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 3).pets, [ 1, 2, 3 ],
+      'field set')
+  }
+}))
+
+
+Test('update many to one (unset)', updateTest.bind({
+  plan: 4,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [ 2 ], 'change event shows updated IDs')
+    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+      [ 2, 3 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [{
+    id: 2,
+    set: { pets: [] }
+  }],
+  relatedType: 'animal',
+  related: function (t, response) {
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 2).owner, null,
+      'related field unset')
+    t.equal(arrayProxy.find(response.payload.records,
+      record => record.id === 3).owner, null,
+      'related field unset')
+  }
+}))
+
+
 Test('update many to many (push)', updateTest.bind({
   plan: 2,
   change: function (t, events, data) {
@@ -233,6 +286,58 @@ Test('update many to many (push)', updateTest.bind({
     t.deepEqual(arrayProxy.find(response.payload.records,
       record => record.id === 2).friends.sort((a, b) => a - b),
       [ 1, 3 ], 'related ID pushed')
+  }
+}))
+
+
+Test('update many to many (set)', updateTest.bind({
+  plan: 4,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [ 1, 2 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [{
+    id: 1,
+    set: { friends: [ 2, 3 ] }
+  }],
+  relatedType: 'user',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).friends.sort((a, b) => a - b),
+      [ 2, 3 ], 'field set')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).friends.sort((a, b) => a - b),
+      [ 1, 3 ], 'related field pushed')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 3).friends.sort((a, b) => a - b),
+      [ 1, 2 ], 'field unchanged')
+  }
+}))
+
+
+Test('update many to many (unset)', updateTest.bind({
+  plan: 4,
+  change: function (t, events, data) {
+    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      [ 1, 2, 3 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [{
+    id: 3,
+    set: { friends: [] }
+  }],
+  relatedType: 'user',
+  related: function (t, response) {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).friends, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2).friends, [],
+      'related field pulled')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 3).friends, [],
+      'field set')
   }
 }))
 
@@ -278,6 +383,7 @@ function updateTest (t) {
 
   .catch(error => {
     stderr.error(error)
+    app.stop()
     t.fail(error)
   })
 }

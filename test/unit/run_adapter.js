@@ -175,13 +175,13 @@ export default (Adapter, options) =>
     .then(() => adapter.find('user', ids))
     .then(records => {
       t.equal(records.length, 0, 'records have been deleted')
-      return adapter.close()
+      return adapter.disconnect()
     })
     .then(t.end)
 
     // Anything goes wrong, it gets caught.
     .catch(error => {
       stderr.error(error)
-      throw error
+      t.fail()
     })
   })
