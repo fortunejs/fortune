@@ -16,4 +16,4 @@ This is a tradeoff that sacrifices flexibility and denormalizes relationships in
 
 ## Key-Value Storage
 
-There is no built-in support for deeply nested objects, it treats an object as a singular value.
+There is no built-in support for deeply nested objects, it treats an object as a singular value. Any comprehension of data types beyond the built-ins is specific to the adapter.
