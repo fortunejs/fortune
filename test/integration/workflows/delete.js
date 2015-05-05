@@ -29,7 +29,7 @@ Test('delete record', t => {
         [ 1, 2 ], 'change event shows updated IDs')
     })
 
-    return app.dispatcher.request({
+    return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: events.delete,
@@ -40,7 +40,7 @@ Test('delete record', t => {
   .then(response => {
     t.ok(!response.payload.records.length, 'records deleted')
 
-    return app.dispatcher.request({
+    return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: events.find,

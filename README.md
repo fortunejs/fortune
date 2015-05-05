@@ -16,7 +16,7 @@ $ npm install fortune
 
 ## Key Concepts
 
-- Stateless request and response workflow.
+- Stateless request and response, with pub/sub as a side effect.
 - Two interchangeable components: the **adapter** and **serializers**.
 - The adapter interacts with data storage.
 - Serializers parse requests and render responses.

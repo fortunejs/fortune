@@ -29,7 +29,7 @@ Test('create record', t => {
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
-    return app.dispatcher.request({
+    return app.dispatch({
       serializerInput: DefaultSerializer.id,
       serializerOutput: DefaultSerializer.id,
       type: 'user',
@@ -51,7 +51,7 @@ Test('create record', t => {
     t.equal(response.payload.records[0].name, 'Slimer McGee',
       'record has correct field value')
 
-    return app.dispatcher.request({
+    return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: events.find,

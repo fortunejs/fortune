@@ -68,7 +68,7 @@ function findTest (t) {
   .then(a => {
     app = a
 
-    return app.dispatcher.request(Object.assign({
+    return app.dispatch(Object.assign({
       serializerOutput: DefaultSerializer.id
     }, this.request))
   })

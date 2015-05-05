@@ -255,7 +255,7 @@ function updateTest (t) {
 
     app.dispatcher.on(events.change, this.change.bind(this, t, events))
 
-    return app.dispatcher.request({
+    return app.dispatch({
       serializerInput: DefaultSerializer.id,
       serializerOutput: DefaultSerializer.id,
       type: this.type,
@@ -264,7 +264,7 @@ function updateTest (t) {
     })
   })
 
-  .then(() => app.dispatcher.request({
+  .then(() => app.dispatch({
     serializerOutput: DefaultSerializer.id,
     type: this.relatedType,
     method: events.find
