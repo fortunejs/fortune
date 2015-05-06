@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "babel-runtime": "5.2.13",
-    "inflection": "1.7.0",
+    "inflection": "^1.7.0",
     "mongodb": "2.0.28",
     "nedb": "1.1.2",
     "negotiator": "0.5.1",
