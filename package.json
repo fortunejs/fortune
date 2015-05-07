@@ -17,15 +17,15 @@
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "5.2.13",
+    "babel-runtime": "5.2.16",
     "inflection": "^1.7.0",
-    "mongodb": "2.0.28",
+    "mongodb": "2.0.29",
     "nedb": "1.1.2",
-    "negotiator": "0.5.1",
+    "negotiator": "0.5.2",
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.2.13",
+    "babel": "5.2.16",
     "chalk": "1.0.0",
     "connect": "3.3.5",
     "eslint": "0.20.0",

@@ -11,6 +11,9 @@ Here is an example application, including a web server implementation:
 import Fortune from 'fortune'
 import http from 'http'
 
+// If you are in an ES6+ environment, you can import the library directly:
+// import Fortune from 'fortune/lib'
+
 const app = new Fortune()
 const listener = Fortune.net.requestListener.bind(app)
 const server = http.createServer(listener)
