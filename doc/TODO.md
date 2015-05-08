@@ -7,6 +7,7 @@
 
 ## Done
 
+- Stub apply update method in Adapter.
 - Replace `indexOf` with `includes`, add to array proxy.
 - Integration test for standard serializer.
 - Update workflow: consistency checks, change event.
