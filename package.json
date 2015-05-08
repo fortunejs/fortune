@@ -13,19 +13,19 @@
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
     "test": "make lint all && REPORTER=true node dist/test | tap-dot",
-    "prepublish": "make clean compile-lib",
+    "prepublish": "make clean compile-dist",
     "coverage": "make && istanbul cover dist/test"
   },
   "dependencies": {
-    "babel-runtime": "5.2.16",
-    "inflection": "^1.7.0",
-    "mongodb": "2.0.29",
+    "babel-runtime": "5.2.17",
+    "inflection": "^1.7.1",
+    "mongodb": "2.0.31",
     "nedb": "1.1.2",
     "negotiator": "0.5.2",
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.2.16",
+    "babel": "5.2.17",
     "chalk": "1.0.0",
     "connect": "3.3.5",
     "eslint": "0.20.0",
@@ -36,7 +36,7 @@
     "tap-dot": "1.0.0",
     "tape": "4.0.0"
   },
-  "main": "dist/lib/index.js",
+  "main": "dist/index.js",
   "files": [
     "dist/",
     "lib/",

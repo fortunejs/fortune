@@ -5,6 +5,8 @@ import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 
 
+const type = 'user'
+
 const schemas = {
   user: {
     name: { type: String },
@@ -22,166 +24,144 @@ const schemas = {
 const deadbeef = new Buffer('deadbeef')
 
 const records = [{
+  id: 1,
   name: 'bob',
   age: 42,
   alive: true,
   junk: { things: [ 'a', 'b', 'c' ] },
   birthday: new Date(),
-  friends: [ 1, 2, 3 ]
+  friends: [ 2 ],
+  bestFriend: 2
 }, {
+  id: 2,
   name: 'john',
   age: 36,
   alive: false,
   picture: deadbeef,
-  bestFriend: 4
+  friends: [ 1 ],
+  bestFriend: 1
 }]
 
 
-export default (Adapter, options) =>
-  Test(`Adapter: ${Adapter.name}`, t => {
-    const adapter = new Adapter({ keys, errors, schemas, options })
-    let ids
+export default (Adapter, options) => {
 
-    adapter.connect()
-
-    // Create.
-    .then(() => adapter.create('user', records))
-    .then(createdRecords => {
-      ids = createdRecords.map(record => record[keys.primary])
-      t.equal(
-        records.length, createdRecords.length,
-        'created records has correct length')
-      t.equal(
-        createdRecords.filter(record => record[keys.primary]).length,
-        records.length, 'created records have primary keys')
-    })
-
-    // Find: match.
-    .then(() => adapter.find('user', ids, { match: { name: 'john' } }))
+  Test('find: match', t => run(t, adapter =>
+    adapter.find(type, null, { match: { name: 'john' } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
       t.assert(records[0].picture.equals(deadbeef), 'buffer is correct')
       t.equal(records[0].name, 'john', 'matched correct record')
     })
+  ))
 
-    // Find: sort ascending.
-    .then(() => adapter.find('user', ids, { sort: { age: 1 } }))
+  Test('find: sort ascending', t => run(t, adapter =>
+    adapter.find(type, null, { sort: { age: 1 } })
     .then(records => {
-      t.equal(records.length, ids.length, 'sort length is correct')
       t.deepEqual(records.map(record => record.age), [ 36, 42 ],
         'ascending sort order correct')
     })
+  ))
 
-    // Find: sort descending.
-    .then(() => adapter.find('user', ids, { sort: { age: -1 } }))
+  Test('find: sort descending', t => run(t, adapter =>
+    adapter.find(type, null, { sort: { age: -1 } })
     .then(records => {
-      t.equal(records.length, ids.length, 'sort length is correct')
       t.deepEqual(records.map(record => record.age), [ 42, 36 ],
         'descending sort order correct')
     })
+  ))
 
-    // Find: limit.
-    .then(() => adapter.find('user', ids, { limit: 1 }))
+  Test('find: limit', t => run(t, adapter =>
+    adapter.find(type, null, { limit: 1 })
     .then(records => {
       t.equal(records.length, 1, 'limit length is correct')
     })
+  ))
 
-    // Find: offset.
-    .then(() => adapter.find('user', ids, { offset: 1 }))
+  Test('find: offset', t => run(t, adapter =>
+    adapter.find(type, null, { offset: 1 })
     .then(records => {
       t.equal(records.length, 1, 'offset length is correct')
     })
+  ))
 
-    // Find: fields.
-    .then(() => adapter.find('user', ids, {
-      fields: { name: true, alive: true }
-    }))
+  Test('find: fields', t => run(t, adapter =>
+    adapter.find(type, null, { fields: { name: true, alive: true } })
     .then(records => {
-      t.equal(records.length, ids.length, 'fields length is correct')
       t.deepEqual(records.map(record => Object.keys(record).length),
         // We expect 3 fields, because we always get ID.
-        Array.from({ length: ids.length }).map(() => 3),
+        Array.from({ length: records.length }).map(() => 3),
         'fields length is correct')
     })
+  ))
 
-    // Update: set.
-    .then(() => {
-      return adapter.update('user', ids.map(id => ({
-        id,
-        set: { name: 'billy' }
-      })))
-    })
-    .then(() => adapter.find('user', ids))
+  Test('update: replace', t => run(t, adapter =>
+    adapter.update(type, [
+      { id: 1, replace: { name: 'billy' } },
+      { id: 2, replace: { name: 'billy' } }
+    ])
+    .then(() => adapter.find(type))
     .then(records => {
-      t.equal(
-        records.length, ids.length,
-        'updated records has correct length')
       t.equal(records.filter(record => record.name !== 'billy').length,
         0, 'field updated on set')
     })
+  ))
 
-    // Update: unset.
-    .then(() => {
-      return adapter.update('user', ids.map(id => ({
-        id,
-        set: { name: null }
-      })))
-    })
-    .then(() => adapter.find('user', ids))
+  Test('update: unset', t => run(t, adapter =>
+    adapter.update(type, [
+      { id: 1, replace: { name: null } },
+      { id: 2, replace: { name: null } }
+    ])
+    .then(() => adapter.find(type))
     .then(records => {
-      t.equal(
-        records.length, ids.length,
-        'updated records has correct length')
       t.equal(records.filter(record => record.name !== null).length,
         0, 'field updated on unset')
     })
+  ))
 
-    // Update: push.
-    .then(() => {
-      return adapter.update('user', ids.map(id => ({
-        id,
-        push: { friends: [5] }
-      })))
-    })
-    .then(() => adapter.find('user', ids))
+  Test('update: push', t => run(t, adapter =>
+    adapter.update(type, [
+      { id: 1, push: { friends: 5 } },
+      { id: 2, push: { friends: [5] } }
+    ])
+    .then(() => adapter.find(type))
     .then(records => {
-      t.equal(
-        records.length, ids.length,
-        'updated records has correct length')
       t.equal(records.filter(record =>
         arrayProxy.includes(record.friends, 5)).length,
-        ids.length, 'value pushed')
+        records.length, 'value pushed')
     })
+  ))
 
-    // Update: pull.
-    .then(() => {
-      return adapter.update('user', ids.map(id => ({
-        id,
-        pull: { friends: [5] }
-      })))
-    })
-    .then(() => adapter.find('user', ids))
+  Test('update: pull', t => run(t, adapter =>
+    adapter.update(type, [
+      { id: 1, pull: { friends: 2 } },
+      { id: 2, pull: { friends: [1] } }
+    ])
+    .then(() => adapter.find(type))
     .then(records => {
-      t.equal(
-        records.length, ids.length,
-        'updated records has correct length')
-      t.equal(records.filter(record =>
-        arrayProxy.includes(record.friends, 5)).length,
+      t.equal(records.filter(record => record.friends.length).length,
         0, 'value pulled')
     })
+  ))
 
-    // Delete.
-    .then(() => adapter.delete('user', ids))
-    .then(() => adapter.find('user', ids))
-    .then(records => {
-      t.equal(records.length, 0, 'records have been deleted')
-      return adapter.disconnect()
-    })
-    .then(t.end)
+  function run (t, fn) {
+    return adapterTest(Adapter, options, t, fn)
+  }
 
-    // Anything goes wrong, it gets caught.
-    .catch(error => {
-      stderr.error(error)
-      t.fail()
-    })
+}
+
+
+function adapterTest (Adapter, options, t, fn) {
+  const adapter = new Adapter({ keys, errors, schemas, options })
+
+  adapter.connect()
+  .then(() => adapter.delete(type))
+  .then(() => adapter.create(type, records))
+  .then(() => fn(adapter))
+  .then(() => adapter.delete(type))
+  .then(() => adapter.disconnect())
+  .then(t.end)
+  .catch(error => {
+    stderr.error(error)
+    adapter.disconnect().then(t.fail)
   })
+}

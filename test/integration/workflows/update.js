@@ -14,7 +14,7 @@ Test('update one to one with 2nd degree unset', updateTest.bind({
   type: 'user',
   payload: [{
     id: 3,
-    set: { spouse: 2 }
+    replace: { spouse: 2 }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -40,7 +40,7 @@ Test('update one to one with former related record', updateTest.bind({
   type: 'user',
   payload: [{
     id: 2,
-    set: { spouse: 3 }
+    replace: { spouse: 3 }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -66,7 +66,7 @@ Test('update one to one with same value', updateTest.bind({
   type: 'user',
   payload: [{
     id: 2,
-    set: { spouse: 1 }
+    replace: { spouse: 1 }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -89,7 +89,7 @@ Test('update one to one with null value', updateTest.bind({
   type: 'user',
   payload: [{
     id: 2,
-    set: { spouse: null }
+    replace: { spouse: null }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -114,7 +114,7 @@ Test('update one to many (set)', updateTest.bind({
   type: 'animal',
   payload: [{
     id: 1,
-    set: { owner: 2 }
+    replace: { owner: 2 }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -139,7 +139,7 @@ Test('update one to many (unset)', updateTest.bind({
   type: 'animal',
   payload: [{
     id: 1,
-    set: { owner: null }
+    replace: { owner: null }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -228,7 +228,7 @@ Test('update many to one (set)', updateTest.bind({
   type: 'user',
   payload: [{
     id: 3,
-    set: { pets: [ 1, 2, 3 ] }
+    replace: { pets: [ 1, 2, 3 ] }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -250,7 +250,7 @@ Test('update many to one (set) #2', updateTest.bind({
   type: 'user',
   payload: [{
     id: 3,
-    set: { pets: [ 1, 2, 3 ] }
+    replace: { pets: [ 1, 2, 3 ] }
   }],
   relatedType: 'animal',
   related: function (t, response) {
@@ -278,7 +278,7 @@ Test('update many to one (set) #3', updateTest.bind({
   type: 'user',
   payload: [{
     id: 2,
-    set: { pets: [ 1, 2 ] }
+    replace: { pets: [ 1, 2 ] }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -303,7 +303,7 @@ Test('update many to one (unset)', updateTest.bind({
   type: 'user',
   payload: [{
     id: 2,
-    set: { pets: [] }
+    replace: { pets: [] }
   }],
   relatedType: 'animal',
   related: function (t, response) {
@@ -346,7 +346,7 @@ Test('update many to many (set)', updateTest.bind({
   type: 'user',
   payload: [{
     id: 1,
-    set: { friends: [ 2, 3 ] }
+    replace: { friends: [ 2, 3 ] }
   }],
   relatedType: 'user',
   related: function (t, response) {
@@ -372,7 +372,7 @@ Test('update many to many (unset)', updateTest.bind({
   type: 'user',
   payload: [{
     id: 3,
-    set: { friends: [] }
+    replace: { friends: [] }
   }],
   relatedType: 'user',
   related: function (t, response) {
