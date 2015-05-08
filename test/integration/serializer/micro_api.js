@@ -1,6 +1,7 @@
 import Test from 'tape'
 import fetchTest from '../fetch_test'
 
+
 const mediaType = 'application/vnd.micro+json'
 
 
@@ -17,6 +18,5 @@ Test('show index', t => fetchTest('/', {
     'content type is correct')
   t.equal(Object.keys(response.body['@links']).length,
     2, 'number of types correct')
-  console.log(response.body['@links'])
   t.end()
 }))

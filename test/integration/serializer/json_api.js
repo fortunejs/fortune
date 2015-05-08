@@ -1,6 +1,7 @@
 import Test from 'tape'
 import fetchTest from '../fetch_test'
 
+
 const mediaType = 'application/vnd.api+json'
 
 

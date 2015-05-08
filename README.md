@@ -16,11 +16,48 @@ $ npm install fortune
 
 ## Key Concepts
 
-- Stateless request and response, with events as a side effect.
-- Two interchangeable components: the **adapter** and **serializers**.
+- **Define record types and get CRUD for free.**
+- Two interchangeable components: the adapter and serializers.
 - The adapter interacts with data storage.
 - Serializers parse requests and render responses.
+- Stateless request and response, with events as a side effect.
 - Networking is optional, may be handled by serializers.
+
+
+## Example
+
+Here is an example application, including a web server implementation:
+
+```js
+import Fortune from 'fortune'
+import http from 'http'
+
+const app = new Fortune()
+const listener = Fortune.net.requestListener.bind(app)
+const server = http.createServer(listener)
+```
+
+This sets up an instance of Fortune with default options, a request listener bound to the instance, and an HTTP server instance. The `requestListener` does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
+
+```js
+app.defineType('user', {
+  name: { type: String },
+  groups: { link: 'group', isArray: true, inverse: 'members' }
+})
+
+app.defineType('group', {
+  name: { type: String },
+  members: { link: 'user', isArray: true, inverse: 'group' }
+})
+```
+
+Defining record types. There is a many-to-many relationship between `user` and `group` on the `groups` and `members` fields respectively.
+
+```js
+app.start().then(() => server.listen(1337))
+```
+
+Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
 
 
 ## License

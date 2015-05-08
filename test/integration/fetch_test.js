@@ -31,21 +31,20 @@ export default (path, request) => {
       server.close()
       stderr.debug(chalk.bold(response.status), response.headers.raw())
       ;({ headers, status } = response)
-      return response.json()
+      return app.stop().then(() => response.json())
     })
 
     .then(json => {
       stderr.log(json)
-      return app.stop().then(() => ({
+      return {
         status,
         headers,
         body: json
-      }))
+      }
     })
 
     .catch(error => {
       stderr.error(error)
-      return null
     })
   })
 }
