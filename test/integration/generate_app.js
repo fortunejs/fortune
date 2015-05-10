@@ -54,11 +54,22 @@ export default options => {
 
   return app.start()
 
+  // Delete all previous records.
+  .then(() => Promise.all(Object.keys(fixtures).map(type =>
+    app.adapter.delete(type)
+  )))
+
+  // Create fixtures.
   .then(() => Promise.all(Object.keys(fixtures).map(type =>
     app.adapter.create(type, fixtures[type])
   )))
 
   .then(() => app)
+
+  .catch(error => {
+    app.stop()
+    throw error
+  })
 }
 
 

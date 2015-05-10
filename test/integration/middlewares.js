@@ -24,8 +24,8 @@ class DefaultSerializer extends Serializer {
 DefaultSerializer.id = mediaType
 
 const frameworks = [
-  { name: 'express', fn: express},
-  { name: 'connect', fn: connect}
+  { name: 'express', fn: express },
+  { name: 'connect', fn: connect }
 ]
 
 
@@ -61,7 +61,8 @@ frameworks.forEach(framework => {
     })
 
     .then(json => {
-      t.deepEqual(json.sort(), ['animal', 'user'], 'gets the index')
+      t.deepEqual(json.sort(),
+        [ 'animal', 'user' ], 'gets the index')
       t.end()
     })
   })

@@ -70,5 +70,6 @@ Test('create record', t => {
   .catch(error => {
     stderr.error(error)
     t.fail(error)
+    t.end()
   })
 })

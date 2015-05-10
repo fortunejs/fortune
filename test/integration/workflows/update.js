@@ -296,7 +296,7 @@ Test('update many to one (unset)', updateTest.bind({
   plan: 4,
   change: function (t, events, data) {
     t.deepEqual(data[events.update].user.sort((a, b) => a - b),
-      [ 2 ], 'change event shows updated IDs')
+      [2], 'change event shows updated IDs')
     t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
       [ 2, 3 ], 'change event shows updated IDs')
   },
@@ -433,5 +433,6 @@ function updateTest (t) {
     stderr.error(error)
     app.stop()
     t.fail(error)
+    t.end()
   })
 }

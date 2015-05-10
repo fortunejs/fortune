@@ -31,19 +31,20 @@ export function debug () {
 
 
 export function error () {
-  if (!silent) console.error(...Array.from(arguments, argument => {
-    if (argument instanceof Error)
-      argument = argument.stack || argument.name
+  if (!silent)
+    console.error(...Array.from(arguments, argument => {
+      if (argument instanceof Error)
+        argument = argument.stack || argument.name
 
-    if (typeof argument !== 'string')
-      return chalk.red(inspect(argument))
+      if (typeof argument !== 'string')
+        return chalk.red(inspect(argument))
 
-    // Assume that everything past the first line of an error
-    // is a stack trace, and color it differently.
-    return argument.split(newLine).map((line, index) =>
-      index > 0 ? chalk.dim(line) : chalk.red(line)
-    ).join(newLine)
-  }))
+      // Assume that everything past the first line of an error
+      // is a stack trace, and color it differently.
+      return argument.split(newLine).map((line, index) =>
+        index > 0 ? chalk.dim(line) : chalk.red(line)
+      ).join(newLine)
+    }))
 }
 
 

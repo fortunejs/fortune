@@ -21,35 +21,43 @@ const schemas = {
   }
 }
 
-const deadbeef = new Buffer('deadbeef')
+const deadbeef = new Buffer(4)
+deadbeef.writeUInt32BE(0xdeadbeef, 0)
 
 const records = [{
   id: 1,
   name: 'bob',
   age: 42,
-  alive: true,
+  isAlive: true,
   junk: { things: [ 'a', 'b', 'c' ] },
   birthday: new Date(),
-  friends: [ 2 ],
+  friends: [2],
   bestFriend: 2
 }, {
   id: 2,
   name: 'john',
   age: 36,
-  alive: false,
+  isAlive: false,
   picture: deadbeef,
-  friends: [ 1 ],
+  friends: [1],
   bestFriend: 1
 }]
 
 
 export default (Adapter, options) => {
 
+  Test('find: collection', t => run(t, adapter =>
+    adapter.find(type)
+    .then(records => {
+      t.equal(records.count, 2, 'count is correct')
+    })
+  ))
+
   Test('find: match', t => run(t, adapter =>
     adapter.find(type, null, { match: { name: 'john' } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
-      t.assert(records[0].picture.equals(deadbeef), 'buffer is correct')
+      t.ok(records[0].picture.equals(deadbeef), 'buffer is correct')
       t.equal(records[0].name, 'john', 'matched correct record')
     })
   ))
@@ -85,7 +93,7 @@ export default (Adapter, options) => {
   ))
 
   Test('find: fields', t => run(t, adapter =>
-    adapter.find(type, null, { fields: { name: true, alive: true } })
+    adapter.find(type, null, { fields: { name: true, isAlive: true } })
     .then(records => {
       t.deepEqual(records.map(record => Object.keys(record).length),
         // We expect 3 fields, because we always get ID.
@@ -99,7 +107,10 @@ export default (Adapter, options) => {
       { id: 1, replace: { name: 'billy' } },
       { id: 2, replace: { name: 'billy' } }
     ])
-    .then(() => adapter.find(type))
+    .then(number => {
+      t.equal(number, 2, 'number updated correct')
+      return adapter.find(type)
+    })
     .then(records => {
       t.equal(records.filter(record => record.name !== 'billy').length,
         0, 'field updated on set')
@@ -111,7 +122,10 @@ export default (Adapter, options) => {
       { id: 1, replace: { name: null } },
       { id: 2, replace: { name: null } }
     ])
-    .then(() => adapter.find(type))
+    .then(number => {
+      t.equal(number, 2, 'number updated correct')
+      return adapter.find(type)
+    })
     .then(records => {
       t.equal(records.filter(record => record.name !== null).length,
         0, 'field updated on unset')
@@ -123,7 +137,10 @@ export default (Adapter, options) => {
       { id: 1, push: { friends: 5 } },
       { id: 2, push: { friends: [5] } }
     ])
-    .then(() => adapter.find(type))
+    .then(number => {
+      t.equal(number, 2, 'number updated correct')
+      return adapter.find(type)
+    })
     .then(records => {
       t.equal(records.filter(record =>
         arrayProxy.includes(record.friends, 5)).length,
@@ -136,7 +153,10 @@ export default (Adapter, options) => {
       { id: 1, pull: { friends: 2 } },
       { id: 2, pull: { friends: [1] } }
     ])
-    .then(() => adapter.find(type))
+    .then(number => {
+      t.equal(number, 2, 'number updated correct')
+      return adapter.find(type)
+    })
     .then(records => {
       t.equal(records.filter(record => record.friends.length).length,
         0, 'value pulled')
@@ -156,12 +176,22 @@ function adapterTest (Adapter, options, t, fn) {
   adapter.connect()
   .then(() => adapter.delete(type))
   .then(() => adapter.create(type, records))
-  .then(() => fn(adapter))
+  .then(r => {
+    t.equal(r.length, records.length, 'number created is correct')
+    t.equal(arrayProxy.find(r, record => record.id === 1).picture, null,
+      'missing field is null')
+    return fn(adapter)
+  })
   .then(() => adapter.delete(type))
-  .then(() => adapter.disconnect())
+  .then(number => {
+    t.equal(number, records.length, 'number deleted is correct')
+    return adapter.disconnect()
+  })
   .then(t.end)
   .catch(error => {
     stderr.error(error)
-    adapter.disconnect().then(t.fail)
+    adapter.disconnect()
+    t.fail(error)
+    t.end()
   })
 }

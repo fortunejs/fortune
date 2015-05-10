@@ -12,14 +12,16 @@ const port = 1337
 fetch.Promise = Promise
 
 
-export default (path, request) => {
-  let app
+export default (t, path, request, fn) => {
+  let app, server
 
-  return generateApp().then(a => {
+  return generateApp()
+
+  .then(a => {
     app = a
 
     const listener = Fortune.net.requestListener.bind(app)
-    const server = http.createServer(listener).listen(port)
+    server = http.createServer(listener).listen(port)
     let headers, status
 
     return fetch(`http:\/\/localhost:${port}${path}`, Object.assign({}, request,
@@ -36,15 +38,21 @@ export default (path, request) => {
 
     .then(json => {
       stderr.log(json)
-      return {
+      return fn({
         status,
         headers,
         body: json
-      }
+      })
     })
 
-    .catch(error => {
-      stderr.error(error)
-    })
+    .then(t.end)
+  })
+
+  .catch(error => {
+    stderr.error(error)
+    if (app) app.stop()
+    if (server) server.close()
+    t.fail(error)
+    t.end()
   })
 }

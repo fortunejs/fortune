@@ -10,6 +10,7 @@
     "camelcase": 2,
     "consistent-return": 2,
     "curly": [2, "multi"],
+    "dot-notation": 0,
     "eol-last": 2,
     "eqeqeq": 2,
     "max-len": [2, 80, 4],
@@ -27,14 +28,14 @@
     "semi-spacing": 0,
     "space-before-blocks": [2, "always"],
     "space-before-function-parentheses": [2, "always"],
-    #"space-in-brackets": [2, "always", {
-    #  "singleValue": false,
-    #  "objectsInArrays": false,
-    #  "arraysInArrays": false,
-    #  "arraysInObjects": true,
-    #  "objectsInObjects": true,
-    #  "propertyName": false
-    #}],
+    "space-in-brackets": [2, "always", {
+      "singleValue": false,
+      "objectsInArrays": false,
+      "arraysInArrays": false,
+      "arraysInObjects": true,
+      "objectsInObjects": true,
+      "propertyName": false
+    }],
     "space-return-throw-case": 2
   }
 }

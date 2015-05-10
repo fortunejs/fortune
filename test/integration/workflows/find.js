@@ -10,7 +10,8 @@ DefaultSerializer.id = Symbol()
 
 Test('get index', findTest.bind({
   response: function (t, response) {
-    t.deepEqual(response.payload.sort(), ['animal', 'user'], 'gets the index')
+    t.deepEqual(response.payload.sort(),
+      [ 'animal', 'user' ], 'gets the index')
   }
 }))
 
@@ -41,7 +42,7 @@ Test('get IDs', findTest.bind({
 Test('get includes', findTest.bind({
   request: {
     type: 'user',
-    ids: [1, 2 ],
+    ids: [ 1, 2 ],
     include: [['pets']]
   },
   response: function (t, response) {
@@ -82,5 +83,6 @@ function findTest (t) {
   .catch(error => {
     stderr.error(error)
     t.fail(error)
+    t.end()
   })
 }

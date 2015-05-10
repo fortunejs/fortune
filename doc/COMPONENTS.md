@@ -10,7 +10,7 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 | Adapter          | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | [NeDB](https://github.com/louischatriot/nedb) (included, default) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
-| [MongoDB](https://mongodb.com) (included) | [Dali Zheng](http://daliwa.li) | Document data store. |
+| [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. |
 
 
 ## Serializers
@@ -30,4 +30,3 @@ Map external input to the dispatcher and map the response to an external output.
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | requestListener (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar middleware frameworks. |
-| Koa middleware (included) | [Dali Zheng](http://daliwa.li) | Middleware that wraps around the `requestListener` for use with the [Koa](http://koajs.com/) framework. |

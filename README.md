@@ -10,7 +10,7 @@
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
 ```sh
-$ npm install fortune
+$ npm install fortune --save
 ```
 
 
@@ -42,12 +42,12 @@ This sets up an instance of Fortune with default options, a request listener bou
 ```js
 app.defineType('user', {
   name: { type: String },
-  groups: { link: 'group', isArray: true, inverse: 'members' }
+  groups: { link: 'group', inverse: 'members', isArray: true }
 })
 
 app.defineType('group', {
   name: { type: String },
-  members: { link: 'user', isArray: true, inverse: 'group' }
+  members: { link: 'user', inverse: 'group', isArray: true }
 })
 ```
 
