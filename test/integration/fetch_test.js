@@ -33,15 +33,22 @@ export default (t, path, request, fn) => {
       server.close()
       stderr.debug(chalk.bold(response.status), response.headers.raw())
       ;({ headers, status } = response)
-      return app.stop().then(() => response.json())
+      return app.stop().then(() => response.text())
     })
 
-    .then(json => {
-      stderr.log(json)
+    .then(text => {
+      try {
+        if (text.length) {
+          text = JSON.parse(text)
+          stderr.log(text)
+        }
+      } catch (error) {
+        stderr.warn(`Failed to parse JSON.`)
+      }
       return fn({
         status,
         headers,
-        body: json
+        body: text
       })
     })
 

@@ -10,10 +10,17 @@ Test('create record', t =>
     method: 'post',
     body: {
       data: {
-        id: 4,
         type: 'animal',
-        name: 'Rover',
-        owner: 1
+        attributes: {
+          name: 'Rover',
+          birthday: Date.now(),
+          picture: new Buffer('This is a string.').toString('base64')
+        },
+        links: {
+          owner: {
+            linkage: { type: 'user', id: 1 }
+          }
+        }
       }
     },
     headers: {
@@ -27,6 +34,10 @@ Test('create record', t =>
     t.ok(response.headers.get('location').match(/animal/),
       'location header looks right')
     t.equal(response.body.data.type, 'animal', 'type is correct')
+    t.equal(new Buffer(response.body.data.attributes.picture, 'base64')
+      .toString(), 'This is a string.', 'buffer is correct')
+    t.ok(Date.now() - new Date(response.body.data.attributes.birthday)
+      .getTime() < 1000, 'date is close enough')
   }))
 
 
@@ -48,6 +59,55 @@ Test('create record with existing ID should fail', t =>
     t.equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
     t.equal(response.body.errors.length, 1, 'error is correct')
+  }))
+
+
+Test('update record', t =>
+  fetchTest(t, '/user/2', {
+    method: 'patch',
+    body: {
+      data: {
+        id: 2,
+        type: 'user',
+        attributes: {
+          name: 'Jenny Death'
+        },
+        links: {
+          spouse: {
+            linkage: { type: 'user', id: 3 }
+          },
+          friends: {
+            linkage: [
+              { type: 'user', id: 1 },
+              { type: 'user', id: 3 }
+            ]
+          }
+        }
+      }
+    },
+    headers: {
+      'Accept': mediaType,
+      'Content-Type': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+    t.equal(response.headers.get('content-type'), mediaType,
+      'content type is correct')
+  }))
+
+
+Test('sort a collection and use sparse fields', t =>
+  fetchTest(t, '/users/?sort=+birthday,-name&fields[user]=name,birthday', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.deepEqual(
+      response.body.data.map(record => record.attributes.name),
+      [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
+      'sort order is correct')
   }))
 
 
@@ -76,4 +136,17 @@ Test('find a single non-existent record', t =>
     t.ok('errors' in response.body, 'errors object exists')
     t.equal(response.body.errors[0].title, 'NotFoundError', 'title is correct')
     t.ok(response.body.errors[0].detail.length, 'detail exists')
+  }))
+
+
+Test('delete a single record', t =>
+  fetchTest(t, '/animals/2', {
+    method: 'delete',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+    t.equal(response.headers.get('content-type'), mediaType,
+      'content type is correct')
   }))

@@ -14,9 +14,13 @@ export default options => {
   .defineType('user', {
     name: { type: String },
     birthday: { type: Date },
+    picture: { type: Buffer },
 
     // Many to many
     friends: { link: 'user', inverse: 'friends', isArray: true },
+
+    // Many to many, denormalized inverse
+    enemies: { link: 'user', isArray: true },
 
     // One to one
     spouse: { link: 'user', inverse: 'spouse' },
@@ -33,6 +37,7 @@ export default options => {
   .defineType('animal', {
     name: { type: String },
     birthday: { type: Date },
+    picture: { type: Buffer },
 
     // One to many
     owner: { link: 'user', inverse: 'pets' }

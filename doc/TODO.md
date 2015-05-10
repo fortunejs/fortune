@@ -1,12 +1,14 @@
 # To-do list
 
 - Micro API Serializer: everything.
-- JSON API Serializer: cast complex input values, parse create & update, show included records, relationship entities.
+- JSON API Serializer: pagination, relationship entities.
 - Write more tests with tape, and integration test using all included components.
 
 
 ## Done
 
+- Hide denormalized inverse fields somehow.
+- Automatically denormalize inverse fields.
 - Stub apply update method in Adapter.
 - Replace `indexOf` with `includes`, add to array proxy.
 - Integration test for standard serializer.

@@ -1,5 +1,5 @@
 import Test from 'tape'
-import checkSchemas from '../../lib/schema/check_schemas'
+import ensureSchemas from '../../lib/schema/ensure_schemas'
 import validate from '../../lib/schema/validate'
 import enforce from '../../lib/schema/enforce'
 import * as keys from '../../lib/common/reserved_keys'
@@ -38,10 +38,6 @@ Test('schema validate', t => {
 
   t.throws(testSchema({
     badType: 'asdf'
-  }), invalid)
-
-  t.throws(testSchema({
-    noInverse: { link: 'person' }
   }), invalid)
 
   t.throws(testSchema({
@@ -95,8 +91,8 @@ Test('schema enforce create', t => {
 })
 
 
-Test('check schema', t => {
-  const check = schemas => () => checkSchemas(schemas)
+Test('ensure schemas', t => {
+  const check = schemas => () => ensureSchemas(schemas)
 
   t.throws(check({
     post: {
@@ -133,6 +129,29 @@ Test('check schema', t => {
       friends: { link: 'user', isArray: true, inverse: 'friends' }
     }
   }), 'self inverse is valid')
+
+  const schemas = {
+    post: {
+      comments: { link: 'comment', isArray: true }
+    },
+    comment: {}
+  }
+
+  ensureSchemas(schemas)
+
+  const denormalizedField = '__post_comments_inverse'
+
+  t.equal(schemas.post.comments[keys.inverse], denormalizedField,
+    'denormalized inverse field assigned')
+
+  t.equal(schemas.comment[denormalizedField][keys.link],
+    'post', 'denormalized inverse field link correct')
+
+  t.equal(schemas.comment[denormalizedField][keys.isArray],
+    true, 'denormalized inverse field is array')
+
+  t.equal(schemas.comment[denormalizedField][keys.denormalizedInverse],
+    true, 'denormalized inverse field set')
 
   t.end()
 })

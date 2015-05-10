@@ -2,7 +2,7 @@ export default [
   {
     id: 1,
     name: 'John Doe',
-    birthday: new Date(1985, 11, 7),
+    birthday: new Date(1992, 11, 7),
     spouse: 2,
     pets: [1],
     friends: [3]
@@ -10,7 +10,7 @@ export default [
   {
     id: 2,
     name: 'Jane Doe',
-    birthday: new Date(1987, 6, 30),
+    birthday: new Date(1997, 6, 30),
     spouse: 1,
     pets: [ 2, 3 ],
     friends: [3]

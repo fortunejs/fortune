@@ -8,11 +8,22 @@ import * as arrayProxy from '../../../lib/common/array_proxy'
 class DefaultSerializer extends Serializer {}
 DefaultSerializer.id = Symbol()
 
+const deadcode = new Buffer(4)
+deadcode.writeUInt32BE(0xdeadc0de, 0)
+
+const records = [{
+  id: 4,
+  name: 'Slimer McGee',
+  birthday: new Date(2011, 5, 30),
+  friends: [ 1, 3 ],
+  picture: deadcode
+}]
+
 
 Test('create record', t => {
   let app, events
 
-  t.plan(7)
+  t.plan(8)
 
   generateApp({
     serializers: [{ type: DefaultSerializer }]
@@ -34,16 +45,14 @@ Test('create record', t => {
       serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: events.create,
-      payload: [{
-        id: 4,
-        name: 'Slimer McGee',
-        birthday: new Date(2011, 5, 30),
-        friends: [ 1, 3 ]
-      }]
+      payload: records
     })
   })
 
   .then(response => {
+    t.ok(deadcode.equals(response.payload.records[0].picture) &&
+      deadcode.equals(records[0].picture),
+      'input object not mutated')
     t.equal(response.payload.records.length, 1, 'record created')
     t.equal(response.payload.records[0].id, 4, 'record has correct ID')
     t.ok(response.payload.records[0].birthday instanceof Date,
@@ -69,6 +78,7 @@ Test('create record', t => {
 
   .catch(error => {
     stderr.error(error)
+    app.stop()
     t.fail(error)
     t.end()
   })

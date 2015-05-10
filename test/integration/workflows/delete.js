@@ -60,6 +60,7 @@ Test('delete record', t => {
 
   .catch(error => {
     stderr.error(error)
+    app.stop()
     t.fail(error)
     t.end()
   })
