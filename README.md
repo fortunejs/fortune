@@ -33,11 +33,13 @@ import Fortune from 'fortune'
 import http from 'http'
 
 const app = new Fortune()
-const listener = Fortune.net.requestListener.bind(app)
-const server = http.createServer(listener)
+
+const server = http.createServer((request, response) =>
+  Fortune.net.http(app, request, response)
+  .then(response.end.bind(response))
 ```
 
-This sets up an instance of Fortune with default options, a request listener bound to the instance, and an HTTP server instance. The `requestListener` does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
+This sets up an instance of Fortune with default options, and an HTTP server instance. The `Fortune.net.http` module does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
 
 ```js
 app.defineType('user', {

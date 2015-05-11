@@ -20,7 +20,10 @@ export default (t, path, request, fn) => {
   .then(a => {
     app = a
 
-    const listener = Fortune.net.requestListener.bind(app)
+    const listener = (request, response) =>
+      Fortune.net.http(app, request, response)
+      .then(response.end.bind(response))
+
     server = http.createServer(listener).listen(port)
     let headers, status
 

@@ -1,5 +1,6 @@
 # To-do list
 
+- Refactor requestListener -> http.
 - Micro API Serializer: everything.
 - JSON API Serializer: pagination, relationship entities.
 - Write more tests with tape, and integration test using all included components.
