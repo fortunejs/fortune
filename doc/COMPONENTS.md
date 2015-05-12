@@ -3,7 +3,7 @@
 Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults.
 
 
-## Adapters
+### Adapters
 
 Adapters must subclass and implement the Adapter class. The adapter could be backed by anything from a text file to a distributed database, as long as it implements the class.
 
@@ -13,7 +13,7 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. |
 
 
-## Serializers
+### Serializers
 
 Serializers process data, they must subclass and implement the Serializer class.
 
@@ -23,7 +23,7 @@ Serializers process data, they must subclass and implement the Serializer class.
 | [JSON API](http://jsonapi.org) (included, default) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
 
 
-## Networking
+### Networking
 
 Map external input to the dispatcher and map the response to an external output. Using Fortune with a network protocol is optional.
 

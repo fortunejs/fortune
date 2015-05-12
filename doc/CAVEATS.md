@@ -3,7 +3,7 @@
 Using Fortune comes with some tradeoffs that arise from intentional limitations of the adapter.
 
 
-## Undirected Graph
+### Undirected Graph
 
 Fortune enforces an undirected graph of relationships, for a few reasons:
 
@@ -14,6 +14,6 @@ Fortune enforces an undirected graph of relationships, for a few reasons:
 This is a tradeoff that sacrifices flexibility and denormalizes relationships in favor of visibility. The design also eliminates guarantees of consistency in databases that do not support transactions.
 
 
-## Key-Value Storage
+### Key-Value Storage
 
 There is no built-in support for deeply nested objects, it treats an object as a singular value. Any comprehension of data types beyond the built-ins is specific to the adapter.

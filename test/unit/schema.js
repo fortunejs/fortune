@@ -13,7 +13,7 @@ const schema = {
   luckyNumbers: { type: Number, isArray: true },
   friends: { link: 'person', isArray: true, inverse: 'friends' },
   toys: { type: Object, isArray: true },
-  location: { type: Symbol('Geo-data') }
+  location: { type: Symbol('Geolocation data') }
 }
 
 
@@ -64,7 +64,7 @@ Test('schema validate', t => {
 })
 
 
-Test('schema enforce create', t => {
+Test('schema enforce', t => {
   const testRecord = record => () => enforce(recordType, record, schema)
   const bad = 'bad type is bad'
   const good = 'good type is good'
@@ -78,6 +78,7 @@ Test('schema enforce create', t => {
   t.throws(testRecord({ luckyNumbers: 1 }), bad)
   t.doesNotThrow(testRecord({ luckyNumbers: [1] }), good)
   t.throws(testRecord({ friends: 1 }), bad)
+  t.doesNotThrow(testRecord({ location: new ArrayBuffer(8) }), good)
   t.throws(testRecord({
     [keys.primary]: 1,
     friends: [ 0, 1, 2 ] }
