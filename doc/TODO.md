@@ -1,7 +1,7 @@
 # To-do list
 
 - Micro API Serializer: everything.
-- JSON API Serializer: handle related link (data: null), relationship entities.
+- JSON API Serializer: handle empty collection (200), relationship entities.
 - Write more tests with tape, and integration test using all included components.
 
 

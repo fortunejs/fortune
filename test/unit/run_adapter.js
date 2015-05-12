@@ -46,6 +46,13 @@ const records = [{
 
 export default (Adapter, options) => {
 
+  Test('find: nothing', t => run(t, adapter =>
+    adapter.find(type, [])
+    .then(records => {
+      t.equal(records.count, 0, 'count is correct')
+    })
+  ))
+
   Test('find: collection', t => run(t, adapter =>
     adapter.find(type)
     .then(records => {

@@ -104,6 +104,7 @@ Test('sort a collection and use sparse fields', t =>
     }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users', 'link is correct')
     t.deepEqual(
       response.body.data.map(record => record.attributes.name),
       [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
@@ -119,6 +120,7 @@ Test('find a single record with include', t =>
     }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/animals/1', 'link is correct')
     t.equal(response.body.data.id, '1', 'id is correct')
     t.equal(response.body.included[0].type, 'user', 'type is correct')
     t.equal(response.body.included[0].id, '1', 'id is correct')
@@ -149,4 +151,18 @@ Test('delete a single record', t =>
     t.equal(response.status, 204, 'status is correct')
     t.equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
+  }))
+
+
+Test('find a collection of non-existent related records', t =>
+  fetchTest(t, '/users/3/pets', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users/3/pets', 'link is correct')
+    t.ok(Array.isArray(response.body.data) && !response.body.data.length,
+      'data is empty array')
   }))
