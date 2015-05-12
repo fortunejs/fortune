@@ -11,7 +11,7 @@ DefaultSerializer.id = Symbol()
 Test('get index', findTest.bind({
   response: function (t, response) {
     t.deepEqual(response.payload.sort(),
-      [ 'animal', 'user' ], 'gets the index')
+      [ 'animal', 'empty', 'user' ], 'gets the index')
   }
 }))
 

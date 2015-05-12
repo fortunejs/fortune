@@ -16,5 +16,5 @@ Test('show index', t =>
     t.equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
     t.equal(Object.keys(response.body['@links']).length,
-      2, 'number of types correct')
+      3, 'number of types correct')
   }))

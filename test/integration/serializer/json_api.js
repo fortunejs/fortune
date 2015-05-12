@@ -166,3 +166,17 @@ Test('find a collection of non-existent related records', t =>
     t.ok(Array.isArray(response.body.data) && !response.body.data.length,
       'data is empty array')
   }))
+
+
+Test('find an empty collection', t =>
+  fetchTest(t, '/empties', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/empties', 'link is correct')
+    t.ok(Array.isArray(response.body.data) && !response.body.data.length,
+      'data is empty array')
+  }))

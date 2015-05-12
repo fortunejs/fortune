@@ -48,6 +48,8 @@ export default options => {
     return record
   })
 
+  .defineType('empty', {})
+
   const { events } = app.dispatcher
 
   app.dispatcher.on(events.change, data => {
