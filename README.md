@@ -1,4 +1,4 @@
-[![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com)
+# [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com)
 
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
@@ -61,7 +61,7 @@ Defining record types. There is a many-to-many relationship between `user` and `
 app.start().then(() => server.listen(1337))
 ```
 
-Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the full [JSON API](http://jsonapi.org) specification, and a custom implementation of [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
+Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [JSON API](http://jsonapi.org) specification, and an implementation of the [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
 
 
 ### License

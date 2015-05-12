@@ -1,13 +1,13 @@
 # To-do list
 
-- Refactor requestListener -> http.
 - Micro API Serializer: everything.
-- JSON API Serializer: pagination, relationship entities.
+- JSON API Serializer: handle related link (data: null), relationship entities.
 - Write more tests with tape, and integration test using all included components.
 
 
 ### Done
 
+- Refactor requestListener -> http.
 - Hide denormalized inverse fields somehow.
 - Automatically denormalize inverse fields.
 - Stub apply update method in Adapter.

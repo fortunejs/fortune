@@ -28,7 +28,7 @@
     "babel": "5.2.17",
     "chalk": "1.0.0",
     "eslint": "0.21.0",
-    "istanbul": "0.3.13",
+    "istanbul": "0.3.14",
     "node-fetch": "1.2.1",
     "tap-dot": "1.0.0",
     "tape": "4.0.0"
