@@ -1,8 +1,9 @@
 # To-do list
 
+- Make `serializerInput` and `serializerOutput` optional.
 - Micro API Serializer: everything.
 - JSON API Serializer: relationship entities.
-- Write more tests with tape, and integration test using all included components.
+- 100% test coverage.
 
 
 ### Done
