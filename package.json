@@ -12,12 +12,18 @@
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "make lint all && REPORTER=true node dist/test | tap-dot",
-    "prepublish": "make clean compile-dist",
-    "coverage": "make && istanbul cover dist/test"
+    "clean": "rimraf dist coverage",
+    "coverage": "npm run build && istanbul cover dist/test",
+    "build": "npm run build:lib && npm run build:test",
+    "build:lib": "mkdirp dist/lib && babel --optional runtime lib --out-dir dist/lib",
+    "build:dist": "mkdirp dist && babel --optional runtime lib --out-dir dist",
+    "build:test": "mkdirp dist/test && babel --optional runtime test --out-dir dist/test",
+    "lint": "eslint lib test",
+    "prepublish": "npm run clean && npm run build:dist",
+    "test": "npm run lint && npm run build && REPORTER=true node dist/test | tap-dot"
   },
   "dependencies": {
-    "babel-runtime": "5.2.17",
+    "babel-runtime": "5.3.3",
     "inflection": "^1.7.1",
     "mongodb": "2.0.31",
     "nedb": "1.1.2",
@@ -25,11 +31,13 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.2.17",
+    "babel": "5.3.3",
     "chalk": "1.0.0",
     "eslint": "0.21.0",
     "istanbul": "0.3.14",
+    "mkdirp": "^0.5.0",
     "node-fetch": "1.2.1",
+    "rimraf": "^2.3.3",
     "tap-dot": "1.0.0",
     "tape": "4.0.0"
   },
