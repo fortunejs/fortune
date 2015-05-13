@@ -91,8 +91,6 @@ Test('update record', t =>
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
-    t.equal(response.headers.get('content-type'), mediaType,
-      'content type is correct')
   }))
 
 
@@ -149,8 +147,6 @@ Test('delete a single record', t =>
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
-    t.equal(response.headers.get('content-type'), mediaType,
-      'content type is correct')
   }))
 
 
