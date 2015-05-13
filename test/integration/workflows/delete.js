@@ -10,7 +10,7 @@ DefaultSerializer.id = Symbol()
 
 
 Test('delete record', t => {
-  let app, events
+  let app, methods, change
 
   t.plan(4)
 
@@ -20,19 +20,19 @@ Test('delete record', t => {
 
   .then(a => {
     app = a
-    ;({ events } = app.dispatcher)
+    ;({ methods, change } = app.dispatcher)
 
-    app.dispatcher.on(events.change, data => {
-      t.ok(arrayProxy.find(data[events.delete].user, id => id === 3),
+    app.dispatcher.on(change, data => {
+      t.ok(arrayProxy.find(data[methods.delete].user, id => id === 3),
         'change event shows deleted ID')
-      t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
         [ 1, 2 ], 'change event shows updated IDs')
     })
 
     return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
-      method: events.delete,
+      method: methods.delete,
       ids: [3]
     })
   })
@@ -43,7 +43,7 @@ Test('delete record', t => {
     return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
-      method: events.find,
+      method: methods.find,
       ids: [ 1, 2 ]
     })
   })

@@ -21,7 +21,7 @@ const records = [{
 
 
 Test('create record', t => {
-  let app, events
+  let app, methods, change
 
   t.plan(8)
 
@@ -31,12 +31,12 @@ Test('create record', t => {
 
   .then(a => {
     app = a
-    ;({ events } = app.dispatcher)
+    ;({ methods, change } = app.dispatcher)
 
-    app.dispatcher.on(events.change, data => {
-      t.ok(arrayProxy.find(data[events.create].user, id => id === 4),
+    app.dispatcher.on(change, data => {
+      t.ok(arrayProxy.find(data[methods.create].user, id => id === 4),
         'change event shows created ID')
-      t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+      t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
@@ -44,7 +44,7 @@ Test('create record', t => {
       serializerInput: DefaultSerializer.id,
       serializerOutput: DefaultSerializer.id,
       type: 'user',
-      method: events.create,
+      method: methods.create,
       payload: records
     })
   })
@@ -63,7 +63,7 @@ Test('create record', t => {
     return app.dispatch({
       serializerOutput: DefaultSerializer.id,
       type: 'user',
-      method: events.find,
+      method: methods.find,
       ids: [ 1, 3 ]
     })
   })

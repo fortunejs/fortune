@@ -50,9 +50,9 @@ export default options => {
 
   .defineType('empty', {})
 
-  const { events } = app.dispatcher
+  const { change } = app.dispatcher
 
-  app.dispatcher.on(events.change, data => {
+  app.dispatcher.on(change, data => {
     Object.getOwnPropertySymbols(data)
       .forEach(assignDescription.bind(null, data))
 

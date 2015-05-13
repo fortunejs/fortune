@@ -7,8 +7,8 @@ import * as arrayProxy from '../../../lib/common/array_proxy'
 
 Test('update one to one with 2nd degree unset', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -33,8 +33,8 @@ Test('update one to one with 2nd degree unset', updateTest.bind({
 
 Test('update one to one with former related record', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -59,8 +59,8 @@ Test('update one to one with former related record', updateTest.bind({
 
 Test('update one to one with same value', updateTest.bind({
   plan: 3,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -82,8 +82,8 @@ Test('update one to one with same value', updateTest.bind({
 
 Test('update one to one with null value', updateTest.bind({
   plan: 3,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -105,10 +105,10 @@ Test('update one to one with null value', updateTest.bind({
 
 Test('update one to many (set)', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].animal,
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].animal,
       [1], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows related update IDs')
   },
   type: 'animal',
@@ -130,10 +130,10 @@ Test('update one to many (set)', updateTest.bind({
 
 Test('update one to many (unset)', updateTest.bind({
   plan: 3,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].animal,
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].animal,
       [1], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [1], 'change event shows related update IDs')
   },
   type: 'animal',
@@ -152,10 +152,10 @@ Test('update one to many (unset)', updateTest.bind({
 
 Test('update many to one (pull)', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user,
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user,
       [2], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].animal,
+    t.deepEqual(data[methods.update].animal,
       [ 2, 3 ], 'change event shows related update IDs')
   },
   type: 'user',
@@ -177,10 +177,10 @@ Test('update many to one (pull)', updateTest.bind({
 
 Test('update many to one (push)', updateTest.bind({
   plan: 3,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user,
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user,
       [2], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].animal,
+    t.deepEqual(data[methods.update].animal,
       [1], 'change event shows related update IDs')
   },
   type: 'user',
@@ -199,8 +199,8 @@ Test('update many to one (push)', updateTest.bind({
 
 Test('update many to many (pull)', updateTest.bind({
   plan: 2,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -219,10 +219,10 @@ Test('update many to many (pull)', updateTest.bind({
 
 Test('update many to one (set)', updateTest.bind({
   plan: 5,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+    t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -269,10 +269,10 @@ Test('update many to one (set) #2', updateTest.bind({
 
 Test('update many to one (set) #3', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+    t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
       [ 1, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -294,10 +294,10 @@ Test('update many to one (set) #3', updateTest.bind({
 
 Test('update many to one (unset)', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [2], 'change event shows updated IDs')
-    t.deepEqual(data[events.update].animal.sort((a, b) => a - b),
+    t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
       [ 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -319,8 +319,8 @@ Test('update many to one (unset)', updateTest.bind({
 
 Test('update many to many (push)', updateTest.bind({
   plan: 2,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -339,8 +339,8 @@ Test('update many to many (push)', updateTest.bind({
 
 Test('update many to many (set)', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -365,8 +365,8 @@ Test('update many to many (set)', updateTest.bind({
 
 Test('update many to many (unset)', updateTest.bind({
   plan: 4,
-  change: function (t, events, data) {
-    t.deepEqual(data[events.update].user.sort((a, b) => a - b),
+  change: function (t, methods, data) {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
   type: 'user',
@@ -390,7 +390,7 @@ Test('update many to many (unset)', updateTest.bind({
 
 
 function updateTest (t) {
-  let app, events
+  let app, methods, change
 
   class DefaultSerializer extends Serializer {}
   DefaultSerializer.id = Symbol()
@@ -403,16 +403,16 @@ function updateTest (t) {
 
   .then(a => {
     app = a
-    ;({ events } = app.dispatcher)
+    ;({ methods, change } = app.dispatcher)
 
     if (this.change)
-      app.dispatcher.on(events.change, this.change.bind(this, t, events))
+      app.dispatcher.on(change, this.change.bind(this, t, methods))
 
     return app.dispatch({
       serializerInput: DefaultSerializer.id,
       serializerOutput: DefaultSerializer.id,
       type: this.type,
-      method: events.update,
+      method: methods.update,
       payload: this.payload
     })
   })
@@ -420,7 +420,7 @@ function updateTest (t) {
   .then(() => app.dispatch({
     serializerOutput: DefaultSerializer.id,
     type: this.relatedType,
-    method: events.find
+    method: methods.find
   }))
 
   .then(this.related.bind(this, t))
