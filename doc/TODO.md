@@ -1,13 +1,13 @@
 # To-do list
 
-- Make `serializerInput` and `serializerOutput` optional.
-- Micro API Serializer: everything.
 - JSON API Serializer: relationship entities.
+- Micro API Serializer: everything.
 - 100% test coverage.
 
 
 ### Done
 
+- Make `serializerInput` and `serializerOutput` optional.
 - Refactor requestListener -> http.
 - Hide denormalized inverse fields somehow.
 - Automatically denormalize inverse fields.

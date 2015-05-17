@@ -16,7 +16,7 @@ $ npm install fortune --save
 Currently *alpha* software. Things will break, check the [changelog](https://github.com/fortunejs/fortune/blob/rewrite/doc/CHANGELOG.md).
 
 
-### Key Concepts
+## Key Concepts
 
 - **Define record types and get CRUD for free.**
 - Two interchangeable components: the adapter and serializers.
@@ -26,7 +26,7 @@ Currently *alpha* software. Things will break, check the [changelog](https://git
 - Networking is optional, may be handled by serializers.
 
 
-### Example
+## Example
 
 Here is an example application, including a web server implementation:
 
