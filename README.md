@@ -20,21 +20,20 @@ Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-
 
 - Offset based pagination
 - node-swagger-express ready
+- Extended filter operators : lt, gt, lte, gte
+- Mongodb change events - oplog integration 
 
 ### Roadmap
 
-* Extended filter operators : lt, gt, lte, gte
-* Mongodb change events - oplog integration 
+This project is currently under heavy development. Documentation might be a bit sparse at this point, however the intention is to get this into shape over the coming months.
+
 * External links
 * UUIDs 
 * [Patch](http://jsonapi.org/format/#patch) fully supported
 * [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
 ### References
-This project is a fork of [fortune.js](fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
-
-
-
+This project is a fork of [fortune.js](http://fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
 
 [![NPM](https://nodei.co/npm/harvesterjs.png)](https://nodei.co/npm/harvesterjs/)
  
