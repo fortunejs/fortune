@@ -28,10 +28,10 @@ Harvesterjs is currently under heavy development. Documentation is a pretty much
 
 ### Roadmap
 
+* JSON API 1.0 compliance
 * External links
+* Bidirectional links
 * UUIDs 
-* [Patch](http://jsonapi.org/format/#patch) fully supported
-* [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
 ### References
 This project is a fork of [fortune.js](http://fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
