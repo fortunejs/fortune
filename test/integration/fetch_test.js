@@ -25,8 +25,8 @@ export default (t, path, request, fn) => {
     server = http.createServer(listener).listen(port)
     let headers, status
 
-    return fetch(`http:\/\/localhost:${port}${path}`, Object.assign({}, request,
-      typeof request.body === 'object' ? {
+    return fetch(`http:\/\/localhost:${port}${path}`,
+      Object.assign({}, request, typeof request.body === 'object' ? {
         body: JSON.stringify(request.body)
       } : null))
 
