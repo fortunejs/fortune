@@ -24,24 +24,26 @@ const schemas = {
 const deadbeef = new Buffer(4)
 deadbeef.writeUInt32BE(0xdeadbeef, 0)
 
-const records = [{
-  id: 1,
-  name: 'bob',
-  age: 42,
-  isAlive: true,
-  junk: { things: [ 'a', 'b', 'c' ] },
-  birthday: new Date(),
-  friends: [2],
-  bestFriend: 2
-}, {
-  id: 2,
-  name: 'john',
-  age: 36,
-  isAlive: false,
-  picture: deadbeef,
-  friends: [1],
-  bestFriend: 1
-}]
+const records = [
+  {
+    id: 1,
+    name: 'bob',
+    age: 42,
+    isAlive: true,
+    junk: { things: [ 'a', 'b', 'c' ] },
+    birthday: new Date(),
+    friends: [2],
+    bestFriend: 2
+  }, {
+    id: 2,
+    name: 'john',
+    age: 36,
+    isAlive: false,
+    picture: deadbeef,
+    friends: [1],
+    bestFriend: 1
+  }
+]
 
 
 export default (Adapter, options) => {
@@ -178,7 +180,10 @@ export default (Adapter, options) => {
 
 
 function adapterTest (Adapter, options, t, fn) {
-  const adapter = new Adapter({ keys, errors, schemas, options })
+  const adapter = new Adapter({
+    options: options || {},
+    keys, errors, schemas
+  })
 
   adapter.connect()
   .then(() => adapter.delete(type))

@@ -30,7 +30,7 @@
     "space-before-function-parentheses": [2, "always"],
     "space-in-brackets": [2, "always", {
       "singleValue": false,
-      "objectsInArrays": false,
+      "objectsInArrays": true,
       "arraysInArrays": false,
       "arraysInObjects": true,
       "objectsInObjects": true,
