@@ -2,7 +2,7 @@ import generateApp from './generate_app'
 import http from 'http'
 import chalk from 'chalk'
 import fetch from 'node-fetch'
-import Fortune from '../../lib'
+import fortune from '../../lib'
 import * as stderr from '../stderr'
 
 
@@ -20,7 +20,7 @@ export default (t, path, request, fn) => {
   .then(a => {
     app = a
 
-    const listener = Fortune.net.http.bind(app)
+    const listener = fortune.net.http.bind(app)
 
     server = http.createServer(listener).listen(port)
     let headers, status

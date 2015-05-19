@@ -390,6 +390,7 @@ Test('update many to many (unset)', updateTest.bind({
 
 
 function updateTest (t) {
+  const { type, payload } = this
   let app, methods, change
 
   class DefaultSerializer extends Serializer {}
@@ -411,9 +412,8 @@ function updateTest (t) {
     return app.dispatch({
       serializerInput: DefaultSerializer.id,
       serializerOutput: DefaultSerializer.id,
-      type: this.type,
       method: methods.update,
-      payload: this.payload
+      type, payload
     })
   })
 

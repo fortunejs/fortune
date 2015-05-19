@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import Fortune from '../../lib'
+import fortune from '../../lib'
 import * as stderr from '../stderr'
 import * as fixtures from '../fixtures'
 
@@ -9,7 +9,7 @@ const inParens = /\(([^\)]+)\)/
 
 export default options => {
 
-  const app = new Fortune(options)
+  const app = fortune.create(options)
 
   .defineType('user', {
     name: { type: String },
