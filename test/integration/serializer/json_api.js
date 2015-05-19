@@ -110,6 +110,21 @@ Test('sort a collection and use sparse fields', t =>
   }))
 
 
+Test('filter a collection', t =>
+  fetchTest(t, '/users?filter[name]=John%20Doe', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users', 'link is correct')
+    t.deepEqual(
+      response.body.data.map(record => record.attributes.name).sort(),
+      ['John Doe'], 'match is correct')
+  }))
+
+
 Test('find a single record with include', t =>
   fetchTest(t, '/animals/1?include=owner', {
     method: 'get',
