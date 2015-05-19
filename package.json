@@ -24,7 +24,7 @@
   "dependencies": {
     "babel-runtime": "5.4.3",
     "inflection": "1.7.1",
-    "mongodb": "2.0.31",
+    "mongodb": "2.0.33",
     "nedb": "1.1.2",
     "negotiator": "0.5.3",
     "uri-templates": "0.1.7"
@@ -32,14 +32,20 @@
   "devDependencies": {
     "babel": "5.4.3",
     "chalk": "1.0.0",
-    "eslint": "0.21.1",
+    "eslint": "0.21.2",
     "istanbul": "0.3.14",
     "mkdirp": "0.5.1",
     "node-fetch": "1.2.1",
-    "rimraf": "2.3.3",
+    "rimraf": "2.3.4",
     "tap-dot": "1.0.0",
     "tape": "4.0.0"
   },
+  "files": [
+    "dist/",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
   "main": "dist/lib/index.js",
   "engines": {
     "node": ">=0.12.0"
