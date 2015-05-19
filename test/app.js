@@ -93,7 +93,8 @@ module.exports = function(options, port, ioPort) {
         field1: String,
         field2: String
       },
-      upsertTest : String
+      upsertTest : String,
+      _tenantId: String
     }, {
       upsertKeys: ["upsertTest"],
       model: {pk:"email"},
@@ -152,7 +153,8 @@ module.exports = function(options, port, ioPort) {
     .resource('pet', {
       name: String,
       appearances: Number,
-      owner: {ref:'person', inverse: 'pets', type: String}
+      owner: {ref:'person', inverse: 'pets', type: String},
+      _tenantId: String
     })
 
     .resource('address', {
