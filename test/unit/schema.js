@@ -86,7 +86,7 @@ Test('schema enforce', t => {
   t.deepEqual(enforce(recordType,
     { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
-  t.equal(enforce(recordType, { random: 'abc' }, schema).random,
+  t.equal(enforce(recordType, { random: 'abc' }, schema, true).random,
     undefined, 'arbitrary fields are dropped')
   t.end()
 })
