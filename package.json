@@ -15,8 +15,8 @@
     "clean": "rimraf dist coverage",
     "coverage": "npm run build && istanbul cover dist/test",
     "build": "npm run clean && npm run build:lib && npm run build:test",
-    "build:lib": "mkdirp dist/lib && babel --optional runtime lib --out-dir dist/lib",
-    "build:test": "mkdirp dist/test && babel --optional runtime test --out-dir dist/test",
+    "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
+    "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
     "lint": "eslint lib test",
     "prepublish": "npm run clean && npm run build:lib",
     "test": "npm run lint && npm run build && REPORTER=true node dist/test | tap-dot"

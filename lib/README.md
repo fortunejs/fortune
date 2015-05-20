@@ -1,8 +1,6 @@
 # Codebase
 
-Object orientation [sucks](https://www.sics.se/~joe/bluetail/vol1/v1_oo.html), classes [suck](http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/), using `new` [sucks](http://www.ianbicking.org/blog/2013/04/new-considered-harmful.html), Promises [suck](http://robotlolita.me/2013/06/28/promises-considered-harmful.html). Everything sucks, so deal with it.
-
-It is currently written in ES6 and transpiled down to ES5 using Babel. There is the `--stage 0` option which would add useful features but ES6 is a finished spec and proposals are not.
+Written in ES6 and transpiled down to ES5 using Babel.
 
 
 ## Adapter
