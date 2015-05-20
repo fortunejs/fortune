@@ -9,8 +9,8 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 
 | Adapter          | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| [NeDB](https://github.com/louischatriot/nedb) (included, default) | [Dali Zheng](http://daliwa.li) | Embedded data store. Default. |
-| [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. |
+| [NeDB](https://github.com/louischatriot/nedb) (included, default) | [Dali Zheng](http://daliwa.li) | Embedded document data store with an API that is mostly compatible with MongoDB. |
+| [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. MongoDB is [web scale](http://www.mongodb-is-web-scale.com/). |
 
 
 ### Serializers
@@ -19,8 +19,8 @@ Serializers process data, they must subclass and implement the Serializer class.
 
 | Serializer       | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| [Micro API](http://micro-api.org) (included, default) | [Dali Zheng](http://daliwa.li) | A minimal media type for hypermedia APIs. Default. |
-| [JSON API](http://jsonapi.org) (included, default) | [Dali Zheng](http://daliwa.li) | Tracking latest JSON API master branch, useful for clients such as [Ember Data](https://github.com/emberjs/data). Default. |
+| [Micro API](http://micro-api.org) (included, default) | [Dali Zheng](http://daliwa.li) | A minimal serialization format for hypermedia APIs. |
+| [JSON API](http://jsonapi.org) (included, default) | [Dali Zheng](http://daliwa.li) | Tracking JSON API 1.0, useful for clients such as [Ember Data](https://github.com/emberjs/data). |
 
 
 ### Networking
@@ -29,4 +29,4 @@ Map external input to the dispatcher and map the response to an external output.
 
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| HTTP (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar middleware frameworks. |
+| HTTP (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |

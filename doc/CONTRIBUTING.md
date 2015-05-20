@@ -14,4 +14,4 @@ Issues are tracked on [GitHub](https://github.com/fortunejs/fortune/issues). Bey
 
 - Guides on how to use Fortune.
 - Changes to documentation are welcome.
-- Promotional materials (stickers!)
+- Promotional materials (graphics would be nice).
