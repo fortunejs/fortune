@@ -53,7 +53,7 @@ const [ iterations, keyLength, saltLength ] =
   [ Math.pow(2, 15), Math.pow(2, 9), Math.pow(2, 6) ]
 
 app.transformInput('user', (context, record) => {
-  const { method, type } = context.request
+  const { method, type, meta } = context.request
   const { password, id } = record
   let salt, key
 
@@ -62,11 +62,25 @@ app.transformInput('user', (context, record) => {
   if (method === methods.create && !password)
     throw new errors.BadRequestError(`Password must be specified.`)
 
+  if (!password) return record
+
   // If a password is supplied, there are asynchronous operations involved.
-  return password ? new Promise((resolve, reject) =>
+  return new Promise((resolve, reject) => method !== methods.create ?
+    // Check if the old password is correct.
+    crypto.pbkdf2(
+      new Buffer(meta['Authorization'] || '', 'base64').toString(),
+      record.salt.toString(), iterations, keyLength,
+      (error, buffer) =>
+        error ? reject(error) : record.key.equals(buffer) ?
+        resolve() : reject(new errors.UnauthorizedError(
+          `Incorrect password.`)))
+    : resolve())
+
+  .then(() => new Promise((resolve, reject) =>
     // Generate a new salt.
     crypto.randomBytes(saltLength, (error, buffer) =>
     error ? reject(error) : resolve(buffer)))
+
   .then(buffer => {
     salt = buffer
 
@@ -76,6 +90,7 @@ app.transformInput('user', (context, record) => {
         iterations, keyLength, (error, buffer) =>
         error ? reject(error) : resolve(buffer)))
   })
+
   .then(buffer => {
     key = buffer
 
@@ -88,7 +103,7 @@ app.transformInput('user', (context, record) => {
     return app.adapter.update(type, {
       id, replace: { key, salt }
     })
-  }) : record
+  })
 })
 
 app.transformOutput('user', (context, record) => {
@@ -100,7 +115,7 @@ app.transformOutput('user', (context, record) => {
 })
 ```
 
-Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. The returned/resolved value only matters for create requests. Note that the `password` field on the record is not defined in the record type. Arbitrary fields should be parsed on create and update but not persisted.
+Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. The returned/resolved value only matters for create requests. Note that the `password` field on the record is not defined in the record type. Arbitrary fields should be parsed on create and update but not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFy"` where the value is the base64 encoded old password.
 
 To start the application, we need to call the `start` method.
 
@@ -113,7 +128,7 @@ const port = 1337
 
 app.start().then(() => {
   server.listen(port)
-  console.log(`Server is listening on port $(port)...`)
+  console.log(`Server is listening on port ${port}...`)
 })
 ```
 

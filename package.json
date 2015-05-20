@@ -14,15 +14,18 @@
   "scripts": {
     "clean": "rimraf dist coverage",
     "coverage": "npm run build && istanbul cover dist/test",
-    "build": "npm run clean && npm run build:lib && npm run build:test",
+    "deploy": "npm run deploy:website && npm run publish",
+    "deploy:website": "npm run build:website && babel-node website/deploy",
+    "build": "npm run build:lib && npm run build:test",
     "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
+    "build:website": "babel-node website/build",
     "lint": "eslint lib test",
-    "prepublish": "npm run clean && npm run build:lib",
+    "prepublish": "npm run build:lib",
     "test": "npm run lint && npm run build && REPORTER=true node dist/test | tap-dot"
   },
   "dependencies": {
-    "babel-runtime": "5.4.3",
+    "babel-runtime": "5.4.4",
     "inflection": "1.7.1",
     "mongodb": "2.0.33",
     "nedb": "1.1.2",
@@ -30,7 +33,7 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.4.3",
+    "babel": "5.4.4",
     "chalk": "1.0.0",
     "eslint": "0.21.2",
     "istanbul": "0.3.14",
@@ -41,7 +44,7 @@
     "tape": "4.0.0"
   },
   "files": [
-    "dist/",
+    "dist/lib",
     "lib/",
     "README.md",
     "LICENSE"
