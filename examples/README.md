@@ -35,5 +35,5 @@ This will start up an change events consumer and insert a new entry after a coup
   
 The resource can be accessed at the following url 
 
-    http://localhost:1337
+    http://localhost:1337/artists
  
