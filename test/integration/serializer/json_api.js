@@ -191,3 +191,121 @@ Test('find an empty collection', t =>
     t.ok(Array.isArray(response.body.data) && !response.body.data.length,
       'data is empty array')
   }))
+
+
+Test('get an array relationship entity', t =>
+  fetchTest(t, '/users/2/relationships/pets', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users/2/relationships/pets',
+      'link is correct')
+    t.deepEqual(response.body.data.map(data => data.id), [ 2, 3 ],
+      'ids are correct')
+  }))
+
+
+Test('get an empty array relationship entity', t =>
+  fetchTest(t, '/users/3/relationships/pets', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users/3/relationships/pets',
+      'link is correct')
+    t.deepEqual(response.body.data, [], 'data is correct')
+  }))
+
+
+Test('get a singular relationship entity', t =>
+  fetchTest(t, '/users/1/relationships/spouse', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users/1/relationships/spouse',
+      'link is correct')
+    t.equal(response.body.data.type, 'user', 'type is correct')
+    t.equal(response.body.data.id, 2, 'id is correct')
+  }))
+
+
+Test('get an empty singular relationship entity', t =>
+  fetchTest(t, '/users/3/relationships/spouse', {
+    method: 'get',
+    headers: {
+      'Accept': mediaType
+    }
+  }, response => {
+    t.equal(response.status, 200, 'status is correct')
+    t.equal(response.body.links.self, '/users/3/relationships/spouse',
+      'link is correct')
+    t.equal(response.body.data, null, 'data is correct')
+  }))
+
+
+Test('update a singular relationship entity', t =>
+  fetchTest(t, '/users/2/relationships/spouse', {
+    method: 'patch',
+    headers: {
+      'Accept': mediaType,
+      'Content-Type': mediaType
+    },
+    body: {
+      data: { type: 'user', id: 3 }
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+  }))
+
+
+Test('update an array relationship entity', t =>
+  fetchTest(t, '/users/1/relationships/pets', {
+    method: 'patch',
+    headers: {
+      'Accept': mediaType,
+      'Content-Type': mediaType
+    },
+    body: {
+      data: [{ type: 'animal', id: 2 }]
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+  }))
+
+
+Test('post to an array relationship entity', t =>
+  fetchTest(t, '/users/1/relationships/pets', {
+    method: 'post',
+    headers: {
+      'Accept': mediaType,
+      'Content-Type': mediaType
+    },
+    body: {
+      data: [{ type: 'animal', id: 2 }]
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+  }))
+
+
+Test.only('delete from an array relationship entity', t =>
+  fetchTest(t, '/users/1/relationships/friends', {
+    method: 'delete',
+    headers: {
+      'Accept': mediaType,
+      'Content-Type': mediaType
+    },
+    body: {
+      data: [{ type: 'user', id: 3 }]
+    }
+  }, response => {
+    t.equal(response.status, 204, 'status is correct')
+  }))

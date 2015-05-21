@@ -1,6 +1,6 @@
 # To-do list
 
-- JSON API Serializer: relationship entities.
+- Unset 2nd degree related records for push/pull updates.
 - Micro API Serializer: everything.
 - 100% test coverage.
 
