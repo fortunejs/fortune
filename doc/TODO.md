@@ -1,7 +1,7 @@
 # To-do list
 
 - PostgreSQL adapter.
-- Micro API Serializer: everything.
+- Micro API Serializer: find, create, update, delete.
 - 100% test coverage.
 
 

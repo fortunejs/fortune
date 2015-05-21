@@ -111,7 +111,7 @@ Test('sort a collection and use sparse fields', t =>
 
 
 Test('filter a collection', t =>
-  fetchTest(t, '/users?filter[name]=John%20Doe', {
+  fetchTest(t, '/users?filter[name]=John Doe', {
     method: 'get',
     headers: {
       'Accept': mediaType
