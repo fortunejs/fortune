@@ -281,7 +281,7 @@ Test('update an array relationship entity', t =>
   }))
 
 
-Test('post to an array relationship entity', t =>
+/*Test('post to an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/pets', {
     method: 'post',
     headers: {
@@ -296,7 +296,7 @@ Test('post to an array relationship entity', t =>
   }))
 
 
-Test.only('delete from an array relationship entity', t =>
+Test('delete from an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/friends', {
     method: 'delete',
     headers: {
@@ -308,4 +308,4 @@ Test.only('delete from an array relationship entity', t =>
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
-  }))
+  }))*/

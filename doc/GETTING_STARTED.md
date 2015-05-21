@@ -42,7 +42,7 @@ app.defineType('group', {
 
 This defines a `user` record type that has a relationship to the `group` type. By default, relationships are to-one, unless `isArray` is specified. In this example, there is a many-to-many relationship between a user and a group. The `inverse` field specifies a corresponding field on the linked type, so that any update to either field will affect the other.
 
-Transformations can be defined per record type. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide fields when displaying the record. Transform functions accept at least two arguments, the `context` object, and the record. The record for an input transform may be the record to be created or deleted, or an updated record with updates applied. The methods of an input transform may be `create`, `update`, or `delete`, and the methods of an output transform may be `find` or `create`. Note the the return value of an input transform only matters if the method is `create`.
+Transformations can be defined per record type. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide fields when displaying the record. Transform functions accept exactly two arguments, the `context` object, and the record. The record for an input transform may be the record to be created or deleted, or an updated record with updates applied. The method of an input transform may be any method except `find`, and an output transform may be applied to all methods.
 
 ```js
 import crypto from 'crypto'
@@ -91,21 +91,22 @@ app.transformInput('user', (context, record) => {
     .then(buffer => {
       key = buffer
 
-      if (method === methods.create) {
-        record.key = key
-        record.salt = salt
+      record.key = key
+      record.salt = salt
+
+      if (method === methods.create)
         return record
-      }
 
       return app.adapter.update(type, {
         id, replace: { key, salt }
       })
+      .then(() => record)
     })
   })
 })
 ```
 
-Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. The returned/resolved value only matters for create requests. Note that the `password` field on the record is not defined in the record type. Arbitrary fields should be parsed on create and update but not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
+Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type. Arbitrary fields should be parsed on create and update but not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
 
 It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
 

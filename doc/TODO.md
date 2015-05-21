@@ -1,12 +1,12 @@
 # To-do list
 
-- Unset 2nd degree related records for push/pull updates.
 - Micro API Serializer: everything.
 - 100% test coverage.
 
 
 ### Done
 
+- Unset 2nd degree related records for push/pull updates.
 - Make `serializerInput` and `serializerOutput` optional.
 - Refactor requestListener -> http.
 - Hide denormalized inverse fields somehow.

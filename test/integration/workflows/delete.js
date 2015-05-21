@@ -38,7 +38,7 @@ Test('delete record', t => {
   })
 
   .then(response => {
-    t.ok(!response.payload.records.length, 'records deleted')
+    t.equal(response.payload.records.length, 1, 'records deleted')
 
     return app.dispatch({
       serializerOutput: DefaultSerializer.id,
