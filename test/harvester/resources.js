@@ -80,5 +80,23 @@ module.exports = function(baseUrl,keys,ids) {
                 });
             });
         });
+
+        describe('posting a resource with a namespace', function() {
+            it('should post without a special key', function(done) {
+                var cat = {
+                        name: 'Spot'
+                    },
+                    body = {cats: []};
+                body.cats.push(cat);
+                return new Promise(function(resolve) {
+                    request(baseUrl)
+                        .post('/animals/cats')
+                        .send(body)
+                        .expect('Content-Type', /json/)
+                        .expect(201)
+                        .end(done);
+                }).then(done);
+            });
+        });
     });
 }

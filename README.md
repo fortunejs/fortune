@@ -1,9 +1,12 @@
-[![Build Status](https://travis-ci.org/agco/harvest.svg?branch=develop)](https://travis-ci.org/agco-adm/harvest)
-# Harvest.js 
+# Harvester.js 
 
-[Fortune](https://travis-ci.org/daliwali/fortune) fork which aims to be fully json-api compliant.
+Easily create [JSONAPI](http://jsonapi.org/)-compliant APIs on top of node.js and mongoDB.
 
-Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-api-search-profile) profile implementation : [Elastic Harvest](https://github.com/agco-adm/elastic-harvest), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco-adm/json-api-search-profile/blob/master/public/profile.md).   
+Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md).
+
+##### Documentation 
+
+Harvesterjs is currently under heavy development. Documentation is a pretty much non-existent at this point, however the intention is to get this into shape over the coming months.
 
 ### JSON-API Features 
 
@@ -20,13 +23,20 @@ Pluggable with the [agco-adm JSON-API search](https://github.com/agco-adm/json-a
 
 - Offset based pagination
 - node-swagger-express ready
+- Extended filter operators : lt, gt, lte, gte
+- Mongodb change events - oplog integration 
 
 ### Roadmap
 
-- Extended filter operators : lt, gt, lte, gte
-- Mongodb change events - oplog integration 
-- External links
-- UUIDs 
-- [Patch](http://jsonapi.org/format/#patch) fully supported
-- [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
+* JSON API 1.0 compliance
+* External links
+* Bidirectional links
+* UUIDs 
 
+### References
+This project is a fork of [fortune.js](http://fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
+
+[![NPM](https://nodei.co/npm/harvesterjs.png)](https://nodei.co/npm/harvesterjs/)
+ 
+[![Build Status](https://travis-ci.org/agco/harvesterjs.svg?branch=master)](https://travis-ci.org/agco/harvesterjs)
+[![Coverage Status](https://coveralls.io/repos/agco/harvesterjs/badge.svg)](https://coveralls.io/r/agco/harvesterjs)

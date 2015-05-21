@@ -1,10 +1,10 @@
-var harvest = require('../../lib/harvest');
-var JSONAPI_Error = harvest.JSONAPI_Error;
+var harvester = require('../../lib/harvester');
+var JSONAPI_Error = harvester.JSONAPI_Error;
 var RSVP = require('rsvp');
 
 function createApp(options) {
 
-    var harvestApp = harvest(options)
+    var harvesterApp = harvester(options)
 
         .resource('person', {
             name: String,
@@ -22,9 +22,14 @@ function createApp(options) {
             owner: 'person'
         })
 
+        .resource('cat', {
+            name: String
+        }, {namespace: 'animals'})
+
         .resource('foobar', {
             foo: String
         })
+
         .before(
         function (req, res) {
             var foobar = this;
@@ -51,23 +56,16 @@ function createApp(options) {
     );
 
 
-    harvestApp.router.get('/random-error', function (req, res, next) {
+    harvesterApp.router.get('/random-error', function (req, res, next) {
         next(new Error('this is an error'));
     });
 
-    harvestApp.router.get('/json-errors-error', function (req, res, next) {
+    harvesterApp.router.get('/json-errors-error', function (req, res, next) {
         next(new JSONAPI_Error({status: 400, detail: 'Bar was not foo'}));
     });
 
 
-    return RSVP.all([
-            harvestApp.onRouteCreated('pet'),
-            harvestApp.onRouteCreated('person'),
-            harvestApp.onRouteCreated('foobar')
-        ])
-        .then(function () {
-            return harvestApp;
-        });
+    return harvesterApp;
 }
 
 module.exports = createApp;

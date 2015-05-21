@@ -7,12 +7,14 @@ before_script:
   - sleep 3
   - mongo admin --eval 'printjson(rs.initiate());'
   - sleep 20
+script: ./node_modules/.bin/istanbul cover test/runner.js -- mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local  && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 deploy:
   provider: npm
-  email: stephensebro@yahoo.com
+  email: developer@agcocorp.com
   api_key:
-    secure: GORhsjTrkg5UFhKbnCjPGtDHkbz7LH1x2brO6Q4npfimN9VQB7lzqpaTGYrUZsiODOE1/x7BIwc9tYVeQW4hZpdF2emf79FYw6sC3bMSdTmGwtyfhX8OHIC3MQISZ0EBBStriOURV0llPhyHF9uboI0I8HueoRSuAmgkuu/Hf8c=
+    secure: "ZOFUbJMY9nu1ekRB51bpSMm3DgOsIf3TrqFrW4YflLnLzWIGQTT/K7p+Fjw+uf3GMNojrH8sTT1TyBustt08fobm0iRQq1FhT0xRzz+NsAqGC+DdbbNyUYoKvKGJ3sFvX0XJc65eFu5Zafaf9XidubG9l44INEkNGmpzwY5zy+M="
   on:
     tags: true
-    repo: agco-adm/harvest
-    branch: develop
+    repo: agco/harvesterjs
+    branch: master
+
