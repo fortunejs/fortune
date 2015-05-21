@@ -25,10 +25,13 @@ export default (t, path, request, fn) => {
     server = http.createServer(listener).listen(port)
     let headers, status
 
-    return fetch(`http:\/\/localhost:${port}${path}`,
-      Object.assign({}, request, typeof request.body === 'object' ? {
-        body: JSON.stringify(request.body)
-      } : null))
+    if (typeof request.body === 'object') {
+      request.body = JSON.stringify(request.body)
+      if (!request.headers) request.headers = {}
+      request.headers['Content-Length'] = request.body.length
+    }
+
+    return fetch(`http:\/\/localhost:${port}${path}`, request)
 
     .then(response => {
       server.close()

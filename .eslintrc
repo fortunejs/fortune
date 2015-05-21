@@ -31,7 +31,7 @@
     "space-in-brackets": [2, "always", {
       "singleValue": false,
       "objectsInArrays": true,
-      "arraysInArrays": false,
+      "arraysInArrays": true,
       "arraysInObjects": true,
       "objectsInObjects": true,
       "propertyName": false
