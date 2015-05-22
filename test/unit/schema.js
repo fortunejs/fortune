@@ -1,4 +1,4 @@
-import Test from 'tape'
+import test from 'tape'
 import ensureSchemas from '../../lib/schema/ensure_schemas'
 import validate from '../../lib/schema/validate'
 import enforce from '../../lib/schema/enforce'
@@ -21,8 +21,8 @@ const testSchema = schema => () => validate(schema)
 const testField = field => () => validate({ [field]: schema[field] })
 
 
-Test('schema validate', t => {
-  /// Test for valid fields.
+test('schema validate', t => {
+  // Test for valid fields.
   const valid = 'valid field is valid'
 
   t.doesNotThrow(testField('name'), valid)
@@ -33,7 +33,7 @@ Test('schema validate', t => {
   t.doesNotThrow(testField('toys'), valid)
   t.doesNotThrow(testField('location'), valid)
 
-  /// Test for invalid fields.
+  // Test for invalid fields.
   const invalid = 'invalid field throws error'
 
   t.throws(testSchema({
@@ -64,7 +64,7 @@ Test('schema validate', t => {
 })
 
 
-Test('schema enforce', t => {
+test('schema enforce', t => {
   const testRecord = record => () => enforce(recordType, record, schema)
   const bad = 'bad type is bad'
   const good = 'good type is good'
@@ -76,7 +76,7 @@ Test('schema enforce', t => {
   t.throws(testRecord({ mugshot: {} }), bad)
   t.doesNotThrow(testRecord({ mugshot: new Buffer(1) }), good)
   t.throws(testRecord({ luckyNumbers: 1 }), bad)
-  t.doesNotThrow(testRecord({ luckyNumbers: [1] }), good)
+  t.doesNotThrow(testRecord({ luckyNumbers: [ 1 ] }), good)
   t.throws(testRecord({ friends: 1 }), bad)
   t.doesNotThrow(testRecord({ location: new ArrayBuffer(8) }), good)
   t.throws(testRecord({
@@ -92,7 +92,7 @@ Test('schema enforce', t => {
 })
 
 
-Test('ensure schemas', t => {
+test('ensure schemas', t => {
   const check = schemas => () => ensureSchemas(schemas)
 
   t.throws(check({

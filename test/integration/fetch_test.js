@@ -13,7 +13,8 @@ fetch.Promise = Promise
 
 
 export default (t, path, request, fn) => {
-  let app, server
+  let app
+  let server
 
   return generateApp()
 
@@ -23,7 +24,9 @@ export default (t, path, request, fn) => {
     const listener = fortune.net.http.bind(app)
 
     server = http.createServer(listener).listen(port)
-    let headers, status
+
+    let headers
+    let status
 
     if (typeof request.body === 'object') {
       request.body = JSON.stringify(request.body)
@@ -36,7 +39,7 @@ export default (t, path, request, fn) => {
     .then(response => {
       server.close()
       stderr.debug(chalk.bold(response.status), response.headers.raw())
-      ;({ headers, status } = response)
+      ; ({ headers, status } = response)
       return app.stop().then(() => response.text())
     })
 
@@ -46,9 +49,11 @@ export default (t, path, request, fn) => {
           text = JSON.parse(text)
           stderr.log(text)
         }
-      } catch (error) {
+      }
+      catch (error) {
         stderr.warn(`Failed to parse JSON.`)
       }
+
       return fn({
         status,
         headers,

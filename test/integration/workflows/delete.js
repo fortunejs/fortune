@@ -1,4 +1,4 @@
-import Test from 'tape'
+import test from 'tape'
 import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
@@ -9,18 +9,20 @@ class DefaultSerializer extends Serializer {}
 DefaultSerializer.id = Symbol()
 
 
-Test('delete record', t => {
-  let app, methods, change
+test('delete record', t => {
+  let app
+  let methods
+  let change
 
   t.plan(4)
 
   generateApp({
-    serializers: [{ type: DefaultSerializer }]
+    serializers: [ { type: DefaultSerializer } ]
   })
 
   .then(a => {
     app = a
-    ;({ methods, change } = app.dispatcher)
+    ; ({ methods, change } = app.dispatcher)
 
     app.dispatcher.on(change, data => {
       t.ok(arrayProxy.find(data[methods.delete].user, id => id === 3),
@@ -33,7 +35,7 @@ Test('delete record', t => {
       serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: methods.delete,
-      ids: [3]
+      ids: [ 3 ]
     })
   })
 

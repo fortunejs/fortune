@@ -1,4 +1,4 @@
-import Test from 'tape'
+import test from 'tape'
 import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
@@ -11,27 +11,31 @@ DefaultSerializer.id = Symbol()
 const deadcode = new Buffer(4)
 deadcode.writeUInt32BE(0xdeadc0de, 0)
 
-const records = [{
-  id: 4,
-  name: 'Slimer McGee',
-  birthday: new Date(2011, 5, 30),
-  friends: [ 1, 3 ],
-  picture: deadcode
-}]
+const records = [
+  {
+    id: 4,
+    name: 'Slimer McGee',
+    birthday: new Date(2011, 5, 30),
+    friends: [ 1, 3 ],
+    picture: deadcode
+  }
+]
 
 
-Test('create record', t => {
-  let app, methods, change
+test('create record', t => {
+  let app
+  let methods
+  let change
 
   t.plan(8)
 
   generateApp({
-    serializers: [{ type: DefaultSerializer }]
+    serializers: [ { type: DefaultSerializer } ]
   })
 
   .then(a => {
     app = a
-    ;({ methods, change } = app.dispatcher)
+    ; ({ methods, change } = app.dispatcher)
 
     app.dispatcher.on(change, data => {
       t.ok(arrayProxy.find(data[methods.create].user, id => id === 4),

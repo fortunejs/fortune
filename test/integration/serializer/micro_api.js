@@ -1,11 +1,11 @@
-import Test from 'tape'
+import test from 'tape'
 import fetchTest from '../fetch_test'
 
 
 const mediaType = 'application/vnd.micro+json'
 
 
-Test('show index', t =>
+test('show index', t =>
   fetchTest(t, '/', {
     method: 'get',
     headers: {

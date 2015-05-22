@@ -8,7 +8,6 @@ const inParens = /\(([^\)]+)\)/
 
 
 export default options => {
-
   const app = fortune.create(options)
 
   .defineType('user', {

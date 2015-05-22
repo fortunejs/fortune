@@ -1,4 +1,4 @@
-import Test from 'tape'
+import test from 'tape'
 import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
@@ -8,30 +8,30 @@ class DefaultSerializer extends Serializer {}
 DefaultSerializer.id = Symbol()
 
 
-Test('get index', findTest.bind({
-  response: function (t, response) {
+test('get index', findTest.bind({
+  response: (t, response) => {
     t.deepEqual(response.payload.sort(),
       [ 'animal', 'empty', 'user' ], 'gets the index')
   }
 }))
 
 
-Test('get collection', findTest.bind({
+test('get collection', findTest.bind({
   request: {
     type: 'user'
   },
-  response: function (t, response) {
+  response: (t, response) => {
     t.equal(response.payload.records.length, 3, 'gets all records')
   }
 }))
 
 
-Test('get IDs', findTest.bind({
+test('get IDs', findTest.bind({
   request: {
     type: 'user',
     ids: [ 2, 1 ]
   },
-  response: function (t, response) {
+  response: (t, response) => {
     t.deepEqual(response.payload.records
       .map(record => record.id).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
@@ -39,13 +39,13 @@ Test('get IDs', findTest.bind({
 }))
 
 
-Test('get includes', findTest.bind({
+test('get includes', findTest.bind({
   request: {
     type: 'user',
     ids: [ 1, 2 ],
-    include: [['pets']]
+    include: [ [ 'pets' ] ]
   },
-  response: function (t, response) {
+  response: (t, response) => {
     t.deepEqual(response.payload.records
       .map(record => record.id).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
@@ -63,7 +63,7 @@ function findTest (t) {
   DefaultSerializer.id = Symbol()
 
   generateApp({
-    serializers: [{ type: DefaultSerializer }]
+    serializers: [ { type: DefaultSerializer } ]
   })
 
   .then(a => {
@@ -75,7 +75,7 @@ function findTest (t) {
   })
 
   .then(response => {
-    this.response.call(this, t, response)
+    this.response(t, response)
 
     return app.stop().then(() => t.end())
   })

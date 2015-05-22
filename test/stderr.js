@@ -8,31 +8,31 @@ const newLine = '\n'
 
 export function warn () {
   if (!silent)
-    console.warn(chalk.yellow(...Array.from(arguments, inspect)))
+    write(chalk.yellow(...Array.from(arguments, inspect)))
 }
 
 
 export function log () {
   if (!silent)
-    console.warn(chalk.green(...Array.from(arguments, inspect)))
+    write(chalk.green(...Array.from(arguments, inspect)))
 }
 
 
 export function info () {
   if (!silent)
-    console.warn(chalk.blue(...Array.from(arguments, inspect)))
+    write(chalk.blue(...Array.from(arguments, inspect)))
 }
 
 
 export function debug () {
   if (!silent)
-    console.warn(chalk.cyan(...Array.from(arguments, inspect)))
+    write(chalk.cyan(...Array.from(arguments, inspect)))
 }
 
 
 export function error () {
   if (!silent)
-    console.error(...Array.from(arguments, argument => {
+    write(...Array.from(arguments, argument => {
       if (argument instanceof Error)
         argument = argument.stack || argument.name
 
@@ -53,4 +53,10 @@ function inspect (argument) {
   return typeof argument === 'object' ? util.inspect(argument, {
     depth: null
   }) : argument
+}
+
+
+// Use `process.stderr.write`.
+function write () {
+  process.stderr.write([ ...arguments ].join(newLine) + newLine)
 }

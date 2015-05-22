@@ -1,4 +1,4 @@
-import Test from 'tape'
+import test from 'tape'
 import * as arrayProxy from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/reserved_keys'
 import * as errors from '../../lib/common/errors'
@@ -32,7 +32,7 @@ const records = [
     isAlive: true,
     junk: { things: [ 'a', 'b', 'c' ] },
     birthday: new Date(),
-    friends: [2],
+    friends: [ 2 ],
     bestFriend: 2
   }, {
     id: 2,
@@ -40,29 +40,28 @@ const records = [
     age: 36,
     isAlive: false,
     picture: deadbeef,
-    friends: [1],
+    friends: [ 1 ],
     bestFriend: 1
   }
 ]
 
 
 export default (Adapter, options) => {
-
-  Test('find: nothing', t => run(t, adapter =>
+  test('find: nothing', t => run(t, adapter =>
     adapter.find(type, [])
     .then(records => {
       t.equal(records.count, 0, 'count is correct')
     })
   ))
 
-  Test('find: collection', t => run(t, adapter =>
+  test('find: collection', t => run(t, adapter =>
     adapter.find(type)
     .then(records => {
       t.equal(records.count, 2, 'count is correct')
     })
   ))
 
-  Test('find: match', t => run(t, adapter =>
+  test('find: match', t => run(t, adapter =>
     adapter.find(type, null, { match: { name: 'john' } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
@@ -71,7 +70,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('find: sort ascending', t => run(t, adapter =>
+  test('find: sort ascending', t => run(t, adapter =>
     adapter.find(type, null, { sort: { age: 1 } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 36, 42 ],
@@ -79,7 +78,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('find: sort descending', t => run(t, adapter =>
+  test('find: sort descending', t => run(t, adapter =>
     adapter.find(type, null, { sort: { age: -1 } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 42, 36 ],
@@ -87,21 +86,21 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('find: limit', t => run(t, adapter =>
+  test('find: limit', t => run(t, adapter =>
     adapter.find(type, null, { limit: 1 })
     .then(records => {
       t.equal(records.length, 1, 'limit length is correct')
     })
   ))
 
-  Test('find: offset', t => run(t, adapter =>
+  test('find: offset', t => run(t, adapter =>
     adapter.find(type, null, { offset: 1 })
     .then(records => {
       t.equal(records.length, 1, 'offset length is correct')
     })
   ))
 
-  Test('find: fields', t => run(t, adapter =>
+  test('find: fields', t => run(t, adapter =>
     adapter.find(type, null, { fields: { name: true, isAlive: true } })
     .then(records => {
       t.deepEqual(records.map(record => Object.keys(record).length),
@@ -111,7 +110,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('update: replace', t => run(t, adapter =>
+  test('update: replace', t => run(t, adapter =>
     adapter.update(type, [
       { id: 1, replace: { name: 'billy' } },
       { id: 2, replace: { name: 'billy' } }
@@ -126,7 +125,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('update: unset', t => run(t, adapter =>
+  test('update: unset', t => run(t, adapter =>
     adapter.update(type, [
       { id: 1, replace: { name: null } },
       { id: 2, replace: { name: null } }
@@ -141,10 +140,10 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('update: push', t => run(t, adapter =>
+  test('update: push', t => run(t, adapter =>
     adapter.update(type, [
       { id: 1, push: { friends: 5 } },
-      { id: 2, push: { friends: [5] } }
+      { id: 2, push: { friends: [ 5 ] } }
     ])
     .then(number => {
       t.equal(number, 2, 'number updated correct')
@@ -157,10 +156,10 @@ export default (Adapter, options) => {
     })
   ))
 
-  Test('update: pull', t => run(t, adapter =>
+  test('update: pull', t => run(t, adapter =>
     adapter.update(type, [
       { id: 1, pull: { friends: 2 } },
-      { id: 2, pull: { friends: [1] } }
+      { id: 2, pull: { friends: [ 1 ] } }
     ])
     .then(number => {
       t.equal(number, 2, 'number updated correct')
@@ -175,7 +174,6 @@ export default (Adapter, options) => {
   function run (t, fn) {
     return adapterTest(Adapter, options, t, fn)
   }
-
 }
 
 

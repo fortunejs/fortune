@@ -1,11 +1,11 @@
-import Test from 'tape'
+import test from 'tape'
 import fetchTest from '../fetch_test'
 
 
 const mediaType = 'application/vnd.api+json'
 
 
-Test('create record', t =>
+test('create record', t =>
   fetchTest(t, '/animals', {
     method: 'post',
     body: {
@@ -41,7 +41,7 @@ Test('create record', t =>
   }))
 
 
-Test('create record with existing ID should fail', t =>
+test('create record with existing ID should fail', t =>
   fetchTest(t, '/users', {
     method: 'post',
     body: {
@@ -62,7 +62,7 @@ Test('create record with existing ID should fail', t =>
   }))
 
 
-Test('update record', t =>
+test('update record', t =>
   fetchTest(t, '/user/2', {
     method: 'patch',
     body: {
@@ -94,7 +94,7 @@ Test('update record', t =>
   }))
 
 
-Test('sort a collection and use sparse fields', t =>
+test('sort a collection and use sparse fields', t =>
   fetchTest(t, '/users?sort=+birthday,-name&fields[user]=name,birthday', {
     method: 'get',
     headers: {
@@ -110,7 +110,7 @@ Test('sort a collection and use sparse fields', t =>
   }))
 
 
-Test('filter a collection', t =>
+test('filter a collection', t =>
   fetchTest(t, '/users?filter[name]=John Doe', {
     method: 'get',
     headers: {
@@ -121,11 +121,11 @@ Test('filter a collection', t =>
     t.equal(response.body.links.self, '/users', 'link is correct')
     t.deepEqual(
       response.body.data.map(record => record.attributes.name).sort(),
-      ['John Doe'], 'match is correct')
+      [ 'John Doe' ], 'match is correct')
   }))
 
 
-Test('find a single record with include', t =>
+test('find a single record with include', t =>
   fetchTest(t, '/animals/1?include=owner', {
     method: 'get',
     headers: {
@@ -140,7 +140,7 @@ Test('find a single record with include', t =>
   }))
 
 
-Test('find a single non-existent record', t =>
+test('find a single non-existent record', t =>
   fetchTest(t, '/animals/404', {
     method: 'get',
     headers: {
@@ -154,7 +154,7 @@ Test('find a single non-existent record', t =>
   }))
 
 
-Test('delete a single record', t =>
+test('delete a single record', t =>
   fetchTest(t, '/animals/2', {
     method: 'delete',
     headers: {
@@ -165,7 +165,7 @@ Test('delete a single record', t =>
   }))
 
 
-Test('find a collection of non-existent related records', t =>
+test('find a collection of non-existent related records', t =>
   fetchTest(t, '/users/3/pets', {
     method: 'get',
     headers: {
@@ -179,7 +179,7 @@ Test('find a collection of non-existent related records', t =>
   }))
 
 
-Test('find an empty collection', t =>
+test('find an empty collection', t =>
   fetchTest(t, '/empties', {
     method: 'get',
     headers: {
@@ -193,7 +193,7 @@ Test('find an empty collection', t =>
   }))
 
 
-Test('get an array relationship entity', t =>
+test('get an array relationship entity', t =>
   fetchTest(t, '/users/2/relationships/pets', {
     method: 'get',
     headers: {
@@ -208,7 +208,7 @@ Test('get an array relationship entity', t =>
   }))
 
 
-Test('get an empty array relationship entity', t =>
+test('get an empty array relationship entity', t =>
   fetchTest(t, '/users/3/relationships/pets', {
     method: 'get',
     headers: {
@@ -222,7 +222,7 @@ Test('get an empty array relationship entity', t =>
   }))
 
 
-Test('get a singular relationship entity', t =>
+test('get a singular relationship entity', t =>
   fetchTest(t, '/users/1/relationships/spouse', {
     method: 'get',
     headers: {
@@ -237,7 +237,7 @@ Test('get a singular relationship entity', t =>
   }))
 
 
-Test('get an empty singular relationship entity', t =>
+test('get an empty singular relationship entity', t =>
   fetchTest(t, '/users/3/relationships/spouse', {
     method: 'get',
     headers: {
@@ -251,7 +251,7 @@ Test('get an empty singular relationship entity', t =>
   }))
 
 
-Test('update a singular relationship entity', t =>
+test('update a singular relationship entity', t =>
   fetchTest(t, '/users/2/relationships/spouse', {
     method: 'patch',
     headers: {
@@ -266,7 +266,7 @@ Test('update a singular relationship entity', t =>
   }))
 
 
-Test('update an array relationship entity', t =>
+test('update an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/pets', {
     method: 'patch',
     headers: {
@@ -274,14 +274,14 @@ Test('update an array relationship entity', t =>
       'Content-Type': mediaType
     },
     body: {
-      data: [{ type: 'animal', id: 2 }]
+      data: [ { type: 'animal', id: 2 } ]
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
   }))
 
 
-Test('post to an array relationship entity', t =>
+test('post to an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/pets', {
     method: 'post',
     headers: {
@@ -289,14 +289,14 @@ Test('post to an array relationship entity', t =>
       'Content-Type': mediaType
     },
     body: {
-      data: [{ type: 'animal', id: 2 }]
+      data: [ { type: 'animal', id: 2 } ]
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
   }))
 
 
-Test('delete from an array relationship entity', t =>
+test('delete from an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/friends', {
     method: 'delete',
     headers: {
@@ -304,7 +304,7 @@ Test('delete from an array relationship entity', t =>
       'Content-Type': mediaType
     },
     body: {
-      data: [{ type: 'user', id: 3 }]
+      data: [ { type: 'user', id: 3 } ]
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')

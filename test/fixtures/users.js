@@ -4,8 +4,8 @@ export default [
     name: 'John Doe',
     birthday: new Date(1992, 11, 7),
     spouse: 2,
-    pets: [1],
-    friends: [3]
+    pets: [ 1 ],
+    friends: [ 3 ]
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ export default [
     birthday: new Date(1997, 6, 30),
     spouse: 1,
     pets: [ 2, 3 ],
-    friends: [3]
+    friends: [ 3 ]
   },
   {
     id: 3,

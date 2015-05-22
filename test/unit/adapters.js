@@ -8,11 +8,11 @@ const options = {
 }
 
 Object.keys(adapters).forEach(key => {
-  let A = adapters[key]
+  let adapter = adapters[key]
 
   // Check if it's a class or a dependency injection function.
-  try { A = A(Adapter) }
+  try { adapter = adapter(Adapter) }
   catch (error) { if (!(error instanceof TypeError)) throw error }
 
-  runAdapter(A, options[key])
+  runAdapter(adapter, options[key])
 })
