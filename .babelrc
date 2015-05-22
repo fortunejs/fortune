@@ -1,6 +1,8 @@
 {
+  "compact": true,
   "nonStandard": false,
   "optional": [
     "runtime"
-  ]
+  ],
+  "sourceMaps": "inline"
 }

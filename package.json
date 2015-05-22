@@ -25,7 +25,7 @@
     "test": "npm run lint && npm run build && REPORTER=true node dist/test | tap-dot"
   },
   "dependencies": {
-    "babel-runtime": "5.4.4",
+    "babel-runtime": "5.4.7",
     "inflection": "1.7.1",
     "mongodb": "2.0.33",
     "nedb": "1.1.2",
@@ -33,7 +33,7 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.4.4",
+    "babel": "5.4.7",
     "chalk": "1.0.0",
     "eslint": "0.21.2",
     "istanbul": "0.3.14",
