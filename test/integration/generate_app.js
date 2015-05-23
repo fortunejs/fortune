@@ -52,8 +52,8 @@ export default options => {
   const { change } = app.dispatcher
 
   app.dispatcher.on(change, data => {
-    Object.getOwnPropertySymbols(data)
-      .forEach(assignDescription.bind(null, data))
+    for (let symbol of Object.getOwnPropertySymbols(data))
+      assignDescription(data, symbol)
 
     stderr.info(chalk.bold('Change:'), data)
   })

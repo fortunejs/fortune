@@ -7,7 +7,7 @@ const options = {
   MongoDB: { url: 'mongodb://localhost:27017/test' }
 }
 
-Object.keys(adapters).forEach(key => {
+for (let key of Object.keys(adapters)) {
   let adapter = adapters[key]
 
   // Check if it's a class or a dependency injection function.
@@ -15,4 +15,4 @@ Object.keys(adapters).forEach(key => {
   catch (error) { if (!(error instanceof TypeError)) throw error }
 
   runAdapter(adapter, options[key])
-})
+}

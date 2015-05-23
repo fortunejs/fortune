@@ -9,6 +9,7 @@
 
 ### Done
 
+- Use `for...of` loop everywhere instead of `forEach`.
 - Unset 2nd degree related records for push/pull updates.
 - Make `serializerInput` and `serializerOutput` optional.
 - Refactor requestListener -> http.
