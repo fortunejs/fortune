@@ -12,7 +12,7 @@ Using Fortune comes with some tradeoffs that arise from intentional design decis
 
 ### Undirected Graph
 
-Fortune denormalizes all relationships by their inverse fields. If you do not specify an inverse field for a link explicitly, Fortune will automatically create one that is named like `__$(type)_$(field)_inverse` (this field should never be exposed). There are a few reasons:
+Fortune denormalizes all relationships by their inverse fields. If you do not specify an inverse field for a link explicitly, Fortune will automatically create one that is named like `__${type}_${field}_inverse` (this field should never be exposed). There are a few reasons:
 
 - An undirected graph makes it impossible to reach an orphan node without *a priori* knowledge. See [deep hypertext in Xanadu](http://xanadu.com/xuTheModel/) for the concept behind this.
 - Showing relationships is more performant since there is less querying to be done (the data is denormalized), but writing relationships is slower depending on the amount of related records.

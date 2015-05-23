@@ -13,12 +13,16 @@ export default [
     birthday: new Date(1997, 6, 30),
     spouse: 1,
     pets: [ 2, 3 ],
-    friends: [ 3 ]
+    friends: [ 3 ],
+    enemies: [ 3 ]
   },
   {
     id: 3,
     name: 'Microsoft Bob',
     birthday: new Date(1995, 3, 10),
-    friends: [ 1, 2 ]
+    friends: [ 1, 2 ],
+
+    // Hidden denormalized field.
+    '__user_enemies_inverse': [ 2 ]
   }
 ]

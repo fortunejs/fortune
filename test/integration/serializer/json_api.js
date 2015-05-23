@@ -16,9 +16,9 @@ test('create record', t =>
           birthday: Date.now(),
           picture: new Buffer('This is a string.').toString('base64')
         },
-        links: {
+        relationships: {
           owner: {
-            linkage: { type: 'user', id: 1 }
+            data: { type: 'user', id: 1 }
           }
         }
       }
@@ -72,12 +72,17 @@ test('update record', t =>
         attributes: {
           name: 'Jenny Death'
         },
-        links: {
+        relationships: {
           spouse: {
-            linkage: { type: 'user', id: 3 }
+            data: { type: 'user', id: 3 }
+          },
+          enemies: {
+            data: [
+              { type: 'user', id: 3 }
+            ]
           },
           friends: {
-            linkage: [
+            data: [
               { type: 'user', id: 1 },
               { type: 'user', id: 3 }
             ]
@@ -126,7 +131,7 @@ test('filter a collection', t =>
 
 
 test('find a single record with include', t =>
-  fetchTest(t, '/animals/1?include=owner', {
+  fetchTest(t, '/animals/1?include=owner,owner.friends', {
     method: 'get',
     headers: {
       'Accept': mediaType
@@ -135,8 +140,10 @@ test('find a single record with include', t =>
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/animals/1', 'link is correct')
     t.equal(response.body.data.id, '1', 'id is correct')
-    t.equal(response.body.included[0].type, 'user', 'type is correct')
-    t.equal(response.body.included[0].id, '1', 'id is correct')
+    t.deepEqual(response.body.included.map(record => record.type),
+      [ 'user', 'user' ], 'type is correct')
+    t.deepEqual(response.body.included.map(record => record.id)
+      .sort((a, b) => a - b), [ '1', '3' ], 'id is correct')
   }))
 
 

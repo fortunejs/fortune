@@ -445,6 +445,37 @@ test('update many to many (unset)', updateTest.bind({
 }))
 
 
+test('update many to many (denormalized inverse)', updateTest.bind({
+  plan: 5,
+  change: (t, methods, data) => {
+    t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      [ 1, 2, 3 ], 'change event shows updated IDs')
+  },
+  type: 'user',
+  payload: [
+    {
+      id: 1,
+      replace: { enemies: [ 2, 3 ] }
+    }
+  ],
+  relatedType: 'user',
+  related: (t, response) => {
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1).enemies.sort((a, b) => a - b),
+      [ 2, 3 ], 'field set')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 1)['__user_enemies_inverse'],
+      [], 'denormalized inverse field exists')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 2)['__user_enemies_inverse'],
+      [ 1 ], 'related field updated')
+    t.deepEqual(arrayProxy.find(response.payload.records,
+      record => record.id === 3)['__user_enemies_inverse']
+      .sort((a, b) => a - b), [ 1, 2 ], 'related field updated')
+  }
+}))
+
+
 function updateTest (t) {
   const { type, payload } = this
   let app
