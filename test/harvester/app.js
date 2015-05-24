@@ -1,14 +1,15 @@
 var harvester = require('../../lib/harvester');
 var JSONAPI_Error = harvester.JSONAPI_Error;
 var RSVP = require('rsvp');
+var Joi = require('joi');
 
 function createApp(options) {
 
     var harvesterApp = harvester(options)
 
         .resource('person', {
-            name: String,
-            appearances: Number,
+            name: Joi.string().required().description('name'),
+            appearances: Joi.string().required().description('appearances'),
             pets: ['pet'],
             soulmate: {ref: 'person', inverse: 'soulmate'},
             lovers: [
@@ -17,17 +18,17 @@ function createApp(options) {
         })
 
         .resource('pet', {
-            name: String,
-            appearances: Number,
+            name: Joi.string().required().description('name'),
+            appearances: Joi.string().required().description('appearances'),
             owner: 'person'
         })
 
         .resource('cat', {
-            name: String
+            name: Joi.string().required().description('name')
         }, {namespace: 'animals'})
 
         .resource('foobar', {
-            foo: String
+            foo: Joi.string().required().description('name')
         })
 
         .before(
