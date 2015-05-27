@@ -44,52 +44,66 @@ This defines a `user` record type that has a relationship to the `group` type. B
 
 Transformations can be defined per record type. Transform functions accept exactly two arguments, the `context` object, and the record. The record for an input transform may be the record to be created or deleted, or an updated record with updates applied. The method of an input transform may be any method except `find`, and an output transform may be applied to all methods.
 
+Here are some implementation details for dealing with passwords:
+
 ```js
 import crypto from 'crypto'
 
-const { errors } = fortune
-const { methods } = app.dispatcher
 const [ iterations, keyLength, saltLength ] =
   [ Math.pow(2, 15), Math.pow(2, 9), Math.pow(2, 6) ]
+
+function passwordCheck (password, key, salt) {
+  return new Promise((resolve, reject) => crypto.pbkdf2(
+    password, salt, iterations, keyLength, (error, buffer) =>
+      error ? reject(error) : key.equals(buffer) ? resolve() : reject()))
+}
+
+function generateSalt () {
+  return new Promise((resolve, reject) =>
+    crypto.randomBytes(saltLength, (error, buffer) =>
+    error ? reject(error) : resolve(buffer)))
+}
+
+function generateKey (password, salt) {
+  return new Promise((resolve, reject) =>
+    crypto.pbkdf2(password, salt,
+      iterations, keyLength, (error, buffer) =>
+      error ? reject(error) : resolve(buffer)))
+}
 ```
 
-For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide fields when displaying the record.
+This is a pretty basic implementation using the `crypto` module provided by Node.js to check and generate passwords. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide sensitive fields when displaying the record.
 
 ```js
+const { errors } = fortune
+const { methods } = app.dispatcher
+
 app.transformInput('user', (context, record) => {
   const { method, type, meta } = context.request
   const { password, id } = record
-  let salt, key
+  let { key, salt } = record
 
   if (method === methods.create && !password)
     throw new errors.BadRequestError(`Password must be specified.`)
 
-  return new Promise((resolve, reject) => method !== methods.create ?
-    // Check if the old password is correct.
-    crypto.pbkdf2(
-      new Buffer(meta['Authorization'] || '', 'base64').toString(),
-      record.salt.toString(), iterations, keyLength, (error, buffer) =>
-        error ? reject(error) : record.key.equals(buffer) ? resolve() :
-        reject(new errors.UnauthorizedError(`Incorrect password.`)))
-    : resolve())
+  return method !== methods.create ? passwordCheck(
+    new Buffer(meta['Authorization'] || '', 'base64').toString(),
+    key, salt.toString()) : Promise.resolve()
+
+  .catch(() => {
+    throw new errors.UnauthorizedError(`Incorrect password.`)
+  })
 
   .then(() => {
     // If we're not updating the password, don't need to do more.
     if (!password || method === methods.delete) return record
 
-    return new Promise((resolve, reject) =>
-      // Generate a new salt.
-      crypto.randomBytes(saltLength, (error, buffer) =>
-      error ? reject(error) : resolve(buffer)))
+    return generateSalt()
 
     .then(buffer => {
       salt = buffer
 
-      return new Promise((resolve, reject) =>
-        // Generate secure password key.
-        crypto.pbkdf2(password, salt.toString(),
-          iterations, keyLength, (error, buffer) =>
-          error ? reject(error) : resolve(buffer)))
+      return generateKey(password, salt.toString())
     })
 
     .then(buffer => {
@@ -98,12 +112,12 @@ app.transformInput('user', (context, record) => {
       record.key = key
       record.salt = salt
 
-      if (method === methods.create)
-        return record
+      if (method === methods.create) return record
 
       return app.adapter.update(type, {
         id, replace: { key, salt }
       })
+
       .then(() => record)
     })
   })

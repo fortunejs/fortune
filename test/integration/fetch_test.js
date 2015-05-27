@@ -21,9 +21,11 @@ export default (t, path, request, fn) => {
   .then(a => {
     app = a
 
-    const listener = fortune.net.http.bind(app)
-
-    server = http.createServer(listener).listen(port)
+    server = http.createServer(function listener () {
+      fortune.net.http.call(app, ...arguments)
+      .catch(error => stderr.error(error))
+    })
+    .listen(port)
 
     let headers
     let status
