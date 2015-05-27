@@ -35,10 +35,10 @@ import fortune from 'fortune'
 import http from 'http'
 
 const app = fortune.create()
-const server = http.createServer(fortune.net.http.bind(app))
+const server = http.createServer(fortune.net.http(app))
 ```
 
-This sets up an instance of Fortune with default options, and an HTTP server instance. The `fortune.net.http` module does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
+This sets up an instance of Fortune with default options, and an HTTP server instance. The `fortune.net.http` module returns a listener function that does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
 
 ```js
 app.defineType('user', {

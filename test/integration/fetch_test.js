@@ -21,8 +21,10 @@ export default (t, path, request, fn) => {
   .then(a => {
     app = a
 
-    server = http.createServer(function listener () {
-      fortune.net.http.call(app, ...arguments)
+    const listener = fortune.net.http(app)
+
+    server = http.createServer((request, response) => {
+      listener(request, response)
       .catch(error => stderr.error(error))
     })
     .listen(port)
