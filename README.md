@@ -6,7 +6,10 @@ Pluggable with the [agco JSON-API extension](https://github.com/agco/agco-json-a
 
 ##### Documentation 
 
-Harvesterjs is currently under heavy development. Documentation is a pretty much non-existent at this point, however the intention is to get this into shape over the coming months.
+Harvesterjs is currently under heavy development, we are reworking the DSL and adding a bunch of big new features. 
+   
+Documentation is a pretty much non-existent at this point, however when the dust settles we will get this into proper shape with reference docs, tutorials and screencasts.
+
 
 ### JSON-API Features 
 
@@ -28,9 +31,9 @@ Harvesterjs is currently under heavy development. Documentation is a pretty much
 
 ### Roadmap
 
-* brand [new DSL](https://gist.github.com/kristofsajdak/73aadf4393c5526f3705)
-* validation with [joi](https://github.com/hapijs/joi)
 * JSON API 1.0 compliance
+* validation with [joi](https://github.com/hapijs/joi)
+* brand [new DSL](https://gist.github.com/kristofsajdak/73aadf4393c5526f3705) with sensible defaults
 * [External links](https://github.com/agco/harvesterjs/issues/69)
 * [Bidirectional links](https://github.com/agco/harvesterjs/issues/81)
 * [UUIDs](https://github.com/agco/harvesterjs/issues/24)
