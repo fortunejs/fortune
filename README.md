@@ -33,7 +33,7 @@ Documentation is a pretty much non-existent at this point, however when the dust
 
 * JSON API 1.0 compliance
 * validation with [joi](https://github.com/hapijs/joi)
-* brand [new DSL](https://gist.github.com/kristofsajdak/73aadf4393c5526f3705) with sensible defaults
+* brand [new DSL](https://github.com/agco/harvesterjs/issues/88) with sensible defaults
 * [External links](https://github.com/agco/harvesterjs/issues/69)
 * [Bidirectional links](https://github.com/agco/harvesterjs/issues/81)
 * [UUIDs](https://github.com/agco/harvesterjs/issues/24)
