@@ -42,7 +42,7 @@ export function error () {
       // Assume that everything past the first line of an error
       // is a stack trace, and color it differently.
       return argument.split(newLine).map((line, index) =>
-        index > 0 ? chalk.dim(line) : chalk.red(line)
+        index > 0 ? chalk.gray(`  ${line.trim()}`) : chalk.red(line)
       ).join(newLine)
     }))
 }

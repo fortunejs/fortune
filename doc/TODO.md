@@ -2,13 +2,13 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Micro API Serializer: tests.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- Micro API Serializer: tests.
 - Remove the ability to create related resources on POST for JSON API.
 - Do more memoization of object-key lookups: `const value = object[key]` (postponed, it's effectively O(1)).
 - Lower cyclomatic complexity (postponed, seems to be a largely useless metric).
