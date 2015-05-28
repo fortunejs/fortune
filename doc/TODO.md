@@ -2,8 +2,9 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Micro API Serializer: update.
+- Refactor JSON API serializer.
 - PostgreSQL adapter.
-- Micro API Serializer: find, create, update, delete.
 - 100% test coverage.
 
 
