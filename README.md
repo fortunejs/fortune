@@ -8,7 +8,7 @@ Pluggable with the [agco JSON-API extension](https://github.com/agco/agco-json-a
 
 Harvesterjs is currently under heavy development, we are reworking the DSL and adding a bunch of big new features. 
    
-Documentation is a pretty much non-existent at this point, however when the dust settles we will get this into proper shape with reference docs, tutorials and screencasts.
+Documentation is a pretty sparse right now, however when the dust settles a bit we will get this into proper shape with reference docs, tutorials and screencasts.
 
 
 ### JSON-API Features 
