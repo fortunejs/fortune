@@ -3,9 +3,9 @@ import './unit/adapters'
 import './unit/schema'
 
 // Integration tests.
-import './integration/workflows/find'
-import './integration/workflows/create'
-import './integration/workflows/update'
-import './integration/workflows/delete'
+import './integration/methods/find'
+import './integration/methods/create'
+import './integration/methods/update'
+import './integration/methods/delete'
 import './integration/serializer/micro_api'
 import './integration/serializer/json_api'

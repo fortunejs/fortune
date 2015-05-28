@@ -12,9 +12,11 @@ const port = 1337
 fetch.Promise = Promise
 
 
-export default (t, path, request, fn) => {
+export default (path, request, fn) => arg => {
   let app
   let server
+
+  const t = arg
 
   return generateApp()
 
@@ -58,7 +60,7 @@ export default (t, path, request, fn) => {
         stderr.warn(`Failed to parse JSON.`)
       }
 
-      return fn({
+      return fn(t, {
         status,
         headers,
         body: text

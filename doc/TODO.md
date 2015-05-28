@@ -2,17 +2,16 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Lower cyclomatic complexity.
-- Do more memoization of object-key lookups: `const value = object[key]`.
 - Micro API Serializer: tests.
-- Remove the ability to create related resources on POST for JSON API.
-- Refactor JSON API serializer.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- Remove the ability to create related resources on POST for JSON API.
+- Do more memoization of object-key lookups: `const value = object[key]` (postponed, it's effectively O(1)).
+- Lower cyclomatic complexity (postponed, seems to be a largely useless metric).
 - Buffer comparison in NeDB adapter.
 - Use `for...of` loop everywhere instead of `forEach`.
 - Unset 2nd degree related records for push/pull updates.

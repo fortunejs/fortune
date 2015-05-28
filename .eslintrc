@@ -12,7 +12,7 @@ rules:
   comma-dangle: 2
   comma-spacing: [ 2, { before: false, after: true } ]
   comma-style: [ 2, 'last' ]
-  # complexity: [ 2, 10 ]
+  complexity: [ 2, 30 ]
   consistent-return: 2
   curly: [ 2, 'multi' ]
   default-case: 2
@@ -23,7 +23,11 @@ rules:
   guard-for-in: 0
   indent: [ 2, 2 ]
   key-spacing: [ 2, { beforeColon: false, afterColon: true } ]
+  max-depth: [ 2, 6 ]
   max-len: [ 2, 79, 4 ]
+  max-nested-callbacks: [ 2, 4 ]
+  max-params: [ 2, 4 ]
+  max-statements: [ 2, 40 ]
   new-cap: 2
   no-caller: 2
   no-cond-assign: [ 2, 'always' ]
