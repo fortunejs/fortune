@@ -7,7 +7,7 @@ var Promise = RSVP.Promise;
 
 module.exports = function(baseUrl,keys,ids) {
 
-    describe.only('paging', function(){
+    describe('paging', function(){
         it('should be possible to get page 1', function(done){
             request(baseUrl).get('/people?sort=name&offset=0&limit=1')
                 .expect(200)
