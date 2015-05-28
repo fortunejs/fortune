@@ -61,12 +61,19 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('find: match', t => run(t, adapter =>
+  test('find: match (string)', t => run(t, adapter =>
     adapter.find(type, null, { match: { name: 'john' } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
-      t.ok(records[0].picture.equals(deadbeef), 'buffer is correct')
       t.equal(records[0].name, 'john', 'matched correct record')
+    })
+  ))
+
+  test('find: match (buffer)', t => run(t, adapter =>
+    adapter.find(type, null, { match: { picture: deadbeef } })
+    .then(records => {
+      t.equal(records.length, 1, 'match length is correct')
+      t.ok(records[0].picture.equals(deadbeef), 'matched correct record')
     })
   ))
 

@@ -8,6 +8,7 @@ const mediaType = 'application/vnd.api+json'
 test('create record', t =>
   fetchTest(t, '/animals', {
     method: 'post',
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: {
         type: 'animal',
@@ -22,10 +23,6 @@ test('create record', t =>
           }
         }
       }
-    },
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
     }
   }, response => {
     t.equal(response.status, 201, 'status is correct')
@@ -44,15 +41,12 @@ test('create record', t =>
 test('create record with existing ID should fail', t =>
   fetchTest(t, '/users', {
     method: 'post',
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: {
         id: 1,
         type: 'user'
       }
-    },
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
     }
   }, response => {
     t.equal(response.status, 409, 'status is correct')
@@ -65,6 +59,7 @@ test('create record with existing ID should fail', t =>
 test('update record', t =>
   fetchTest(t, '/user/2', {
     method: 'patch',
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: {
         id: 2,
@@ -89,10 +84,6 @@ test('update record', t =>
           }
         }
       }
-    },
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
     }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
@@ -102,9 +93,7 @@ test('update record', t =>
 test('sort a collection and use sparse fields', t =>
   fetchTest(t, '/users?sort=+birthday,-name&fields[user]=name,birthday', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users', 'link is correct')
@@ -118,9 +107,7 @@ test('sort a collection and use sparse fields', t =>
 test('filter a collection', t =>
   fetchTest(t, '/users?filter[name]=John Doe', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users', 'link is correct')
@@ -133,9 +120,7 @@ test('filter a collection', t =>
 test('find a single record with include', t =>
   fetchTest(t, '/animals/1?include=owner,owner.friends', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/animals/1', 'link is correct')
@@ -150,9 +135,7 @@ test('find a single record with include', t =>
 test('find a single non-existent record', t =>
   fetchTest(t, '/animals/404', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 404, 'status is correct')
     t.ok('errors' in response.body, 'errors object exists')
@@ -164,9 +147,7 @@ test('find a single non-existent record', t =>
 test('delete a single record', t =>
   fetchTest(t, '/animals/2', {
     method: 'delete',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 204, 'status is correct')
   }))
@@ -175,9 +156,7 @@ test('delete a single record', t =>
 test('find a collection of non-existent related records', t =>
   fetchTest(t, '/users/3/pets', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users/3/pets', 'link is correct')
@@ -189,9 +168,7 @@ test('find a collection of non-existent related records', t =>
 test('find an empty collection', t =>
   fetchTest(t, '/empties', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/empties', 'link is correct')
@@ -203,9 +180,7 @@ test('find an empty collection', t =>
 test('get an array relationship entity', t =>
   fetchTest(t, '/users/2/relationships/pets', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users/2/relationships/pets',
@@ -218,9 +193,7 @@ test('get an array relationship entity', t =>
 test('get an empty array relationship entity', t =>
   fetchTest(t, '/users/3/relationships/pets', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users/3/relationships/pets',
@@ -232,9 +205,7 @@ test('get an empty array relationship entity', t =>
 test('get a singular relationship entity', t =>
   fetchTest(t, '/users/1/relationships/spouse', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users/1/relationships/spouse',
@@ -247,9 +218,7 @@ test('get a singular relationship entity', t =>
 test('get an empty singular relationship entity', t =>
   fetchTest(t, '/users/3/relationships/spouse', {
     method: 'get',
-    headers: {
-      'Accept': mediaType
-    }
+    headers: { 'Accept': mediaType }
   }, response => {
     t.equal(response.status, 200, 'status is correct')
     t.equal(response.body.links.self, '/users/3/relationships/spouse',
@@ -261,10 +230,7 @@ test('get an empty singular relationship entity', t =>
 test('update a singular relationship entity', t =>
   fetchTest(t, '/users/2/relationships/spouse', {
     method: 'patch',
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
-    },
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: { type: 'user', id: 3 }
     }
@@ -276,10 +242,7 @@ test('update a singular relationship entity', t =>
 test('update an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/pets', {
     method: 'patch',
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
-    },
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: [ { type: 'animal', id: 2 } ]
     }
@@ -291,10 +254,7 @@ test('update an array relationship entity', t =>
 test('post to an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/pets', {
     method: 'post',
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
-    },
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: [ { type: 'animal', id: 2 } ]
     }
@@ -306,10 +266,7 @@ test('post to an array relationship entity', t =>
 test('delete from an array relationship entity', t =>
   fetchTest(t, '/users/1/relationships/friends', {
     method: 'delete',
-    headers: {
-      'Accept': mediaType,
-      'Content-Type': mediaType
-    },
+    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
       data: [ { type: 'user', id: 3 } ]
     }

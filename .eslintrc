@@ -12,6 +12,7 @@ rules:
   comma-dangle: 2
   comma-spacing: [ 2, { before: false, after: true } ]
   comma-style: [ 2, 'last' ]
+  # complexity: [ 2, 10 ]
   consistent-return: 2
   curly: [ 2, 'multi' ]
   default-case: 2
