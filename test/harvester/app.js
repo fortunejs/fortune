@@ -24,7 +24,10 @@ function createApp(options) {
         })
 
         .resource('cat', {
-            name: Joi.string().required().description('name')
+            name: Joi.string().required().description('name'),
+            collars: Joi.array().required().description('collar'),
+            hasToy: Joi.boolean().required().description('hasToy'),
+            numToys: Joi.number().required().description('numToys'),
         }, {namespace: 'animals'})
 
         .resource('foobar', {
