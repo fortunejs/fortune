@@ -4,7 +4,10 @@ Easily create [JSONAPI](http://jsonapi.org/)-compliant APIs on top of node.js an
 
 Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md).
 
-##### Documentation : http://agco.github.io/harvesterjs
+##### Documentation 
+
+Harvesterjs is currently under heavy development. Documentation is a pretty much non-existent at this point, however the intention is to get this into shape over the coming months.
+
 ### JSON-API Features 
 
 - [Resource Relationships](http://jsonapi.org/format/#document-structure-resource-relationships) 
@@ -20,21 +23,18 @@ Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-
 
 - Offset based pagination
 - node-swagger-express ready
+- Extended filter operators : lt, gt, lte, gte
+- Mongodb change events - oplog integration 
 
 ### Roadmap
 
-* Extended filter operators : lt, gt, lte, gte
-* Mongodb change events - oplog integration 
+* JSON API 1.0 compliance
 * External links
+* Bidirectional links
 * UUIDs 
-* [Patch](http://jsonapi.org/format/#patch) fully supported
-* [Creating](http://jsonapi.org/format/#crud-creating-multiple-resources) and [Updating multiple resources](http://jsonapi.org/format/#crud-updating-multiple-resources)
 
 ### References
-This project is a fork of [fortune.js](fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
-
-
-
+This project is a fork of [fortune.js](http://fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
 
 [![NPM](https://nodei.co/npm/harvesterjs.png)](https://nodei.co/npm/harvesterjs/)
  
