@@ -2,6 +2,7 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Use `t.comment()` for testing.
 - PostgreSQL adapter.
 - 100% test coverage.
 

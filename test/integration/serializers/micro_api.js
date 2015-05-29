@@ -145,7 +145,7 @@ test('create record', fetchTest('/animals', {
   t.equal(new Buffer(response.body.animal[0].picture, 'base64')
     .toString(), 'This is a string.', 'buffer is correct')
   t.ok(Date.now() - new Date(response.body.animal[0].birthday)
-    .getTime() < 1000, 'date is close enough')
+    .getTime() < 60 * 1000, 'date is close enough')
 }))
 
 

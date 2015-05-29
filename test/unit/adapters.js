@@ -1,4 +1,4 @@
-import runAdapter from './run_adapter'
+import adapterTest from './adapter'
 import Adapter from '../../lib/adapter'
 import * as adapters from '../../lib/adapter/adapters'
 
@@ -14,5 +14,5 @@ for (let key of Object.keys(adapters)) {
   try { adapter = adapter(Adapter) }
   catch (error) { if (!(error instanceof TypeError)) throw error }
 
-  runAdapter(adapter, options[key])
+  adapterTest(adapter, options[key])
 }

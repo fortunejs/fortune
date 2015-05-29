@@ -21,9 +21,8 @@ Currently *alpha* software. Things will break, check the [changelog](https://git
 - **Define record types and get CRUD for free.**
 - Two interchangeable components: the adapter and serializers.
 - The adapter interacts with data storage.
-- Serializers parse requests and render responses.
-- Stateless request and response, with events as a side effect.
-- Networking is optional, may be handled by serializers.
+- Serializers parse requests and render responses (networking optional).
+- Stateless protocol, with events as a side effect.
 
 
 ## Example

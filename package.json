@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist coverage",
     "coverage": "npm run build && istanbul cover dist/test",
-    "deploy": "npm run deploy:website && npm run publish",
+    "deploy": "npm run publish",
     "deploy:website": "npm run build:website && babel-node website/deploy",
     "build": "npm run build:lib && npm run build:test",
     "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
@@ -22,7 +22,8 @@
     "build:website": "babel-node website/build",
     "lint": "eslint lib test",
     "prepublish": "npm run build:lib",
-    "test": "npm run lint && npm run build && REPORTER=true node dist/test | tap-dot"
+    "test": "npm run test:build && REPORTER=true node dist/test | tap-dot",
+    "test:build": "npm run lint && npm run build"
   },
   "dependencies": {
     "babel-runtime": "5.4.7",
@@ -35,9 +36,11 @@
   "devDependencies": {
     "babel": "5.4.7",
     "chalk": "1.0.0",
+    "docchi": "0.9.0",
     "eslint": "0.21.2",
     "istanbul": "0.3.14",
     "mkdirp": "0.5.1",
+    "myth": "1.4.0",
     "node-fetch": "1.2.1",
     "rimraf": "2.3.4",
     "tap-dot": "1.0.0",
@@ -57,7 +60,9 @@
     "adapter",
     "api",
     "data",
+    "http",
     "hypermedia",
+    "rest",
     "serializer"
   ]
 }

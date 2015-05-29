@@ -47,21 +47,23 @@ const records = [
 
 
 export default (Adapter, options) => {
-  test('find: nothing', t => run(t, adapter =>
+  const run = adapterTest.bind(null, Adapter, options)
+
+  test('find: nothing', run((t, adapter) =>
     adapter.find(type, [])
     .then(records => {
       t.equal(records.count, 0, 'count is correct')
     })
   ))
 
-  test('find: collection', t => run(t, adapter =>
+  test('find: collection', run((t, adapter) =>
     adapter.find(type)
     .then(records => {
       t.equal(records.count, 2, 'count is correct')
     })
   ))
 
-  test('find: match (string)', t => run(t, adapter =>
+  test('find: match (string)', run((t, adapter) =>
     adapter.find(type, null, { match: { name: 'john' } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
@@ -69,7 +71,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('find: match (buffer)', t => run(t, adapter =>
+  test('find: match (buffer)', run((t, adapter) =>
     adapter.find(type, null, { match: { picture: deadbeef } })
     .then(records => {
       t.equal(records.length, 1, 'match length is correct')
@@ -77,7 +79,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('find: sort ascending', t => run(t, adapter =>
+  test('find: sort ascending', run((t, adapter) =>
     adapter.find(type, null, { sort: { age: 1 } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 36, 42 ],
@@ -85,7 +87,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('find: sort descending', t => run(t, adapter =>
+  test('find: sort descending', run((t, adapter) =>
     adapter.find(type, null, { sort: { age: -1 } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 42, 36 ],
@@ -93,21 +95,21 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('find: limit', t => run(t, adapter =>
+  test('find: limit', run((t, adapter) =>
     adapter.find(type, null, { limit: 1 })
     .then(records => {
       t.equal(records.length, 1, 'limit length is correct')
     })
   ))
 
-  test('find: offset', t => run(t, adapter =>
+  test('find: offset', run((t, adapter) =>
     adapter.find(type, null, { offset: 1 })
     .then(records => {
       t.equal(records.length, 1, 'offset length is correct')
     })
   ))
 
-  test('find: fields', t => run(t, adapter =>
+  test('find: fields', run((t, adapter) =>
     adapter.find(type, null, { fields: { name: true, isAlive: true } })
     .then(records => {
       t.deepEqual(records.map(record => Object.keys(record).length),
@@ -117,7 +119,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('update: replace', t => run(t, adapter =>
+  test('update: replace', run((t, adapter) =>
     adapter.update(type, [
       { id: 1, replace: { name: 'billy' } },
       { id: 2, replace: { name: 'billy' } }
@@ -132,7 +134,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('update: unset', t => run(t, adapter =>
+  test('update: unset', run((t, adapter) =>
     adapter.update(type, [
       { id: 1, replace: { name: null } },
       { id: 2, replace: { name: null } }
@@ -147,7 +149,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('update: push', t => run(t, adapter =>
+  test('update: push', run((t, adapter) =>
     adapter.update(type, [
       { id: 1, push: { friends: 5 } },
       { id: 2, push: { friends: [ 5 ] } }
@@ -163,7 +165,7 @@ export default (Adapter, options) => {
     })
   ))
 
-  test('update: pull', t => run(t, adapter =>
+  test('update: pull', run((t, adapter) =>
     adapter.update(type, [
       { id: 1, pull: { friends: 2 } },
       { id: 2, pull: { friends: [ 1 ] } }
@@ -177,27 +179,25 @@ export default (Adapter, options) => {
         0, 'value pulled')
     })
   ))
-
-  function run (t, fn) {
-    return adapterTest(Adapter, options, t, fn)
-  }
 }
 
 
-function adapterTest (Adapter, options, t, fn) {
+function adapterTest (Adapter, options, fn) {
   const adapter = new Adapter({
     options: options || {},
     keys, errors, schemas
   })
 
-  adapter.connect()
+  return t => adapter.connect()
   .then(() => adapter.delete(type))
   .then(() => adapter.create(type, records))
   .then(r => {
     t.equal(r.length, records.length, 'number created is correct')
     t.equal(arrayProxy.find(r, record => record.id === 1).picture, null,
-      'missing field is null')
-    return fn(adapter)
+      'missing singular value is null')
+    t.deepEqual(arrayProxy.find(r, record => record.id === 1).nicknames,
+      [], 'missing array value is empty array')
+    return fn(t, adapter)
   })
   .then(() => adapter.delete(type))
   .then(number => {
