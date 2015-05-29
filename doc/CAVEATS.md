@@ -6,8 +6,8 @@ Using Fortune comes with some tradeoffs that arise from intentional design decis
 ### What It Is Not
 
 - Fortune is not a framework, it is intended to be composed within Node web frameworks or used standalone.
-- There is no MVC, no ORM or active record pattern, and no route matching (this may optionally be handled by the serializer).
-- Record types are only concerned with field types and foreign keys, there is no other built-in validation.
+- There is no MVC, no active records, and no route matching (this may optionally be handled by the serializer).
+- Record fields are minimally concerned with types and foreign keys, there is no other built-in validation.
 
 
 ### Undirected Graph

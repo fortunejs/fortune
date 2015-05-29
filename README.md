@@ -22,7 +22,7 @@ Currently *alpha* software. Things will break, check the [changelog](https://git
 - Two interchangeable components: the adapter and serializers.
 - The adapter interacts with data storage.
 - Serializers parse requests and render responses (networking optional).
-- Stateless protocol, with events as a side effect.
+- Maps to a stateless protocol, with events as a side effect.
 
 
 ## Example

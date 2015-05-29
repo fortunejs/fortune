@@ -15,7 +15,7 @@
     "clean": "rimraf dist coverage",
     "coverage": "npm run build && istanbul cover dist/test",
     "deploy": "npm run publish",
-    "deploy:website": "npm run build:website && babel-node website/deploy",
+    "deploy:website": "npm run build:website && ./website/deploy.sh",
     "build": "npm run build:lib && npm run build:test",
     "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "babel": "5.4.7",
     "chalk": "1.0.0",
-    "docchi": "0.9.0",
+    "docchi": "0.10.0",
     "eslint": "0.21.2",
     "istanbul": "0.3.14",
     "mkdirp": "0.5.1",
