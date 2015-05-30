@@ -7,8 +7,16 @@
 }
 
 @import "variables.css";
+
+::selection {
+  color: var(--color-background);
+  background-color: var(--color-literal);
+}
+
 @import "fonts.css";
 @import "code.css";
 @import "page.css";
 @import "nav.css";
 @import "api.css";
+@import "home.css";
+@import "media.css";

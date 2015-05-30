@@ -8,8 +8,9 @@
           -->({{{comment.params}}})<!--
         -->{{/context.isFunction}}<!--
         -->{{#comment.returnType}}<!--
-        --><span class="return">&nbsp;⇒ {{comment.returnType}}</span>
-        {{/comment.returnType}}<!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">{{comment.returnType}}</span><!--
+        -->{{/comment.returnType}}<!--
       --><a href="#{{context.anchor}}" class="anchor">#</a></h2>
       {{{comment.description}}}
     {{/docs}}

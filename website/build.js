@@ -155,9 +155,9 @@ for (let file of fs.readdirSync(docPath)) {
     title: 'Fortune.js',
     year, api,
     description: pkg.description,
-    version: pkg.version,
     keywords: pkg.keywords.join(','),
-    content: marked(templates.home + example, markedOptions)
+    content: mustache.render(templates.home, { version: pkg.version }) +
+      marked(example, markedOptions)
   }
 })()
 

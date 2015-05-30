@@ -4,7 +4,7 @@ nav {
   height: 100%;
   top: 0;
   padding:
-    calc(var(--line-height) * 5 / 3)
+    calc(var(--line-height) * 4 / 3)
     calc(var(--line-height) * 1)
     0;
   background-color: var(--color-menu);
@@ -13,7 +13,7 @@ nav {
 }
 
 nav .logo {
-  height: calc(var(--line-height) * 3);
+  height: calc(var(--line-height) * 8 / 3);
   display: block;
   margin: 0 auto;
 }
@@ -22,9 +22,9 @@ nav .type {
   height: calc(var(--line-height) * 5 / 6);
   display: block;
   margin:
-    calc(var(--line-height) * 9 / 12)
+    calc(var(--line-height) * 2 / 3)
     auto
-    calc(var(--line-height) * 11 / 12);
+    calc(var(--line-height) * 1);
 }
 
 nav ul.docs {
@@ -110,7 +110,8 @@ nav h4:before {
 nav ul.api {
   list-style-type: none;
   margin-left: 0;
-  color: var(--color-tertiary);
+  color: var(--color-secondary);
+  font-family: var(--mono-font);
 }
 
 nav ul.api li {
@@ -121,9 +122,11 @@ nav ul.api li {
 nav ul.api li:before {
   content: '⇒';
   width: 1em;
+  font-size: calc(1em / var(--small-size) * var(--big-size));
+  line-height: calc(1em / var(--big-size));
   display: inline-block;
   text-align: center;
-  margin-right: 0.5em;
+  margin-right: calc(1em * 1 / 3);
 }
 
 nav ul.api li.property:before {

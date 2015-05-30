@@ -1,0 +1,73 @@
+@media screen and (max-width: 1108px) {
+  body {
+    padding-left: 0;
+  }
+}
+
+@media screen and (max-width: 960px) {
+
+  body {
+    padding: 0;
+  }
+
+  main {
+    max-width: 100%;
+    text-align: justify;
+  }
+
+  nav {
+    position: static;
+    height: auto;
+    width: 100%;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px var(--color-offside) solid;
+  }
+
+  nav ul.docs {
+    padding-bottom: calc(var(--line-height) * 2 / 3)
+  }
+
+  nav ul.docs li:last-of-type:after,
+  nav ul.api, nav h4 {
+    display: none;
+  }
+
+  section {
+    padding: 0 calc(var(--line-height) * 1);
+    margin-left: 0;
+  }
+
+  header {
+    display: none;
+  }
+
+  footer {
+    margin-top: calc(var(--line-height) * 2);
+  }
+
+  .home > hr {
+    height: calc(var(--line-height) * 1);
+  }
+
+  .home h1 {
+    text-align: left;
+  }
+
+}
+
+@media screen and (max-width: 640px) {
+
+  body {
+    font-size: calc(var(--body-size) - 2px);
+  }
+
+  .home pre {
+    margin-right: 0;
+  }
+
+  .home .download a {
+    display: none;
+  }
+
+}
