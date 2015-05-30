@@ -1,4 +1,4 @@
-# [![Fortune.js](https://fortunejs.github.io/fortune-website/assets/fortune_logo.svg)](http://fortunejs.com)
+# [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortunejs.com)
 
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
@@ -19,15 +19,14 @@ Currently *alpha* software. Things will break, check the [changelog](https://git
 ## Key Concepts
 
 - **Define record types and get CRUD for free.**
-- Two interchangeable components: the adapter and serializers.
 - The adapter interacts with data storage.
-- Serializers parse requests and render responses (networking optional).
-- Maps to a stateless protocol, with events as a side effect.
+- The serializer parses requests and renders responses, networking optional.
+- The dispatcher maps to a stateless protocol (typically HTTP), with events as a side effect.
 
 
 ## Example
 
-Here is an example application, including a web server implementation:
+Here is a minimal example application, including a web server:
 
 ```js
 import fortune from 'fortune'
@@ -57,9 +56,28 @@ Defining record types. There is a many-to-many relationship between `user` and `
 app.start().then(() => server.listen(1337))
 ```
 
-Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [JSON API](http://jsonapi.org) specification, and an implementation of the [Micro API](http://micro-api.org) specification. By default, it is backed by an embedded datastore, NeDB (which doesn't persist to disk by default).
+Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
+
+For the Micro API serializer, we get these routes:
+
+| Verb   | Route                   | Description                                                   |
+|:---------|:----------------------|:--------------------------------------------------------------|
+| `GET`    | `/`                   | Get the index including links to collections.                 |
+| `GET`    | `/:type`              | Get a collection of records.                                  |
+| `POST`   | `/:type`              | Create a record belonging to that collection.                 |
+| `PATCH`  | `/:type`              | Update records belonging to that collection.                  |
+| `DELETE` | `/:type`              | Delete an entire collection of records.                       |
+| `GET`    | `/:type/:ids`         | Get records by comma separated IDs.                           |
+| `PATCH`  | `/:type/:ids`         | Update records by comma separated IDs.                        |
+| `DELETE` | `/:type/:ids`         | Delete records by comma separated IDs.                        |
+| `GET`    | `/:type/:ids/:link`   | Get related records.                                          |
+| `POST`   | `/:type/:ids/:link`   | Create related records.                                       |
+| `PATCH`  | `/:type/:ids/:link`   | Update related records.                                       |
+| `DELETE` | `/:type/:ids/:link`   | Delete related records.                                       |
+
+The JSON API serializer emits routes specified [here](http://jsonapi.org/format/).
 
 
-### License
+## License
 
 Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE).

@@ -1,4 +1,5 @@
 import test from 'tape'
+import Adapter from '../../lib/adapter'
 import * as arrayProxy from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/reserved_keys'
 import * as errors from '../../lib/common/errors'
@@ -46,8 +47,8 @@ const records = [
 ]
 
 
-export default (Adapter, options) => {
-  const run = adapterTest.bind(null, Adapter, options)
+export default (adapter, options) => {
+  const run = runTest.bind(null, adapter, options)
 
   test('find: nothing', run((t, adapter) =>
     adapter.find(type, [])
@@ -182,8 +183,13 @@ export default (Adapter, options) => {
 }
 
 
-function adapterTest (Adapter, options, fn) {
-  const adapter = new Adapter({
+function runTest (a, options, fn) {
+  // Check if it's a class or a dependency injection function.
+  try { a = a(Adapter) }
+  catch (error) { if (!(error instanceof TypeError)) throw error }
+
+  const A = a
+  const adapter = new A({
     options: options || {},
     keys, errors, schemas
   })
