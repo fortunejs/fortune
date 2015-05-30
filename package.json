@@ -29,7 +29,6 @@
   "dependencies": {
     "babel-runtime": "5.4.7",
     "inflection": "1.7.1",
-    "mongodb": "2.0.33",
     "nedb": "1.1.2",
     "negotiator": "0.5.3",
     "uri-templates": "0.1.7"
