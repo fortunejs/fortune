@@ -1,0 +1,19 @@
+<div class="api">
+  {{#.}}
+    <h6>{{module}} <span>(<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{path}}">{{path}}</a>)</span></h6>
+    {{#docs}}
+      <h2 id="{{context.anchor}}">
+        {{{context.path}}}<!--
+        -->{{#context.isFunction}}<!--
+          -->({{{comment.params}}})<!--
+        -->{{/context.isFunction}}<!--
+        -->{{#comment.returnType}}<!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">{{comment.returnType}}</span><!--
+        -->{{/comment.returnType}}<!--
+      --><a href="#{{context.anchor}}" class="anchor">#</a></h2>
+      {{{comment.description}}}
+    {{/docs}}
+    <hr>
+  {{/.}}
+</div>

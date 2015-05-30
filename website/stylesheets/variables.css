@@ -1,0 +1,30 @@
+:root {
+
+  /* colors */
+  --color-background:   #ffffff;
+  --color-menu:         #f5f5f5;
+  --color-offside:      #e3e3e3;
+  --color-primary:      #353535;
+  --color-secondary:    #909090;
+  --color-tertiary:     #bababa;
+  --color-accent:       #ed7041;
+
+  --color-attribute:    #894388;
+  --color-value:        #C56752;
+  --color-literal:      #0A7F81;
+
+  /* fonts */
+  --body-font: 'Cabin', sans-serif;
+  --mono-font: 'Inconsolata', monospace;
+
+  /* measurements */
+  --max-width: 66em;
+  --menu-width: 14em;
+  --body-size: 16px;
+  --small-size: calc(14 / 16);
+  --big-size: calc(18 / 16);
+  --line-height: calc(1em * 26 / 16);
+  --border-radius: 5px;
+  --fade-speed: 0.15s;
+
+}

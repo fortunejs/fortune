@@ -1,45 +1,74 @@
 {
   "name": "fortune",
-  "description": "Web framework for prototyping hypermedia APIs.",
-  "version": "0.2.4",
+  "description": "Data interface library.",
+  "version": "1.0.0-alpha.1",
   "license": "MIT",
-  "author": {
-    "name": "Dali Zheng",
-    "email": "dali@series.ac"
-  },
+  "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
+  "contributors": [],
   "homepage": "http://fortunejs.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/daliwali/fortune"
+    "url": "git@github.com:fortunejs/fortune.git"
   },
+  "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "test": "node test/run"
+    "clean": "rimraf dist coverage",
+    "deploy": "npm run publish",
+    "deploy:website": "npm run build:website && ./website/deploy.sh",
+    "build": "npm run build:lib && npm run build:test",
+    "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
+    "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
+    "build:website": "babel-node website/build",
+    "prepublish": "npm run build:lib",
+    "test": "npm run test:build && REPORTER=true node dist/test | tap-dot",
+    "test:build": "npm run test:lint && npm run build",
+    "test:lint": "eslint lib test website",
+    "test:coverage": "npm run build && istanbul cover dist/test",
+    "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "body-parser": "~1.4.3",
-    "express": "~4.6.1",
-    "i": "~0.3.2",
-    "lodash": "~2.4.1",
-    "mkdirp": "~0.5.0",
-    "nedb": "~0.10.6",
-    "rsvp": "~3.0.9"
+    "babel-runtime": "5.4.7",
+    "inflection": "1.7.1",
+    "mongodb": "2.0.33",
+    "nedb": "1.1.2",
+    "negotiator": "0.5.3",
+    "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "fortune-mongodb": "~0.2.2",
-    "mocha": "~1.20.1",
-    "should": "~4.0.4",
-    "supertest": "~0.13.0"
+    "babel": "5.4.7",
+    "chalk": "1.0.0",
+    "docchi": "0.10.2",
+    "eslint": "0.21.2",
+    "highlight.js": "8.6.0",
+    "html-minifier": "0.7.2",
+    "http-server": "0.8.0",
+    "istanbul": "0.3.14",
+    "mkdirp": "0.5.1",
+    "mustache": "2.0.0",
+    "myth": "1.4.0",
+    "node-fetch": "1.2.1",
+    "rimraf": "2.3.4",
+    "tap-dot": "1.0.0",
+    "tape": "4.0.0"
   },
+  "files": [
+    "dist/lib",
+    "lib/",
+    "test/",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "dist/lib/index.js",
   "engines": {
-    "node": ">=0.10"
+    "node": ">=0.12"
   },
   "keywords": [
-    "json",
+    "adapter",
     "api",
-    "jsonapi",
-    "json-api",
-    "framework",
+    "data",
+    "http",
+    "hypermedia",
     "rest",
-    "restful"
+    "serializer"
   ]
 }

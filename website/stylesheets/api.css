@@ -1,0 +1,38 @@
+.api h6 {
+  color: var(--color-attribute);
+  font-size: calc(1em * var(--small-size));
+  line-height: calc(var(--line-height) / var(--small-size));
+  margin-top: calc(var(--line-height) / var(--small-size) * -1 / 3);
+  padding-top: calc(var(--line-height) / var(--small-size) * 4 / 3);
+  margin-bottom: calc(var(--line-height) / var(--small-size) * 1 / 3);
+}
+
+.api h6 span {
+  font-weight: 400;
+}
+
+.api .arrow {
+  color: var(--color-value);
+  margin: 0 0.25em;
+}
+
+.api .key {
+  font-style: italic;
+}
+
+.api .parameter {
+  color: var(--color-literal);
+}
+
+.api .return {
+  color: var(--color-attribute);
+}
+
+.api > hr {
+  height: calc(var(--line-height) * 2);
+  margin-bottom: calc(var(--line-height) * -2 / 3);
+}
+
+.api > hr:last-of-type {
+  display: none;
+}

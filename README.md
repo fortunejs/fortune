@@ -1,87 +1,83 @@
-# Fortune.js [![Build Status](https://travis-ci.org/daliwali/fortune.png?branch=master)](https://travis-ci.org/daliwali/fortune)
+# [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortunejs.com)
 
-*Currently undergoing bit-rot while I work on the `rewrite` branch, all new activity is going on there.*
+[![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
+[![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
+[![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE)
+[![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
-Hello nerds. Fortune is a web framework for prototyping hypermedia APIs that implement the [JSON API](http://jsonapi.org/) specification. It comes with a modular persistence layer, with adapters for [NeDB](//github.com/louischatriot/nedb) (built-in), [MongoDB](//github.com/daliwali/fortune-mongodb), [MySQL](//github.com/daliwali/fortune-relational), [Postgres](//github.com/daliwali/fortune-relational), & [SQLite](//github.com/daliwali/fortune-relational).
+Fortune is a library for working with data on the server-side, intended to provide building blocks for web applications.
 
-Get it by installing from npm:
-```
-$ npm install fortune
-```
+[View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
-### Road to 1.0
-
-There is a release tag for `v1.0` of JSON API, though Fortune does not yet implement the entire feature set. What needs to be done:
-
-- Querying, pagination, sorting
-- Compound documents
-- Content negotiation between different formats (future, planned)
-- Ensuring specification compliance
-
-Contributions welcome.
-
-### Features
-
-Fortune implements everything you need to get started with JSON API, with a few extra features:
-
-- Batteries included, Fortune handles routing and database interactions so you don't have to.
-- Serializers and deserializers for JSON API, and other hypermedia formats (in the future).
-- Hooks to implement application specific logic before/after interacting with resources.
-
-It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](//github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
-
-## Guide & Documentation
-
-The full guide and API documentation are located at [fortunejs.com](http://fortunejs.com/).
-
-### Basic Usage
-
-Here is a minimal application:
-
-```javascript
-var fortune = require('fortune');
-var app = fortune();
-
-app.resource('person', {
-  name: String,
-  age: Number,
-  pets: ['pet'] // "has many" relationship to pets
-});
-
-app.resource('pet', {
-  name: String,
-  age: Number,
-  owner: 'person' // "belongs to" relationship to a person
-});
-
-app.listen(1337);
+```sh
+$ npm install fortune --save
 ```
 
-This exposes a few routes for the `person` and `pet` resources, as defined by the JSON API specification:
+Currently *alpha* software. Things will break, check the [changelog](https://github.com/fortunejs/fortune/blob/rewrite/doc/CHANGELOG.md).
 
-| HTTP   | Person             | Pet               | Notes                                                        |
-|--------|--------------------|-------------------|--------------------------------------------------------------|
-| GET    | /people            | /pets             | Get a collection of resources, accepts query `?ids=1,2,3...` |
-| POST   | /people            | /pets             | Create a resource                                            |
-| GET    | /people/`:id`      | /pets/`:id`       | Get a specific resource, or multiple: `1,2,3`                |
-| PUT    | /people/`:id`      | /pets/`:id`       | Create or update a resource                                  |
-| PATCH  | /people/`:id`      | /pets/`:id`       | Patch a resource (see [RFC 6902](//tools.ietf.org/html/rfc6902)) |
-| DELETE | /people/`:id`      | /pets/`:id`       | Delete a resource                                            |
-| GET    | /people/`:id`/pets | /pets/`:id`/owner | Get a related resource (one level deep)                      |
 
-### Unit Testing
+## Key Concepts
 
-Tests are written with Mocha, and are run against the built-in NeDB adapter, plus MongoDB & MySQL on Travis. You will also need to have the developer dependencies installed. To run tests:
+- **Define record types and get CRUD for free.**
+- The adapter interacts with data storage.
+- The serializer parses requests and renders responses, networking optional.
+- The dispatcher maps to a stateless protocol (typically HTTP), with events as a side effect.
 
+
+## Example
+
+Here is a minimal example application, including a web server:
+
+```js
+import fortune from 'fortune'
+import http from 'http'
+
+const app = fortune.create()
+const server = http.createServer(fortune.net.http(app))
 ```
-$ npm test
+
+This sets up an instance of Fortune with default options, and an HTTP server instance. The `fortune.net.http` module returns a listener function that does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
+
+```js
+app.defineType('user', {
+  name: { type: String },
+  groups: { link: 'group', inverse: 'members', isArray: true }
+})
+
+app.defineType('group', {
+  name: { type: String },
+  members: { link: 'user', inverse: 'group', isArray: true }
+})
 ```
 
-### Client-side Implementations
-- [Ember Data](//github.com/emberjs/data): the original implementation, it needs a [custom adapter](//github.com/daliwali/ember-json-api) to actually work.
+Defining record types. There is a many-to-many relationship between `user` and `group` on the `groups` and `members` fields respectively.
 
-### Meta
+```js
+app.start().then(() => server.listen(1337))
+```
 
-For release history and roadmap, see [CHANGELOG.md](//github.com/daliwali/fortune/blob/master/CHANGELOG.md).
+Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
 
-Fortune is licensed under the MIT license, see [LICENSE.md](//github.com/daliwali/fortune/blob/master/LICENSE.md).
+For the Micro API serializer, we get these routes:
+
+| Verb   | Route                   | Description                                                   |
+|:---------|:----------------------|:--------------------------------------------------------------|
+| `GET`    | `/`                   | Get the index including links to collections.                 |
+| `GET`    | `/:type`              | Get a collection of records.                                  |
+| `POST`   | `/:type`              | Create a record belonging to that collection.                 |
+| `PATCH`  | `/:type`              | Update records belonging to that collection.                  |
+| `DELETE` | `/:type`              | Delete an entire collection of records.                       |
+| `GET`    | `/:type/:ids`         | Get records by comma separated IDs.                           |
+| `PATCH`  | `/:type/:ids`         | Update records by comma separated IDs.                        |
+| `DELETE` | `/:type/:ids`         | Delete records by comma separated IDs.                        |
+| `GET`    | `/:type/:ids/:link`   | Get related records.                                          |
+| `POST`   | `/:type/:ids/:link`   | Create related records.                                       |
+| `PATCH`  | `/:type/:ids/:link`   | Update related records.                                       |
+| `DELETE` | `/:type/:ids/:link`   | Delete related records.                                       |
+
+The JSON API serializer emits routes specified [here](http://jsonapi.org/format/).
+
+
+## License
+
+Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE).

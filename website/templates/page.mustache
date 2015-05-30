@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+
+This page is automatically generated. See:
+https://github.com/fortunejs/fortune/tree/master/website
+
+-->
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+    {{#description}}<meta name="description" content="{{description}}">{{/description}}
+    {{#keywords}}<meta name="keywords" content="{{keywords}}">{{/keywords}}
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="icon" href="{{{root}}}assets/icon.png">
+    <link rel="stylesheet" href="{{{root}}}assets/style.css">
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a href="{{{root}}}"><img src="{{{root}}}assets/piggu.svg" alt="Piggu" class="logo"></a>
+        <a href="{{{root}}}"><img src="{{{root}}}assets/fortune_type.svg" alt="Fortune.js" class="type"></a>
+        <ul class="docs">
+          <li><a href="{{{root}}}getting_started/">Getting Started<span>⚙</span></a></li>
+          <li><a href="{{{root}}}components/">Components<span>⚒</span></a></li>
+          <li><a href="{{{root}}}changelog/">Changelog<span>⚓</span></a></li>
+          <li><a href="{{{root}}}contributing/">Contributing<span>⛺</span></a></li>
+          <li><a href="{{{root}}}caveats/">Caveats<span>⚖</span></a></li>
+          <li><a href="{{{root}}}api/">API Reference<span>⏣</span></a></li>
+        </ul>
+        {{#api}}
+          <h4>{{module}}</h4>
+          <ul class="api">
+            {{#docs}}
+              {{#context}}
+                <li{{#isProperty}} class="property"{{/isProperty}}>
+                  <a href="{{{root}}}api/#{{anchor}}">{{name}}</a>
+                </li>
+              {{/context}}
+            {{/docs}}
+          </ul>
+        {{/api}}
+      </nav>
+      <section>
+        <header>
+          <a href="https://www.npmjs.com/package/fortune">Package</a><!--
+          --><a href="https://github.com/fortunejs/fortune">Repository</a><!--
+          --><a href="https://github.com/fortunejs/fortune/issues">Issues</a>
+        </header>
+        <article>
+          {{{content}}}
+        </article>
+        <footer>
+          <p><a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a><span>&copy; {{year}} <a href="http://daliwa.li">Dali Zheng</a></span></p>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+.home h4 {
+  color: var(--color-attribute);
+  font-size: calc(1em * var(--small-size));
+  line-height: calc(var(--line-height) / var(--small-size));
+  margin-top: calc(var(--line-height) / var(--small-size) * -1 / 3);
+  padding-top: calc(var(--line-height) / var(--small-size) * 4 / 3);
+  margin-bottom: calc(var(--line-height) / var(--small-size) * 1);
+}
+
+.home h1 {
+  color: var(--color-attribute);
+  padding-top: 0;
+  margin-top: 0;
+  font-weight: 400;
+  font-size: calc(1em * 5 / 3);
+  line-height: calc(var(--line-height) * 1);
+  margin-bottom: calc(var(--line-height) / (5 / 3) * 1);
+}
+
+.home > hr {
+  height: calc(var(--line-height) * 2);
+  margin-bottom: calc(var(--line-height) * -2 / 3);
+}
+
+.home .download {
+  position: relative;
+}
+
+.home .download a {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  font-weight: 700;
+  width: calc(1em * 26 / 3);
+  line-height: calc(var(--line-height) * 5 / 3);
+  background-color: var(--color-literal);
+  border-radius: var(--border-radius);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 -2px 0 #095052 inset;
+  transition: opacity var(--fade-speed) ease;
+  opacity: calc(4 / 5);
+}
+
+.home .download a:hover {
+  opacity: calc(1);
+}
+
+.home .download a span {
+  margin-right: calc(1em * 1 / 2);
+}
+
+.home pre {
+  background-color: #F0F7F7;
+  box-shadow: 0 1px 0 #D5EAEB inset;
+  color: var(--color-literal);
+  margin-right: 10em;
+}
+
+.home pre code:before {
+  content: '$';
+  margin-right: 0.75em;
+  opacity: calc(1 / 3);
+  pointer-events: none;
+}
