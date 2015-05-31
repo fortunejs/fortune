@@ -1,8 +1,8 @@
 # [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortunejs.com)
 
-[![Build Status](https://img.shields.io/travis/fortunejs/fortune/rewrite.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
+[![Build Status](https://img.shields.io/travis/fortunejs/fortune/master.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
-[![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE)
+[![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 [![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
 Fortune is a library for working with data on the server-side, intended to provide building blocks for web applications.
@@ -13,7 +13,7 @@ Fortune is a library for working with data on the server-side, intended to provi
 $ npm install fortune --save
 ```
 
-Currently *alpha* software. Things will break, check the [changelog](https://github.com/fortunejs/fortune/blob/rewrite/doc/CHANGELOG.md).
+Currently *alpha* software. Things will break, check the [changelog](http://fortunejs.com/changelog/).
 
 
 ## Key Concepts
@@ -80,4 +80,4 @@ The JSON API serializer emits routes specified [here](http://jsonapi.org/format/
 
 ## License
 
-Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/rewrite/LICENSE).
+Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE).
