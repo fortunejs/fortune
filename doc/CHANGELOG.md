@@ -3,6 +3,10 @@
 Not all releases may be documented here.
 
 
+### 1.0.0-alpha.5 (2015-06-01)
+- Denormalized fields should not be enumerable in returned records from the adapter.
+
+
 ### 1.0.0-alpha.4 (2015-05-31)
 - Micro API serializer now obfuscates URIs by default.
 - Test runner no longer relies on environment variable.

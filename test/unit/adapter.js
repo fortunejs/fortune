@@ -18,6 +18,9 @@ const schemas = {
     picture: { type: Buffer },
     nicknames: { type: String, isArray: true },
     friends: { link: 'user', isArray: true, inverse: 'friends' },
+    nemesis: { link: 'user', inverse: '__user_nemesis_inverse' },
+    '__user_nemesis_inverse': { link: 'user', isArray: true,
+      inverse: 'nemesis', [keys.denormalizedInverse]: true },
     bestFriend: { link: 'user', inverse: 'bestFriend' }
   }
 }
@@ -66,6 +69,8 @@ export default (adapter, options) => {
     .then(records => {
       t.equal(records.count, 1, 'count is correct')
       t.ok(testIds(records), 'id type is correct')
+      t.ok(!arrayProxy.includes(Object.keys(records[0]),
+        '__user_nemesis_inverse'), 'denormalized fields not enumerable')
     })
   ))
 
@@ -133,7 +138,7 @@ export default (adapter, options) => {
     })
   ))
 
-  test.only('create: id generation and lookup', run((t, adapter) => {
+  test('create: id generation and lookup', run((t, adapter) => {
     let id
 
     return adapter.create(type, [ {
@@ -142,7 +147,6 @@ export default (adapter, options) => {
     .then(records => {
       id = records[0].id
       t.ok(testIds(records), 'id type is correct')
-      stderr.warn.call(t, id)
 
       return adapter.find(type, [ id ])
     })
@@ -211,6 +215,17 @@ export default (adapter, options) => {
     .then(records => {
       t.equal(records.filter(record => record.friends.length).length,
         0, 'value pulled')
+    })
+  ))
+
+  test('delete', run((t, adapter) =>
+    adapter.delete(type, [ 1 ])
+    .then(number => {
+      t.equal(number, 1, 'number deleted correct')
+      return adapter.find(type)
+    })
+    .then(records => {
+      t.equal(records.length, 1, 'record deleted')
     })
   ))
 }

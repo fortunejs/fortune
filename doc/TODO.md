@@ -2,13 +2,13 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Make denormalized fields not enumerable in the adapter.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- Make denormalized fields not enumerable in the adapter.
 - Obfuscate Micro API URIs, to make it clear that hypermedia should be used.
 - Use `t.comment()` for testing.
 - Micro API Serializer: tests.

@@ -15,6 +15,8 @@ fetchTest('/', {
     'content type is correct')
   t.equal(Object.keys(response.body['@links']).length,
     3, 'number of types correct')
+  t.ok(!response.body['@links'].user.enemies['@inverse'],
+    'denormalized inverse is missing')
 }))
 
 
