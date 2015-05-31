@@ -8,7 +8,7 @@ The first thing you'll have to do is install [Node.js](https://nodejs.org/) (if 
 $ npm install -g babel
 ```
 
-*Note: if the above did not work, you will probably need root permissions, so try running it with `sudo`.*
+*Note: if the above did not work, you probably don't have permissions, [here are workarounds](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
 
 Then install Fortune from the command-line:
 
@@ -134,7 +134,7 @@ app.transformOutput('user', (context, record) => {
 })
 ```
 
-The output transform has the same arguments as the input transform, and is applied on `find` and `create` requests only. It must return the record, either synchronously or as a promise.
+The output transform has the same arguments as the input transform, but is applied on all requests. Some serializers may not show the resolved value of the output transform for certain requests, such as updating and deleting. It must return the record, either synchronously or as a promise.
 
 
 ## Finishing

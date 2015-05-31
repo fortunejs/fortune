@@ -25,10 +25,30 @@
   }
 
   nav ul.docs {
-    padding-bottom: calc(var(--line-height) * 2 / 3)
+    padding-bottom: calc(var(--line-height) * 1);
+    text-align: center;
   }
 
+  nav ul.docs li {
+    display: inline-block;
+  }
+
+  nav ul.docs li a {
+    padding: 0;
+    margin: 0 0.6em;
+  }
+
+  nav ul.docs li a:after {
+    content: '⁄';
+    margin-left: 1.2em;
+    color: var(--color-secondary);
+    pointer-events: none;
+  }
+
+  nav ul.docs li:before,
   nav ul.docs li:last-of-type:after,
+  nav ul.docs li:last-of-type a:after,
+  nav ul.docs li a span,
   nav ul.api, nav h4 {
     display: none;
   }

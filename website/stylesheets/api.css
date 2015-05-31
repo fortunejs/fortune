@@ -11,6 +11,10 @@
   font-weight: 400;
 }
 
+.api .class {
+  color: var(--color-value);
+}
+
 .api .arrow {
   color: var(--color-value);
   margin: 0 0.25em;

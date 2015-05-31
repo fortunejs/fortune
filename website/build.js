@@ -69,13 +69,20 @@ function setFlags (ns, obj) {
     obj.context.path = `${ns}.<span class="key">${obj.context.name}</span>`
   }
 
+  if (type === 'class')
+    obj.context.isClass = true
+
   if (type === 'property')
     obj.context.isProperty = true
 
   if (type === 'method' || type === 'function' || type === 'constructor')
     obj.context.isFunction = true
 
+  if (type === 'constructor')
+    obj.context.isConstructor = true
+
   const getName = element => element.name || 'any type'
+  const setArray = str => `${str} (array)`
   const params = []
 
   for (let tag of obj.comment.tags) {
@@ -83,6 +90,8 @@ function setFlags (ns, obj) {
       obj.comment.returnType = tag.type.name
       if (tag.type.elements) obj.comment.returnType =
         tag.type.elements.map(getName).join(' | ')
+      if (tag.type.applications) obj.comment.returnType =
+        tag.type.applications.map(getName).map(setArray).join(' | ')
       continue
     }
     if (tag.title === 'param') {

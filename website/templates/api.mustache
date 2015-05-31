@@ -3,7 +3,18 @@
     <h6>{{module}} <span>(<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{path}}">{{path}}</a>)</span></h6>
     {{#docs}}
       <h2 id="{{context.anchor}}">
-        {{{context.path}}}<!--
+        {{#context.isClass}}
+        <span class="class">class</span>
+        {{/context.isClass}}
+        {{#context.static}}
+        <span class="class">static</span>
+        {{/context.static}}
+        {{#context.isConstructor}}
+        <span class="class">new</span> {{context.target}}
+        {{/context.isConstructor}}
+        {{^context.isConstructor}}
+        {{{context.path}}}
+        {{/context.isConstructor}}<!--
         -->{{#context.isFunction}}<!--
           -->({{{comment.params}}})<!--
         -->{{/context.isFunction}}<!--
