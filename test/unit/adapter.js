@@ -133,6 +133,26 @@ export default (adapter, options) => {
     })
   ))
 
+  test.only('create: id generation and lookup', run((t, adapter) => {
+    let id
+
+    return adapter.create(type, [ {
+      name: 'joe'
+    } ])
+    .then(records => {
+      id = records[0].id
+      t.ok(testIds(records), 'id type is correct')
+      stderr.warn.call(t, id)
+
+      return adapter.find(type, [ id ])
+    })
+    .then(records => {
+      t.equal(records.length, 1, 'match length is correct')
+      t.equal(records[0].id, id, 'id is matching')
+      t.ok(testIds(records), 'id type is correct')
+    })
+  }))
+
   test('update: replace', run((t, adapter) =>
     adapter.update(type, [
       { id: 1, replace: { name: 'billy' } },
@@ -219,10 +239,7 @@ function runTest (a, options, fn) {
     return fn(t, adapter)
   })
   .then(() => adapter.delete(type))
-  .then(number => {
-    t.equal(number, records.length, 'number deleted is correct')
-    return adapter.disconnect()
-  })
+  .then(() => adapter.disconnect())
   .then(t.end)
   .catch(error => {
     stderr.error.call(t, error)

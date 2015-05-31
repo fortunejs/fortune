@@ -2,15 +2,15 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Obfuscate Micro API URIs, to make it clear that hypermedia should be used.
 - Make denormalized fields not enumerable in the adapter.
-- Use `t.comment()` for testing.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- Obfuscate Micro API URIs, to make it clear that hypermedia should be used.
+- Use `t.comment()` for testing.
 - Micro API Serializer: tests.
 - Remove the ability to create related resources on POST for JSON API.
 - Do more memoization of object-key lookups: `const value = object[key]` (postponed, it's effectively O(1)).
