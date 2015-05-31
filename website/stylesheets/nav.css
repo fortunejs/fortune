@@ -71,7 +71,10 @@ nav ul.docs li a {
 nav ul.docs li a span {
   float: right;
   color: var(--color-tertiary);
-  font-size: calc(1em / var(--small-size));
+  font-size: calc(1em / var(--small-size) * var(--big-size));
+  display: inline-block;
+  width: 1em;
+  text-align: center;
 }
 
 nav ul.docs a:hover {

@@ -49,6 +49,8 @@
 }
 
 .home .download a span {
+  font-size: calc(1em * var(--big-size));
+  line-height: calc(var(--line-height) / var(--big-size));
   margin-right: calc(1em * 1 / 2);
 }
 
