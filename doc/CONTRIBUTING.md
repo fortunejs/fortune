@@ -12,10 +12,10 @@ The [main repository is on GitHub](https://github.com/fortunejs/fortune). Here's
 
 When publishing components, please prefix the name with "`fortune-`" so that it may be discoverable. Also let [me](mailto:d@liwa.li) know that it's published.
 
-The Adapter class has a standard set of tests that must pass. To run the tests, you must install the modules `fortune` and `tape` to your module's `devDependencies`:
+The Adapter class has a standard set of tests that must pass. To run the tests, you must install `fortune` to your module's `devDependencies`:
 
 ```sh
-$ npm install fortune tape --save-dev
+$ npm install fortune --save-dev
 ```
 
 Then to run the adapter test, import the module:

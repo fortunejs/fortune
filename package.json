@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Data interface library.",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
   "contributors": [],
@@ -28,14 +28,15 @@
   },
   "dependencies": {
     "babel-runtime": "5.4.7",
+    "chalk": "1.0.0",
     "inflection": "1.7.1",
     "nedb": "1.1.2",
     "negotiator": "0.5.3",
+    "tape": "4.0.0",
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
     "babel": "5.4.7",
-    "chalk": "1.0.0",
     "docchi": "0.10.2",
     "eslint": "0.21.2",
     "highlight.js": "8.6.0",
@@ -47,8 +48,7 @@
     "myth": "1.4.0",
     "node-fetch": "1.2.1",
     "rimraf": "2.3.4",
-    "tap-dot": "1.0.0",
-    "tape": "4.0.0"
+    "tap-dot": "1.0.0"
   },
   "files": [
     "dist/lib",
