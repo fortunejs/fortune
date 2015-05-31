@@ -70,6 +70,10 @@
     height: calc(var(--line-height) * 1);
   }
 
+  .home h1 {
+    hyphens: auto;
+  }
+
 }
 
 @media screen and (max-width: 640px) {

@@ -15,6 +15,7 @@
   font-size: calc(1em * 5 / 3);
   line-height: calc(var(--line-height) * 1);
   margin-bottom: calc(var(--line-height) / (5 / 3) * 2);
+  hyphens: none;
 }
 
 .home > hr {
