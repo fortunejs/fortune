@@ -7,7 +7,7 @@ Written in ES6 and transpiled down to ES5 using Babel.
 
 The adapter does not provide ORM-like capabilities, it is just a means to get records into and out of a data store. The objects it deals with are just plain objects with no methods attached, so it does not follow the active record pattern.
 
-There is an important requirement for a primary key per record, which Fortune relies on and is a **MUST** to implement. Every record returned by the adapter must have a primary key, which by default is `id`. The primary key must be a non-trivial, unique primitive type.
+There is an important requirement for a primary key per record, which Fortune relies on and is a **MUST** to implement. Every record returned by the adapter must have a primary key, which by default is `id`. The primary key must be a string or a number.
 
 
 ## Serializer

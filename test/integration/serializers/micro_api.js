@@ -19,7 +19,7 @@ fetchTest('/', {
 
 
 test('show collection',
-fetchTest('/users', {
+fetchTest('/dXNlcnM', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -34,7 +34,7 @@ fetchTest('/users', {
 
 
 test('show individual record with include',
-fetchTest('/users/1?include=spouse', {
+fetchTest('/dXNlcnMvMQ?include=spouse', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -48,7 +48,7 @@ fetchTest('/users/1?include=spouse', {
 
 
 test('sort a collection and use sparse fields', fetchTest(
-'/users?sort=birthday,-name&fields[user]=name,birthday', {
+'/dXNlcnM?sort=birthday,-name&fields[user]=name,birthday', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -61,7 +61,7 @@ test('sort a collection and use sparse fields', fetchTest(
 }))
 
 
-test('match on a collection', fetchTest('/users?match[name]=John Doe', {
+test('match on a collection', fetchTest('/dXNlcnM?match[name]=John Doe', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -74,7 +74,7 @@ test('match on a collection', fetchTest('/users?match[name]=John Doe', {
 
 
 test('show related records',
-fetchTest('/users/2/pets', {
+fetchTest('/dXNlcnMvMi9wZXRz', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -87,19 +87,18 @@ fetchTest('/users/2/pets', {
 }))
 
 
-test('find an empty collection', fetchTest('/empties', {
+test('find an empty collection', fetchTest('/ZW1wdGllcw', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.equal(response.body['@links'].empty['@href'],
-    '/empties', 'link is correct')
+  t.ok(response.body['@links'].empty['@href'], 'link exists')
   t.ok(Array.isArray(response.body.empty) && !response.body.empty.length,
     'payload is empty array')
 }))
 
 
-test('find a single non-existent record', fetchTest('/animals/404', {
+test('find a single non-existent record', fetchTest('/YW5pbWFscy80MDQ', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -111,7 +110,7 @@ test('find a single non-existent record', fetchTest('/animals/404', {
 
 
 test('find a collection of non-existent related records',
-fetchTest('/users/3/pets', {
+fetchTest('/dXNlcnMvMy9wZXRz', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -122,7 +121,7 @@ fetchTest('/users/3/pets', {
 }))
 
 
-test('create record', fetchTest('/animals', {
+test('create record', fetchTest('/YW5pbWFscw', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
@@ -139,8 +138,8 @@ test('create record', fetchTest('/animals', {
   t.equal(response.status, 201, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.ok(response.headers.get('location').match(/animal/),
-    'location header looks right')
+  t.equal(response.headers.get('location'), response.body.animal[0]
+    ['@links']['@href'], 'location header is correct')
   t.ok(response.body.animal, 'type is correct')
   t.equal(new Buffer(response.body.animal[0].picture, 'base64')
     .toString(), 'This is a string.', 'buffer is correct')
@@ -149,7 +148,7 @@ test('create record', fetchTest('/animals', {
 }))
 
 
-test('create record with existing ID should fail', fetchTest('/users', {
+test('create record with existing ID should fail', fetchTest('/dXNlcnM', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
@@ -163,7 +162,7 @@ test('create record with existing ID should fail', fetchTest('/users', {
 }))
 
 
-test('update record', fetchTest('/user/2', {
+test('update record', fetchTest('/dXNlcnMvMg', {
   method: 'patch',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
@@ -182,7 +181,7 @@ test('update record', fetchTest('/user/2', {
 }))
 
 
-test('delete a single record', fetchTest('/animals/2', {
+test('delete a single record', fetchTest('/YW5pbWFscy8y', {
   method: 'delete',
   headers: { 'Accept': mediaType }
 }, (t, response) => {

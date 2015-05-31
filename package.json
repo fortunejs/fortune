@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Data interface library.",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
   "contributors": [],
@@ -20,8 +20,7 @@
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
     "build:website": "babel-node website/build",
     "prepublish": "npm run build",
-    "test": "npm run test:build && REPORTER=true node dist/test | tap-dot",
-    "test:build": "npm run test:lint && npm run build",
+    "test": "npm run test:lint && npm run build && node dist/test | tap-dot",
     "test:lint": "eslint lib test website",
     "test:coverage": "npm run build && istanbul cover dist/test",
     "test:website": "npm run build:website && http-server -p 8890 dist/web"

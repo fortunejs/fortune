@@ -62,7 +62,7 @@ function findTest (t) {
   class DefaultSerializer extends Serializer {}
   DefaultSerializer.id = Symbol()
 
-  generateApp({
+  generateApp(t, {
     serializers: [ { type: DefaultSerializer } ]
   })
 
@@ -81,7 +81,7 @@ function findTest (t) {
   })
 
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     app.stop()
     t.fail(error)
     t.end()

@@ -2,6 +2,8 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Obfuscate Micro API URIs, to make it clear that hypermedia should be used.
+- Make denormalized fields not enumerable in the adapter.
 - Use `t.comment()` for testing.
 - PostgreSQL adapter.
 - 100% test coverage.

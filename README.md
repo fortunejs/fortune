@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 [![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
-Fortune is a library for working with data on the server-side, intended to provide building blocks for web applications.
+Fortune is a library for interacting with data on the server-side, providing building blocks for web applications.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -58,24 +58,24 @@ app.start().then(() => server.listen(1337))
 
 Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
 
-For the Micro API serializer, we get these routes:
+For the Micro API serializer, we get a set of internal pre-defined routes. Note that routes are obfuscated to the client, to encourage the use of hypermedia.
 
-| Verb   | Route                   | Description                                                   |
-|:---------|:----------------------|:--------------------------------------------------------------|
-| `GET`    | `/`                   | Get the index including links to collections.                 |
-| `GET`    | `/:type`              | Get a collection of records.                                  |
-| `POST`   | `/:type`              | Create a record belonging to that collection.                 |
-| `PATCH`  | `/:type`              | Update records belonging to that collection.                  |
-| `DELETE` | `/:type`              | Delete an entire collection of records.                       |
-| `GET`    | `/:type/:ids`         | Get records by comma separated IDs.                           |
-| `PATCH`  | `/:type/:ids`         | Update records by comma separated IDs.                        |
-| `DELETE` | `/:type/:ids`         | Delete records by comma separated IDs.                        |
-| `GET`    | `/:type/:ids/:link`   | Get related records.                                          |
-| `POST`   | `/:type/:ids/:link`   | Create related records.                                       |
-| `PATCH`  | `/:type/:ids/:link`   | Update related records.                                       |
-| `DELETE` | `/:type/:ids/:link`   | Delete related records.                                       |
+| Verb     | Route (unobfuscated)  | Description |
+|:---------|:----------------------|:------------|
+| `GET`    | `/`                   | Get the entry point including links to collections. |
+| `GET`    | `/:type`              | Get a collection of records belonging to that type. |
+| `POST`   | `/:type`              | Create a record belonging to that type. |
+| `PATCH`  | `/:type`              | Update records belonging to that type. IDs must be specified in the request body. No response body. |
+| `DELETE` | `/:type`              | Delete an entire collection of records by type. No response body. |
+| `GET`    | `/:type/:ids`         | Get records of a type by comma separated IDs. |
+| `PATCH`  | `/:type/:ids`         | Update records of a type by comma separated IDs. No response body. |
+| `DELETE` | `/:type/:ids`         | Delete records of a type by comma separated IDs. No response body. |
+| `GET`    | `/:type/:ids/:link`   | Get related records corresponding to a type and IDs. |
+| `POST`   | `/:type/:ids/:link`   | Create related records corresponding to a type and IDs. |
+| `PATCH`  | `/:type/:ids/:link`   | Update related records corresponding to a type and IDs. No response body. |
+| `DELETE` | `/:type/:ids/:link`   | Delete related records corresponding to a type and IDs. No response body. |
 
-The JSON API serializer emits routes specified [here](http://jsonapi.org/format/).
+The JSON API serializer emits routes specified [here](http://jsonapi.org/recommendations/).
 
 
 ## License

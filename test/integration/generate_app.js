@@ -7,7 +7,7 @@ import * as fixtures from '../fixtures'
 const inParens = /\(([^\)]+)\)/
 
 
-export default options => {
+export default (t, options) => {
   const app = fortune.create(options)
 
   .defineType('user', {
@@ -55,7 +55,7 @@ export default options => {
     for (let symbol of Object.getOwnPropertySymbols(data))
       assignDescription(data, symbol)
 
-    stderr.info(chalk.bold('Change:'), data)
+    stderr.info.call(t, chalk.bold('Change event:'), data)
   })
 
   return app.start()

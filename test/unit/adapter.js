@@ -46,6 +46,10 @@ const records = [
   }
 ]
 
+const testIds = records => arrayProxy.find(records.map(record =>
+  arrayProxy.includes([ 'string', 'number' ], typeof record.id)),
+  b => !b) === undefined
+
 
 export default (adapter, options) => {
   const run = runTest.bind(null, adapter, options)
@@ -57,10 +61,19 @@ export default (adapter, options) => {
     })
   ))
 
+  test('find: id', run((t, adapter) =>
+    adapter.find(type, [ 1 ])
+    .then(records => {
+      t.equal(records.count, 1, 'count is correct')
+      t.ok(testIds(records), 'id type is correct')
+    })
+  ))
+
   test('find: collection', run((t, adapter) =>
     adapter.find(type)
     .then(records => {
       t.equal(records.count, 2, 'count is correct')
+      t.ok(testIds(records), 'id type is correct')
     })
   ))
 
@@ -212,7 +225,7 @@ function runTest (a, options, fn) {
   })
   .then(t.end)
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     adapter.disconnect()
     t.fail(error)
     t.end()

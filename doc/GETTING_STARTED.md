@@ -1,6 +1,6 @@
 # Getting Started
 
-Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The purpose is to provide data persistence and manipulation given a set of models that conform to [some limitations](http://fortunejs.com/api/#fortune-definetype).
+Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The purpose is to provide data persistence and manipulation given a set of record types that conform to [some limitations](http://fortunejs.com/api/#fortune-definetype).
 
 The first thing you'll have to do is install [Node.js](https://nodejs.org/) (if you're on Linux, install `nodejs` from your package manager). Optionally, you will need [Babel](http://babeljs.io) to run ES6 code:
 
@@ -23,7 +23,7 @@ import fortune from 'fortune'
 const app = fortune.create()
 ```
 
-We don't need to pass any arguments to the constructor, the defaults should work.
+We don't need to pass any arguments to the constructor for now, the defaults should work.
 
 
 ## Linking

@@ -16,7 +16,7 @@ test('delete record', t => {
 
   t.plan(4)
 
-  generateApp({
+  generateApp(t, {
     serializers: [ { type: DefaultSerializer } ]
   })
 
@@ -61,7 +61,7 @@ test('delete record', t => {
   .then(() => t.end())
 
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     app.stop()
     t.fail(error)
     t.end()

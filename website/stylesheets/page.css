@@ -97,6 +97,8 @@ table td, table th {
 }
 
 table th {
+  hyphens: none;
+  white-space: nowrap;
   background-color: var(--color-menu);
 }
 

@@ -487,7 +487,7 @@ function updateTest (t) {
 
   t.plan(this.plan)
 
-  generateApp({
+  generateApp(t, {
     serializers: [ { type: DefaultSerializer } ]
   })
 
@@ -520,7 +520,7 @@ function updateTest (t) {
   .then(() => t.end())
 
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     app.stop()
     t.fail(error)
     t.end()

@@ -18,7 +18,7 @@ export default (path, request, fn) => arg => {
 
   const t = arg
 
-  return generateApp()
+  return generateApp(t)
 
   .then(a => {
     app = a
@@ -27,7 +27,7 @@ export default (path, request, fn) => arg => {
 
     server = http.createServer((request, response) => {
       listener(request, response)
-      .catch(error => stderr.error(error))
+      .catch(error => stderr.error.call(t, error))
     })
     .listen(port)
 
@@ -44,7 +44,8 @@ export default (path, request, fn) => arg => {
 
     .then(response => {
       server.close()
-      stderr.debug(chalk.bold(response.status), response.headers.raw())
+      stderr.debug.call(t, chalk.bold('Response status: ' + response.status),
+        response.headers.raw())
       ; ({ headers, status } = response)
       return app.stop().then(() => response.text())
     })
@@ -53,11 +54,11 @@ export default (path, request, fn) => arg => {
       try {
         if (text.length) {
           text = JSON.parse(text)
-          stderr.log(text)
+          stderr.log.call(t, text)
         }
       }
       catch (error) {
-        stderr.warn(`Failed to parse JSON.`)
+        stderr.warn.call(t, `Failed to parse JSON.`)
       }
 
       return fn(t, {
@@ -71,7 +72,7 @@ export default (path, request, fn) => arg => {
   })
 
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     if (app) app.stop()
     if (server) server.close()
     t.fail(error)

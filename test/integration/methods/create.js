@@ -29,7 +29,7 @@ test('create record', t => {
 
   t.plan(8)
 
-  generateApp({
+  generateApp(t, {
     serializers: [ { type: DefaultSerializer } ]
   })
 
@@ -81,7 +81,7 @@ test('create record', t => {
   })
 
   .catch(error => {
-    stderr.error(error)
+    stderr.error.call(t, error)
     app.stop()
     t.fail(error)
     t.end()
