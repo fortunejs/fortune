@@ -3,7 +3,6 @@
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/master.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
-[![Piggu](https://img.shields.io/badge/pigs-flying-fca889.svg?style=flat-square)](http://fortunejs.com)
 
 Fortune is a library for interacting with data on the server-side, providing building blocks for web applications.
 
@@ -58,7 +57,7 @@ app.start().then(() => server.listen(1337))
 
 Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
 
-For the Micro API serializer, we get a set of internal pre-defined routes. Note that routes are obfuscated to the client, to encourage the use of hypermedia.
+For the Micro API serializer, we get a set of internal pre-defined routes. Note that the routes are obfuscated to the client, to encourage the use of hypermedia.
 
 | Verb     | Route (unobfuscated)  | Description |
 |:---------|:----------------------|:------------|

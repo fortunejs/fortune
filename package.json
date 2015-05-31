@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Data interface library.",
+  "description": "A library for interacting with data on the server-side, providing building blocks for web applications.",
   "version": "1.0.0-alpha.5",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",

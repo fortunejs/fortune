@@ -10,14 +10,12 @@ import inflection from 'inflection'
 import { minify } from 'html-minifier'
 
 
-const pkg = require('../package.json')
-const start = Date.now()
-const year = new Date().getFullYear()
-
-
 // Declarations
 // ============
 
+const pkg = require('../package.json')
+const start = Date.now()
+const year = new Date().getFullYear()
 const CNAME = 'fortunejs.com'
 
 const outputPath = path.join(__dirname, '../dist/web')
@@ -57,7 +55,7 @@ const minifyOptions = { collapseWhitespace: true }
 // Initialization
 // ==============
 
-function setFlags (ns, obj) {
+function processAPI (ns, obj) {
   const { type } = obj.context
 
   if (ns === obj.context.name) {
@@ -135,7 +133,7 @@ const render = description => marked(description, markedOptions)
 for (let container of api)
   container.docs = docchi.parse(fs.readFileSync(
     path.join(apiPath, container.path))).output({ render })
-    .map(setFlags.bind(null, container.module))
+    .map(processAPI.bind(null, container.module))
 
 for (let file of fs.readdirSync(templatePath))
   templates[path.basename(file, '.mustache')] =
@@ -144,7 +142,7 @@ for (let file of fs.readdirSync(templatePath))
 for (let file of fs.readdirSync(docPath)) {
   const basename = path.basename(file, '.md')
 
-  docs[basename.toLowerCase()] = {
+  docs[inflection.dasherize(basename.toLowerCase())] = {
     root: '../',
     title: inflection.titleize(basename),
     year, api,
