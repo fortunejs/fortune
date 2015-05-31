@@ -70,10 +70,6 @@
     height: calc(var(--line-height) * 1);
   }
 
-  .home h1 {
-    text-align: left;
-  }
-
 }
 
 @media screen and (max-width: 640px) {
