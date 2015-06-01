@@ -2,6 +2,7 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Mix and match serializer testing.
 - PostgreSQL adapter.
 - 100% test coverage.
 
