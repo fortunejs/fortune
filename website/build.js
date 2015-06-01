@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import chalk from 'chalk'
 import docchi from 'docchi'
 import myth from 'myth'
 import mustache from 'mustache'
@@ -237,5 +238,5 @@ fs.writeFileSync(path.join(outputPath, 'CNAME'), CNAME)
 // End
 // ===
 
-process.stderr.write(`Done! Build finished in ` +
-  `${(Date.now() - start) / 1000} s.\n`)
+process.stderr.write(chalk.green(`Done! Build finished in ` +
+  `${chalk.bold(((Date.now() - start) / 1000) + ' s')}.\n`))

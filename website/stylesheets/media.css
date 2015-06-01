@@ -82,11 +82,12 @@
     font-size: calc(var(--body-size) - 2px);
   }
 
-  .home pre {
+  .download pre {
     margin-right: 0;
   }
 
-  .home .download a {
+  .download iframe,
+  .download a {
     display: none;
   }
 

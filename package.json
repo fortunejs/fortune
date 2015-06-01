@@ -42,6 +42,7 @@
     "html-minifier": "0.7.2",
     "http-server": "0.8.0",
     "istanbul": "0.3.14",
+    "marked": "0.3.3",
     "mkdirp": "0.5.1",
     "mustache": "2.0.0",
     "myth": "1.4.0",

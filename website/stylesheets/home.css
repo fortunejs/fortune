@@ -23,11 +23,11 @@
   margin-bottom: calc(var(--line-height) * -2 / 3);
 }
 
-.home .download {
+.download {
   position: relative;
 }
 
-.home .download a {
+.download a {
   position: absolute;
   top: 0;
   right: 0;
@@ -45,24 +45,36 @@
   opacity: calc(4 / 5);
 }
 
-.home .download a:hover {
+.download a:hover {
   opacity: calc(1);
 }
 
-.home .download a span {
+.download a span {
   font-size: calc(1em * var(--big-size));
   line-height: calc(var(--line-height) / var(--big-size));
   margin-right: calc(1em * 1 / 2);
 }
 
-.home pre {
+.download iframe {
+  position: absolute;
+  top: 12px;
+  right: 10em;
+  opacity: calc(1 / 2);
+  transition: opacity var(--fade-speed) ease;
+}
+
+.download iframe:hover {
+  opacity: 1;
+}
+
+.download pre {
   background-color: #F0F7F7;
   box-shadow: 0 1px 0 #D5EAEB inset;
   color: var(--color-literal);
   margin-right: 10em;
 }
 
-.home pre code:before {
+.download pre code:before {
   content: '$';
   margin-right: 0.75em;
   opacity: calc(1 / 3);
