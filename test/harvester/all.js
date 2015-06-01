@@ -82,6 +82,7 @@ describe('using mongodb adapter', function () {
 
     require("./resources")(baseUrl,keys,ids);
     require("./associations")(baseUrl,keys,ids);
+    require("./chaining")(baseUrl,keys,ids);
     require("./filters")(baseUrl,keys,ids);
     require("./paging")(baseUrl,keys,ids);
     require("./sorting")(baseUrl,keys,ids);
