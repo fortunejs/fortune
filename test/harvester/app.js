@@ -10,17 +10,21 @@ function createApp(options) {
         .resource('person', {
             name: Joi.string().required().description('name'),
             appearances: Joi.string().required().description('appearances'),
-            pets: ['pet'],
-            soulmate: {ref: 'person', inverse: 'soulmate'},
-            lovers: [
-                {ref: 'person', inverse: 'lovers'}
-            ]
+            links : {
+                pets: ['pet'],
+                soulmate: {ref: 'person', inverse: 'soulmate'},
+                lovers: [
+                    {ref: 'person', inverse: 'lovers'}
+                ]
+            }
         })
 
         .resource('pet', {
             name: Joi.string().required().description('name'),
             appearances: Joi.string().required().description('appearances'),
-            owner: 'person'
+            links : {
+                owner: 'person'
+            }
         })
 
         .resource('cat', {
