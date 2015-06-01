@@ -55,18 +55,6 @@
   margin-right: calc(1em * 1 / 2);
 }
 
-.download iframe {
-  position: absolute;
-  top: 12px;
-  right: 10em;
-  opacity: calc(1 / 2);
-  transition: opacity var(--fade-speed) ease;
-}
-
-.download iframe:hover {
-  opacity: 1;
-}
-
 .download pre {
   background-color: #F0F7F7;
   box-shadow: 0 1px 0 #D5EAEB inset;
