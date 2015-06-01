@@ -79,7 +79,14 @@ function processAPI (ns, obj) {
   if (type === 'constructor')
     obj.context.isConstructor = true
 
-  const getName = element => element.name || 'any type'
+  const getName = element => {
+    if (element.type === 'AllLiteral') return 'any type'
+    if (element.name) return element.name
+    if (element.applications) return 'an array of ' +
+      element.applications.map(getName)
+      .map(s => inflection.pluralize(s)).join(' or ')
+    return ''
+  }
   const setArray = str => `${str} (array)`
   const params = []
 
@@ -100,6 +107,8 @@ function processAPI (ns, obj) {
       const isArray = tag.type.expression &&
         (tag.type.expression.expression || tag.type.expression)
         .name === 'Array'
+      const isUnion = tag.type.expression &&
+        tag.type.expression.type === 'UnionType'
       const isRest = tag.type.expression &&
         tag.type.expression.type === 'RestType'
 
@@ -110,6 +119,10 @@ function processAPI (ns, obj) {
         type = 'Array of ' + inflection.pluralize(
           (tag.type.expression.applications || tag.type.applications)
           .map(getName).map(inflection.pluralize.bind(inflection)).join(', '))
+
+      if (isUnion)
+        type = 'Either ' + tag.type.expression.elements
+          .map(getName).join(', or ')
 
       if (isRest) {
         type = `Arbitrary number of ` + getName(
