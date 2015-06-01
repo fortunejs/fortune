@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A library for interacting with data on the server-side, providing building blocks for web applications.",
+  "description": "A library for interacting with data, providing building blocks for web applications.",
   "version": "1.0.0-alpha.5",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
