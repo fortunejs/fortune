@@ -2,11 +2,14 @@
 
 Easily create [JSONAPI](http://jsonapi.org/)-compliant APIs on top of node.js and mongoDB.
 
-Pluggable with the [agco JSON-API search](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md).
+Pluggable with the [agco JSON-API extension](https://github.com/agco/agco-json-api-profiles) profile implementation : [Elastic Harvester](https://github.com/agco/elastic-harvesterjs), which offers additional features such as [linked resource filtering and aggregation](https://github.com/agco/agco-json-api-profiles/blob/master/public/search-profile.md).
 
 ##### Documentation 
 
-Harvesterjs is currently under heavy development. Documentation is a pretty much non-existent at this point, however the intention is to get this into shape over the coming months.
+Harvesterjs is currently under heavy development, we are reworking the DSL and adding a bunch of big new features. 
+   
+Documentation is a pretty sparse right now, however when the dust settles a bit we will get this into proper shape with reference docs, tutorials and screencasts.
+
 
 ### JSON-API Features 
 
@@ -29,9 +32,11 @@ Harvesterjs is currently under heavy development. Documentation is a pretty much
 ### Roadmap
 
 * JSON API 1.0 compliance
-* External links
-* Bidirectional links
-* UUIDs 
+* validation with [joi](https://github.com/hapijs/joi)
+* brand [new DSL](https://github.com/agco/harvesterjs/issues/88) with sensible defaults
+* [External links](https://github.com/agco/harvesterjs/issues/69)
+* [Bidirectional links](https://github.com/agco/harvesterjs/issues/81)
+* [UUIDs](https://github.com/agco/harvesterjs/issues/24)
 
 ### References
 This project is a fork of [fortune.js](http://fortunejs.com). Decision to fork was driven by the a) desire to keep as JSONAPI compliant as possible and b) the simplification and power derived from focusing exclusively on mongoDB as the data back-end.
