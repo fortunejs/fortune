@@ -80,6 +80,7 @@ describe('using mongodb adapter', function () {
     });
 
 
+    require("./send-error.spec")(baseUrl,keys,ids);
     require("./resources")(baseUrl,keys,ids);
     require("./associations")(baseUrl,keys,ids);
     require("./filters")(baseUrl,keys,ids);
