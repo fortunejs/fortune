@@ -41,9 +41,11 @@ const renderer = new marked.Renderer()
 renderer.heading = (text, level) => {
   const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
 
-  return `<h${level} id="${escapedText}">${text}<a class="anchor" ` +
+  return level !== 1 ?
+    `<h${level} id="${escapedText}">${text}<a class="anchor" ` +
     `href="#${escapedText}" title="Link to this section “${text}”">#</a>` +
-    `</h${level}>`
+    `</h${level}>` :
+    `<h1>${text}</h1>`
 }
 
 const markedOptions = {

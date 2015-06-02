@@ -35,6 +35,12 @@ h1, h2, h3, h4, h5, h6 {
   text-align: left;
 }
 
+h1 {
+  color: var(--color-attribute);
+  text-transform: uppercase;
+  letter-spacing: calc(1em / 12);
+}
+
 ul, ol {
   margin-left: calc(var(--line-height) * 1);
 }
