@@ -19,7 +19,7 @@ module.exports = function (baseUrl, keys, ids) {
 	describe('function sendError', function () {
 		var req;
 		var res;
-		var erorr;
+		var error;
 
 
 		// helper functions
