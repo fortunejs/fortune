@@ -64,13 +64,26 @@ export default (adapter, options) => {
     })
   ))
 
-  test('find: id', run((t, adapter) =>
+  test('find: id, type checking', run((t, adapter) =>
     adapter.find(type, [ 1 ])
     .then(records => {
       t.equal(records.count, 1, 'count is correct')
-      t.ok(testIds(records), 'id type is correct')
+      t.ok(records[0].birthday instanceof Date, 'date type is correct')
+      t.ok(typeof records[0].isAlive === 'boolean', 'boolean type is correct')
+      t.ok(typeof records[0].age === 'number', 'number type is correct')
+      t.deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] },
+        'object value is correct')
       t.ok(!arrayProxy.includes(Object.keys(records[0]),
         '__user_nemesis_inverse'), 'denormalized fields not enumerable')
+    })
+  ))
+
+  test('find: id, type checking', run((t, adapter) =>
+    adapter.find(type, [ 2 ])
+    .then(records => {
+      t.equal(records.count, 1, 'count is correct')
+      t.ok(records[0].picture instanceof Buffer, 'buffer type is correct')
+      t.ok(deadbeef.equals(records[0].picture), 'buffer value is correct')
     })
   ))
 
@@ -137,6 +150,29 @@ export default (adapter, options) => {
         'fields length is correct')
     })
   ))
+
+  test('create: type check', run((t, adapter) => {
+    return adapter.create(type, [ {
+      picture: deadbeef,
+      birthday: new Date()
+    } ])
+    .then(records => {
+      t.ok(Buffer.isBuffer(records[0].picture), 'buffer type is correct')
+      t.ok(records[0].birthday instanceof Date, 'date type is correct')
+    })
+  }))
+
+  test('create: duplicate id creation should fail', run((t, adapter) => {
+    return adapter.create(type, [ {
+      id: 1
+    } ])
+    .then(() => {
+      t.fail('duplicate id creation should have failed')
+    })
+    .catch(error => {
+      t.ok(error instanceof errors.ConflictError, 'error type is correct')
+    })
+  }))
 
   test('create: id generation and lookup', run((t, adapter) => {
     let id

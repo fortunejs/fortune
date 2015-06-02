@@ -2,6 +2,7 @@
 
 *This file is marked for deletion after 1.0.*
 
+- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `unique` and `nullable`.
 - Mix and match serializer testing.
 - PostgreSQL adapter.
 - 100% test coverage.

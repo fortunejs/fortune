@@ -1,6 +1,9 @@
 # Changelog
 
-*Unreleased changes:*
+
+##### 1.0.0-alpha.6 (2015-06-02)
+- Added adapter test for duplicate ID creation: it must fail and throw a `ConflictError`.
+- Added adapter tests for checking `Buffer` and `Date` types.
 - JSON API serializer enforces media type according to the spec.
 
 

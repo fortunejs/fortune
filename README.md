@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is a library for interacting with data on the server-side, providing building blocks for web applications.
+Fortune is a library that provides interactions with data, essential building blocks of web applications.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
