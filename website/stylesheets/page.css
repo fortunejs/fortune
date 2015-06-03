@@ -72,6 +72,7 @@ section {
     calc(var(--line-height) * 2 / 3)
     calc(var(--line-height) * 3);
   margin-left: var(--menu-width);
+  overflow: hidden;
 }
 
 pre, code {

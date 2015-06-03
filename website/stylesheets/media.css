@@ -1,4 +1,4 @@
-@media screen and (max-width: 1108px) {
+@media screen and (max-width: 1124px) {
   body {
     padding-left: 0;
   }
@@ -13,6 +13,10 @@
   main {
     max-width: 100%;
     text-align: justify;
+  }
+
+  h1 {
+    text-align: center;
   }
 
   nav {
@@ -72,6 +76,8 @@
 
   .home h1 {
     hyphens: auto;
+    text-align: left;
+    margin-bottom: calc(var(--line-height) / (5 / 3) * 2);
   }
 
 }

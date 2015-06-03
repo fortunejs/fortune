@@ -3,13 +3,15 @@
 *This file is marked for deletion after 1.0.*
 
 - There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `unique` and `nullable`.
-- Mix and match serializer testing.
+- Options discovery.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- POST record with ID in route (decided: nope).
+- Mix and match serializer testing (disabled for now).
 - Make denormalized fields not enumerable in the adapter.
 - Obfuscate Micro API URIs, to make it clear that hypermedia should be used.
 - Use `t.comment()` for testing.

@@ -57,7 +57,7 @@ app.start().then(() => server.listen(1337))
 
 Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
 
-For the Micro API serializer, we get a set of internal pre-defined routes. Note that the routes are obfuscated to the client, to encourage the use of hypermedia.
+For the Micro API serializer, we get a set of internal pre-defined routes. Note that by default, the routes are obfuscated to the client, to encourage the use of hypermedia.
 
 | Verb     | Route (unobfuscated)  | Description |
 |:---------|:----------------------|:------------|

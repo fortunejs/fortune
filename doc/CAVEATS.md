@@ -1,13 +1,11 @@
 # Caveats
 
-Using Fortune comes with some tradeoffs that arise from intentional design decisions. The adapters and serializers are designed to be standalone classes that implement a basic set of contracts. This makes the system flexible enough to be backed by a text file or distributed database, or doing I/O with binary or textual formats, and this comes with trade-offs.
+Using Fortune comes with some tradeoffs that arise from intentional design decisions. The adapters and serializers are designed to be standalone classes that implement a basic set of contracts. This makes the system flexible enough to be backed by anything from a text file to a distributed database, or doing I/O with a variety of formats, and this comes with trade-offs.
 
 
 ### What It Is Not
 
-- Fortune is not a framework, it is intended to be composed within Node web frameworks or used standalone.
-- There is no MVC, no active records, and no route matching (this may optionally be handled by the serializer).
-- Record fields are minimally concerned with types and foreign keys, there is no other built-in validation.
+Fortune is not a framework, it is intended to be composed within Node web frameworks or used as a standalone library. There are not features that web frameworks typically provide, such as application structure, active records, route matching (this may optionally be handled by the serializer), etc.
 
 
 ### Undirected Graph
