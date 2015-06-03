@@ -1,8 +1,8 @@
 # Changelog
 
 
-*Unreleased changes:*
-- Renamed schemas -> recordTypes, schema -> field.
+##### 1.0.0-alpha.7 (2015-06-03)
+- Renamed `schemas` -> `recordTypes`, `schema` -> `field`.
 - For JSON API and Micro API, serializer input must match the output.
 
 
