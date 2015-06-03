@@ -2,6 +2,7 @@
 
 
 *Unreleased changes:*
+- Renamed schemas -> recordTypes, schema -> field.
 - For JSON API and Micro API, serializer input must match the output.
 
 

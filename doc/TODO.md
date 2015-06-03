@@ -2,7 +2,8 @@
 
 *This file is marked for deletion after 1.0.*
 
-- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `unique` and `nullable`.
+- Remove implementation from Serializer class, move to DefaultSerializer.
+- Encode URI in serializers, important for unicode types/IDs/fields, etc.
 - Options discovery.
 - PostgreSQL adapter.
 - 100% test coverage.
@@ -10,6 +11,9 @@
 
 ### Done
 
+- Use `some` or `every` instead of `find` or `includes` where possible.
+- Rename reserved_keys -> keys, schemas -> recordTypes, schema -> fields, schema[field] => fieldDefinition.
+- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `unique` and `nullable` (decided: no, don't want feature creep in core).
 - POST record with ID in route (decided: nope).
 - Mix and match serializer testing (disabled for now).
 - Make denormalized fields not enumerable in the adapter.

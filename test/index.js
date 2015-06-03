@@ -1,6 +1,6 @@
 // Unit tests.
 import './unit/adapters'
-import './unit/schema'
+import './unit/record_type'
 
 // Integration tests.
 import './integration/methods/find'

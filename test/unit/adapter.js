@@ -1,14 +1,14 @@
 import test from 'tape'
 import Adapter from '../../lib/adapter'
 import * as arrayProxy from '../../lib/common/array_proxy'
-import * as keys from '../../lib/common/reserved_keys'
+import * as keys from '../../lib/common/keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 
 
 const type = 'user'
 
-const schemas = {
+const recordTypes = {
   user: {
     name: { type: String },
     age: { type: Number },
@@ -275,7 +275,7 @@ function runTest (a, options, fn) {
   const A = a
   const adapter = new A({
     options: options || {},
-    keys, errors, schemas
+    keys, errors, recordTypes
   })
 
   return t => adapter.connect()

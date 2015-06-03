@@ -1,6 +1,6 @@
 # Components
 
-Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults.
+Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults. The Adapter and Serializer classes adhere to the [polymorphic open/closed principle](https://en.wikipedia.org/wiki/Open/closed_principle#Polymorphic_open.2Fclosed_principle), so they should be extended (subclassed) rather than modified.
 
 
 ### Adapters
@@ -25,8 +25,8 @@ Serializers process data, they must subclass and implement the Serializer class.
 
 ### Networking
 
-Map external input to the dispatcher and map the response to an external output. Using Fortune with a network protocol is optional.
+Network helpers may map external input to the dispatcher and map the response to an external output. Using Fortune with a network protocol is optional.
 
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
-| HTTP (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
+| [HTTP](http://fortunejs.com/api/#net-http) (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |

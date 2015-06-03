@@ -1,12 +1,12 @@
 import test from 'tape'
-import ensureSchemas from '../../lib/schema/ensure_schemas'
-import validate from '../../lib/schema/validate'
-import enforce from '../../lib/schema/enforce'
-import * as keys from '../../lib/common/reserved_keys'
+import ensureTypes from '../../lib/record_type/ensure_types'
+import validate from '../../lib/record_type/validate'
+import enforce from '../../lib/record_type/enforce'
+import * as keys from '../../lib/common/keys'
 
 
 const recordType = 'person'
-const schema = {
+const fields = {
   name: { type: String },
   birthdate: { type: Date, junk: 'asdf' },
   mugshot: { type: Buffer },
@@ -17,11 +17,11 @@ const schema = {
 }
 
 
-const testSchema = schema => () => validate(schema)
-const testField = field => () => validate({ [field]: schema[field] })
+const testFields = fields => () => validate(fields)
+const testField = field => () => validate({ [field]: fields[field] })
 
 
-test('schema validate', t => {
+test('validate field definition', t => {
   // Test for valid fields.
   const valid = 'valid field is valid'
 
@@ -36,27 +36,27 @@ test('schema validate', t => {
   // Test for invalid fields.
   const invalid = 'invalid field throws error'
 
-  t.throws(testSchema({
+  t.throws(testFields({
     badType: 'asdf'
   }), invalid)
 
-  t.throws(testSchema({
+  t.throws(testFields({
     nested: { thing: { type: String } }
   }), invalid)
 
-  t.throws(testSchema({
+  t.throws(testFields({
     typeAndLink: { type: String, link: 'y', inverse: 'friends' }
   }), invalid)
 
-  t.throws(testSchema({
+  t.throws(testFields({
     nonexistent: NaN
   }), invalid)
 
-  t.throws(testSchema({
+  t.throws(testFields({
     nullEdgeCase: null
   }), invalid)
 
-  t.throws(testSchema({
+  t.throws(testFields({
     fake: { type: Array }
   }), invalid)
 
@@ -64,8 +64,8 @@ test('schema validate', t => {
 })
 
 
-test('schema enforce', t => {
-  const testRecord = record => () => enforce(recordType, record, schema)
+test('enforce field definition', t => {
+  const testRecord = record => () => enforce(recordType, record, fields)
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
@@ -84,16 +84,16 @@ test('schema enforce', t => {
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
   t.deepEqual(enforce(recordType,
-    { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, schema).friends,
+    { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, fields).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
-  t.equal(enforce(recordType, { random: 'abc' }, schema, true).random,
+  t.equal(enforce(recordType, { random: 'abc' }, fields, true).random,
     undefined, 'arbitrary fields are dropped')
   t.end()
 })
 
 
-test('ensure schemas', t => {
-  const check = schemas => () => ensureSchemas(schemas)
+test('ensure record types', t => {
+  const check = recordTypes => () => ensureTypes(recordTypes)
 
   t.throws(check({
     post: {
@@ -131,27 +131,27 @@ test('ensure schemas', t => {
     }
   }), 'self inverse is valid')
 
-  const schemas = {
+  const recordTypes = {
     post: {
       comments: { link: 'comment', isArray: true }
     },
     comment: {}
   }
 
-  ensureSchemas(schemas)
+  ensureTypes(recordTypes)
 
   const denormalizedField = '__post_comments_inverse'
 
-  t.equal(schemas.post.comments[keys.inverse], denormalizedField,
+  t.equal(recordTypes.post.comments[keys.inverse], denormalizedField,
     'denormalized inverse field assigned')
 
-  t.equal(schemas.comment[denormalizedField][keys.link],
+  t.equal(recordTypes.comment[denormalizedField][keys.link],
     'post', 'denormalized inverse field link correct')
 
-  t.equal(schemas.comment[denormalizedField][keys.isArray],
+  t.equal(recordTypes.comment[denormalizedField][keys.isArray],
     true, 'denormalized inverse field is array')
 
-  t.equal(schemas.comment[denormalizedField][keys.denormalizedInverse],
+  t.equal(recordTypes.comment[denormalizedField][keys.denormalizedInverse],
     true, 'denormalized inverse field set')
 
   t.end()
