@@ -1,12 +1,7 @@
 import test from 'tape'
-import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
-
-
-class DefaultSerializer extends Serializer {}
-DefaultSerializer.id = Symbol()
 
 
 test('delete record', t => {
@@ -17,7 +12,7 @@ test('delete record', t => {
   t.plan(4)
 
   generateApp(t, {
-    serializers: [ { type: DefaultSerializer } ]
+    serializers: []
   })
 
   .then(a => {
@@ -32,7 +27,6 @@ test('delete record', t => {
     })
 
     return app.dispatch({
-      serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: methods.delete,
       ids: [ 3 ]
@@ -40,10 +34,9 @@ test('delete record', t => {
   })
 
   .then(response => {
-    t.equal(response.payload.records.length, 1, 'records deleted')
+    t.equal(response.payload.length, 1, 'records deleted')
 
     return app.dispatch({
-      serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: methods.find,
       ids: [ 1, 2 ]
@@ -51,7 +44,7 @@ test('delete record', t => {
   })
 
   .then(response => {
-    t.deepEqual(response.payload.records.map(record =>
+    t.deepEqual(response.payload.map(record =>
       arrayProxy.find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
 

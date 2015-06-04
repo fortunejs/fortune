@@ -5,8 +5,7 @@ import fetchTest from '../fetch_test'
 const mediaType = 'application/vnd.micro+json'
 
 
-test('show index',
-fetchTest('/', {
+test('show index', fetchTest('/', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -20,8 +19,7 @@ fetchTest('/', {
 }))
 
 
-test('show collection',
-fetchTest('/dXNlcnM', {
+test('show collection', fetchTest('/dXNlcnM', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -89,13 +87,13 @@ fetchTest('/dXNlcnMvMi9wZXRz', {
 }))
 
 
-test('find an empty collection', fetchTest('/ZW1wdGllcw', {
+test('find an empty collection', fetchTest('/JUUyJTk4JUFGcw', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(response.body['@links'].empty['@href'], 'link exists')
-  t.ok(Array.isArray(response.body.empty) && !response.body.empty.length,
+  t.ok(response.body['@links']['☯']['@href'], 'link exists')
+  t.ok(Array.isArray(response.body['☯']) && !response.body['☯'].length,
     'payload is empty array')
 }))
 
@@ -160,7 +158,31 @@ test('create record with existing ID should fail', fetchTest('/dXNlcnM', {
   t.equal(response.status, 409, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.ok(response.body['@error'], 'error is correct')
+  t.ok(response.body['@error'], 'error exists')
+}))
+
+
+test('create record on wrong route should fail', fetchTest('/dXNlcnMvMQ', {
+  method: 'post',
+  headers: { 'Accept': mediaType, 'Content-Type': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 405, 'status is correct')
+  t.equal(response.headers.get('content-type'), mediaType,
+    'content type is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, PATCH, DELETE', 'allow header is correct')
+  t.ok(response.body['@error'], 'error exists')
+}))
+
+
+test('create record with wrong type should fail', fetchTest('/dXNlcnM', {
+  method: 'post',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 415, 'status is correct')
+  t.equal(response.headers.get('content-type'), mediaType,
+    'content type is correct')
+  t.ok(response.body['@error'], 'error exists')
 }))
 
 
@@ -188,4 +210,54 @@ test('delete a single record', fetchTest('/YW5pbWFscy8y', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
+}))
+
+
+test('respond to options: index', fetchTest('/', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET', 'allow header is correct')
+}))
+
+
+test('respond to options: collection', fetchTest('/dXNlcnM', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, POST, PATCH, DELETE', 'allow header is correct')
+}))
+
+
+test('respond to options: IDs',
+fetchTest('/dXNlcnMvMQ', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, PATCH, DELETE', 'allow header is correct')
+}))
+
+
+test('respond to options: related', fetchTest('/dXNlcnMvMi9wZXRz', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, POST, PATCH, DELETE', 'allow header is correct')
+}))
+
+
+test('respond to options: fail',
+fetchTest('/foobar', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 404, 'status is correct')
 }))

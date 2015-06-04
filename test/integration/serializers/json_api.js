@@ -5,11 +5,22 @@ import fetchTest from '../fetch_test'
 const mediaType = 'application/vnd.api+json'
 
 
+test('get ad-hoc index', fetchTest('/', {
+  method: 'get',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 200, 'status is correct')
+  t.equal(response.headers.get('content-type'), mediaType,
+    'content type is correct')
+}))
+
+
 test('create record', fetchTest('/animals', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
     data: {
+      id: 4,
       type: 'animal',
       attributes: {
         name: 'Rover',
@@ -27,7 +38,7 @@ test('create record', fetchTest('/animals', {
   t.equal(response.status, 201, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.ok(response.headers.get('location').match(/animal/),
+  t.equal(response.headers.get('location'), '/animals/4',
     'location header looks right')
   t.equal(response.body.data.type, 'animal', 'type is correct')
   t.equal(new Buffer(response.body.data.attributes.picture, 'base64')
@@ -51,6 +62,27 @@ test('create record with existing ID should fail', fetchTest('/users', {
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
   t.equal(response.body.errors.length, 1, 'error is correct')
+}))
+
+test('create record with wrong route should fail', fetchTest('/users/4', {
+  method: 'post',
+  headers: { 'Accept': mediaType, 'Content-Type': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 405, 'status is correct')
+  t.equal(response.headers.get('allow'), 'GET, PATCH, DELETE',
+    'allow header is correct')
+  t.equal(response.body.errors.length, 1, 'error exists')
+}))
+
+
+test('create record with wrong type should fail', fetchTest('/user', {
+  method: 'post',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 415, 'status is correct')
+  t.equal(response.headers.get('content-type'), mediaType,
+    'content type is correct')
+  t.equal(response.body.errors.length, 1, 'error exists')
 }))
 
 
@@ -159,12 +191,13 @@ fetchTest('/users/3/pets', {
 }))
 
 
-test('find an empty collection', fetchTest('/empties', {
+test('find an empty collection', fetchTest('/☯s', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.equal(response.body.links.self, '/empties', 'link is correct')
+  t.equal(response.body.links.self,
+    encodeURI('/☯s'), 'link is correct')
   t.ok(Array.isArray(response.body.data) && !response.body.data.length,
     'data is empty array')
 }))
@@ -265,4 +298,65 @@ fetchTest('/users/1/relationships/friends', {
   }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
+}))
+
+
+test('respond to options: index', fetchTest('/', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET', 'allow header is correct')
+}))
+
+
+test('respond to options: collection', fetchTest('/animals', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, POST', 'allow header is correct')
+}))
+
+
+test('respond to options: individual',
+fetchTest('/animals/1', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, PATCH, DELETE', 'allow header is correct')
+}))
+
+
+test('respond to options: link', fetchTest('/animals/1/owner', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET', 'allow header is correct')
+}))
+
+
+test('respond to options: relationships',
+fetchTest('/animals/1/relationships/owner', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 204, 'status is correct')
+  t.equal(response.headers.get('allow'),
+    'GET, POST, PATCH, DELETE', 'allow header is correct')
+}))
+
+
+test('respond to options: fail',
+fetchTest('/foo', {
+  method: 'options',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 404, 'status is correct')
 }))

@@ -1,12 +1,8 @@
 import test from 'tape'
-import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
 
-
-class DefaultSerializer extends Serializer {}
-DefaultSerializer.id = Symbol()
 
 const deadcode = new Buffer(4)
 deadcode.writeUInt32BE(0xdeadc0de, 0)
@@ -30,7 +26,7 @@ test('create record', t => {
   t.plan(8)
 
   generateApp(t, {
-    serializers: [ { type: DefaultSerializer } ]
+    serializers: []
   })
 
   .then(a => {
@@ -45,8 +41,6 @@ test('create record', t => {
     })
 
     return app.dispatch({
-      serializerInput: DefaultSerializer.id,
-      serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: methods.create,
       payload: records
@@ -54,18 +48,17 @@ test('create record', t => {
   })
 
   .then(response => {
-    t.ok(deadcode.equals(response.payload.records[0].picture) &&
+    t.ok(deadcode.equals(response.payload[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    t.equal(response.payload.records.length, 1, 'record created')
-    t.equal(response.payload.records[0].id, 4, 'record has correct ID')
-    t.ok(response.payload.records[0].birthday instanceof Date,
+    t.equal(response.payload.length, 1, 'record created')
+    t.equal(response.payload[0].id, 4, 'record has correct ID')
+    t.ok(response.payload[0].birthday instanceof Date,
       'field has correct type')
-    t.equal(response.payload.records[0].name, 'Slimer McGee',
+    t.equal(response.payload[0].name, 'Slimer McGee',
       'record has correct field value')
 
     return app.dispatch({
-      serializerOutput: DefaultSerializer.id,
       type: 'user',
       method: methods.find,
       ids: [ 1, 3 ]
@@ -73,7 +66,7 @@ test('create record', t => {
   })
 
   .then(response => {
-    t.deepEqual(response.payload.records.map(record =>
+    t.deepEqual(response.payload.map(record =>
       arrayProxy.find(record.friends, id => id === 4)),
       [ 4, 4 ], 'related records updated')
 

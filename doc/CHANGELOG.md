@@ -1,9 +1,17 @@
 # Changelog
 
 
-##### 1.0.0-alpha.7 (2015-06-03)
-- Renamed `schemas` -> `recordTypes`, `schema` -> `field`.
+##### 1.0.0-alpha.8 (2015-06-04)
+- Internal refactor: `Serializer` base class no longer implements anything, implementation moved to `DefaultSerializer` class.
+- Fix link ID enforcement, add tests.
+- Fix `Content-Length` header value for unicode string payloads.
+- Restrict deleting and patching a collection for JSON API, restrict creating with ID in route for Micro API.
+- Show `Allow` header when method is unsupported or `OPTIONS` request is sent.
 - For JSON API and Micro API, serializer input must match the output.
+
+
+##### 1.0.0-alpha.7 (2015-06-03)
+- Renamed `schemas` -> `recordTypes`, and `schema` -> `field`. "Schema" was incorrect terminology to use in the first place, record type is much more restrictive.
 
 
 ##### 1.0.0-alpha.6 (2015-06-02)

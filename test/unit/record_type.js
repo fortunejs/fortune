@@ -12,6 +12,7 @@ const fields = {
   mugshot: { type: Buffer },
   luckyNumbers: { type: Number, isArray: true },
   friends: { link: 'person', isArray: true, inverse: 'friends' },
+  spouse: { link: 'person', inverse: 'spouse' },
   toys: { type: Object, isArray: true },
   location: { type: Symbol('Geolocation data') }
 }
@@ -69,6 +70,10 @@ test('enforce field definition', t => {
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
+  t.throws(testRecord({ id: 1, spouse: 1 }), bad)
+  t.throws(testRecord({ spouse: [ 2 ] }), bad)
+  t.throws(testRecord({ friends: 2 }), bad)
+  t.throws(testRecord({ id: 1, friends: [ 1 ] }), bad)
   t.throws(testRecord({ name: {} }), bad)
   t.doesNotThrow(testRecord({ name: '' }), good)
   t.throws(testRecord({ birthdate: {} }), bad)
@@ -77,7 +82,6 @@ test('enforce field definition', t => {
   t.doesNotThrow(testRecord({ mugshot: new Buffer(1) }), good)
   t.throws(testRecord({ luckyNumbers: 1 }), bad)
   t.doesNotThrow(testRecord({ luckyNumbers: [ 1 ] }), good)
-  t.throws(testRecord({ friends: 1 }), bad)
   t.doesNotThrow(testRecord({ location: new ArrayBuffer(8) }), good)
   t.throws(testRecord({
     [keys.primary]: 1,

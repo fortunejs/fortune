@@ -40,7 +40,7 @@ export default (path, request, fn) => arg => {
       request.headers['Content-Length'] = request.body.length
     }
 
-    return fetch(encodeURI(`http:\/\/localhost:${port}${path}`), request)
+    return fetch(encodeURI(`http://localhost:${port}${path}`), request)
 
     .then(response => {
       server.close()
@@ -59,6 +59,7 @@ export default (path, request, fn) => arg => {
       }
       catch (error) {
         stderr.warn.call(t, `Failed to parse JSON.`)
+        stderr.log.call(t, text)
       }
 
       return fn(t, {

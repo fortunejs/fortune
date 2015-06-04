@@ -1,17 +1,12 @@
 import test from 'tape'
-import Serializer from '../../../lib/serializer'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
-
-
-class DefaultSerializer extends Serializer {}
-DefaultSerializer.id = Symbol()
 
 
 test('get index', findTest.bind({
   response: (t, response) => {
     t.deepEqual(response.payload.sort(),
-      [ 'animal', 'empty', 'user' ], 'gets the index')
+      [ 'animal', 'user', '☯' ], 'gets the index')
   }
 }))
 
@@ -21,7 +16,7 @@ test('get collection', findTest.bind({
     type: 'user'
   },
   response: (t, response) => {
-    t.equal(response.payload.records.length, 3, 'gets all records')
+    t.equal(response.payload.length, 3, 'gets all records')
   }
 }))
 
@@ -32,7 +27,7 @@ test('get IDs', findTest.bind({
     ids: [ 2, 1 ]
   },
   response: (t, response) => {
-    t.deepEqual(response.payload.records
+    t.deepEqual(response.payload
       .map(record => record.id).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
   }
@@ -46,7 +41,7 @@ test('get includes', findTest.bind({
     include: [ [ 'pets' ] ]
   },
   response: (t, response) => {
-    t.deepEqual(response.payload.records
+    t.deepEqual(response.payload
       .map(record => record.id).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
     t.deepEqual(response.payload.include.animal
@@ -59,19 +54,14 @@ test('get includes', findTest.bind({
 function findTest (t) {
   let app
 
-  class DefaultSerializer extends Serializer {}
-  DefaultSerializer.id = Symbol()
-
   generateApp(t, {
-    serializers: [ { type: DefaultSerializer } ]
+    serializers: []
   })
 
   .then(a => {
     app = a
 
-    return app.dispatch(Object.assign({
-      serializerOutput: DefaultSerializer.id
-    }, this.request))
+    return app.dispatch(this.request)
   })
 
   .then(response => {

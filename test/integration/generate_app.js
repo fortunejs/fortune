@@ -47,7 +47,7 @@ export default (t, options) => {
     return record
   })
 
-  .defineType('empty', {})
+  .defineType('☯', {})
 
   const { change } = app.dispatcher
 
