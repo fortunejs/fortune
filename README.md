@@ -17,7 +17,7 @@ Currently *alpha* software. Things will break, check the [changelog](http://fort
 
 ## Key Concepts
 
-- **Define record types and get CRUD for free.**
+- **Define record types and get CRUD + hypermedia for free.**
 - The adapter interacts with data storage.
 - The serializer parses requests and renders responses, networking optional.
 - The dispatcher maps to a stateless protocol (typically HTTP), with events as side effects.

@@ -1,4 +1,4 @@
-@media screen and (max-width: 1124px) {
+@media screen and (max-width: 1108px) {
   body {
     padding-left: 0;
   }
@@ -16,7 +16,11 @@
   }
 
   h1 {
-    text-align: center;
+    font-size: calc(1em * var(--small-size));
+    line-height: calc(var(--line-height) / var(--small-size));
+    margin-top: calc(var(--line-height) / var(--small-size) * -1 / 3);
+    padding-top: calc(var(--line-height) / var(--small-size) * 4 / 3);
+    margin-bottom: calc(var(--line-height) / var(--small-size) * 1);
   }
 
   nav {
@@ -28,9 +32,33 @@
     border-bottom: 1px var(--color-offside) solid;
   }
 
+  nav .logo, nav .type {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  nav .logo {
+    height: calc(var(--line-height) * 7 / 3);
+    margin-right: calc(var(--line-height) * 2 / 3);
+  }
+
   nav ul.docs {
-    padding-bottom: calc(var(--line-height) * 1);
-    text-align: center;
+    position: relative;
+    margin-top: calc(var(--line-height) * 4 / 3);
+    padding-top: calc(var(--line-height) * 2 / 3);
+    padding-bottom: calc(var(--line-height) * 2 / 3);
+  }
+
+  nav ul.docs:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-offside);
   }
 
   nav ul.docs li {
@@ -39,12 +67,12 @@
 
   nav ul.docs li a {
     padding: 0;
-    margin: 0 0.6em;
+    margin-right: 1em;
   }
 
   nav ul.docs li a:after {
     content: '⁄';
-    margin-left: 1.2em;
+    margin-left: 1em;
     color: var(--color-secondary);
     pointer-events: none;
   }
@@ -58,7 +86,10 @@
   }
 
   section {
-    padding: 0 calc(var(--line-height) * 1);
+    padding:
+      calc(var(--line-height) * 1 / 3)
+      calc(var(--line-height) * 1)
+      0;
     margin-left: 0;
   }
 
@@ -76,8 +107,10 @@
 
   .home h1 {
     hyphens: auto;
+    color: inherit;
     text-align: left;
-    margin-bottom: calc(var(--line-height) / (5 / 3) * 2);
+    font-size: 1em;
+    margin-bottom: calc(var(--line-height) * 1);
   }
 
 }

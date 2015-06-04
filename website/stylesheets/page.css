@@ -144,7 +144,7 @@ footer p {
 
 footer span:before {
   content: '⁄';
-  margin: 0 1.2em;
+  margin: 0 1em;
   pointer-events: none;
 }
 
@@ -166,7 +166,7 @@ header a:hover {
 
 header a:after {
   content: '⁄';
-  margin: 0 1.2em;
+  margin: 0 1em;
   color: var(--color-secondary);
   pointer-events: none;
 }

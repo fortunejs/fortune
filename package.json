@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A library that provides interactions with data, essential building blocks of web applications.",
+  "description": "A library that provides essential building blocks for working with data in web applications.",
   "version": "1.0.0-alpha.8",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
