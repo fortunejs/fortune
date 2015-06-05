@@ -17,7 +17,7 @@ p, pre, table, ul, ol {
 }
 
 a {
-  color: inherit;
+  color: var(--color-primary);
   transition: color var(--fade-speed) ease;
 }
 
@@ -39,6 +39,11 @@ h1 {
   color: var(--color-attribute);
   text-transform: uppercase;
   letter-spacing: calc(1em / 12);
+  margin-bottom: calc(var(--line-height) / var(--big-size) * 4 / 3);
+}
+
+h1 + h2, h1 + h3, h1 + h4, h1 + h5, h1 + h6 {
+  margin-top: calc(var(--line-height) / var(--big-size) * -2 / 3);
 }
 
 ul, ol {

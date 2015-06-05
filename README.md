@@ -59,20 +59,19 @@ Finally we need to call `start` before we do anything with the instance. Then we
 
 For the Micro API serializer, we get a set of internal pre-defined routes. Note that by default, the routes are obfuscated to the client, to encourage the use of hypermedia.
 
-| Verb     | Route (unobfuscated)  | Description |
-|:---------|:----------------------|:------------|
-| `GET`    | `/`                   | Get the entry point including links to collections. |
-| `GET`    | `/:type`              | Get a collection of records belonging to that type. |
-| `POST`   | `/:type`              | Create a record belonging to that type. |
-| `PATCH`  | `/:type`              | Update records belonging to that type. IDs must be specified in the request body. No response body. |
-| `DELETE` | `/:type`              | Delete an entire collection of records by type. No response body. |
-| `GET`    | `/:type/:ids`         | Get records of a type by comma separated IDs. |
-| `PATCH`  | `/:type/:ids`         | Update records of a type by comma separated IDs. No response body. |
-| `DELETE` | `/:type/:ids`         | Delete records of a type by comma separated IDs. No response body. |
-| `GET`    | `/:type/:ids/:link`   | Get related records corresponding to a type and IDs. |
-| `POST`   | `/:type/:ids/:link`   | Create related records corresponding to a type and IDs. |
-| `PATCH`  | `/:type/:ids/:link`   | Update related records corresponding to a type and IDs. No response body. |
-| `DELETE` | `/:type/:ids/:link`   | Delete related records corresponding to a type and IDs. No response body. |
+| Verb     | Route (unobfuscated)  | Description                                                   |
+|:---------|:----------------------|:--------------------------------------------------------------|
+| `GET`    | `/`                   | Get the entry point including links to collections.           |
+| `GET`    | `/:type`              | Get a collection of records belonging to that type.           |
+| `POST`   | `/:type`              | Create a record belonging to that type.                       |
+| `PATCH`  | `/:type`              | Update records belonging to that type.                        |
+| `DELETE` | `/:type`              | Delete an entire collection of records by type.               |
+| `GET`    | `/:type/:ids`         | Get records of a type by comma separated IDs.                 |
+| `PATCH`  | `/:type/:ids`         | Update records of a type by comma separated IDs.              |
+| `DELETE` | `/:type/:ids`         | Delete records of a type by comma separated IDs.              |
+| `GET`    | `/:type/:ids/:link`   | Get related records corresponding to a type and IDs.          |
+| `PATCH`  | `/:type/:ids/:link`   | Update related records corresponding to a type and IDs.       |
+| `DELETE` | `/:type/:ids/:link`   | Delete related records corresponding to a type and IDs.       |
 
 The JSON API serializer emits routes specified [here](http://jsonapi.org/recommendations/).
 

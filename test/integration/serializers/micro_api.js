@@ -250,7 +250,7 @@ test('respond to options: related', fetchTest('/dXNlcnMvMi9wZXRz', {
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
   t.equal(response.headers.get('allow'),
-    'GET, POST, PATCH, DELETE', 'allow header is correct')
+    'GET, PATCH, DELETE', 'allow header is correct')
 }))
 
 

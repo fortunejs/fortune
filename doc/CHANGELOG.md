@@ -1,6 +1,10 @@
 # Changelog
 
 
+*Unreleased changes:*
+- Disallow related record creation route for Micro API. The complexity is not worth it.
+
+
 ##### 1.0.0-alpha.8 (2015-06-04)
 - Internal refactor: `Serializer` base class no longer implements anything, implementation moved to `DefaultSerializer` class.
 - Fix link ID enforcement, add tests.

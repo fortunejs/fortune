@@ -2,6 +2,7 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Serializer errors should default to BadRequestError (?)
 - PostgreSQL adapter.
 - 100% test coverage.
 

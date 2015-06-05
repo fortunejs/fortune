@@ -27,7 +27,7 @@
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "babel-runtime": "5.4.7",
+    "babel-runtime": "5.5.3",
     "chalk": "1.0.0",
     "inflection": "1.7.1",
     "nedb": "1.1.2",
@@ -36,7 +36,7 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.4.7",
+    "babel": "5.5.3",
     "docchi": "0.10.2",
     "eslint": "0.22.1",
     "highlight.js": "8.6.0",
@@ -45,9 +45,9 @@
     "istanbul": "0.3.14",
     "marked": "0.3.3",
     "mkdirp": "0.5.1",
-    "mustache": "2.0.0",
+    "mustache": "2.1.0",
     "myth": "1.4.0",
-    "node-fetch": "1.2.1",
+    "node-fetch": "1.3.0",
     "rimraf": "2.3.4",
     "tap-dot": "1.0.0"
   },
