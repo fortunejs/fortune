@@ -1,4 +1,4 @@
-@media screen and (max-width: 1108px) {
+@media screen and (max-width: 1140px) {
   body {
     padding-left: 0;
   }
@@ -106,7 +106,6 @@
   }
 
   .home h1 {
-    hyphens: auto;
     color: inherit;
     text-align: left;
     font-size: 1em;

@@ -1,8 +1,9 @@
 # Changelog
 
 
-*Unreleased changes:*
+##### 1.0.0-alpha.9 (2015-06-05)
 - Disallow related record creation route for Micro API. The complexity is not worth it.
+- Make default `Allow` header response configurable.
 
 
 ##### 1.0.0-alpha.8 (2015-06-04)

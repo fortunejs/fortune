@@ -17,7 +17,7 @@ p, pre, table, ul, ol {
 }
 
 a {
-  color: var(--color-primary);
+  color: inherit;
   transition: color var(--fade-speed) ease;
 }
 

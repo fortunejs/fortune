@@ -19,7 +19,6 @@
   margin-bottom: calc(var(--line-height) / (5 / 3) * 3);
   text-transform: none;
   letter-spacing: 0;
-  hyphens: none;
 }
 
 .home > hr {
