@@ -2,11 +2,11 @@
 
   /* colors */
   --color-background:   #ffffff;
-  --color-menu:         #f5f5f5;
-  --color-offside:      #e3e3e3;
-  --color-primary:      #424242;
-  --color-secondary:    #9c9c9c;
-  --color-tertiary:     #bababa;
+  --color-menu:         rgba(0, 0, 0, 0.03);
+  --color-offside:      rgba(0, 0, 0, 0.09);
+  --color-primary:      rgba(0, 0, 0, 0.72);
+  --color-secondary:    rgba(0, 0, 0, 0.45);
+  --color-tertiary:     rgba(0, 0, 0, 0.21);
   --color-accent:       #ed7041;
 
   --color-attribute:    #894388;
@@ -18,7 +18,7 @@
   --mono-font: 'Inconsolata', monospace;
 
   /* measurements */
-  --max-width: 66em;
+  --max-width: 67em;
   --menu-width: 14em;
   --body-size: 16px;
   --small-size: calc(14 / 16);
