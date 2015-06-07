@@ -36,7 +36,7 @@
   right: 0;
   display: block;
   font-weight: 700;
-  width: calc(1em * 26 / 3);
+  width: calc(var(--line-height) * 5);
   line-height: calc(var(--line-height) * 5 / 3);
   background-color: var(--color-literal);
   border-radius: var(--border-radius);
@@ -62,7 +62,7 @@
   background-color: #F0F7F7;
   box-shadow: 0 1px 0 #D5EAEB inset;
   color: var(--color-literal);
-  margin-right: 10em;
+  margin-right: calc(var(--line-height) * 6);
 }
 
 .download pre code:before {

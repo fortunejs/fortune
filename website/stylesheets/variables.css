@@ -4,8 +4,8 @@
   --color-background:   #ffffff;
   --color-menu:         #f5f5f5;
   --color-offside:      #e3e3e3;
-  --color-primary:      #353535;
-  --color-secondary:    #909090;
+  --color-primary:      #424242;
+  --color-secondary:    #9c9c9c;
   --color-tertiary:     #bababa;
   --color-accent:       #ed7041;
 
@@ -23,7 +23,7 @@
   --body-size: 16px;
   --small-size: calc(14 / 16);
   --big-size: calc(18 / 16);
-  --line-height: calc(1em * 26 / 16);
+  --line-height: calc(1em * 27 / 16);
   --border-radius: 6px;
   --fade-speed: 0.1s;
 
