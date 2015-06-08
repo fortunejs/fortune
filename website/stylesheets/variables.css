@@ -4,12 +4,12 @@
   --color-background:   #ffffff;
   --color-menu:         rgba(0, 0, 0, 0.03);
   --color-offside:      rgba(0, 0, 0, 0.09);
-  --color-primary:      rgba(0, 0, 0, 0.72);
+  --color-primary:      rgba(0, 0, 0, 0.75);
   --color-secondary:    rgba(0, 0, 0, 0.45);
   --color-tertiary:     rgba(0, 0, 0, 0.21);
   --color-accent:       #ed7041;
 
-  --color-attribute:    #894388;
+  --color-attribute:    #9E559D;
   --color-value:        #C56752;
   --color-literal:      #0A7F81;
 
