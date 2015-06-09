@@ -83,11 +83,11 @@ nav ul.docs a:hover {
 
 nav h4 {
   position: relative;
-  font-size: 1em;
-  line-height: var(--line-height);
-  padding-top: calc(var(--line-height) * 3 / 3);
-  margin-top: calc(var(--line-height) * 3 / 3);
-  margin-bottom: calc(var(--line-height) * 1 / 3);
+  font-size: calc(1em * var(--small-size));
+  line-height: calc(var(--line-height) / var(--small-size));
+  padding-top: calc(var(--line-height) / var(--small-size) * 3 / 3);
+  margin-top: calc(var(--line-height) / var(--small-size) * 3 / 3);
+  margin-bottom: calc(var(--line-height) / var(--small-size) * 1 / 3);
 }
 
 nav h4:first-of-type {
