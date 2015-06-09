@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A library that provides building blocks for working with data in web applications.",
+  "description": "An I/O library for web applications.",
   "version": "1.0.0-alpha.9",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
