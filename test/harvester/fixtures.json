@@ -1,24 +1,39 @@
 {
   "person": [
     {
+      "id":"547e53616773240200a89531",
       "name": "Dilbert",
       "appearances": 3457,
-      "id":"547e53616773240200a89531"
-
+      "hasToy" : true,
+      "numToys" : 1,
+      "collars" : [1],
+      "foo": "bar"
     },
     {
       "name": "Wally",
-      "appearances": 1934
+      "appearances": 1934,
+      "hasToy" : true,
+      "numToys" : 1,
+      "collars" : [1],
+      "foo": "bar"
     }
   ],
   "pet": [
     {
       "name": "Dogbert",
-      "appearances": 1903
+      "appearances": 1903,
+      "hasToy" : true,
+      "numToys" : 1,
+      "collars" : [1],
+      "foo": "bar"
     },
     {
       "name": "Ratbert",
-      "appearances": 509
+      "appearances": 509,
+      "hasToy" : true,
+      "numToys" : 1,
+      "collars" : [1],
+      "foo": "bar"
     }
   ]
 }

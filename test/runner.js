@@ -7,6 +7,7 @@ var mocha = new Mocha()
     .reporter('spec')
     .ui('bdd');
 
+mocha.addFile(path.join(location, 'harvester/validation.js'));
 mocha.addFile(path.join(location, 'harvester/all.js'));
 mocha.addFile(path.join(location, 'harvester/events-reader.js'));
 mocha.addFile(path.join(location, 'harvester/sse.js'));

@@ -6,10 +6,10 @@ var request = require('supertest');
 var Promise = RSVP.Promise;
 
 module.exports = function(baseUrl,keys,ids) {
-    describe('jsonapi error handling', function () {
-
+    describe.skip('jsonapi error handling', function () {
         describe('raise a JSONAPI_Error error in foobar before callback', function () {
             it('should respond with a 400 and content-type set to application/vnd.api+json', function (done) {
+
                 request(baseUrl)
                     .post('/foobars')
                     .send({foobars: [

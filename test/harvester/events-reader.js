@@ -35,7 +35,7 @@ var createReportResponseDfd;
 
 // todo checkpoints, todo check skipping
 
-describe('onChange callback, event capture and at-least-once delivery semantics', function () {
+describe.skip('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     describe('Given a post on a very controversial topic, ' +
     'and a new comment is posted or updated with content which contains profanity, ' +

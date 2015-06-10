@@ -83,11 +83,10 @@ module.exports = function(baseUrl,keys,ids) {
 
         describe('posting a resource with a namespace', function() {
             it('should post without a special key', function(done) {
-                var cat = {
-                        name: 'Spot'
-                    },
-                    body = {cats: []};
+                var cat = { name: 'Spot', hasToy: true, numToys:1, foo: 'foo'   };
+                var body = { cats: [] };
                 body.cats.push(cat);
+
                 return new Promise(function(resolve) {
                     request(baseUrl)
                         .post('/animals/cats')
@@ -95,6 +94,30 @@ module.exports = function(baseUrl,keys,ids) {
                         .expect('Content-Type', /json/)
                         .expect(201)
                         .end(done);
+                }).then(done);
+            });
+        });
+
+        describe('posting a resource with missing field', function() {
+            it('should post without a special key', function(done) {
+                var cat = { name: 'Spot', hasToy: true, numToys:1  };
+                var body = { cats: [] };
+                body.cats.push(cat);
+
+                return new Promise(function(resolve) {
+                    request(baseUrl)
+                        .post('/animals/cats')
+                        .send(body)
+                        .expect('Content-Type', /json/)
+                        .expect(422)
+                        .end(function (error, response) {
+                            var body = JSON.parse(response.text);
+                            should.not.exist(error);
+                            body.errors[0].details[0].field.should.equal('cats.0.foo');
+                            body.errors[0].details[0].location.should.equal('body');
+                            body.errors[0].details[0].messages[0].should.equal('"foo" is required');
+                            done();
+                        });
                 }).then(done);
             });
         });

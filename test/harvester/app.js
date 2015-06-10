@@ -35,7 +35,7 @@ function createApp(options) {
         }, {namespace: 'animals'})
 
         .resource('foobar', {
-            foo: Joi.string().required().description('name')
+            foo: Joi.string().required().description('foo')
         })
 
         .before(
