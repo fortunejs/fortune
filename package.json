@@ -23,6 +23,7 @@
   },
   "main": "./lib/harvester.js",
   "dependencies": {
+    "bluebird": "^2.9.27",
     "body-parser": "~1.4.3",
     "debug": "^2.1.1",
     "express": "~4.6.1",
