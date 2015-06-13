@@ -2,6 +2,9 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Website layout redux (?)
+- Support record types with arbitrary fields (?)
+- Consider using ES7 features (?)
 - Serializer errors should default to BadRequestError (?)
 - PostgreSQL adapter.
 - 100% test coverage.
