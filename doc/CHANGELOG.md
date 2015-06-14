@@ -2,6 +2,7 @@
 
 
 *Unreleased:*
+- Do not rely on `[Symbol] in ...`, it's incorrect implementation in ES6.
 - The http module resolves to `context.response` on success.
 
 
