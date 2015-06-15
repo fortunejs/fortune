@@ -15,12 +15,12 @@ $ npm install fortune --save
 Currently *alpha* software. Things will break, check the [changelog](http://fortunejs.com/changelog/).
 
 
-## Key Concepts
+## Key Features
 
-- **Define record types and get CRUD + hypermedia for free.**
-- The adapter provides a common interface for interacting with data storage.
-- The serializer parses requests and renders responses, networking optional.
-- The dispatcher maps to a stateless protocol (typically HTTP), with events as side effects.
+- Define record types and get CRUD + hypermedia for free.
+- Provide an adapter for data storage, allowing data to be backed by anything from text files to distributed databases.
+- Handle I/O via a standard serializer interface, be agnostic about implementation.
+- Map to a stateless protocol (typically HTTP), with events as side effects.
 
 
 ## Example
