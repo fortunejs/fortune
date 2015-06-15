@@ -5,19 +5,20 @@
 - Website layout redux (?)
 - Support record types with arbitrary fields (?)
 - Consider using ES7 features (?)
-- Serializer errors should default to BadRequestError (?)
+- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (?)
+- Test the default serializer.
 - PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- Serializer errors should default to BadRequestError.
 - Remove implementation from Serializer class, move to DefaultSerializer.
 - Encode URI in serializers, important for unicode types/IDs/fields, etc.
 - Options discovery (show `Allow` header).
 - Use `some` or `every` instead of `find` or `includes` where possible.
 - Rename reserved_keys -> keys, schemas -> recordTypes, schema -> fields, schema[field] => fieldDefinition.
-- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `unique` and `nullable` (decided: no, don't want feature creep in core).
 - POST record with ID in route (decided: nope).
 - Mix and match serializer testing (disabled for now).
 - Make denormalized fields not enumerable in the adapter.

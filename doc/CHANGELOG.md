@@ -1,7 +1,8 @@
 # Changelog
 
 
-*Unreleased:*
+##### 1.0.0-alpha.10 (2015-06-15)
+- Throw a BadRequestError by default if input is wrong.
 - Do not rely on `[Symbol] in ...`, it's incorrect implementation in ES6.
 - The http module resolves to `context.response` on success.
 
