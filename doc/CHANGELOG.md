@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-alpha.11 (2015-06-18)
+- Include a core build, acccessible as `import 'fortune/core'`. This compact build is targeted for web browsers.
+
+
 ##### 1.0.0-alpha.10 (2015-06-15)
 - Throw a BadRequestError by default if input is wrong.
 - Do not rely on `[Symbol] in ...`, it's incorrect implementation in ES6.

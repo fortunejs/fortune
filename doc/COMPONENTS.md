@@ -30,3 +30,8 @@ Network helpers may map external input to the dispatcher and map the response to
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | [HTTP](http://fortunejs.com/api/#net-http) (included) | [Dali Zheng](http://daliwa.li) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
+
+
+### Browser
+
+Fortune includes a browser build, which is acccessible at `fortune/core`. It does not come with any defaults. This build has minimal dependencies, requiring only `babel-runtime`. A CommonJS compatible build pipeline is required to use it, or if you are using ES6, you can import `fortune/lib/core`.

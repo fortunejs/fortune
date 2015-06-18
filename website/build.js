@@ -29,7 +29,7 @@ const stylesheetPath = path.join(__dirname, 'stylesheets')
 const templates = {}
 const docs = {}
 const api = [
-  { module: 'Fortune', path: 'index.js' },
+  { module: 'Fortune', path: 'core.js' },
   { module: 'Adapter', path: 'adapter/index.js' },
   { module: 'Serializer', path: 'serializer/index.js' },
   { module: 'Dispatcher', path: 'dispatcher/index.js' },

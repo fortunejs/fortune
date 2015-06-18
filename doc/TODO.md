@@ -13,6 +13,7 @@
 
 ### Done
 
+- Core build.
 - Serializer errors should default to BadRequestError.
 - Remove implementation from Serializer class, move to DefaultSerializer.
 - Encode URI in serializers, important for unicode types/IDs/fields, etc.
