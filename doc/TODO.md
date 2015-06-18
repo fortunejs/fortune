@@ -3,7 +3,6 @@
 *This file is marked for deletion after 1.0.*
 
 - Website layout redux (?)
-- Support record types with arbitrary fields (?)
 - Consider using ES7 features (?)
 - There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (?)
 - Test the default serializer.
@@ -14,6 +13,7 @@
 ### Done
 
 - Core build.
+- Support record types with arbitrary fields (decided: no)
 - Serializer errors should default to BadRequestError.
 - Remove implementation from Serializer class, move to DefaultSerializer.
 - Encode URI in serializers, important for unicode types/IDs/fields, etc.
