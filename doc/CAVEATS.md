@@ -18,6 +18,11 @@ Fortune denormalizes all relationships by their inverse fields. If you do not sp
 This is a tradeoff that sacrifices flexibility in favor of visibility. The design also eliminates guarantees of consistency in databases that do not support transactions.
 
 
+### Polymorphic Associations
+
+This is not supported and will not be. Just create multiple foreign keys to support linking to different types.
+
+
 ### Key-Value Storage
 
 There is no built-in support for deeply nested objects, it treats an object as a singular value. Any comprehension of data types beyond the built-ins is specific to the adapter.
