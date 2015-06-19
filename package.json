@@ -19,7 +19,7 @@
     "url": "https://github.com/agco/harvesterjs"
   },
   "scripts": {
-    "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
+    "test": "mocha"
   },
   "main": "./lib/harvester.js",
   "dependencies": {
