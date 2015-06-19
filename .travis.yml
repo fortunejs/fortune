@@ -7,7 +7,7 @@ before_script:
   - sleep 3
   - mongo admin --eval 'printjson(rs.initiate());'
   - sleep 20
-script: ./node_modules/.bin/istanbul cover test/runner.js -- mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local  && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+script: ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 deploy:
   provider: npm
   email: developer@agcocorp.com
