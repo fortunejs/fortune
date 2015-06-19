@@ -40,7 +40,7 @@ test('create record', fetchTest('/animals', {
     'content type is correct')
   t.equal(response.headers.get('location'), '/animals/4',
     'location header looks right')
-  t.equal(response.body.data.type, 'animal', 'type is correct')
+  t.equal(response.body.data.type, 'animals', 'type is correct')
   t.equal(new Buffer(response.body.data.attributes.picture, 'base64')
     .toString(), 'This is a string.', 'buffer is correct')
   t.ok(Date.now() - new Date(response.body.data.attributes.birthday)
@@ -154,7 +154,7 @@ fetchTest('/animals/1?include=owner,owner.friends', {
   t.equal(response.body.links.self, '/animals/1', 'link is correct')
   t.equal(response.body.data.id, '1', 'id is correct')
   t.deepEqual(response.body.included.map(record => record.type),
-    [ 'user', 'user' ], 'type is correct')
+    [ 'users', 'users' ], 'type is correct')
   t.deepEqual(response.body.included.map(record => record.id)
     .sort((a, b) => a - b), [ '1', '3' ], 'id is correct')
 }))
@@ -236,7 +236,7 @@ fetchTest('/users/1/relationships/spouse', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.body.links.self, '/users/1/relationships/spouse',
     'link is correct')
-  t.equal(response.body.data.type, 'user', 'type is correct')
+  t.equal(response.body.data.type, 'users', 'type is correct')
   t.equal(response.body.data.id, 2, 'id is correct')
 }))
 
@@ -258,7 +258,7 @@ fetchTest('/users/2/relationships/spouse', {
   method: 'patch',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    data: { type: 'user', id: 3 }
+    data: { type: 'users', id: 3 }
   }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
@@ -270,7 +270,7 @@ fetchTest('/users/1/relationships/pets', {
   method: 'patch',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    data: [ { type: 'animal', id: 2 } ]
+    data: [ { type: 'animals', id: 2 } ]
   }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
@@ -282,7 +282,7 @@ fetchTest('/users/1/relationships/pets', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    data: [ { type: 'animal', id: 2 } ]
+    data: [ { type: 'animals', id: 2 } ]
   }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')
@@ -294,7 +294,7 @@ fetchTest('/users/1/relationships/friends', {
   method: 'delete',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    data: [ { type: 'user', id: 3 } ]
+    data: [ { type: 'users', id: 3 } ]
   }
 }, (t, response) => {
   t.equal(response.status, 204, 'status is correct')

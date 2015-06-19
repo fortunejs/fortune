@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-alpha.12 (2015-06-19)
+- Change how `inflectType` option works for JSON API serializer. Now it inflects types everywhere, not just the URI.
+- Rename `inflectType` to `inflectPath` to reflect this difference.
+
+
 ##### 1.0.0-alpha.11 (2015-06-18)
 - Include a core build, acccessible as `import 'fortune/core'`. This compact build is targeted for web browsers.
 

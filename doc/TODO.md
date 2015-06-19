@@ -2,9 +2,11 @@
 
 *This file is marked for deletion after 1.0.*
 
+- Consider writing default adapter with Loki.js (?)
 - Website layout redux (?)
 - Consider using ES7 features (?)
 - There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (?)
+- Improve inflection to also use dasherize.
 - Test the default serializer.
 - PostgreSQL adapter.
 - 100% test coverage.
