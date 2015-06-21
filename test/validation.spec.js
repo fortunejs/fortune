@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 chai.request.addPromises(RSVP.Promise);
 var expect = chai.expect;
 
-var validation = require('../../lib/validation');
+var validation = require('../lib/validation');
 
 describe('validation', function () {
     describe('when validating a resource with missing schema', function () {
