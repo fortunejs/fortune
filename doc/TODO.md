@@ -5,7 +5,7 @@
 - Consider writing default adapter with Loki.js (?)
 - Website layout redux (?)
 - Consider using ES7 features (?)
-- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (?)
+- Test create/update payloads that link to each other within the payload.
 - Improve inflection to also use dasherize.
 - Test the default serializer.
 - PostgreSQL adapter.
@@ -14,6 +14,7 @@
 
 ### Done
 
+- There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (decided: this should be done on a per adapter basis).
 - Core build.
 - Support record types with arbitrary fields (decided: no)
 - Serializer errors should default to BadRequestError.

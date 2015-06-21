@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "An I/O library for web applications.",
+  "description": "An I/O library for server-side web APIs.",
   "version": "1.0.0-alpha.12",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
@@ -28,7 +28,7 @@
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "babel-runtime": "5.5.8",
+    "babel-runtime": "5.6.1",
     "chalk": "1.0.0",
     "inflection": "1.7.1",
     "nedb": "1.1.2",
@@ -37,7 +37,7 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.5.8",
+    "babel": "5.6.1",
     "babelify": "6.1.2",
     "browserify": "10.2.4",
     "docchi": "0.10.2",
