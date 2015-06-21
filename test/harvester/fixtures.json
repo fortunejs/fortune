@@ -1,21 +1,14 @@
 {
   "person": [
     {
-      "id":"547e53616773240200a89531",
+      "id": "c574ed23-7059-4da9-8fba-6a059c4b701c",
       "name": "Dilbert",
-      "appearances": 3457,
-      "hasToy" : true,
-      "numToys" : 1,
-      "collars" : [1],
-      "foo": "bar"
+      "appearances": 3457
     },
     {
+      "id": "e4ce1c68-bcfc-4cbe-8182-eee855abd7e7",
       "name": "Wally",
-      "appearances": 1934,
-      "hasToy" : true,
-      "numToys" : 1,
-      "collars" : [1],
-      "foo": "bar"
+      "appearances": 1934
     }
   ],
   "pet": [
@@ -25,7 +18,10 @@
       "hasToy" : true,
       "numToys" : 1,
       "collars" : [1],
-      "foo": "bar"
+      "foo": "bar",
+      "links": {
+        "owner": "c574ed23-7059-4da9-8fba-6a059c4b701c"
+      }
     },
     {
       "name": "Ratbert",
@@ -33,7 +29,10 @@
       "hasToy" : true,
       "numToys" : 1,
       "collars" : [1],
-      "foo": "bar"
+      "foo": "bar",
+      "links": {
+        "owner": "e4ce1c68-bcfc-4cbe-8182-eee855abd7e7"
+      }
     }
   ]
 }

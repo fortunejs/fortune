@@ -16,7 +16,7 @@ var sendError = require('../../lib/send-error');
 
 // in keeping with the current flavour of testing...
 module.exports = function (baseUrl, keys, ids) {
-	describe('function sendError', function () {
+	describe.only('function sendError', function () {
 		var req;
 		var res;
 		var error;

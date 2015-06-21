@@ -9,7 +9,7 @@ function createApp(options) {
 
         .resource('person', {
             name: Joi.string().required().description('name'),
-            appearances: Joi.string().required().description('appearances'),
+            appearances: Joi.number().required().description('appearances'),
             links : {
                 pets: ['pet'],
                 soulmate: {ref: 'person', inverse: 'soulmate'},
@@ -21,7 +21,11 @@ function createApp(options) {
 
         .resource('pet', {
             name: Joi.string().required().description('name'),
-            appearances: Joi.string().required().description('appearances'),
+            collars: Joi.array().required().description('collar'),
+            hasToy: Joi.boolean().required().description('hasToy'),
+            numToys: Joi.number().required().description('numToys'),
+            appearances: Joi.number().required().description('appearances'),
+            foo: Joi.string().required().description('foo'),
             links : {
                 owner: 'person'
             }
@@ -32,6 +36,11 @@ function createApp(options) {
             collars: Joi.array().required().description('collar'),
             hasToy: Joi.boolean().required().description('hasToy'),
             numToys: Joi.number().required().description('numToys'),
+            appearances: Joi.number().required().description('appearances'),
+            foo: Joi.string().required().description('foo'),
+            links : {
+                owner: 'person'
+            }
         }, {namespace: 'animals'})
 
         .resource('foobar', {

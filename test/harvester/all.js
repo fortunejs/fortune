@@ -7,7 +7,7 @@ var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
 
-var baseUrl = 'http://localhost:' + 8000;
+var baseUrl = 'http://localhost:' + 8001;
 var keys = {};
 
 _.each(fixtures, function (resources, collection) {
@@ -16,7 +16,7 @@ _.each(fixtures, function (resources, collection) {
 
 var options = {
     adapter: 'mongodb',
-    connectionString: process.argv[2] || process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/testDB",
+    connectionString: process.env.MONGODB_URL || process.argv[2] || "mongodb://127.0.0.1:27017/testDB",
     db: 'testDB',
     inflect: true,
     oplogConnectionString : (process.env.OPLOG_MONGODB_URL || process.argv[3] || "mongodb://127.0.0.1:27017/local") + '?slaveOk=true'
@@ -31,7 +31,7 @@ describe('using mongodb adapter', function () {
     before(function (done) {
 
         this.app = require('./app')(options)
-        this.app.listen(8000);
+        this.app.listen(8001);
         var expectedDbName = this.app.options.db;
         var harvesterApp = this.app;
         return new Promise(function (resolve) {
