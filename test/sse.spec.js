@@ -8,7 +8,7 @@ var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
 
-describe('EventSource implementation for resource changes', function () {
+describe.skip('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
@@ -30,7 +30,7 @@ describe('EventSource implementation for resource changes', function () {
                 author: String
             });
 
-            harvesterApp.listen(8002);
+            harvesterApp.listen(8005);
 
             return seeder(harvesterApp, baseUrl).dropCollections('books')
         });

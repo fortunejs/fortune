@@ -8,11 +8,12 @@ var BSON = require('mongodb').BSONPure;
 
 //require('longjohn');
 
-var harvesterPort = 8003
+var harvesterPort = 8003;
 var baseUrl = 'http://localhost:' + harvesterPort;
 var reportAPI_baseUri = 'http://localhost:9988';
 
 var nock = require('nock');
+var config = require('./config.js');
 
 var chai = require('chai');
 
@@ -36,7 +37,7 @@ var createReportResponseDfd;
 
 // todo checkpoints, todo check skipping
 
-describe('onChange callback, event capture and at-least-once delivery semantics', function () {
+describe.skip('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     var harvesterApp;
 
@@ -49,7 +50,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             var that = this;
             that.timeout(100000);
 
-            harvesterApp = harvester(harvesterOptions).resource('post', {
+            harvesterApp = harvester(config.harvester.options).resource('post', {
                         title: String
                     })
                     .onChange({
@@ -108,7 +109,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             console.log('drop database');
             harvesterApp.adapter.db.db.dropDatabase();
 
-            that.checkpointCreated = harvesterApp.eventsReader(harvesterOptions.oplogConnectionString).then(function (EventsReader) {
+            that.checkpointCreated = harvesterApp.eventsReader(config.harvester.options.oplogConnectionString).then(function (EventsReader) {
 
                     that.eventsReader = new EventsReader();
 
