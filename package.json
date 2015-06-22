@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "An I/O library for server-side web APIs.",
+  "description": "An I/O library for web applications.",
   "version": "1.0.0-alpha.12",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",

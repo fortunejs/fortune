@@ -2,6 +2,7 @@ import test from 'tape'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
+import * as keys from '../../../lib/common/keys'
 
 
 test('update one to one with 2nd degree unset', updateTest.bind({
@@ -13,20 +14,20 @@ test('update one to one with 2nd degree unset', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 3,
+      [keys.primary]: 3,
       replace: { spouse: 2 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 1).spouse, null,
+      record => record[keys.primary] === 1).spouse, null,
       '2nd degree related field unset')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).spouse, 3,
+      record => record[keys.primary] === 2).spouse, 3,
       'related field set')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 3).spouse, 2,
+      record => record[keys.primary] === 3).spouse, 2,
       'field updated')
   }
 }))
@@ -41,20 +42,20 @@ test('update one to one with former related record', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       replace: { spouse: 3 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 1).spouse, null,
+      record => record[keys.primary] === 1).spouse, null,
       'related field unset')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).spouse, 3,
+      record => record[keys.primary] === 2).spouse, 3,
       'field updated')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 3).spouse, 2,
+      record => record[keys.primary] === 3).spouse, 2,
       'related field set')
   }
 }))
@@ -69,17 +70,17 @@ test('update one to one with same value', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       replace: { spouse: 1 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 1).spouse, 2,
+      record => record[keys.primary] === 1).spouse, 2,
       'related field is same')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).spouse, 1,
+      record => record[keys.primary] === 2).spouse, 1,
       'field is same')
   }
 }))
@@ -94,17 +95,17 @@ test('update one to one with null value', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       replace: { spouse: null }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 1).spouse, null,
+      record => record[keys.primary] === 1).spouse, null,
       'related field is updated')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).spouse, null,
+      record => record[keys.primary] === 2).spouse, null,
       'field is updated')
   }
 }))
@@ -121,17 +122,17 @@ test('update one to many (set)', updateTest.bind({
   type: 'animal',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       replace: { owner: 2 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).pets, [],
+      record => record[keys.primary] === 1).pets, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).pets.sort((a, b) => a - b),
+      record => record[keys.primary] === 2).pets.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'related field pushed')
   }
 }))
@@ -148,14 +149,14 @@ test('update one to many (unset)', updateTest.bind({
   type: 'animal',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       replace: { owner: null }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).pets, [],
+      record => record[keys.primary] === 1).pets, [],
       'related field pulled')
   }
 }))
@@ -172,14 +173,14 @@ test('update many to one (push)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       push: { pets: 1 }
     }
   ],
   relatedType: 'animal',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 1).owner, 2,
+      record => record[keys.primary] === 1).owner, 2,
       'related field set')
   }
 }))
@@ -196,14 +197,14 @@ test('update many to one (push) with 2nd degree', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       push: { pets: 2 }
     }
   ],
   relatedType: 'animal',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).owner, 1,
+      record => record[keys.primary] === 2).owner, 1,
       'related field set')
   }
 }))
@@ -220,17 +221,17 @@ test('update many to one (pull)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       pull: { pets: [ 2, 3 ] }
     }
   ],
   relatedType: 'animal',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).owner, null,
+      record => record[keys.primary] === 2).owner, null,
       'related field set')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 3).owner, null,
+      record => record[keys.primary] === 3).owner, null,
       'related field set')
   }
 }))
@@ -247,20 +248,20 @@ test('update many to one (set)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 3,
+      [keys.primary]: 3,
       replace: { pets: [ 1, 2, 3 ] }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).pets, [],
+      record => record[keys.primary] === 1).pets, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).pets, [],
+      record => record[keys.primary] === 2).pets, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 3).pets, [ 1, 2, 3 ],
+      record => record[keys.primary] === 3).pets, [ 1, 2, 3 ],
       'field set')
   }
 }))
@@ -271,20 +272,20 @@ test('update many to one (set) #2', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 3,
+      [keys.primary]: 3,
       replace: { pets: [ 1, 2, 3 ] }
     }
   ],
   relatedType: 'animal',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).owner, 3,
+      record => record[keys.primary] === 1).owner, 3,
       'related field set')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).owner, 3,
+      record => record[keys.primary] === 2).owner, 3,
       'related field set')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 3).owner, 3,
+      record => record[keys.primary] === 3).owner, 3,
       'related field set')
   }
 }))
@@ -301,17 +302,17 @@ test('update many to one (set) #3', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       replace: { pets: [ 1, 2 ] }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).pets, [],
+      record => record[keys.primary] === 1).pets, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).pets, [ 1, 2 ],
+      record => record[keys.primary] === 2).pets, [ 1, 2 ],
       'field set')
   }
 }))
@@ -328,17 +329,17 @@ test('update many to one (unset)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 2,
+      [keys.primary]: 2,
       replace: { pets: [] }
     }
   ],
   relatedType: 'animal',
   related: (t, response) => {
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 2).owner, null,
+      record => record[keys.primary] === 2).owner, null,
       'related field unset')
     t.equal(arrayProxy.find(response.payload,
-      record => record.id === 3).owner, null,
+      record => record[keys.primary] === 3).owner, null,
       'related field unset')
   }
 }))
@@ -353,14 +354,14 @@ test('update many to many (push)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       push: { friends: 2 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).friends.sort((a, b) => a - b),
+      record => record[keys.primary] === 2).friends.sort((a, b) => a - b),
       [ 1, 3 ], 'related ID pushed')
   }
 }))
@@ -375,14 +376,14 @@ test('update many to many (pull)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 3,
+      [keys.primary]: 3,
       pull: { friends: 2 }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).friends, [],
+      record => record[keys.primary] === 2).friends, [],
       'related ID pulled')
   }
 }))
@@ -397,20 +398,20 @@ test('update many to many (set)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       replace: { friends: [ 2, 3 ] }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).friends.sort((a, b) => a - b),
+      record => record[keys.primary] === 1).friends.sort((a, b) => a - b),
       [ 2, 3 ], 'field set')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).friends.sort((a, b) => a - b),
+      record => record[keys.primary] === 2).friends.sort((a, b) => a - b),
       [ 1, 3 ], 'related field pushed')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 3).friends.sort((a, b) => a - b),
+      record => record[keys.primary] === 3).friends.sort((a, b) => a - b),
       [ 1, 2 ], 'field unchanged')
   }
 }))
@@ -425,20 +426,20 @@ test('update many to many (unset)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 3,
+      [keys.primary]: 3,
       replace: { friends: [] }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).friends, [],
+      record => record[keys.primary] === 1).friends, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2).friends, [],
+      record => record[keys.primary] === 2).friends, [],
       'related field pulled')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 3).friends, [],
+      record => record[keys.primary] === 3).friends, [],
       'field set')
   }
 }))
@@ -453,23 +454,23 @@ test('update many to many (denormalized inverse)', updateTest.bind({
   type: 'user',
   payload: [
     {
-      id: 1,
+      [keys.primary]: 1,
       replace: { enemies: [ 2, 3 ] }
     }
   ],
   relatedType: 'user',
   related: (t, response) => {
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1).enemies.sort((a, b) => a - b),
+      record => record[keys.primary] === 1).enemies.sort((a, b) => a - b),
       [ 2, 3 ], 'field set')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 1)['__user_enemies_inverse'],
+      record => record[keys.primary] === 1)['__user_enemies_inverse'],
       [], 'denormalized inverse field exists')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 2)['__user_enemies_inverse'],
+      record => record[keys.primary] === 2)['__user_enemies_inverse'],
       [ 1 ], 'related field updated')
     t.deepEqual(arrayProxy.find(response.payload,
-      record => record.id === 3)['__user_enemies_inverse']
+      record => record[keys.primary] === 3)['__user_enemies_inverse']
       .sort((a, b) => a - b), [ 1, 2 ], 'related field updated')
   }
 }))

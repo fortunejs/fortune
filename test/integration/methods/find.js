@@ -1,6 +1,7 @@
 import test from 'tape'
 import generateApp from '../generate_app'
 import * as stderr from '../../stderr'
+import * as keys from '../../../lib/common/keys'
 
 
 test('get index', findTest.bind({
@@ -28,7 +29,7 @@ test('get IDs', findTest.bind({
   },
   response: (t, response) => {
     t.deepEqual(response.payload
-      .map(record => record.id).sort((a, b) => a - b),
+      .map(record => record[keys.primary]).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
   }
 }))
@@ -42,10 +43,10 @@ test('get includes', findTest.bind({
   },
   response: (t, response) => {
     t.deepEqual(response.payload
-      .map(record => record.id).sort((a, b) => a - b),
+      .map(record => record[keys.primary]).sort((a, b) => a - b),
       [ 1, 2 ], 'gets records with IDs')
     t.deepEqual(response.payload.include.animal
-      .map(record => record.id).sort((a, b) => a - b),
+      .map(record => record[keys.primary]).sort((a, b) => a - b),
       [ 1, 2, 3 ], 'gets included records')
   }
 }))

@@ -70,10 +70,10 @@ test('enforce field definition', t => {
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
-  t.throws(testRecord({ id: 1, spouse: 1 }), bad)
+  t.throws(testRecord({ [keys.primary]: 1, spouse: 1 }), bad)
   t.throws(testRecord({ spouse: [ 2 ] }), bad)
   t.throws(testRecord({ friends: 2 }), bad)
-  t.throws(testRecord({ id: 1, friends: [ 1 ] }), bad)
+  t.throws(testRecord({ [keys.primary]: 1, friends: [ 1 ] }), bad)
   t.throws(testRecord({ name: {} }), bad)
   t.doesNotThrow(testRecord({ name: '' }), good)
   t.throws(testRecord({ birthdate: {} }), bad)
