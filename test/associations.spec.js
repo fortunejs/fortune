@@ -25,6 +25,9 @@ describe('associations', function () {
 
                 payload.people = [
                     {
+                        id: ids.people[0],
+                        name: "Dilbert",
+                        appearances: 5000,
                         links: {
                             pets: [ids.pets[0]]
                         }
@@ -56,6 +59,9 @@ describe('associations', function () {
 
                 payload.pets = [
                     {
+                        id: ids.pets[0],
+                        name: "Dogbert",
+                        appearances: 1000,
                         links: {
                             owner: ids.people[0]
                         }
@@ -86,6 +92,9 @@ describe('associations', function () {
 
                 payload.people = [
                     {
+                        id: ids.people[0],
+                        name: "Dilbert",
+                        appearances: 5000,
                         links: {
                             soulmate: ids.people[1]
                         }
@@ -117,6 +126,9 @@ describe('associations', function () {
 
                 payload.people = [
                     {
+                        id: ids.people[0],
+                        name: "Dilbert",
+                        appearances: 5000,
                         links: {
                             lovers: [ids.people[1]]
                         }

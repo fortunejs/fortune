@@ -44,7 +44,7 @@ describe('validation', function () {
 
     describe('validation body', function () {
 
-        var schema = {
+        var schema = Joi.object().keys({
             stuff: Joi.array().items(Joi.object(
                 {
                     id: Joi.number().required().description('id'),
@@ -55,7 +55,7 @@ describe('validation', function () {
                         })
                 }
             ))
-        };
+        });
 
         describe('when validating a valid resource', function () {
             it('should resolve', function () {

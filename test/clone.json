@@ -1,0 +1,294 @@
+{
+  "pets": {
+    "isJoi": true,
+    "_type": "array",
+    "_settings": null,
+    "_valids": {"_set": []},
+    "_invalids": {"_set": []},
+    "_tests": [],
+    "_refs": [],
+    "_flags": {"sparse": false},
+    "_description": null,
+    "_unit": null,
+    "_notes": [],
+    "_tags": [],
+    "_examples": [],
+    "_meta": [],
+    "_inner": {
+      "items": [
+        {
+          "isJoi": true,
+          "_type": "object",
+          "_settings": null,
+          "_valids": {"_set": []},
+          "_invalids": {"_set": []},
+          "_tests": [],
+          "_refs": [],
+          "_flags": {},
+          "_description": null,
+          "_unit": null,
+          "_notes": [],
+          "_tags": [],
+          "_examples": [],
+          "_meta": [],
+          "_inner": {
+            "children": [
+              {
+                "key": "name",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "string",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": [""]},
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {"presence": "required"},
+                  "_description": "name",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              },
+              {
+                "key": "appearances",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "number",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {
+                    "_set": [
+                      null,
+                      null
+                    ]
+                  },
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {"presence": "required"},
+                  "_description": "appearances",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              },
+              {
+                "key": "links",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "object",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": []},
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {},
+                  "_description": null,
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {
+                    "children": [
+                      {
+                        "key": "owner",
+                        "schema": {
+                          "isJoi": true,
+                          "_type": "string",
+                          "_settings": null,
+                          "_valids": {"_set": []},
+                          "_invalids": {"_set": [""]},
+                          "_tests": [{"name": "guid"}],
+                          "_refs": [],
+                          "_flags": {},
+                          "_description": null,
+                          "_unit": null,
+                          "_notes": [],
+                          "_tags": [],
+                          "_examples": [],
+                          "_meta": [],
+                          "_inner": {}
+                        }
+                      }
+                    ],
+                    "renames": [],
+                    "dependencies": [],
+                    "patterns": []
+                  }
+                }
+              },
+              {
+                "key": "id",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "string",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": [""]},
+                  "_tests": [{"name": "guid"}],
+                  "_refs": [],
+                  "_flags": {},
+                  "_description": "id",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              }
+            ],
+            "renames": [],
+            "dependencies": [],
+            "patterns": []
+          }
+        }
+      ],
+      "inclusions": [
+        {
+          "isJoi": true,
+          "_type": "object",
+          "_settings": null,
+          "_valids": {"_set": []},
+          "_invalids": {"_set": []},
+          "_tests": [],
+          "_refs": [],
+          "_flags": {},
+          "_description": null,
+          "_unit": null,
+          "_notes": [],
+          "_tags": [],
+          "_examples": [],
+          "_meta": [],
+          "_inner": {
+            "children": [
+              {
+                "key": "name",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "string",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": [""]},
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {"presence": "required"},
+                  "_description": "name",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              },
+              {
+                "key": "appearances",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "number",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {
+                    "_set": [
+                      null,
+                      null
+                    ]
+                  },
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {"presence": "required"},
+                  "_description": "appearances",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              },
+              {
+                "key": "links",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "object",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": []},
+                  "_tests": [],
+                  "_refs": [],
+                  "_flags": {},
+                  "_description": null,
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {
+                    "children": [
+                      {
+                        "key": "owner",
+                        "schema": {
+                          "isJoi": true,
+                          "_type": "string",
+                          "_settings": null,
+                          "_valids": {"_set": []},
+                          "_invalids": {"_set": [""]},
+                          "_tests": [{"name": "guid"}],
+                          "_refs": [],
+                          "_flags": {},
+                          "_description": null,
+                          "_unit": null,
+                          "_notes": [],
+                          "_tags": [],
+                          "_examples": [],
+                          "_meta": [],
+                          "_inner": {}
+                        }
+                      }
+                    ],
+                    "renames": [],
+                    "dependencies": [],
+                    "patterns": []
+                  }
+                }
+              },
+              {
+                "key": "id",
+                "schema": {
+                  "isJoi": true,
+                  "_type": "string",
+                  "_settings": null,
+                  "_valids": {"_set": []},
+                  "_invalids": {"_set": [""]},
+                  "_tests": [{"name": "guid"}],
+                  "_refs": [],
+                  "_flags": {},
+                  "_description": "id",
+                  "_unit": null,
+                  "_notes": [],
+                  "_tags": [],
+                  "_examples": [],
+                  "_meta": [],
+                  "_inner": {}
+                }
+              }
+            ],
+            "renames": [],
+            "dependencies": [],
+            "patterns": []
+          }
+        }
+      ],
+      "exclusions": [],
+      "requireds": []
+    }
+  }
+}

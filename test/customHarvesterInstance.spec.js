@@ -1,8 +1,10 @@
 var request = require('supertest');
 var should = require('should');
+var Joi = require('joi');
 var harvester = require('../lib/harvester');
 
 var config = require('./config.js');
+
 var seeder = require('./seeder.js');
 
 /**
@@ -13,7 +15,7 @@ describe('Custom harvester demo', function () {
     before(function () {
         var app = harvester(config.harvester.options);
         app.resource('pets', {
-            name: String
+            name: Joi.string()
         });
         app.listen(8001);
         this.harvesterApp = app;

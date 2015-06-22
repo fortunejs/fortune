@@ -1,6 +1,9 @@
 var harvester = require('../lib/harvester');
 var JSONAPI_Error = harvester.JSONAPI_Error;
+
 var Promise = require('bluebird');
+Promise.longStackTraces();
+
 var Joi = require('joi');
 
 var config = require('./config.js');
