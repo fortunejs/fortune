@@ -1,4 +1,4 @@
-# Components
+# Plugins
 
 Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults. The Adapter and Serializer classes adhere to the [polymorphic open/closed principle](https://en.wikipedia.org/wiki/Open/closed_principle#Polymorphic_open.2Fclosed_principle), so they should be extended (subclassed) rather than modified.
 
@@ -35,4 +35,4 @@ Network helpers may map external input to the dispatcher and map the response to
 
 ### Browser
 
-Fortune includes a browser build, which is acccessible at `fortune/core`. It does not come with any defaults. This build has minimal dependencies, requiring only `babel-runtime`. A CommonJS compatible build pipeline is required to use it, or if you are using ES6, you can import `fortune/lib/core`.
+Fortune includes a browser build, which is acccessible at `fortune/core`. It does not come with any defaults. This build has minimal dependencies, requiring only `babel-runtime`. A CommonJS compatible build pipeline is required to use it.
