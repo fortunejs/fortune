@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-alpha.13 (2015-06-27)
+- Implemented IndexedDB adapter for browser build.
+
+
 ##### 1.0.0-alpha.12 (2015-06-19)
 - Change how `inflectType` option works for JSON API serializer. Now it inflects types everywhere, not just the URI.
 - Rename `inflectType` to `inflectPath` in the Micro API serializer to reflect this difference.

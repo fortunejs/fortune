@@ -1,13 +1,13 @@
 :root {
 
   /* colors */
-  --color-background:   #ffffff;
+  --color-background:   #FFFFFF;
   --color-menu:         rgba(0, 0, 0, 0.03);
   --color-offside:      rgba(0, 0, 0, 0.09);
   --color-primary:      rgba(0, 0, 0, 0.75);
   --color-secondary:    rgba(0, 0, 0, 0.45);
   --color-tertiary:     rgba(0, 0, 0, 0.21);
-  --color-accent:       #ed7041;
+  --color-accent:       #ED7041;
 
   --color-attribute:    #9E559D;
   --color-value:        #C56752;
@@ -18,13 +18,13 @@
   --mono-font: 'Inconsolata', monospace;
 
   /* measurements */
-  --max-width: 68em;
-  --menu-width: 14em;
+  --max-width: 70em;
+  --menu-width: 15em;
   --body-size: 16px;
   --small-size: calc(14 / 16);
   --big-size: calc(18 / 16);
-  --line-height: calc(1em * 28 / 16);
+  --line-height: calc(1em * 29 / 16);
   --border-radius: 6px;
-  --fade-speed: 0.1s;
+  --fade-speed: 0.15s;
 
 }

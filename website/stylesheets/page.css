@@ -67,7 +67,7 @@ main:before {
   right: 100%;
   width: 200%;
   height: 100%;
-  background-color: var(--color-offside);
+  background-color: var(--color-menu);
 }
 
 section {
