@@ -10,8 +10,8 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 | Adapter          | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | [NeDB](https://github.com/louischatriot/nedb) (included, default) | [Dali Zheng](http://daliwa.li) | Embedded document data store with an API that is mostly compatible with MongoDB. |
-| [MongoDB](https://github.com/daliwali/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. MongoDB is [web scale](http://www.mongodb-is-web-scale.com/). |
-| [PostgreSQL](https://github.com/daliwali/fortune-pg) | [Dali Zheng](http://daliwa.li) | Relational database adapter, translates adapter method inputs to SQL. |
+| [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [Dali Zheng](http://daliwa.li) | Document data store. MongoDB is [web scale](http://www.mongodb-is-web-scale.com/). |
+| [PostgreSQL](https://github.com/fortunejs/fortune-pg) | [Dali Zheng](http://daliwa.li) | Relational database adapter, translates adapter method inputs to SQL. |
 
 
 ### Serializers
