@@ -127,7 +127,6 @@ describe('associations', function () {
                 payload.people = [
                     {
                         id: ids.people[0],
-                        name: "Dilbert",
                         appearances: 5000,
                         links: {
                             lovers: [ids.people[1]]
