@@ -2,6 +2,7 @@
 
 
 ##### 1.0.0-alpha.13 (2015-06-27)
+- Moved body parsing to `Fortune.net.http`.
 - Implemented IndexedDB adapter for browser build.
 
 
