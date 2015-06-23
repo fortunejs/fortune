@@ -3,8 +3,10 @@
   "description": "An I/O library for web applications.",
   "version": "1.0.0-alpha.12",
   "license": "MIT",
-  "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
-  "contributors": [],
+  "author": {
+    "email": "0x8890@airmail.cc",
+    "url": "http://8890.xxx"
+  },
   "homepage": "http://fortunejs.com",
   "repository": {
     "type": "git",
@@ -30,7 +32,7 @@
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "babel-runtime": "5.6.3",
+    "babel-runtime": "5.6.4",
     "chalk": "1.0.0",
     "inflection": "1.7.1",
     "nedb": "1.1.2",
@@ -39,10 +41,10 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.6.3",
+    "babel": "5.6.4",
     "babelify": "6.1.2",
     "browserify": "10.2.4",
-    "docchi": "0.10.2",
+    "docchi": "0.10.3",
     "eslint": "0.23.0",
     "highlight.js": "8.6.0",
     "html-minifier": "0.7.2",
