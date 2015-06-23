@@ -37,7 +37,7 @@ var createReportResponseDfd;
 
 // todo checkpoints, todo check skipping
 
-describe.skip('onChange callback, event capture and at-least-once delivery semantics', function () {
+describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     var harvesterApp;
 

@@ -8,7 +8,7 @@ var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
 
-describe.skip('EventSource implementation for resource changes', function () {
+describe('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
