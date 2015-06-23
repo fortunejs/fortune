@@ -36,3 +36,7 @@ Network helpers may map external input to the dispatcher and map the response to
 ### Browser
 
 Fortune includes a browser build, which is acccessible at `fortune/core`. It does not come with any defaults. This build has minimal dependencies, requiring only `babel-runtime`. A CommonJS compatible build pipeline is required to use it.
+
+```js
+import Fortune from 'fortune/core'
+```
