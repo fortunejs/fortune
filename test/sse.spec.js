@@ -7,8 +7,9 @@ var ess = require('event-source-stream');
 var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
+var Joi = require('joi');
 
-describe('EventSource implementation for resource changes', function () {
+describe.only('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
@@ -26,8 +27,8 @@ describe('EventSource implementation for resource changes', function () {
             };
 
             harvesterApp = harvester(options).resource('book', {
-                title: String,
-                author: String
+                title: Joi.string(),
+                author: Joi.string()
             });
 
             harvesterApp.listen(8005);

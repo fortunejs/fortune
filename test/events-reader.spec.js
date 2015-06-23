@@ -31,6 +31,7 @@ var debug = require('debug')('events-reader-test');
 var expect = chai.expect;
 
 var harvester = require('../lib/harvester');
+var Joi = require('joi');
 
 var createReportPromise;
 var createReportResponseDfd;
@@ -42,27 +43,30 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
     var harvesterApp;
 
     describe('Given a post on a very controversial topic, ' +
-    'and a new comment is posted or updated with content which contains profanity, ' +
-    'the comment is reported as abusive to another API. ', function () {
+        'and a new comment is posted or updated with content which contains profanity, ' +
+        'the comment is reported as abusive to another API. ', function () {
 
         before(function (done) {
 
             var that = this;
             that.timeout(100000);
 
-            harvesterApp = harvester(config.harvester.options).resource('post', {
-                        title: String
-                    })
-                    .onChange({
-                        delete: function () {
-                            console.log('deleted a post')
-                        }
-                    })
-                    .resource('comment', {
-                        body: String,
+            harvesterApp = harvester(config.harvester.options)
+                .resource('post', {
+                    title: Joi.string()
+                })
+                .onChange({
+                    delete: function () {
+                        console.log('deleted a post')
+                    }
+                })
+                .resource('comment', {
+                    body: Joi.string(),
+                    links: {
                         post: 'post'
-                    })
-                    .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
+                    }
+                })
+                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
 
             that.chaiExpress = chai.request(harvesterApp.router);
 
@@ -70,29 +74,29 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
             function reportAbusiveLanguage(id) {
                 return harvesterApp.adapter.find('comment', id.toString()).then(function (comment) {
-                        var check = profanity.check(comment);
-                        if (!!check && check.length > 0) {
-                            return $http(
-                                {
-                                    uri: reportAPI_baseUri + '/reports',
-                                    method: 'POST',
-                                    json: {
-                                        reports: [
-                                            {
-                                                content: comment.body
-                                            }
-                                        ]
-                                    }
-                                })
-                                // then catch handlers below are added to be able to assert results
-                                // this is not common for production code
-                                .spread(function (response, reports) {
-                                    createReportResponseDfd.resolve(response);
-                                })
-                        } else {
-                            return false;
-                        }
-                    });
+                    var check = profanity.check(comment);
+                    if (!!check && check.length > 0) {
+                        return $http(
+                            {
+                                uri: reportAPI_baseUri + '/reports',
+                                method: 'POST',
+                                json: {
+                                    reports: [
+                                        {
+                                            content: comment.body
+                                        }
+                                    ]
+                                }
+                            })
+                            // then catch handlers below are added to be able to assert results
+                            // this is not common for production code
+                            .spread(function (response, reports) {
+                                createReportResponseDfd.resolve(response);
+                            })
+                    } else {
+                        return false;
+                    }
+                });
             }
 
             harvesterApp.listen(harvesterPort);
@@ -111,19 +115,19 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
             that.checkpointCreated = harvesterApp.eventsReader(config.harvester.options.oplogConnectionString).then(function (EventsReader) {
 
-                    that.eventsReader = new EventsReader();
+                that.eventsReader = new EventsReader();
 
-                    // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
-                    // precision for an oplog ts is 1s
-                    require('sleep').sleep(1);
-                    var now = BSON.Timestamp(0, (new Date() / 1000));
+                // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
+                // precision for an oplog ts is 1s
+                require('sleep').sleep(1);
+                var now = BSON.Timestamp(0, (new Date() / 1000));
 
-                    console.log('creating checkpoint with ts ' + now.getHighBits());
-                    return harvesterApp.adapter.create('checkpoint', {ts: now}).then(function () {
-                        return done();
-                    });
+                console.log('creating checkpoint with ts ' + now.getHighBits());
+                return harvesterApp.adapter.create('checkpoint', {ts: now}).then(function () {
+                    return done();
+                });
 
-                })
+            })
                 .catch(function (err) {
                     done(err);
                 });
