@@ -7,9 +7,16 @@ chai.use(chaiHttp);
 chai.request.addPromises(RSVP.Promise);
 var expect = chai.expect;
 
+var should = require('should');
+var request = require('supertest');
+var Promise = RSVP.Promise;
+
+
 var validation = require('../lib/validation');
+var seeder = require('./seeder.js');
 
 describe('validation', function () {
+
     describe('when validating a resource with missing schema', function () {
         it('should reject with error', function () {
             var request = {
@@ -215,6 +222,73 @@ describe('validation', function () {
             });
         });
     });
+
+    describe('validation api calls', function () {
+
+        var config, ids;
+        beforeEach(function () {
+            config = this.config;
+            return seeder(this.harvesterApp).dropCollectionsAndSeed('people', 'pets').then(function (_ids) {
+                ids = _ids;
+            });
+        });
+
+        describe('when a resource is POSTed with a malformed payload', function () {
+            it('should resolve with a 422 and errors in detail section', function (done) {
+
+                var pet = {
+                    name: 'Spot', foo: true
+                }, pets = {pets: []};
+                pets.pets.push(pet);
+
+                request(config.baseUrl).post('/pets').send(pets)
+                    .expect('Content-Type', /json/)
+                    .expect(422)
+                    .expect(function (res) {
+                        var causes = JSON.parse(res.text).errors[0].meta.causes;
+                        expect(causes[0].field).to.equal('pets.0.appearances');
+                        expect(causes[0].location).to.equal('body');
+                        expect(causes[0].messages[0]).to.equal('"appearances" is required');
+
+                        expect(causes[1].field).to.equal('pets.0');
+                        expect(causes[1].location).to.equal('body');
+                        expect(causes[1].messages[0]).to.equal('"foo" is not allowed');
+                    })
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done()
+                    });
+            });
+        });
+
+        describe('when a resource is PUT with a malformed payload', function () {
+            it('should resolve with a 422 and errors in detail section', function (done) {
+
+                var pet = {
+                    name: 'Spot', foo: true
+                }, pets = {pets: []};
+                pets.pets.push(pet);
+
+                request(config.baseUrl).put('/pets/'+ids.pets[0]).send(pets)
+                    .expect('Content-Type', /json/)
+                    .expect(422)
+                    .expect(function (res) {
+                        var causes = JSON.parse(res.text).errors[0].meta.causes;
+
+                        expect(causes[0].field).to.equal('pets.0');
+                        expect(causes[0].location).to.equal('body');
+                        expect(causes[0].messages[0]).to.equal('"foo" is not allowed');
+                    })
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done()
+                    });
+            });
+        });
+    });
+
+
+
 
 
 });
