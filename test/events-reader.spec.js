@@ -5,6 +5,7 @@ var _ = require('lodash');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var BSON = require('mongodb').BSONPure;
+var mongojs = require('mongojs');
 
 //require('longjohn');
 
@@ -31,6 +32,7 @@ var debug = require('debug')('events-reader-test');
 var expect = chai.expect;
 
 var harvester = require('../lib/harvester');
+
 var Joi = require('joi');
 
 var createReportPromise;
@@ -103,7 +105,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             done();
         });
 
-        beforeEach(function (done) {
+        beforeEach(function () {
             var that = this;
             that.timeout(100000);
 
@@ -113,24 +115,35 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             console.log('drop database');
             harvesterApp.adapter.db.db.dropDatabase();
 
-            that.checkpointCreated = harvesterApp.eventsReader(config.harvester.options.oplogConnectionString).then(function (EventsReader) {
+            var oplogMongodbUri = config.harvester.options.oplogConnectionString;
+            var oplogDb = mongojs(oplogMongodbUri);
 
-                that.eventsReader = new EventsReader();
+            var initFromLastCheckpoint = function (harvesterApp, oplogDb) {
 
-                // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
-                // precision for an oplog ts is 1s
-                require('sleep').sleep(1);
-                var now = BSON.Timestamp(0, (new Date() / 1000));
+                var query = {}
+                    , coll = oplogDb.collection('oplog.rs');
 
-                console.log('creating checkpoint with ts ' + now.getHighBits());
-                return harvesterApp.adapter.create('checkpoint', {ts: now}).then(function () {
-                    return done();
+                return new Promise(function (resolve, reject) {
+                    return coll.find(query).sort({ts: -1}).limit(1, function (err, docs) {
+                        if (err) reject(err);
+                        else resolve(docs);
+                    });
+                }).then(function (results) {
+                        var lastTs = results[0].ts;
+                        console.log('creating checkpoint with ts ' + lastTs);
+                        return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
+                    });
+            };
+
+            that.checkpointCreated = harvesterApp.eventsReader(oplogMongodbUri)
+                .then(function (EventsReader) {
+
+                    that.eventsReader = new EventsReader();
+                    return initFromLastCheckpoint(harvesterApp, oplogDb);
                 });
 
-            })
-                .catch(function (err) {
-                    done(err);
-                });
+            return that.checkpointCreated;
+
         });
 
         afterEach(function () {
@@ -167,8 +180,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         done(err);
                     });
 
-                that.checkpointCreated.then(function () {
-                    setTimeout(that.eventsReader.tail.bind(that.eventsReader), 500);
+                that.checkpointCreated.then(function (checkpoint) {
+                    that.eventsReader.tail();
                 });
 
             });
