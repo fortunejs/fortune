@@ -31,7 +31,7 @@ describe('chaining', function () {
             ].forEach(function (httpMethod) {
                     should.exist(plant[httpMethod]().before);
                     should.exist(plant[httpMethod]().after);
-                    should.exist(plant[httpMethod]().authorize);
+                    should.exist(plant[httpMethod]().disableAuthorization);
                 });
 
             done();
