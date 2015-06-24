@@ -1,9 +1,7 @@
+parser: 'babel-eslint'
+
 env:
   node: true
-  es6: true
-
-ecmaFeatures:
-  modules: true
 
 rules:
   block-scoped-var: 0

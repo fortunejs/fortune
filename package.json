@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
-    "url": "http://8890.xxx"
+    "url": "http://0x8890.com"
   },
   "homepage": "http://fortunejs.com",
   "repository": {
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "babel": "5.6.4",
+    "babel-eslint": "3.1.18",
     "babelify": "6.1.2",
     "browserify": "10.2.4",
     "docchi": "0.10.3",
