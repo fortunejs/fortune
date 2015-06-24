@@ -8,7 +8,7 @@ var BSON = require('mongodb').BSONPure;
 
 //require('longjohn');
 
-var harvesterPort = 8003;
+var harvesterPort = 8006;
 var baseUrl = 'http://localhost:' + harvesterPort;
 var reportAPI_baseUri = 'http://localhost:9988';
 

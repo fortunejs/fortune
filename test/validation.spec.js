@@ -26,10 +26,12 @@ describe('validation', function () {
                 }
             };
 
-            return validation.validate(request, {})
-                .catch(function (errors) {
-                    errors.should.equal('Please provide a validation schema');
-                })
+            try {
+                validation({}).validate(request);
+                done(new Error('should fail'))
+            } catch (e) {
+            }
+
         });
     });
 
@@ -42,27 +44,30 @@ describe('validation', function () {
                 }
             };
 
-            return validation.validate('', schema)
-                .catch(function (errors) {
-                    errors.should.equal('Please provide a request to validate');
-                });
+            try {
+                validation(schema).validate({});
+                done(new Error('should fail'))
+            } catch (e) {
+            }
         });
     });
 
     describe('validation body', function () {
 
-        var schema = Joi.object().keys({
-            stuff: Joi.array().items(Joi.object(
-                {
-                    id: Joi.number().required().description('id'),
-                    links: Joi.object(
-                        {
-                            foo: Joi.string().guid(),
-                            bar: Joi.string().guid()
-                        })
-                }
-            ))
-        });
+        var schema = {
+            body: Joi.object().keys({
+                stuff: Joi.array().items(Joi.object(
+                    {
+                        id: Joi.number().required().description('id'),
+                        links: Joi.object(
+                            {
+                                foo: Joi.string().guid(),
+                                bar: Joi.string().guid()
+                            })
+                    }
+                ))
+            })
+        };
 
         describe('when validating a valid resource', function () {
             it('should resolve', function () {
@@ -80,10 +85,8 @@ describe('validation', function () {
                     }
                 };
 
-                return validation.validate(request, schema)
-                    .then(function (errors) {
-                        expect(errors).to.be.empty;
-                    });
+                var details = validation(schema).validate(request);
+                expect(details).to.be.empty;
             });
         });
 
@@ -101,24 +104,23 @@ describe('validation', function () {
                     }
                 };
 
-                return validation.validate(request, schema, {}, {}, {})
-                    .then(function (errors) {
-                        expect(errors[0].field).to.equal('stuff.0.id');
-                        expect(errors[0].location).to.equal('body');
-                        expect(errors[0].messages[0]).to.equal('"id" is required');
+                var details = validation(schema).validate(request);
+                var bodyDetails = details.body;
 
-                        expect(errors[1].field).to.equal('stuff.0.links.bar');
-                        expect(errors[1].location).to.equal('body');
-                        expect(errors[1].messages[0]).to.equal('"bar" must be a valid GUID');
+                expect(bodyDetails).not.to.be.empty;
 
-                        expect(errors[2].field).to.equal('stuff.0.links');
-                        expect(errors[2].location).to.equal('body');
-                        expect(errors[2].messages[0]).to.equal('"baz" is not allowed');
+                expect(bodyDetails[0].path).to.equal('stuff.0.id');
+                expect(bodyDetails[0].message).to.equal('"id" is required');
 
-                        expect(errors[3].field).to.equal('stuff.0');
-                        expect(errors[3].location).to.equal('body');
-                        expect(errors[3].messages[0]).to.equal('"bla" is not allowed');
-                    });
+                expect(bodyDetails[1].path).to.equal('stuff.0.links.bar');
+                expect(bodyDetails[1].message).to.equal('"bar" must be a valid GUID');
+
+                expect(bodyDetails[2].path).to.equal('stuff.0.links');
+                expect(bodyDetails[2].message).to.equal('"baz" is not allowed');
+
+                expect(bodyDetails[3].path).to.equal('stuff.0');
+                expect(bodyDetails[3].message).to.equal('"bla" is not allowed');
+
             });
         });
 
@@ -126,7 +128,7 @@ describe('validation', function () {
 
     describe('validation query', function () {
 
-        var schema = {offset: Joi.number().required().description('offset')};
+        var schema = {query: {offset: Joi.number().required().description('offset')}};
 
         describe('when validating a valid resource', function () {
             it('should resolve', function () {
@@ -134,11 +136,9 @@ describe('validation', function () {
                     query: {offset: 1}
                 };
 
+                var details = validation(schema).validate(request);
 
-                return validation.validate(request, {}, schema, {}, {})
-                    .then(function (errors) {
-                        expect(errors).to.be.empty;
-                    });
+                expect(details).to.be.empty;
 
             });
         });
@@ -149,19 +149,19 @@ describe('validation', function () {
                     query: {x: 'a'}
                 };
 
-                return validation.validate(request, {}, schema, {}, {})
-                    .then(function (errors) {
-                        expect(errors[0].field).to.equal('offset');
-                        expect(errors[0].location).to.equal('query');
-                        expect(errors[0].messages[0]).to.equal('"offset" is required');
-                    });
+                var details = validation(schema).validate(request);
+                var queryDetails = details.query;
+
+                expect(queryDetails[0].path).to.equal('offset');
+                expect(queryDetails[0].message).to.equal('"offset" is required');
+
             });
         });
     });
 
     describe('validation params', function () {
 
-        var schema = {id: Joi.number().required().description('id')};
+        var schema = {params: {id: Joi.number().required().description('id')}};
 
         describe('when validating a valid resource', function () {
             it('should resolve', function () {
@@ -169,10 +169,10 @@ describe('validation', function () {
                     params: {id: 121212}
                 };
 
-                return validation.validate(request, {}, {}, schema, {})
-                    .then(function (errors) {
-                        expect(errors).to.be.empty;
-                    });
+                var details = validation(schema).validate(request);
+
+                expect(details).to.be.empty;
+
             });
         });
 
@@ -180,19 +180,18 @@ describe('validation', function () {
             it('should resolve with errors', function () {
                 var request = {params: {}};
 
-                return validation.validate(request, {}, {}, schema, {})
-                    .then(function (errors) {
-                        expect(errors[0].field).to.equal('id');
-                        expect(errors[0].location).to.equal('params');
-                        expect(errors[0].messages[0]).to.equal('"id" is required');
-                    });
+                var details = validation(schema).validate(request);
+                var paramsDetails = details.params;
+
+                expect(paramsDetails[0].path).to.equal('id');
+                expect(paramsDetails[0].message).to.equal('"id" is required');
             });
         });
     });
 
     describe('validation headers', function () {
 
-        var schema = {Authorization: Joi.string().required().description('Authorization header')};
+        var schema = {headers: {Authorization: Joi.string().required().description('Authorization header')}};
 
         describe('when validating a valid resource', function () {
             it('should resolve', function () {
@@ -200,10 +199,8 @@ describe('validation', function () {
                     headers: {Authorization: 'Bearer abcdefghikjlm1234567'}
                 };
 
-                return validation.validate(request, {}, {}, {}, schema)
-                    .then(function (errors) {
-                        expect(errors).to.be.empty;
-                    });
+                var details = validation(schema).validate(request);
+                expect(details).to.be.empty;
 
             });
         });
@@ -212,12 +209,11 @@ describe('validation', function () {
             it('should resolve with errors', function () {
                 var request = {headers: {}};
 
-                return validation.validate(request, {}, {}, {}, schema)
-                    .then(function (errors) {
-                        expect(errors[0].field).to.equal('Authorization');
-                        expect(errors[0].location).to.equal('headers');
-                        expect(errors[0].messages[0]).to.equal('"Authorization" is required');
-                    });
+                var details = validation(schema).validate(request)
+                var headerDetails = details.headers;
+
+                expect(headerDetails[0].path).to.equal('Authorization');
+                expect(headerDetails[0].message).to.equal('"Authorization" is required');
 
             });
         });
@@ -234,7 +230,7 @@ describe('validation', function () {
         });
 
         describe('when a resource is POSTed with a malformed payload', function () {
-            it('should resolve with a 422 and errors in detail section', function (done) {
+            it('should resolve with a 400 and errors in detail section', function (done) {
 
                 var pet = {
                     name: 'Spot', foo: true
@@ -243,16 +239,18 @@ describe('validation', function () {
 
                 request(config.baseUrl).post('/pets').send(pets)
                     .expect('Content-Type', /json/)
-                    .expect(422)
+                    .expect(400)
                     .expect(function (res) {
-                        var causes = JSON.parse(res.text).errors[0].meta.causes;
-                        expect(causes[0].field).to.equal('pets.0.appearances');
-                        expect(causes[0].location).to.equal('body');
-                        expect(causes[0].messages[0]).to.equal('"appearances" is required');
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.details.body;
 
-                        expect(causes[1].field).to.equal('pets.0');
-                        expect(causes[1].location).to.equal('body');
-                        expect(causes[1].messages[0]).to.equal('"foo" is not allowed');
+                        expect(error.detail).to.equal('validation failed on incoming request');
+
+                        expect(bodyDetails[0].path).to.equal('pets.0.appearances');
+                        expect(bodyDetails[0].message).to.equal('"appearances" is required');
+
+                        expect(bodyDetails[1].path).to.equal('pets.0');
+                        expect(bodyDetails[1].message).to.equal('"foo" is not allowed');
                     })
                     .end(function (err, res) {
                         if (err) return done(err);
@@ -262,22 +260,23 @@ describe('validation', function () {
         });
 
         describe('when a resource is PUT with a malformed payload', function () {
-            it('should resolve with a 422 and errors in detail section', function (done) {
+            it('should resolve with a 400 and errors in detail section', function (done) {
 
                 var pet = {
                     name: 'Spot', foo: true
                 }, pets = {pets: []};
                 pets.pets.push(pet);
 
-                request(config.baseUrl).put('/pets/'+ids.pets[0]).send(pets)
+                request(config.baseUrl).put('/pets/' + ids.pets[0]).send(pets)
                     .expect('Content-Type', /json/)
-                    .expect(422)
+                    .expect(400)
                     .expect(function (res) {
-                        var causes = JSON.parse(res.text).errors[0].meta.causes;
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.details.body;
 
-                        expect(causes[0].field).to.equal('pets.0');
-                        expect(causes[0].location).to.equal('body');
-                        expect(causes[0].messages[0]).to.equal('"foo" is not allowed');
+                        expect(error.detail).to.equal('validation failed on incoming request');
+                        expect(bodyDetails[0].path).to.equal('pets.0');
+                        expect(bodyDetails[0].message).to.equal('"foo" is not allowed');
                     })
                     .end(function (err, res) {
                         if (err) return done(err);
@@ -286,9 +285,6 @@ describe('validation', function () {
             });
         });
     });
-
-
-
 
 
 });
