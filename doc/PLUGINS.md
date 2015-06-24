@@ -35,8 +35,9 @@ Network helpers may map external input to the dispatcher and map the response to
 
 ### Browser
 
-Fortune includes a browser build, which is acccessible at `fortune/core`. It does not come with any defaults. This build has minimal dependencies, requiring only `babel-runtime`. A CommonJS compatible build pipeline is required to use it.
+Fortune includes browser builds, which are acccessible at `fortune/core` and `fortune/core-polyfill`. It does not come with any defaults. The core build has minimal dependencies, requiring only `babel-runtime`. There is an even lighter build without the runtime, but a global ES6 polyfill is needed. A CommonJS compatible build pipeline is required to use it.
 
 ```js
-import Fortune from 'fortune/core'
+import Fortune from 'fortune/core' // Just works.
+import Fortune from 'fortune/core-polyfill' // Bring your own ES6 polyfill.
 ```
