@@ -242,7 +242,7 @@ describe('validation', function () {
                     .expect(400)
                     .expect(function (res) {
                         var error = JSON.parse(res.text).errors[0];
-                        var bodyDetails = error.meta.details.body;
+                        var bodyDetails = error.meta.validationErrorDetails.body;
 
                         expect(error.detail).to.equal('validation failed on incoming request');
 
@@ -272,7 +272,7 @@ describe('validation', function () {
                     .expect(400)
                     .expect(function (res) {
                         var error = JSON.parse(res.text).errors[0];
-                        var bodyDetails = error.meta.details.body;
+                        var bodyDetails = error.meta.validationErrorDetails.body;
 
                         expect(error.detail).to.equal('validation failed on incoming request');
                         expect(bodyDetails[0].path).to.equal('pets.0');
