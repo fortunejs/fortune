@@ -155,11 +155,17 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         else resolve(docs);
                     });
                 }).then(function (results) {
-                        var lastTs = results[0].ts;
-                        // todo refactor logTs and make available to tests
-                        console.log('creating checkpoint with ts ' + lastTs.getHighBits() + ' ' + lastTs.getLowBits() + ' ' +
-                            new Date((lastTs.getHighBits()) * 1000));
-                        return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
+                        var lastTs;
+                        if (result[0]) {
+                            lastTs = results[0].ts;
+                            // todo refactor logTs and make available to tests
+                            console.log('creating checkpoint with ts ' + lastTs.getHighBits() + ' ' + lastTs.getLowBits() + ' ' +
+                                new Date((lastTs.getHighBits()) * 1000));
+                            return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
+                        }  else {
+                            console.log('no previous checkpoint found');
+                        }
+
                     });
             };
 
