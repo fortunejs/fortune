@@ -156,7 +156,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     });
                 }).then(function (results) {
                         var lastTs;
-                        if (result[0]) {
+                        if (results[0]) {
                             lastTs = results[0].ts;
                             // todo refactor logTs and make available to tests
                             console.log('creating checkpoint with ts ' + lastTs.getHighBits() + ' ' + lastTs.getLowBits() + ' ' +
