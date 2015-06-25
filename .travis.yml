@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - '0.10'
 before_script:
-  - echo $(mongod -version) 
+  - echo $(mongod -version)
   - mkdir testdb
   - mongod --port 27017 --dbpath testdb --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
   - sleep 3

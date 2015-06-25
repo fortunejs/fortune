@@ -9,7 +9,7 @@ var mongojs = require('mongojs');
 
 //require('longjohn');
 
-var harvesterPort = 8006;
+var harvesterPort = 8007;
 var baseUrl = 'http://localhost:' + harvesterPort;
 var reportAPI_baseUri = 'http://localhost:9988';
 
