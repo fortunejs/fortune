@@ -112,11 +112,37 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             createReportResponseDfd = RSVP.defer();
             createReportPromise = createReportResponseDfd.promise;
 
-            console.log('drop database');
-            harvesterApp.adapter.db.db.dropDatabase();
-
             var oplogMongodbUri = config.harvester.options.oplogConnectionString;
             var oplogDb = mongojs(oplogMongodbUri);
+
+            that.checkpointCreated = harvesterApp.eventsReader(oplogMongodbUri)
+                .then(function (EventsReader) {
+                    that.eventsReader = new EventsReader();
+                })
+                .then(function() {
+                    return removeModelsData(harvesterApp, ['checkpoint', 'post', 'comment'])
+                })
+                .then(function () {
+                    return initFromLastCheckpoint(harvesterApp, oplogDb);
+                });
+
+            // todo check this with Stephen
+            // seeder dropCollections doesn't seem to actually remove the data from checkpoints
+            // fabricated this function as a quick fix
+            function removeModelsData(harvesterApp, models) {
+
+                function removeModelData(model) {
+                    return new Promise(function (resolve, reject) {
+                        harvesterApp.adapter.model(model).collection.remove(function (err, result) {
+                            if (err) reject(err);
+                            resolve(result);
+                        });
+                    });
+                }
+
+                return RSVP.all(_.map(models, removeModelData));
+            }
+
 
             var initFromLastCheckpoint = function (harvesterApp, oplogDb) {
 
@@ -130,17 +156,12 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     });
                 }).then(function (results) {
                         var lastTs = results[0].ts;
-                        console.log('creating checkpoint with ts ' + lastTs);
+                        // todo refactor logTs and make available to tests
+                        console.log('creating checkpoint with ts ' + lastTs.getHighBits() + ' ' + lastTs.getLowBits() + ' ' +
+                            new Date((lastTs.getHighBits()) * 1000));
                         return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
                     });
             };
-
-            that.checkpointCreated = harvesterApp.eventsReader(oplogMongodbUri)
-                .then(function (EventsReader) {
-
-                    that.eventsReader = new EventsReader();
-                    return initFromLastCheckpoint(harvesterApp, oplogDb);
-                });
 
             return that.checkpointCreated;
 
