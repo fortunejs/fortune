@@ -157,14 +157,22 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 }).then(function (results) {
                         var lastTs;
                         if (results[0]) {
+                            console.log('previous checkpoint found');
                             lastTs = results[0].ts;
-                            // todo refactor logTs and make available to tests
-                            console.log('creating checkpoint with ts ' + lastTs.getHighBits() + ' ' + lastTs.getLowBits() + ' ' +
-                                new Date((lastTs.getHighBits()) * 1000));
-                            return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
-                        }  else {
+                        } else {
                             console.log('no previous checkpoint found');
+                            lastTs = BSON.Timestamp(0, 1);
                         }
+
+                        // todo make available as a seperate function
+                        function logTs(ts) {
+                            console.log('creating checkpoint with ts ' + ts.getHighBits() + ' ' + ts.getLowBits() + ' ' +
+                                new Date((ts.getHighBits()) * 1000));
+                        }
+
+                        logTs(lastTs);
+
+                        return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
 
                     });
             };
