@@ -219,6 +219,7 @@ describe('validation', function () {
         });
     });
 
+    // todo refactor, we should reduce code duplication a bit on these tests
     describe('validation api calls', function () {
 
         var config, ids;
@@ -229,11 +230,11 @@ describe('validation', function () {
             });
         });
 
-        describe('when a resource is POSTed with a malformed payload', function () {
-            it('should resolve with a 400 and errors in detail section', function (done) {
+        describe('when a resource is POSTed with a malformed payload which has a required attribute "appearances" missing', function () {
+            it('should resolve with a 400 and a validationErrorDetails section stating "appearances" is required', function (done) {
 
                 var pet = {
-                    name: 'Spot', foo: true
+                    name: 'Spot'
                 }, pets = {pets: []};
                 pets.pets.push(pet);
 
@@ -249,8 +250,6 @@ describe('validation', function () {
                         expect(bodyDetails[0].path).to.equal('pets.0.appearances');
                         expect(bodyDetails[0].message).to.equal('"appearances" is required');
 
-                        expect(bodyDetails[1].path).to.equal('pets.0');
-                        expect(bodyDetails[1].message).to.equal('"foo" is not allowed');
                     })
                     .end(function (err, res) {
                         if (err) return done(err);
@@ -259,8 +258,8 @@ describe('validation', function () {
             });
         });
 
-        describe('when a resource is PUT with a malformed payload', function () {
-            it('should resolve with a 400 and errors in detail section', function (done) {
+        describe('when a resource is PUT with a malformed payload which has an unknown attribute "foo" defined', function () {
+            it('should resolve with a 400 and a validationErrorDetails section stating "foo" is not allowed', function (done) {
 
                 var pet = {
                     name: 'Spot', foo: true
@@ -277,6 +276,58 @@ describe('validation', function () {
                         expect(error.detail).to.equal('validation failed on incoming request');
                         expect(bodyDetails[0].path).to.equal('pets.0');
                         expect(bodyDetails[0].message).to.equal('"foo" is not allowed');
+                    })
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done()
+                    });
+            });
+        });
+
+        describe('when a resource is PUT with a malformed payload which has multiple primary resource collection entries', function () {
+            it('should resolve with a 400 and a validationErrorDetails section stating "pets" must contain 1 items', function (done) {
+
+                var pets = {pets: []};
+                pets.pets.push({
+                    name: 'Spot'
+                });
+                pets.pets.push({
+                    name: 'Blacky'
+                });
+
+                request(config.baseUrl).put('/pets/' + ids.pets[0]).send(pets)
+                    .expect('Content-Type', /json/)
+                    .expect(400)
+                    .expect(function (res) {
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.validationErrorDetails.body;
+
+                        expect(error.detail).to.equal('validation failed on incoming request');
+                        expect(bodyDetails[0].path).to.equal('pets');
+                        expect(bodyDetails[0].message).to.equal('"pets" must contain 1 items');
+                    })
+                    .end(function (err, res) {
+                        if (err) return done(err);
+                        done()
+                    });
+            });
+        });
+
+        describe('when a resource is PUT with a malformed payload which has no primary resource collection entries', function () {
+            it('should resolve with a 400 and a validationErrorDetails section stating "pets" must contain 1 items', function (done) {
+
+                var pets = {pets: []};
+
+                request(config.baseUrl).put('/pets/' + ids.pets[0]).send(pets)
+                    .expect('Content-Type', /json/)
+                    .expect(400)
+                    .expect(function (res) {
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.validationErrorDetails.body;
+
+                        expect(error.detail).to.equal('validation failed on incoming request');
+                        expect(bodyDetails[0].path).to.equal('pets');
+                        expect(bodyDetails[0].message).to.equal('"pets" must contain 1 items');
                     })
                     .end(function (err, res) {
                         if (err) return done(err);
