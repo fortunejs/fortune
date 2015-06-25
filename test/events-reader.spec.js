@@ -198,7 +198,10 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 that.timeout(100000);
 
                 that.eventsReader.skip = function (dfd, doc) {
-                    if (doc.ns === 'test.posts') {
+                    // todo fix this
+
+                    var regex = new RegExp('.*\\.posts', 'i');
+                    if (regex.test(doc.ns)) {
                         dfd.resolve();
                         done();
                     }
