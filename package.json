@@ -33,8 +33,9 @@
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "babel-runtime": "5.6.4",
+    "babel-runtime": "5.6.7",
     "chalk": "1.0.0",
+    "error-class": "1.0.1",
     "inflection": "1.7.1",
     "nedb": "1.1.2",
     "negotiator": "0.5.3",
@@ -42,7 +43,7 @@
     "uri-templates": "0.1.7"
   },
   "devDependencies": {
-    "babel": "5.6.4",
+    "babel": "5.6.7",
     "babel-eslint": "3.1.18",
     "babelify": "6.1.2",
     "browserify": "10.2.4",
@@ -51,7 +52,7 @@
     "highlight.js": "8.6.0",
     "html-minifier": "0.7.2",
     "http-server": "0.8.0",
-    "istanbul": "0.3.15",
+    "istanbul": "0.3.16",
     "marked": "0.3.3",
     "mkdirp": "0.5.1",
     "mustache": "2.1.2",
