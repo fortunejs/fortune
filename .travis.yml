@@ -3,6 +3,8 @@ node_js:
   - '0.10'
 env:
   - DEBUG=events-reader
+  - MONGODB_URL=mongodb://127.0.0.1:27017/test
+  - OPLOG_MONGODB_URL=mongodb://127.0.0.1:27017/local
 before_script:
   - mongo --version
   - mkdir test
