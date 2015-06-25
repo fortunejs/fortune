@@ -7,8 +7,8 @@ env:
   - OPLOG_MONGODB_URL=mongodb://127.0.0.1:27017/local
 before_script:
   - mongo --version
-  - mkdir test
-  - mongod --port 27017 --dbpath test --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
+  - mkdir -p db/test
+  - mongod --port 27017 --dbpath db/test --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
   - sleep 3
   - mongo admin --eval 'printjson(rs.initiate());'
   - sleep 20
