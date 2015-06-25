@@ -5,8 +5,8 @@ env:
   - DEBUG=events-reader
 before_script:
   - mongo --version
-  - mkdir testdb
-  - mongod --port 27017 --dbpath testdb --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
+  - mkdir test
+  - mongod --port 27017 --dbpath test --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
   - sleep 3
   - mongo admin --eval 'printjson(rs.initiate());'
   - sleep 20
