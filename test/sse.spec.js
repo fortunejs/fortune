@@ -9,7 +9,7 @@ var config = require('./config.js');
 var seeder = require('./seeder.js');
 var Joi = require('joi');
 
-describe('EventSource implementation for resource changes', function () {
+describe.skip('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
