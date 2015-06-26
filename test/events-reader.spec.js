@@ -5,14 +5,16 @@ var _ = require('lodash');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var BSON = require('mongodb').BSONPure;
+var mongojs = require('mongojs');
 
 //require('longjohn');
 
-var harvesterPort = 8003
+var harvesterPort = 8007;
 var baseUrl = 'http://localhost:' + harvesterPort;
 var reportAPI_baseUri = 'http://localhost:9988';
 
 var nock = require('nock');
+var config = require('./config.js');
 
 var chai = require('chai');
 
@@ -31,45 +33,42 @@ var expect = chai.expect;
 
 var harvester = require('../lib/harvester');
 
+var Joi = require('joi');
+
 var createReportPromise;
 var createReportResponseDfd;
 
 // todo checkpoints, todo check skipping
-
-var harvesterOptions = {
-    adapter: 'mongodb',
-    connectionString: 'mongodb://127.0.0.1:27017/test',
-    db: 'test',
-    inflect: true,
-    oplogConnectionString: 'mongodb://127.0.0.1:27017/local?slaveOk=true'
-};
 
 describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     var harvesterApp;
 
     describe('Given a post on a very controversial topic, ' +
-    'and a new comment is posted or updated with content which contains profanity, ' +
-    'the comment is reported as abusive to another API. ', function () {
+        'and a new comment is posted or updated with content which contains profanity, ' +
+        'the comment is reported as abusive to another API. ', function () {
 
         before(function (done) {
 
             var that = this;
             that.timeout(100000);
 
-            harvesterApp = harvester(harvesterOptions).resource('post', {
-                        title: String
-                    })
-                    .onChange({
-                        delete: function () {
-                            console.log('deleted a post')
-                        }
-                    })
-                    .resource('comment', {
-                        body: String,
+            harvesterApp = harvester(config.harvester.options)
+                .resource('post', {
+                    title: Joi.string()
+                })
+                .onChange({
+                    delete: function () {
+                        console.log('deleted a post')
+                    }
+                })
+                .resource('comment', {
+                    body: Joi.string(),
+                    links: {
                         post: 'post'
-                    })
-                    .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
+                    }
+                })
+                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
 
             that.chaiExpress = chai.request(harvesterApp.router);
 
@@ -77,63 +76,109 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
             function reportAbusiveLanguage(id) {
                 return harvesterApp.adapter.find('comment', id.toString()).then(function (comment) {
-                        var check = profanity.check(comment);
-                        if (!!check && check.length > 0) {
-                            return $http(
-                                {
-                                    uri: reportAPI_baseUri + '/reports',
-                                    method: 'POST',
-                                    json: {
-                                        reports: [
-                                            {
-                                                content: comment.body
-                                            }
-                                        ]
-                                    }
-                                })
-                                // then catch handlers below are added to be able to assert results
-                                // this is not common for production code
-                                .spread(function (response, reports) {
-                                    createReportResponseDfd.resolve(response);
-                                })
-                        } else {
-                            return false;
-                        }
-                    });
+                    var check = profanity.check(comment);
+                    if (!!check && check.length > 0) {
+                        return $http(
+                            {
+                                uri: reportAPI_baseUri + '/reports',
+                                method: 'POST',
+                                json: {
+                                    reports: [
+                                        {
+                                            content: comment.body
+                                        }
+                                    ]
+                                }
+                            })
+                            // then catch handlers below are added to be able to assert results
+                            // this is not common for production code
+                            .spread(function (response, reports) {
+                                createReportResponseDfd.resolve(response);
+                            })
+                    } else {
+                        return false;
+                    }
+                });
             }
 
             harvesterApp.listen(harvesterPort);
             done();
         });
 
-        beforeEach(function (done) {
+        beforeEach(function () {
             var that = this;
             that.timeout(100000);
 
             createReportResponseDfd = RSVP.defer();
             createReportPromise = createReportResponseDfd.promise;
 
-            console.log('drop database');
-            harvesterApp.adapter.db.db.dropDatabase();
+            var oplogMongodbUri = config.harvester.options.oplogConnectionString;
+            var oplogDb = mongojs(oplogMongodbUri);
 
-            that.checkpointCreated = harvesterApp.eventsReader(harvesterOptions.oplogConnectionString).then(function (EventsReader) {
-
+            that.checkpointCreated = harvesterApp.eventsReader(oplogMongodbUri)
+                .then(function (EventsReader) {
                     that.eventsReader = new EventsReader();
-
-                    // sleep 1000 to prevent we are reprocessing oplog entries from the previous test
-                    // precision for an oplog ts is 1s
-                    require('sleep').sleep(1);
-                    var now = BSON.Timestamp(0, (new Date() / 1000));
-
-                    console.log('creating checkpoint with ts ' + now.getHighBits());
-                    return harvesterApp.adapter.create('checkpoint', {ts: now}).then(function () {
-                        return done();
-                    });
-
                 })
-                .catch(function (err) {
-                    done(err);
+                .then(function() {
+                    return removeModelsData(harvesterApp, ['checkpoint', 'post', 'comment'])
+                })
+                .then(function () {
+                    return initFromLastCheckpoint(harvesterApp, oplogDb);
                 });
+
+            // todo check this with Stephen
+            // seeder dropCollections doesn't seem to actually remove the data from checkpoints
+            // fabricated this function as a quick fix
+            function removeModelsData(harvesterApp, models) {
+
+                function removeModelData(model) {
+                    return new Promise(function (resolve, reject) {
+                        harvesterApp.adapter.model(model).collection.remove(function (err, result) {
+                            if (err) reject(err);
+                            resolve(result);
+                        });
+                    });
+                }
+
+                return RSVP.all(_.map(models, removeModelData));
+            }
+
+
+            var initFromLastCheckpoint = function (harvesterApp, oplogDb) {
+
+                var query = {}
+                    , coll = oplogDb.collection('oplog.rs');
+
+                return new Promise(function (resolve, reject) {
+                    return coll.find(query).sort({ts: -1}).limit(1, function (err, docs) {
+                        if (err) reject(err);
+                        else resolve(docs);
+                    });
+                }).then(function (results) {
+                        var lastTs;
+                        if (results[0]) {
+                            console.log('previous checkpoint found');
+                            lastTs = results[0].ts;
+                        } else {
+                            console.log('no previous checkpoint found');
+                            lastTs = BSON.Timestamp(0, 1);
+                        }
+
+                        // todo make available as a seperate function
+                        function logTs(ts) {
+                            console.log('creating checkpoint with ts ' + ts.getHighBits() + ' ' + ts.getLowBits() + ' ' +
+                                new Date((ts.getHighBits()) * 1000));
+                        }
+
+                        logTs(lastTs);
+
+                        return harvesterApp.adapter.create('checkpoint', {ts: lastTs});
+
+                    });
+            };
+
+            return that.checkpointCreated;
+
         });
 
         afterEach(function () {
@@ -153,7 +198,10 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 that.timeout(100000);
 
                 that.eventsReader.skip = function (dfd, doc) {
-                    if (doc.ns === 'test.posts') {
+                    // todo fix this
+
+                    var regex = new RegExp('.*\\.posts', 'i');
+                    if (regex.test(doc.ns)) {
                         dfd.resolve();
                         done();
                     }
@@ -170,8 +218,8 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         done(err);
                     });
 
-                that.checkpointCreated.then(function () {
-                    setTimeout(that.eventsReader.tail.bind(that.eventsReader), 500);
+                that.checkpointCreated.then(function (checkpoint) {
+                    that.eventsReader.tail();
                 });
 
             });

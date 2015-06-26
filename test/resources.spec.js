@@ -78,7 +78,7 @@ describe('resources', function () {
     describe('posting a resource with a namespace', function () {
         it('should post without a special key', function (done) {
             var cat = {
-                name: 'Spot'
+                name: 'Spot', hasToy: true, numToys: 0
             }, body = {cats: []};
             body.cats.push(cat);
             return new Promise(function () {

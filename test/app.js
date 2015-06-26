@@ -1,6 +1,9 @@
 var harvester = require('../lib/harvester');
 var JSONAPI_Error = harvester.JSONAPI_Error;
+
 var Promise = require('bluebird');
+Promise.longStackTraces();
+
 var Joi = require('joi');
 
 var config = require('./config.js');
@@ -8,7 +11,7 @@ var config = require('./config.js');
 function configureApp(harvesterApp) {
     harvesterApp.resource('person', {
         name: Joi.string().required().description('name'),
-        appearances: Joi.string().required().description('appearances'),
+        appearances: Joi.number().required().description('appearances'),
         links: {
             pets: ['pet'],
             soulmate: {ref: 'person', inverse: 'soulmate'},
@@ -20,7 +23,7 @@ function configureApp(harvesterApp) {
 
     .resource('pet', {
         name: Joi.string().required().description('name'),
-        appearances: Joi.string().required().description('appearances'),
+        appearances: Joi.number().required().description('appearances'),
         links: {
             owner: 'person'
         }
@@ -28,7 +31,6 @@ function configureApp(harvesterApp) {
 
     .resource('cat', {
         name: Joi.string().required().description('name'),
-        collars: Joi.array().required().description('collar'),
         hasToy: Joi.boolean().required().description('hasToy'),
         numToys: Joi.number().required().description('numToys'),
     }, {namespace: 'animals'})

@@ -1,12 +1,13 @@
 var $http = require('http-as-promised');
 var harvester = require('../lib/harvester');
-var baseUrl = 'http://localhost:' + 8002;
+var baseUrl = 'http://localhost:' + 8005;
 var chai = require('chai');
 var expect = chai.expect;
 var ess = require('event-source-stream');
 var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
+var Joi = require('joi');
 
 describe('EventSource implementation for resource changes', function () {
 
@@ -26,11 +27,11 @@ describe('EventSource implementation for resource changes', function () {
             };
 
             harvesterApp = harvester(options).resource('book', {
-                title: String,
-                author: String
+                title: Joi.string(),
+                author: Joi.string()
             });
 
-            harvesterApp.listen(8002);
+            harvesterApp.listen(8005);
 
             return seeder(harvesterApp, baseUrl).dropCollections('books')
         });
@@ -65,28 +66,6 @@ describe('EventSource implementation for resource changes', function () {
               );
         });
 
-        describe('when I ask for events with ids greater than a certain id', function () {
-            it('I should get only one event without setting a limit', function (done) {
-                seeder(harvesterApp, baseUrl).seedCustomFixture({
-                    books: [
-                        {
-                            title: 'test title 3'
-                        }
-                    ]
-                });
-                ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
-                    'Last-Event-ID' : lastEventId
-                }}).on('data', function(data) {
-                    var data = JSON.parse(data.data);
-                    //ignore ticker data
-                    if(_.isNumber(data)) return;
-                    expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 3'});
-                    dataReceived = true;
-                    done();
-                });
-            });
-        });
-
         describe('when I ask for events with ids greater than a certain id with filters enabled', function () {
             it('I should get only one event without setting a limit', function (done) {
                 seeder(harvesterApp, baseUrl).seedCustomFixture({
@@ -106,10 +85,33 @@ describe('EventSource implementation for resource changes', function () {
                 ess(baseUrl + '/books/changes/stream?title=filtered&author=Asimov&limit=100', {retry : false, headers : {
                     'Last-Event-ID' : lastEventId
                 }}).on('data', function(data) {
+                    lastEventId = data.id;
                     var data = JSON.parse(data.data);
                     //ignore ticker data
                     if(_.isNumber(data)) return;
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'filtered', author : 'Asimov'});
+                    dataReceived = true;
+                    done();
+                });
+            });
+        });
+
+        describe('when I ask for events with ids greater than a certain id', function () {
+            it('I should get only one event without setting a limit', function (done) {
+                seeder(harvesterApp, baseUrl).seedCustomFixture({
+                    books: [
+                        {
+                            title: 'test title 3'
+                        }
+                    ]
+                });
+                ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
+                    'Last-Event-ID' : lastEventId
+                }}).on('data', function(data) {
+                    var data = JSON.parse(data.data);
+                    //ignore ticker data
+                    if(_.isNumber(data)) return;
+                    expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 3'});
                     dataReceived = true;
                     done();
                 });

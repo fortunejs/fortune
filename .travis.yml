@@ -1,9 +1,12 @@
 language: node_js
 node_js:
   - '0.10'
+env:
+  - DEBUG=events-reader MONGODB_URL=mongodb://127.0.0.1:27017/test OPLOG_MONGODB_URL=mongodb://127.0.0.1:27017/local
 before_script:
-  - mkdir testdb
-  - mongod --port 27017 --dbpath testdb --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
+  - mongo --version
+  - mkdir -p db/test
+  - mongod --port 27017 --dbpath db/test --replSet rs0 --oplogSize 20 --noprealloc --fork --smallfiles --logpath mongodb.log
   - sleep 3
   - mongo admin --eval 'printjson(rs.initiate());'
   - sleep 20
