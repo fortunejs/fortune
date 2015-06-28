@@ -64,7 +64,7 @@ export default (adapter, options) => {
     })
   ))
 
-  test('find: id, type checking #1', run((t, adapter) =>
+  test.only('find: id, type checking #1', run((t, adapter) =>
     adapter.find(type, [ 1 ])
     .then(records => {
       t.equal(records.count, 1, 'count is correct')
