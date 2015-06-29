@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.2 (2015-06-30)
+- Fix cross-browser compatibility issues with IndexedDB adapter.
+
+
 ##### 1.0.0-beta.1 (2015-06-29)
 - Changed sort value from a number to a boolean.
 - Moved body parsing to `Fortune.net.http`.
