@@ -39,8 +39,11 @@ describe('authorization', function () {
                 return Promise.reject();
             }
         });
-        it('should return 200 status code and forward request to resource', function (done) {
+        it('should return 403 status code', function (done) {
             request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(403).end(done);
+        });
+        it('should return 200 status code and forward request to resource when authorization is disabled for that endpoint', function (done) {
+            request(baseUrl).get('/products').expect('Content-Type', /json/).expect(200).end(done);
         });
     });
 
