@@ -12,7 +12,7 @@ Fortune is an I/O library for web applications.
 $ npm install fortune --save
 ```
 
-Currently *alpha* software. Things will break, check the [changelog](http://fortunejs.com/changelog/).
+Currently *beta* software. Things will break, check the [changelog](http://fortunejs.com/changelog/).
 
 
 ## Key Features

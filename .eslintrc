@@ -24,7 +24,7 @@ rules:
   max-depth: [ 2, 6 ]
   max-len: [ 2, 79, 4 ]
   max-nested-callbacks: [ 2, 4 ]
-  max-params: [ 2, 4 ]
+  max-params: [ 2, 5 ]
   max-statements: [ 2, 40 ]
   new-cap: 2
   no-caller: 2
