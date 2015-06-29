@@ -2,9 +2,9 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Consider writing default adapter with Loki.js (?)
 - Website layout redux (?)
 - Consider using ES7 features (?)
+- IndexedDB adapter.
 - Test create/update payloads that link to each other within the payload.
 - Improve inflection to also use dasherize.
 - Test the default serializer.
@@ -14,6 +14,7 @@
 
 ### Done
 
+- Consider writing default adapter with Loki.js (decided: go straight for IndexedDB).
 - There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (decided: this should be done on a per adapter basis).
 - Core build.
 - Support record types with arbitrary fields (decided: no)

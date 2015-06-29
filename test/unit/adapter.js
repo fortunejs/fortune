@@ -68,6 +68,7 @@ export default (adapter, options) => {
     adapter.find(type, [ 1 ])
     .then(records => {
       t.equal(records.count, 1, 'count is correct')
+      t.equal(records[0][keys.primary], 1, 'id is correct')
       t.ok(records[0].birthday instanceof Date, 'date type is correct')
       t.ok(typeof records[0].isAlive === 'boolean', 'boolean type is correct')
       t.ok(typeof records[0].age === 'number', 'number type is correct')
@@ -82,7 +83,8 @@ export default (adapter, options) => {
     adapter.find(type, [ 2 ])
     .then(records => {
       t.equal(records.count, 1, 'count is correct')
-      t.ok(records[0].picture instanceof Buffer, 'buffer type is correct')
+      t.equal(records[0][keys.primary], 2, 'id is correct')
+      t.ok(Buffer.isBuffer(records[0].picture), 'buffer type is correct')
       t.ok(deadbeef.equals(records[0].picture), 'buffer value is correct')
     })
   ))
@@ -112,7 +114,7 @@ export default (adapter, options) => {
   ))
 
   test('find: sort ascending', run((t, adapter) =>
-    adapter.find(type, null, { sort: { age: 1 } })
+    adapter.find(type, null, { sort: { age: true } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 36, 42 ],
         'ascending sort order correct')
@@ -120,7 +122,7 @@ export default (adapter, options) => {
   ))
 
   test('find: sort descending', run((t, adapter) =>
-    adapter.find(type, null, { sort: { age: -1 } })
+    adapter.find(type, null, { sort: { age: false } })
     .then(records => {
       t.deepEqual(records.map(record => record.age), [ 42, 36 ],
         'descending sort order correct')
@@ -128,7 +130,7 @@ export default (adapter, options) => {
   ))
 
   test('find: limit', run((t, adapter) =>
-    adapter.find(type, null, { limit: 1, sort: { name: 1 } })
+    adapter.find(type, null, { limit: 1, sort: { name: true } })
     .then(records => {
       t.equal(records[0].name, 'bob', 'record is correct')
       t.equal(records.length, 1, 'limit length is correct')
@@ -136,7 +138,7 @@ export default (adapter, options) => {
   ))
 
   test('find: offset', run((t, adapter) =>
-    adapter.find(type, null, { offset: 1, sort: { name: 1 } })
+    adapter.find(type, null, { offset: 1, sort: { name: true } })
     .then(records => {
       t.equal(records[0].name, 'john', 'record is correct')
       t.equal(records.length, 1, 'offset length is correct')
@@ -159,10 +161,18 @@ export default (adapter, options) => {
     })
   ))
 
+  test('create: no-op', run((t, adapter) =>
+    adapter.create(type, [])
+    .then(records => {
+      t.deepEqual(records, [], 'response is correct')
+    })
+  ))
+
   test('create: type check', run((t, adapter) => {
     const date = new Date()
 
     return adapter.create(type, [ {
+      id: 3,
       picture: deadbeef,
       birthday: date
     } ])
@@ -203,6 +213,23 @@ export default (adapter, options) => {
       t.ok(testIds(records), 'id type is correct')
     })
   }))
+
+  test('update: no-op', run((t, adapter) =>
+    adapter.update(type, [])
+    .then(number => {
+      t.equal(number, 0, 'number is correct')
+    })
+  ))
+
+  test('update: not found', run((t, adapter) =>
+    adapter.update(type, [ {
+      [keys.primary]: 3,
+      replace: { foo: 'bar' }
+    } ])
+    .then(number => {
+      t.equal(number, 0, 'number is correct')
+    })
+  ))
 
   test('update: replace', run((t, adapter) =>
     adapter.update(type, [
@@ -267,14 +294,23 @@ export default (adapter, options) => {
     })
   ))
 
+  test('delete: no-op', run((t, adapter) =>
+    adapter.delete(type, [])
+    .then(number => {
+      t.equal(number, 0, 'number is correct')
+    })
+  ))
+
   test('delete', run((t, adapter) =>
-    adapter.delete(type, [ 1 ])
+    adapter.delete(type, [ 1, 3 ])
     .then(number => {
       t.equal(number, 1, 'number deleted correct')
-      return adapter.find(type)
+      return adapter.find(type, [ 1, 2 ])
     })
     .then(records => {
-      t.equal(records.length, 1, 'record deleted')
+      t.equal(records.count, 1, 'count correct')
+      t.deepEqual(records.map(record => record[keys.primary]),
+        [ 2 ], 'record deleted')
     })
   ))
 }

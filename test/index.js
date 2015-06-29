@@ -1,5 +1,4 @@
 // Unit tests.
-import './unit/adapters'
 import './unit/record_type'
 
 // Integration tests.
@@ -9,3 +8,4 @@ import './integration/methods/update'
 import './integration/methods/delete'
 import './integration/serializers/micro_api'
 import './integration/serializers/json_api'
+import './integration/adapters/nedb'
