@@ -77,20 +77,34 @@ describe('Roles', function () {
             }
         });
         it('should be allowed to get people', function (done) {
-            request(baseUrl).get('/people').expect(200).end(done);
+            request(baseUrl)
+                .get('/people')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post person', function (done) {
-            request(baseUrl).post('/people').send({people: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/people')
+                .send({people: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should be allowed to get person by id', function (done) {
-            request(baseUrl).get('/people/' + personId).expect(200).end(done);
+            request(baseUrl)
+                .get('/people/' + personId)
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to put person by id', function (done) {
-            request(baseUrl).put('/people/' + personId).send({people: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/people/' + personId)
+                .send({people: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to patch person by id', function (done) {
             var patch = [
@@ -100,7 +114,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/people/' + personId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/people/' + personId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for person', function () {
             throw new Error('Not implemented yet');
@@ -108,20 +126,34 @@ describe('Roles', function () {
 
 
         it('should be allowed to get users', function (done) {
-            request(baseUrl).get('/users').expect(200).end(done);
+            request(baseUrl)
+                .get('/users')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post user', function (done) {
-            request(baseUrl).post('/users').send({users: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/users')
+                .send({users: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should NOT be allowed to get user by id', function (done) {
-            request(baseUrl).get('/users/' + userId).expect(403).end(done);
+            request(baseUrl)
+                .get('/users/' + userId)
+                .expect(403)
+                .end(done);
         });
         it('should be allowed to put user by id', function (done) {
-            request(baseUrl).put('/users/' + userId).send({users: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/users/' + userId)
+                .send({users: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to patch user by id', function (done) {
             var patch = [
@@ -131,7 +163,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/users/' + userId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/users/' + userId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for user', function () {
             throw new Error('Not implemented yet');
@@ -139,20 +175,34 @@ describe('Roles', function () {
 
 
         it('should be allowed to get pets', function (done) {
-            request(baseUrl).get('/pets').expect(200).end(done);
+            request(baseUrl)
+                .get('/pets')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post pet', function (done) {
-            request(baseUrl).post('/pets').send({pets: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/pets')
+                .send({pets: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should be allowed to get pet by id', function (done) {
-            request(baseUrl).get('/pets/' + petId).expect(200).end(done);
+            request(baseUrl)
+                .get('/pets/' + petId)
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to put pet by id', function (done) {
-            request(baseUrl).put('/pets/' + petId).send({pets: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/pets/' + petId)
+                .send({pets: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200).
+                end(done);
         });
         it('should be allowed to patch pet by id', function (done) {
             var patch = [
@@ -162,7 +212,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/pets/' + petId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/pets/' + petId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for pet', function () {
             throw new Error('Not implemented yet');
@@ -180,20 +234,34 @@ describe('Roles', function () {
             }
         });
         it('should NOT be allowed to get people', function (done) {
-            request(baseUrl).get('/people').expect(403).end(done);
+            request(baseUrl)
+                .get('/people')
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to post person', function (done) {
-            request(baseUrl).post('/people').send({people: [
-                {name: 'Steve'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .post('/people')
+                .send({people: [
+                    {name: 'Steve'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to get person by id', function (done) {
-            request(baseUrl).get('/people/' + personId).expect(403).end(done);
+            request(baseUrl)
+                .get('/people/' + personId)
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to put person by id', function (done) {
-            request(baseUrl).put('/people/' + personId).send({people: [
-                {name: 'Joseph'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .put('/people/' + personId)
+                .send({people: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to patch person by id', function (done) {
             var patch = [
@@ -203,7 +271,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/people/' + personId).send(patch).expect(403).end(done);
+            request(baseUrl)
+                .patch('/people/' + personId)
+                .send(patch)
+                .expect(403)
+                .end(done);
         });
         it.skip('should NOT be allowed to getChangeEventsStreaming for person', function () {
             throw new Error('Not implemented yet');
@@ -211,20 +283,34 @@ describe('Roles', function () {
 
 
         it('should be allowed to get users', function (done) {
-            request(baseUrl).get('/users').expect(200).end(done);
+            request(baseUrl)
+                .get('/users')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post user', function (done) {
-            request(baseUrl).post('/users').send({users: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/users')
+                .send({users: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should NOT be allowed to get user by id', function (done) {
-            request(baseUrl).get('/users/' + userId).expect(403).end(done);
+            request(baseUrl)
+                .get('/users/' + userId)
+                .expect(403)
+                .end(done);
         });
         it('should be allowed to put user by id', function (done) {
-            request(baseUrl).put('/users/' + userId).send({users: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/users/' + userId)
+                .send({users: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to patch user by id', function (done) {
             var patch = [
@@ -234,7 +320,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/users/' + userId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/users/' + userId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for user', function () {
             throw new Error('Not implemented yet');
@@ -242,20 +332,34 @@ describe('Roles', function () {
 
 
         it('should be allowed to get pets', function (done) {
-            request(baseUrl).get('/pets').expect(200).end(done);
+            request(baseUrl)
+                .get('/pets')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post pet', function (done) {
-            request(baseUrl).post('/pets').send({pets: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/pets')
+                .send({pets: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should be allowed to get pet by id', function (done) {
-            request(baseUrl).get('/pets/' + petId).expect(200).end(done);
+            request(baseUrl)
+                .get('/pets/' + petId)
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to put pet by id', function (done) {
-            request(baseUrl).put('/pets/' + petId).send({pets: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/pets/' + petId)
+                .send({pets: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to patch pet by id', function (done) {
             var patch = [
@@ -265,7 +369,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/pets/' + petId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/pets/' + petId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for pet', function () {
             throw new Error('Not implemented yet');
@@ -283,20 +391,34 @@ describe('Roles', function () {
             }
         });
         it('should NOT be allowed to get people', function (done) {
-            request(baseUrl).get('/people').expect(403).end(done);
+            request(baseUrl)
+                .get('/people')
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to post person', function (done) {
-            request(baseUrl).post('/people').send({people: [
-                {name: 'Steve'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .post('/people')
+                .send({people: [
+                    {name: 'Steve'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to get person by id', function (done) {
-            request(baseUrl).get('/people/' + personId).expect(403).end(done);
+            request(baseUrl)
+                .get('/people/' + personId)
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to put person by id', function (done) {
-            request(baseUrl).put('/people/' + personId).send({people: [
-                {name: 'Joseph'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .put('/people/' + personId)
+                .send({people: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to patch person by id', function (done) {
             var patch = [
@@ -306,7 +428,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/people/' + personId).send(patch).expect(403).end(done);
+            request(baseUrl)
+                .patch('/people/' + personId)
+                .send(patch)
+                .expect(403)
+                .end(done);
         });
         it.skip('should NOT be allowed to getChangeEventsStreaming for person', function () {
             throw new Error('Not implemented yet');
@@ -314,20 +440,34 @@ describe('Roles', function () {
 
 
         it('should NOT be allowed to get users', function (done) {
-            request(baseUrl).get('/users').expect(403).end(done);
+            request(baseUrl)
+                .get('/users')
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to post user', function (done) {
-            request(baseUrl).post('/users').send({users: [
-                {name: 'Steve'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .post('/users')
+                .send({users: [
+                    {name: 'Steve'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should be allowed to get user by id', function (done) {
-            request(baseUrl).get('/users/' + userId).expect(200).end(done);
+            request(baseUrl)
+                .get('/users/' + userId)
+                .expect(200)
+                .end(done);
         });
         it('should NOT be allowed to put user by id', function (done) {
-            request(baseUrl).put('/users/' + userId).send({users: [
-                {name: 'Joseph'}
-            ]}).expect(403).end(done);
+            request(baseUrl)
+                .put('/users/' + userId)
+                .send({users: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(403)
+                .end(done);
         });
         it('should NOT be allowed to patch user by id', function (done) {
             var patch = [
@@ -337,7 +477,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/users/' + userId).send(patch).expect(403).end(done);
+            request(baseUrl)
+                .patch('/users/' + userId)
+                .send(patch)
+                .expect(403)
+                .end(done);
         });
         it.skip('should NOT be allowed to getChangeEventsStreaming for user', function () {
             throw new Error('Not implemented yet');
@@ -345,20 +489,34 @@ describe('Roles', function () {
 
 
         it('should be allowed to get pets', function (done) {
-            request(baseUrl).get('/pets').expect(200).end(done);
+            request(baseUrl)
+                .get('/pets')
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to post pet', function (done) {
-            request(baseUrl).post('/pets').send({pets: [
-                {name: 'Steve'}
-            ]}).expect(201).end(done);
+            request(baseUrl)
+                .post('/pets')
+                .send({pets: [
+                    {name: 'Steve'}
+                ]})
+                .expect(201)
+                .end(done);
         });
         it('should be allowed to get pet by id', function (done) {
-            request(baseUrl).get('/pets/' + petId).expect(200).end(done);
+            request(baseUrl)
+                .get('/pets/' + petId)
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to put pet by id', function (done) {
-            request(baseUrl).put('/pets/' + petId).send({pets: [
-                {name: 'Joseph'}
-            ]}).expect(200).end(done);
+            request(baseUrl)
+                .put('/pets/' + petId)
+                .send({pets: [
+                    {name: 'Joseph'}
+                ]})
+                .expect(200)
+                .end(done);
         });
         it('should be allowed to patch pet by id', function (done) {
             var patch = [
@@ -368,7 +526,11 @@ describe('Roles', function () {
                     value: 'Josephine'
                 }
             ];
-            request(baseUrl).patch('/pets/' + petId).send(patch).expect(200).end(done);
+            request(baseUrl)
+                .patch('/pets/' + petId)
+                .send(patch)
+                .expect(200)
+                .end(done);
         });
         it.skip('should be allowed to getChangeEventsStreaming for pet', function () {
             throw new Error('Not implemented yet');
