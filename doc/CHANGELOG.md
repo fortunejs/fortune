@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.3 (2015-07-01)
+- Fix packaging of browser build, now it relies on the `browser` field.
+
+
 ##### 1.0.0-beta.2 (2015-06-30)
 - Fix cross-browser compatibility issues with IndexedDB adapter.
 

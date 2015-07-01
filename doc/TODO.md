@@ -4,6 +4,7 @@
 
 - Website layout redux (?)
 - Consider using ES7 features (?)
+- LocalStorage adapter.
 - Improve inflection to also use dasherize.
 - Test the default serializer.
 - 100% test coverage.

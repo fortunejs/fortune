@@ -1,13 +1,15 @@
-@media screen and (max-width: 1172px) {
+@media screen and (max-width: 1236px) {
   body {
     padding-left: 0;
+    font-size: calc(var(--body-size) - 1px);
   }
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 980px) {
 
   body {
     padding: 0;
+    font-size: var(--body-size);
   }
 
   main {

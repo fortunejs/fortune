@@ -36,9 +36,8 @@ Network helpers may map external input to the dispatcher and map the response to
 
 ### Browser
 
-Fortune includes browser builds, which are acccessible at `fortune/browser` and `fortune/browser-polyfill`. It comes with only an IndexedDB adapter and default serializer. There is an even lighter build without the runtime, but a global ES6 polyfill is needed. A CommonJS compatible build pipeline is required to use it.
+Fortune includes a browser build, which comes with only an IndexedDB adapter and the default serializer. A CommonJS-compatible build pipeline is required to use it, along with a bundler that supports the `browser` feature of `package.json`.
 
 ```js
-import Fortune from 'fortune/browser' // Just works.
-import Fortune from 'fortune/browser-polyfill' // Bring your own ES6 polyfill.
+import fortune from 'fortune' // Works in browser environment.
 ```

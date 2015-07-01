@@ -1,6 +1,4 @@
 node_modules/
 coverage/
 dist/
-/browser.js
-/browser-polyfill.js
 *.log

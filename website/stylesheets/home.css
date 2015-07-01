@@ -1,3 +1,14 @@
+.home h1 {
+  color: var(--color-attribute);
+  font-size: calc(1em * 5 / 3);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: normal;
+  line-height: calc(var(--line-height) * (5 / 3) / (5 / 3));
+  margin-top: calc(var(--line-height) * -(7 / 3) / (5 / 3));
+  margin-bottom: calc(var(--line-height) * (9 / 3) / (5 / 3));
+}
+
 .home h4 {
   color: var(--color-attribute);
   font-size: calc(1em * var(--small-size));
