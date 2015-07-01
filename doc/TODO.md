@@ -4,16 +4,16 @@
 
 - Website layout redux (?)
 - Consider using ES7 features (?)
-- IndexedDB adapter.
-- Test create/update payloads that link to each other within the payload.
 - Improve inflection to also use dasherize.
 - Test the default serializer.
-- PostgreSQL adapter.
 - 100% test coverage.
 
 
 ### Done
 
+- PostgreSQL adapter.
+- Test create/update payloads that link to each other within the payload (decided: this isn't doable).
+- IndexedDB adapter.
 - Consider writing default adapter with Loki.js (decided: go straight for IndexedDB).
 - There are some validations that could be added to record field definitions since Fortune is already concerned with them, such as `isUnique` and `isNullable` (decided: this should be done on a per adapter basis).
 - Core build.
