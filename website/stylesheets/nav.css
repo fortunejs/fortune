@@ -129,6 +129,8 @@ nav ul.api li:before {
   line-height: calc(1em / var(--big-size));
   display: inline-block;
   text-align: center;
+  position: relative;
+  top: calc(1em / 12);
   margin-right: calc(1em * 1 / 3);
 }
 

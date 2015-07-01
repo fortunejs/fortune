@@ -1,4 +1,4 @@
-@media screen and (max-width: 1236px) {
+@media screen and (max-width: 1204px) {
   body {
     padding-left: 0;
     font-size: calc(var(--body-size) - 1px);
@@ -107,9 +107,9 @@
 
   .home h1 {
     color: inherit;
-    text-align: left;
     font-size: 1em;
     margin-bottom: calc(var(--line-height) * 1);
+    margin-top: calc(var(--line-height) * -(11 / 6));
   }
 
 }
