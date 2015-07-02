@@ -68,12 +68,12 @@ function findTest (t) {
   .then(response => {
     this.response(t, response)
 
-    return app.stop().then(() => t.end())
+    return app.disconnect().then(() => t.end())
   })
 
   .catch(error => {
     stderr.error.call(t, error)
-    app.stop()
+    app.disconnect()
     t.fail(error)
     t.end()
   })

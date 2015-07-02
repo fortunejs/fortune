@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.5 (2015-07-02)
+- Rename `start` to `connect`, and `stop` to `disconnect`. This matches the adapter method names.
+
+
 ##### 1.0.0-beta.4 (2015-07-02)
 - Fix packaging of browser build, now it relies on the `browser` field.
 - Update location of adapter test.

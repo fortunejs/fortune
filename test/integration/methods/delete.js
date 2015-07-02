@@ -48,14 +48,14 @@ test('delete record', t => {
       arrayProxy.find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
 
-    return app.stop()
+    return app.disconnect()
   })
 
   .then(() => t.end())
 
   .catch(error => {
     stderr.error.call(t, error)
-    app.stop()
+    app.disconnect()
     t.fail(error)
     t.end()
   })

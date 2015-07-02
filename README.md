@@ -31,19 +31,19 @@ Here is a minimal example application, including a web server:
 import fortune from 'fortune'
 import http from 'http'
 
-const app = fortune.create()
-const server = http.createServer(fortune.net.http(app))
+const store = fortune.create()
+const server = http.createServer(fortune.net.http(store))
 ```
 
 This sets up an instance of Fortune with default options, and an HTTP server instance. The `fortune.net.http` module returns a listener function that does content negotiation to determine which serializers to use for I/O, and forwards Node's built-in `request` and `response` objects to the serializers.
 
 ```js
-app.defineType('user', {
+store.defineType('user', {
   name: { type: String },
   groups: { link: 'group', inverse: 'members', isArray: true }
 })
 
-app.defineType('group', {
+store.defineType('group', {
   name: { type: String },
   members: { link: 'user', inverse: 'group', isArray: true }
 })
@@ -52,10 +52,10 @@ app.defineType('group', {
 Defining record types. There is a many-to-many relationship between `user` and `group` on the `groups` and `members` fields respectively.
 
 ```js
-app.start().then(() => server.listen(1337))
+store.connect().then(() => server.listen(1337))
 ```
 
-Finally we need to call `start` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
+Finally we need to call `connect` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
 
 For the Micro API serializer, we get a set of internal pre-defined routes. Note that by default, the routes are obfuscated to the client, to encourage the use of hypermedia.
 

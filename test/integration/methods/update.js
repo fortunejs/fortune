@@ -509,13 +509,13 @@ function updateTest (t) {
 
   .then(this.related.bind(this, t))
 
-  .then(() => app.stop())
+  .then(() => app.disconnect())
 
   .then(() => t.end())
 
   .catch(error => {
     stderr.error.call(t, error)
-    app.stop()
+    app.disconnect()
     t.fail(error)
     t.end()
   })

@@ -20,7 +20,7 @@ Then create an empty `index.js` file next to the `node_modules` folder, and star
 
 ```js
 import fortune from 'fortune'
-const app = fortune.create()
+const store = fortune.create()
 ```
 
 We don't need to pass any arguments to the constructor for now, the defaults should work.
@@ -28,17 +28,17 @@ We don't need to pass any arguments to the constructor for now, the defaults sho
 
 ## Linking
 
-The application must have record types to be useful. Let's start with a basic example:
+The instance must have record types to be useful. Let's start with a basic example:
 
 ```js
-app.defineType('user', {
+store.defineType('user', {
   username: { type: String },
   key: { type: Buffer },
   salt: { type: Buffer },
   group: { link: 'group', inverse: 'users', isArray: true }
 })
 
-app.defineType('group', {
+store.defineType('group', {
   name: { type: String },
   users: { link: 'user', inverse: 'group', isArray: true }
 })
@@ -82,9 +82,9 @@ This is a pretty basic implementation using the `crypto` module provided by Node
 
 ```js
 const { errors } = fortune
-const { methods } = app.dispatcher
+const { methods } = store.dispatcher
 
-app.transformInput('user', (context, record) => {
+store.transformInput('user', (context, record) => {
   const { method, type, meta } = context.request
   const { password, id } = record
   let { key, salt } = record
@@ -113,7 +113,7 @@ app.transformInput('user', (context, record) => {
       record.key = key
       record.salt = salt
       if (method === methods.create) return record
-      return app.adapter.update(type, {
+      return store.adapter.update(type, {
         id, replace: { key, salt }
       }).then(() => record)
     })
@@ -126,7 +126,7 @@ Input transform functions are run before anything gets persisted, so it is safe 
 It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
 
 ```js
-app.transformOutput('user', (context, record) => {
+store.transformOutput('user', (context, record) => {
   // Hide sensitive fields.
   delete record.salt
   delete record.key
@@ -139,16 +139,16 @@ The output transform has the same arguments as the input transform, but is appli
 
 ## Finishing
 
-To start the application, we need to call the `start` method.
+To start the application, we need to call the `connect` method.
 
 ```js
 import http from 'http'
 
-const listener = fortune.net.http(app)
+const listener = fortune.net.http(store)
 const server = http.createServer(listener)
 const port = 1337
 
-app.start().then(() => {
+store.connect().then(() => {
   server.listen(port)
   console.log(`Server is listening on port ${port}...`)
 })

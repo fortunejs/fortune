@@ -58,7 +58,7 @@ export default (t, options) => {
     stderr.info.call(t, chalk.bold('Change event:'), data)
   })
 
-  return app.start()
+  return app.connect()
 
   // Delete all previous records.
   .then(() => Promise.all(Object.keys(fixtures).map(type =>
@@ -73,7 +73,7 @@ export default (t, options) => {
   .then(() => app)
 
   .catch(error => {
-    app.stop()
+    app.disconnect()
     throw error
   })
 }

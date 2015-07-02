@@ -47,7 +47,7 @@ export default (path, request, fn) => arg => {
       stderr.debug.call(t, chalk.bold('Response status: ' + response.status),
         response.headers.raw())
       ; ({ headers, status } = response)
-      return app.stop().then(() => response.text())
+      return app.disconnect().then(() => response.text())
     })
 
     .then(text => {
@@ -74,7 +74,7 @@ export default (path, request, fn) => arg => {
 
   .catch(error => {
     stderr.error.call(t, error)
-    if (app) app.stop()
+    if (app) app.disconnect()
     if (server) server.close()
     t.fail(error)
     t.end()
