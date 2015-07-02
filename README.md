@@ -18,9 +18,9 @@ Currently *beta* software. Things will break, check the [changelog](http://fortu
 ## Key Features
 
 - Define record types and get CRUD + hypermedia for free.
-- Provide an adapter for data storage, allowing data to be backed by anything from text files to distributed databases.
-- Handle I/O via a standard serializer interface, be agnostic about implementation.
+- Provide abstract base classes for data storage and serialization.
 - Map to a stateless protocol (typically HTTP), with events as side effects.
+- Run in a browser as a client-side store.
 
 
 ## Example
@@ -59,7 +59,7 @@ Finally we need to call `connect` before we do anything with the instance. Then 
 
 For the Micro API serializer, we get a set of internal pre-defined routes. Note that by default, the routes are obfuscated to the client, to encourage the use of hypermedia.
 
-| Verb     | Route (unobfuscated)  | Description                                                   |
+| Method   | Route (unobfuscated)  | Description                                                   |
 |:---------|:----------------------|:--------------------------------------------------------------|
 | `GET`    | `/`                   | Get the entry point including links to collections.           |
 | `GET`    | `/:type`              | Get a collection of records belonging to that type.           |
