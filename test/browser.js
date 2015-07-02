@@ -17,10 +17,6 @@ test('can run in browser', t => {
 
 
 function create () {
-  return new Promise((resolve, reject) => {
-    const store = fortune.create()
-
-    store.connect()
-    .then(resolve, reject)
-  })
+  const store = fortune.create()
+  return store.connect()
 }

@@ -65,7 +65,6 @@
     "dist/test",
     "lib/",
     "test/",
-    "README.md",
     "LICENSE"
   ],
   "main": "dist/lib/index.js",
