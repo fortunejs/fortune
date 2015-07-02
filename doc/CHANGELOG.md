@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-beta.3 (2015-07-01)
+##### 1.0.0-beta.4 (2015-07-02)
 - Fix packaging of browser build, now it relies on the `browser` field.
+- Update location of adapter test.
 
 
 ##### 1.0.0-beta.2 (2015-06-30)

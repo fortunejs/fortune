@@ -21,7 +21,7 @@ $ npm install fortune --save-dev
 Then to run the adapter test, import the module:
 
 ```js
-import testAdapter from 'fortune/dist/test/unit/adapter'
+import testAdapter from 'fortune/test/adapter'
 testAdapter(adapter, options)
 ```
 
