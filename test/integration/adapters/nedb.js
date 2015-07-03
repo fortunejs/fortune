@@ -1,5 +1,5 @@
 import testAdapter from '../../unit/adapter'
-import NeDB from '../../../lib/adapter/adapters/nedb'
+import nedbAdapter from '../../../lib/adapter/adapters/nedb'
 
 
-testAdapter(NeDB, {})
+testAdapter(nedbAdapter, {})

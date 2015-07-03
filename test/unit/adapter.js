@@ -178,8 +178,8 @@ export default (adapter, options) => {
     } ])
     .then(records => {
       t.ok(deadbeef.equals(records[0].picture), 'buffer type is correct')
-      t.equal(records[0].birthday.getTime(), date.getTime(),
-        'date type is correct')
+      t.ok(Math.abs(records[0].birthday.getTime() - date.getTime()) < 1000,
+        'date value is correct')
     })
   }))
 

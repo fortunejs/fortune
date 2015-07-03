@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.8 (2015-07-03)
+- Implemented Web Storage adapter, which is used as a fallback when IndexedDB is not supported.
+- Renamed keys of `adapters` and `serializers` static properties.
+
+
 ##### 1.0.0-beta.7 (2015-07-03)
 - Major internal refactor, removed Dispatcher class.
 - The `change` event is now emitted from the Fortune instance.

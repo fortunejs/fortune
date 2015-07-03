@@ -1,10 +1,13 @@
 import './integration/adapters/indexeddb'
+import './integration/adapters/webstorage'
+
 import test from 'tape'
 import fortune from '../lib/browser'
 
 
 test('can run in browser', t => {
-  t.ok('indexeddb' in fortune.adapters, 'indexeddb adapter exists')
+  t.ok('IndexedDB' in fortune.adapters, 'indexeddb adapter exists')
+  t.ok('WebStorage' in fortune.adapters, 'web storage adapter exists')
 
   return create()
   .then(store => {
