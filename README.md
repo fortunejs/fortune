@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is an I/O library for web applications.
+Fortune is a high-level I/O library for web applications.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
