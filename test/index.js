@@ -1,5 +1,6 @@
 // Unit tests.
 import './unit/record_type'
+import './unit/serializer'
 
 // Integration tests.
 import './integration/methods/find'

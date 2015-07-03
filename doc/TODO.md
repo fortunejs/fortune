@@ -4,14 +4,14 @@
 
 - Website layout redux (?)
 - Consider using ES7 features (?)
-- LocalStorage adapter.
 - Improve inflection to also use dasherize.
-- Test the default serializer.
 - 100% test coverage.
 
 
 ### Done
 
+- Test the default serializer.
+- Web Storage adapter.
 - PostgreSQL adapter.
 - Test create/update payloads that link to each other within the payload (decided: this isn't doable).
 - IndexedDB adapter.
