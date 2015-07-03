@@ -25,7 +25,7 @@ Currently *beta* software. Things will break, check the [changelog](http://fortu
 
 ## Example
 
-Here is a minimal example application, including a web server:
+Here is an example server-side application, including a web server:
 
 ```js
 import fortune from 'fortune'
@@ -55,7 +55,7 @@ Defining record types. There is a many-to-many relationship between `user` and `
 store.connect().then(() => server.listen(1337))
 ```
 
-Finally we need to call `connect` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which doesn't persist to disk by default.
+Finally we need to call `connect` before we do anything with the instance. Then we can let the server listen, which yields a HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which runs in memory by default, but has options to persist to disk.
 
 For the Micro API serializer, we get a set of internal pre-defined routes. Note that by default, the routes are obfuscated to the client, to encourage the use of hypermedia.
 
