@@ -45,7 +45,7 @@ store.defineType('user', {
 
 store.defineType('group', {
   name: { type: String },
-  members: { link: 'user', inverse: 'group', isArray: true }
+  members: { link: 'user', inverse: 'groups', isArray: true }
 })
 ```
 
