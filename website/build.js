@@ -32,7 +32,6 @@ const api = [
   { module: 'Fortune', path: 'core.js' },
   { module: 'Adapter', path: 'adapter/index.js' },
   { module: 'Serializer', path: 'serializer/index.js' },
-  { module: 'Dispatcher', path: 'dispatcher/index.js' },
   { module: 'Net', path: 'net/http.js' }
 ]
 

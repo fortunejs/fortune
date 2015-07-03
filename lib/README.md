@@ -17,18 +17,16 @@ The Serializer class is an [abstract base class](https://en.wikipedia.org/wiki/C
 There are two (optionally) asynchronous methods, `processRequest` and `processResponse` which take arbitrary arguments, which can be used to mutate the context.
 
 
-## Dispatcher
+## Dispatch
 
-The Dispatcher is a singleton that is coupled with an instance of Fortune. The goal of the dispatcher is to dynamically dispatch functions that mutate the state of a `context` object based on the request.
+The purpose of the `dispatch` method is to dynamically dispatch internal functions that mutate the state of a `context` object based on the request.
 
-It runs a series of middleware functions that mutate the `context` object until the end of the request is reached, and returns the `response` key of the `context`.
-
-The dispatcher subclasses `EventEmitter` and emits a `change` event whenever a request that modifies records is completed.
+The middleware functions mutate the `context` object until the end of the request is reached, and returns the `response` key of the `context`.
 
 
 ## Record Type
 
-Internal implementations for validating and enforcing the record type definition that is expected by adapters, serializers, and the dispatcher.
+Internal implementations for validating and enforcing the record type definition that is expected by adapters and serializers.
 
 
 ## Net

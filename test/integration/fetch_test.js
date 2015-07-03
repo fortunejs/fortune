@@ -1,4 +1,4 @@
-import generateApp from './generate_app'
+import testInstance from './test_instance'
 import http from 'http'
 import chalk from 'chalk'
 import fetch from 'node-fetch'
@@ -13,17 +13,17 @@ fetch.Promise = Promise
 
 
 export default (path, request, fn) => arg => {
-  let app
+  let store
   let server
 
   const t = arg
 
-  return generateApp(t)
+  return testInstance(t)
 
-  .then(a => {
-    app = a
+  .then(instance => {
+    store = instance
 
-    const listener = fortune.net.http(app)
+    const listener = fortune.net.http(store)
 
     server = http.createServer((request, response) => {
       listener(request, response)
@@ -47,7 +47,7 @@ export default (path, request, fn) => arg => {
       stderr.debug.call(t, chalk.bold('Response status: ' + response.status),
         response.headers.raw())
       ; ({ headers, status } = response)
-      return app.disconnect().then(() => response.text())
+      return store.disconnect().then(() => response.text())
     })
 
     .then(text => {
@@ -74,7 +74,7 @@ export default (path, request, fn) => arg => {
 
   .catch(error => {
     stderr.error.call(t, error)
-    if (app) app.disconnect()
+    if (store) store.disconnect()
     if (server) server.close()
     t.fail(error)
     t.end()

@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.7 (2015-07-03)
+- Major internal refactor, removed Dispatcher class.
+- The `change` event is now emitted from the Fortune instance.
+
+
 ##### 1.0.0-beta.6 (2015-07-02)
 - Fix error in browser build.
 - Rename `start` to `connect`, and `stop` to `disconnect`. This matches the adapter method names.

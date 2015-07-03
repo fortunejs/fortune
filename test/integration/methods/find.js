@@ -1,5 +1,5 @@
 import test from 'tape'
-import generateApp from '../generate_app'
+import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as keys from '../../../lib/common/keys'
 
@@ -53,27 +53,27 @@ test('get includes', findTest.bind({
 
 
 function findTest (t) {
-  let app
+  let store
 
-  generateApp(t, {
+  testInstance(t, {
     serializers: []
   })
 
-  .then(a => {
-    app = a
+  .then(instance => {
+    store = instance
 
-    return app.dispatch(this.request)
+    return store.dispatch(this.request)
   })
 
   .then(response => {
     this.response(t, response)
 
-    return app.disconnect().then(() => t.end())
+    return store.disconnect().then(() => t.end())
   })
 
   .catch(error => {
     stderr.error.call(t, error)
-    app.disconnect()
+    store.disconnect()
     t.fail(error)
     t.end()
   })

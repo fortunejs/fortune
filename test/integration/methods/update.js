@@ -1,5 +1,5 @@
 import test from 'tape'
-import generateApp from '../generate_app'
+import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
 import * as keys from '../../../lib/common/keys'
@@ -478,44 +478,44 @@ test('update many to many (denormalized inverse)', updateTest.bind({
 
 function updateTest (t) {
   const { type, payload } = this
-  let app
+  let store
   let methods
   let change
 
   t.plan(this.plan)
 
-  generateApp(t, {
+  testInstance(t, {
     serializers: []
   })
 
-  .then(a => {
-    app = a
-    ; ({ methods, change } = app.dispatcher)
+  .then(instance => {
+    store = instance
+    ; ({ methods, change } = store)
 
     if (this.change)
-      app.dispatcher.on(change, data =>
+      store.on(change, data =>
         this.change.call(this, t, methods, data))
 
-    return app.dispatch({
+    return store.dispatch({
       method: methods.update,
       type, payload
     })
   })
 
-  .then(() => app.dispatch({
+  .then(() => store.dispatch({
     type: this.relatedType,
     method: methods.find
   }))
 
   .then(this.related.bind(this, t))
 
-  .then(() => app.disconnect())
+  .then(() => store.disconnect())
 
   .then(() => t.end())
 
   .catch(error => {
     stderr.error.call(t, error)
-    app.disconnect()
+    store.disconnect()
     t.fail(error)
     t.end()
   })

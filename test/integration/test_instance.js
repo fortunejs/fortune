@@ -8,7 +8,7 @@ const inParens = /\(([^\)]+)\)/
 
 
 export default (t, options) => {
-  const app = fortune.create(options)
+  const store = fortune.create(options)
 
   .defineType('user', {
     name: { type: String },
@@ -49,31 +49,29 @@ export default (t, options) => {
 
   .defineType('☯', {})
 
-  const { change } = app.dispatcher
-
-  app.dispatcher.on(change, data => {
+  store.on(store.change, data => {
     for (let symbol of Object.getOwnPropertySymbols(data))
       assignDescription(data, symbol)
 
     stderr.info.call(t, chalk.bold('Change event:'), data)
   })
 
-  return app.connect()
+  return store.connect()
 
   // Delete all previous records.
   .then(() => Promise.all(Object.keys(fixtures).map(type =>
-    app.adapter.delete(type)
+    store.adapter.delete(type)
   )))
 
   // Create fixtures.
   .then(() => Promise.all(Object.keys(fixtures).map(type =>
-    app.adapter.create(type, fixtures[type])
+    store.adapter.create(type, fixtures[type])
   )))
 
-  .then(() => app)
+  .then(() => store)
 
   .catch(error => {
-    app.disconnect()
+    store.disconnect()
     throw error
   })
 }
