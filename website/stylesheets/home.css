@@ -2,7 +2,7 @@
   color: var(--color-attribute);
   font-size: calc(1em * 5 / 3);
   text-transform: none;
-  letter-spacing: calc(-1em / 80);
+  letter-spacing: calc(-1em / 64);
   font-weight: normal;
   line-height: calc(var(--line-height) * (5 / 3) / (5 / 3));
   margin-top: calc(var(--line-height) * -(13 / 6) / (5 / 3));
