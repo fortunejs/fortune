@@ -2,6 +2,10 @@
 
 
 ##### 1.0.0-beta.8 (2015-07-03)
+- Fixed IndexedDB connection when a new type is added.
+
+
+##### 1.0.0-beta.8 (2015-07-03)
 - Implemented Web Storage adapter, which is used as a fallback when IndexedDB is not supported.
 - Renamed keys of `adapters` and `serializers` static properties.
 
