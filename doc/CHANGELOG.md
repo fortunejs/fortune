@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.0.0-beta.8 (2015-07-03)
+##### 1.0.0-beta.9 (2015-07-06)
 - Fixed IndexedDB connection when a new type is added.
 
 
