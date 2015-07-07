@@ -120,6 +120,15 @@ test('ensure record types', t => {
     }
   }), 'inverse is incorrect')
 
+  t.throws(check({
+    post: {
+      comments: { link: 'comment', inverse: 'post' }
+    },
+    comment: {
+      post: { link: 'foo', inverse: 'comments' }
+    }
+  }), 'inverse link is incorrect')
+
   t.doesNotThrow(check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }

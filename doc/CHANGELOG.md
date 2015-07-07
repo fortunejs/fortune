@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.12 (2015-07-07)
+- Fixed incorrect record type linking that passed checks.
+
+
 ##### 1.0.0-beta.11 (2015-07-06)
 - Fixed IndexedDB connection when a new type is added.
 

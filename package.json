@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A high-level I/O library for web applications.",
-  "version": "1.0.0-beta.11",
+  "version": "1.0.0-beta.12",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -21,7 +21,7 @@
     "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
     "build:website": "babel-node website/build",
-    "prepublish": "npm run test",
+    "prepublish": "npm run clean && npm run test",
     "postpublish": "npm run deploy:website",
     "test": "npm run test:lint && npm run test:server && npm run test:browser",
     "test:server": "npm run build && node dist/test | tap-dot",
