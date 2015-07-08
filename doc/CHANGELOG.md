@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.13 (2015-07-08)
+- Drop `@links` object in every response of Micro API serializer. Now only the top-level `@links` will be shown in the entry point.
+
+
 ##### 1.0.0-beta.12 (2015-07-07)
 - Fixed incorrect record type linking that passed checks.
 

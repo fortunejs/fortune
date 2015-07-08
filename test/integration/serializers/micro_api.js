@@ -26,8 +26,6 @@ test('show collection', fetchTest('/dXNlcnM', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.equal(Object.keys(response.body['@links']).length,
-    1, 'number of types correct')
   t.equal(Object.keys(response.body.user).length,
     3, 'number of records correct')
 }))
@@ -41,7 +39,6 @@ fetchTest('/dXNlcnMvMQ?include=spouse', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.ok(response.body['@links'].user, 'link type is correct')
   t.equal(Object.keys(response.body.user).length,
     2, 'number of records correct')
 }))
@@ -53,7 +50,6 @@ test('sort a collection and use sparse fields', fetchTest(
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(response.body['@links'].user, 'link type is correct')
   t.deepEqual(
     response.body.user.map(record => record.name),
     [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
@@ -66,7 +62,6 @@ test('match on a collection', fetchTest('/dXNlcnM?match[name]=John Doe', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(response.body['@links'].user, 'link type is correct')
   t.deepEqual(
     response.body.user.map(record => record.name).sort(),
     [ 'John Doe' ], 'match is correct')
@@ -81,7 +76,6 @@ fetchTest('/dXNlcnMvMi9wZXRz', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.ok(response.body['@links'].animal, 'link type is correct')
   t.equal(Object.keys(response.body.animal).length,
     2, 'number of records correct')
 }))
@@ -92,7 +86,6 @@ test('find an empty collection', fetchTest('/JUUyJTk4JUFGcw', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(response.body['@links']['☯']['@href'], 'link exists')
   t.ok(Array.isArray(response.body['☯']) && !response.body['☯'].length,
     'payload is empty array')
 }))
@@ -115,7 +108,6 @@ fetchTest('/dXNlcnMvMy9wZXRz', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(response.body['@links'].animal, 'link type is correct')
   t.ok(Array.isArray(response.body.animal) && !response.body.animal.length,
     'payload is empty array')
 }))
@@ -255,7 +247,7 @@ test('respond to options: related', fetchTest('/dXNlcnMvMi9wZXRz', {
 
 
 test('respond to options: fail',
-fetchTest('/foobar', {
+fetchTest('/Zm9v', {
   method: 'options',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
