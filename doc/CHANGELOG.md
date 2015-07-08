@@ -1,15 +1,10 @@
 # Changelog
 
 
-##### 1.0.0-beta.13 (2015-07-08)
+##### 1.0.0-beta.14 (2015-07-08)
+- Do not persist extraneous `id` field in NeDB adapter.
 - Drop `@links` object in every response of Micro API serializer. Now only the top-level `@links` will be shown in the entry point.
-
-
-##### 1.0.0-beta.12 (2015-07-07)
 - Fixed incorrect record type linking that passed checks.
-
-
-##### 1.0.0-beta.11 (2015-07-06)
 - Fixed IndexedDB connection when a new type is added.
 
 
@@ -31,9 +26,6 @@
 ##### 1.0.0-beta.4 (2015-07-02)
 - Fix packaging of browser build, now it relies on the `browser` field.
 - Update location of adapter test.
-
-
-##### 1.0.0-beta.2 (2015-06-30)
 - Fix cross-browser compatibility issues with IndexedDB adapter.
 
 
@@ -46,9 +38,6 @@
 ##### 1.0.0-alpha.12 (2015-06-19)
 - Change how `inflectType` option works for JSON API serializer. Now it inflects types everywhere, not just the URI.
 - Rename `inflectType` to `inflectPath` in the Micro API serializer to reflect this difference.
-
-
-##### 1.0.0-alpha.11 (2015-06-18)
 - Include a core build, acccessible as `import 'fortune/core'`. This compact build is targeted for web browsers.
 
 

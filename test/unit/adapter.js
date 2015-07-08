@@ -316,15 +316,14 @@ export default (adapter, options) => {
 }
 
 
-function runTest (a, options, fn) {
+function runTest (a, options = {}, fn) {
   // Check if it's a class or a dependency injection function.
   try { a = a(Adapter) }
   catch (error) { if (!(error instanceof TypeError)) throw error }
 
   const A = a
   const adapter = new A({
-    options: options || {},
-    keys, errors, recordTypes
+    options, keys, errors, recordTypes
   })
 
   return t => adapter.connect()
