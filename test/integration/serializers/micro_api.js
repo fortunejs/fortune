@@ -121,9 +121,7 @@ test('create record', fetchTest('/YW5pbWFscw', {
       name: 'Rover',
       birthday: Date.now(),
       picture: new Buffer('This is a string.').toString('base64'),
-      '@links': {
-        owner: { '@id': 1 }
-      }
+      owner: { '@id': 1 }
     } ]
   }
 }, (t, response) => {
@@ -131,8 +129,9 @@ test('create record', fetchTest('/YW5pbWFscw', {
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
   t.equal(response.headers.get('location'), response.body.animal[0]
-    ['@links']['@href'], 'location header is correct')
+    ['@href'], 'location header is correct')
   t.ok(response.body.animal, 'type is correct')
+  t.equal(response.body.animal[0].owner['@id'], 1, 'link is correct')
   t.equal(new Buffer(response.body.animal[0].picture, 'base64')
     .toString(), 'This is a string.', 'buffer is correct')
   t.ok(Date.now() - new Date(response.body.animal[0].birthday)
@@ -185,11 +184,9 @@ test('update record', fetchTest('/dXNlcnMvMg', {
     user: [ {
       '@id': 2,
       name: 'Jenny Death',
-      '@links': {
-        spouse: { '@id': 3 },
-        enemies: { '@id': [ 3 ] },
-        friends: { '@id': [ 1, 3 ] }
-      }
+      spouse: { '@id': 3 },
+      enemies: { '@id': [ 3 ] },
+      friends: { '@id': [ 1, 3 ] }
     } ]
   }
 }, (t, response) => {

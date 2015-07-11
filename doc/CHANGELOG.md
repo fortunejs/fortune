@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.15 (2015-07-12)
+- Update Micro API serializer. Now `@links` object is omitted per record.
+
+
 ##### 1.0.0-beta.14 (2015-07-08)
 - Do not persist extraneous `id` field in NeDB adapter.
 - Drop `@links` object in every response of Micro API serializer. Now only the top-level `@links` will be shown in the entry point.
