@@ -26,7 +26,7 @@ test('show collection', fetchTest('/dXNlcnM', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.equal(Object.keys(response.body.user).length,
+  t.equal(Object.keys(response.body['@graph']).length,
     3, 'number of records correct')
 }))
 
@@ -39,7 +39,7 @@ fetchTest('/dXNlcnMvMQ?include=spouse', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.equal(Object.keys(response.body.user).length,
+  t.equal(Object.keys(response.body['@graph']).length,
     2, 'number of records correct')
 }))
 
@@ -51,7 +51,7 @@ test('sort a collection and use sparse fields', fetchTest(
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
   t.deepEqual(
-    response.body.user.map(record => record.name),
+    response.body['@graph'].map(record => record.name),
     [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
     'sort order is correct')
 }))
@@ -63,7 +63,7 @@ test('match on a collection', fetchTest('/dXNlcnM?match[name]=John Doe', {
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
   t.deepEqual(
-    response.body.user.map(record => record.name).sort(),
+    response.body['@graph'].map(record => record.name).sort(),
     [ 'John Doe' ], 'match is correct')
 }))
 
@@ -76,7 +76,7 @@ fetchTest('/dXNlcnMvMi9wZXRz', {
   t.equal(response.status, 200, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.equal(Object.keys(response.body.animal).length,
+  t.equal(Object.keys(response.body['@graph']).length,
     2, 'number of records correct')
 }))
 
@@ -86,7 +86,8 @@ test('find an empty collection', fetchTest('/JUUyJTk4JUFGcw', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(Array.isArray(response.body['☯']) && !response.body['☯'].length,
+  t.ok(Array.isArray(response.body['@graph']) &&
+    !response.body['@graph'].length,
     'payload is empty array')
 }))
 
@@ -108,7 +109,8 @@ fetchTest('/dXNlcnMvMy9wZXRz', {
   headers: { 'Accept': mediaType }
 }, (t, response) => {
   t.equal(response.status, 200, 'status is correct')
-  t.ok(Array.isArray(response.body.animal) && !response.body.animal.length,
+  t.ok(Array.isArray(response.body['@graph']) &&
+    !response.body['@graph'].length,
     'payload is empty array')
 }))
 
@@ -117,24 +119,25 @@ test('create record', fetchTest('/YW5pbWFscw', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    animal: [ {
+    '@graph': [ {
+      '@type': 'animal',
       name: 'Rover',
       birthday: Date.now(),
       picture: new Buffer('This is a string.').toString('base64'),
-      owner: { '@id': 1 }
+      owner: { 'id': 1 }
     } ]
   }
 }, (t, response) => {
   t.equal(response.status, 201, 'status is correct')
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
-  t.equal(response.headers.get('location'), response.body.animal[0]
-    ['@href'], 'location header is correct')
-  t.ok(response.body.animal, 'type is correct')
-  t.equal(response.body.animal[0].owner['@id'], 1, 'link is correct')
-  t.equal(new Buffer(response.body.animal[0].picture, 'base64')
+  t.equal(response.headers.get('location'), response.body['@graph'][0]
+    ['@id'], 'location header is correct')
+  t.ok(response.body['@graph'][0]['@type'], 'type is correct')
+  t.equal(response.body['@graph'][0].owner.id, 1, 'link is correct')
+  t.equal(new Buffer(response.body['@graph'][0].picture, 'base64')
     .toString(), 'This is a string.', 'buffer is correct')
-  t.ok(Date.now() - new Date(response.body.animal[0].birthday)
+  t.ok(Date.now() - new Date(response.body['@graph'][0].birthday)
     .getTime() < 60 * 1000, 'date is close enough')
 }))
 
@@ -143,7 +146,7 @@ test('create record with existing ID should fail', fetchTest('/dXNlcnM', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    user: [ { '@id': 1 } ]
+    '@graph': [ { '@type': 'user', id: 1 } ]
   }
 }, (t, response) => {
   t.equal(response.status, 409, 'status is correct')
@@ -181,12 +184,13 @@ test('update record', fetchTest('/dXNlcnMvMg', {
   method: 'patch',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
-    user: [ {
-      '@id': 2,
+    '@graph': [ {
+      '@type': 'user',
+      id: 2,
       name: 'Jenny Death',
-      spouse: { '@id': 3 },
-      enemies: { '@id': [ 3 ] },
-      friends: { '@id': [ 1, 3 ] }
+      spouse: { id: 3 },
+      enemies: { id: [ 3 ] },
+      friends: { id: [ 1, 3 ] }
     } ]
   }
 }, (t, response) => {

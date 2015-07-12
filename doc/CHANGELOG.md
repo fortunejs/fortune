@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-beta.15 (2015-07-12)
-- Update Micro API serializer. Now `@links` object is omitted per record.
+##### 1.0.0-beta.16 (2015-07-12)
+- Update Micro API serializer to latest revision of spec. Now `@links` object is omitted per record, `@href` is removed, `@graph` is the container, and `@type` exists per record.
+- The `adapter` and `serializer` singletons per Fortune instance are now non-enumerable.
 
 
 ##### 1.0.0-beta.14 (2015-07-08)
