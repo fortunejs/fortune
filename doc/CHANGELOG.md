@@ -1,10 +1,11 @@
 # Changelog
 
 
-##### 1.0.0-beta.19 (2015-07-13)
+##### 1.0.0-beta.20 (2015-07-13)
 - Renamed `dispatch` to `request`. Internally the function is still `dispatch`, but the public API method name is changed, because it is more familiar terminology.
 - Moved `methods` and `change` to static properties of top-level export.
 - Drop arbitrary fields after running transform.
+- Map HTTP request headers to request `meta` object.
 
 
 ##### 1.0.0-beta.16 (2015-07-12)
