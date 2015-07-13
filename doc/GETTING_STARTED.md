@@ -81,18 +81,17 @@ function generateKey (password, salt) {
 This is a pretty basic implementation using the `crypto` module provided by Node.js to check and generate passwords. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide sensitive fields when displaying the record.
 
 ```js
-const { errors } = fortune
-const { methods } = store
+const { methods: { create, delete }, errors } = fortune
 
 store.transformInput('user', (context, record) => {
   const { method, type, meta } = context.request
   const { password, id } = record
   let { key, salt } = record
 
-  if (method === methods.create && !password)
+  if (method === create && !password)
     throw new errors.BadRequestError(`Password must be specified.`)
 
-  return method !== methods.create ? passwordCheck(
+  return method !== create ? passwordCheck(
     new Buffer(meta['authorization'] || '', 'base64').toString(),
     key, salt.toString()) : Promise.resolve()
 
@@ -102,7 +101,7 @@ store.transformInput('user', (context, record) => {
 
   .then(() => {
     // If we're not updating the password, don't need to do more.
-    if (!password || method === methods.delete) return record
+    if (!password || method === delete) return record
     return generateSalt()
     .then(buffer => {
       salt = buffer
@@ -112,7 +111,7 @@ store.transformInput('user', (context, record) => {
       key = buffer
       record.key = key
       record.salt = salt
-      if (method === methods.create) return record
+      if (method === create) return record
       return store.adapter.update(type, {
         id, replace: { key, salt }
       }).then(() => record)
