@@ -5,6 +5,7 @@ import * as fixtures from '../fixtures'
 
 
 const inParens = /\(([^\)]+)\)/
+const { change } = fortune
 
 
 export default (t, options) => {
@@ -49,7 +50,7 @@ export default (t, options) => {
 
   .defineType('☯', {})
 
-  store.on(store.change, data => {
+  store.on(change, data => {
     for (let symbol of Object.getOwnPropertySymbols(data))
       assignDescription(data, symbol)
 

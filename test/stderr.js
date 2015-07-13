@@ -12,7 +12,7 @@ export function debug () { return helper.call(this, 'cyan', ...arguments) }
 
 
 export function error () {
-  const formatLine = line => `  ${line.trim()}`
+  const formatLine = line => line.trim()
 
   for (let argument of arguments) {
     if (argument instanceof Error) {
