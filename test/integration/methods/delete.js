@@ -26,7 +26,7 @@ test('delete record', t => {
         [ 1, 2 ], 'change event shows updated IDs')
     })
 
-    return store.dispatch({
+    return store.request({
       type: 'user',
       method: methods.delete,
       ids: [ 3 ]
@@ -36,7 +36,7 @@ test('delete record', t => {
   .then(response => {
     t.equal(response.payload.length, 1, 'records deleted')
 
-    return store.dispatch({
+    return store.request({
       type: 'user',
       method: methods.find,
       ids: [ 1, 2 ]

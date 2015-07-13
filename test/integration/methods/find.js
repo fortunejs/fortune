@@ -62,7 +62,7 @@ function findTest (t) {
   .then(instance => {
     store = instance
 
-    return store.dispatch(this.request)
+    return store.request(this.request)
   })
 
   .then(response => {

@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.17 (2015-07-13)
+- Renamed `dispatch` to `request`. Internally the function is still `dispatch`, but the public API method name is changed, because it is more familiar terminology.
+
+
 ##### 1.0.0-beta.16 (2015-07-12)
 - Update Micro API serializer to latest revision of spec. Now `@links` object is omitted per record, `@href` is removed, `@graph` is the container, and `@type` exists per record.
 - The `adapter` and `serializer` singletons per Fortune instance are now non-enumerable.

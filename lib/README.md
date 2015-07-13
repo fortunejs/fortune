@@ -19,7 +19,7 @@ There are two (optionally) asynchronous methods, `processRequest` and `processRe
 
 ## Dispatch
 
-The purpose of the `dispatch` method is to dynamically dispatch internal functions that mutate the state of a `context` object based on the request.
+The purpose of the `dispatch` function is to dynamically dispatch internal functions that mutate the state of a `context` object based on the request.
 
 The middleware functions mutate the `context` object until the end of the request is reached, and returns the `response` key of the `context`.
 

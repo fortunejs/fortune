@@ -28,7 +28,7 @@ Serializers process data, they must subclass and implement the Serializer class.
 
 ### Networking
 
-Network helpers may map external input to the dispatcher and map the response to an external output. Using Fortune with a network protocol is optional.
+Network helpers may map external input to a request and map the response to an external output. Using Fortune with a network protocol is optional.
 
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|

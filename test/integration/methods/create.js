@@ -41,7 +41,7 @@ test('create record', t => {
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
-    return store.dispatch({
+    return store.request({
       type: 'user',
       method: methods.create,
       payload: records
@@ -59,7 +59,7 @@ test('create record', t => {
     t.equal(response.payload[0].name, 'Slimer McGee',
       'record has correct field value')
 
-    return store.dispatch({
+    return store.request({
       type: 'user',
       method: methods.find,
       ids: [ 1, 3 ]

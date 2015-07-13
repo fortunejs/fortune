@@ -496,13 +496,13 @@ function updateTest (t) {
       store.on(change, data =>
         this.change.call(this, t, methods, data))
 
-    return store.dispatch({
+    return store.request({
       method: methods.update,
       type, payload
     })
   })
 
-  .then(() => store.dispatch({
+  .then(() => store.request({
     type: this.relatedType,
     method: methods.find
   }))

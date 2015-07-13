@@ -18,9 +18,9 @@ Currently *beta* software. Things will break, check the [changelog](http://fortu
 ## Key Features
 
 - Define record types and get CRUD + hypermedia for free.
-- Provide abstract base classes for data storage and serialization.
-- Map to a stateless protocol (typically HTTP), with events as side effects.
-- Run in a browser as a client-side store.
+- Abstract base classes for implementing data storage and serialization.
+- Map to a stateless protocol such as HTTP, with events as side effects.
+- Run in a browser as a client-side store (IndexedDB & Web Storage fallback).
 
 
 ## Example

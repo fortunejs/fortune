@@ -82,7 +82,7 @@ This is a pretty basic implementation using the `crypto` module provided by Node
 
 ```js
 const { errors } = fortune
-const { methods } = store.dispatcher
+const { methods } = store
 
 store.transformInput('user', (context, record) => {
   const { method, type, meta } = context.request
