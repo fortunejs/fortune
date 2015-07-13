@@ -2,12 +2,12 @@ import test from 'tape'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
+import * as methods from '../../../lib/common/methods'
+import change from '../../../lib/common/change'
 
 
 test('delete record', t => {
   let store
-  let methods
-  let change
 
   t.plan(4)
 
@@ -17,7 +17,6 @@ test('delete record', t => {
 
   .then(instance => {
     store = instance
-    ; ({ methods, change } = store)
 
     store.on(change, data => {
       t.ok(arrayProxy.find(data[methods.delete].user, id => id === 3),

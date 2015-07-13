@@ -3,6 +3,8 @@ import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
 import * as keys from '../../../lib/common/keys'
+import * as methods from '../../../lib/common/methods'
+import change from '../../../lib/common/change'
 
 
 const deadcode = new Buffer(4)
@@ -21,8 +23,6 @@ const records = [
 
 test('create record', t => {
   let store
-  let methods
-  let change
 
   t.plan(8)
 
@@ -32,7 +32,6 @@ test('create record', t => {
 
   .then(instance => {
     store = instance
-    ; ({ methods, change } = store)
 
     store.on(change, data => {
       t.ok(arrayProxy.find(data[methods.create].user, id => id === 4),

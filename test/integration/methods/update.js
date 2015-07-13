@@ -3,11 +3,13 @@ import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
 import * as keys from '../../../lib/common/keys'
+import * as methods from '../../../lib/common/methods'
+import change from '../../../lib/common/change'
 
 
 test('update one to one with 2nd degree unset', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
@@ -35,7 +37,7 @@ test('update one to one with 2nd degree unset', updateTest.bind({
 
 test('update one to one with former related record', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
@@ -63,7 +65,7 @@ test('update one to one with former related record', updateTest.bind({
 
 test('update one to one with same value', updateTest.bind({
   plan: 3,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
@@ -88,7 +90,7 @@ test('update one to one with same value', updateTest.bind({
 
 test('update one to one with null value', updateTest.bind({
   plan: 3,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
@@ -113,7 +115,7 @@ test('update one to one with null value', updateTest.bind({
 
 test('update one to many (set)', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].animal,
       [ 1 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
@@ -140,7 +142,7 @@ test('update one to many (set)', updateTest.bind({
 
 test('update one to many (unset)', updateTest.bind({
   plan: 3,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].animal,
       [ 1 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
@@ -164,7 +166,7 @@ test('update one to many (unset)', updateTest.bind({
 
 test('update many to one (push)', updateTest.bind({
   plan: 3,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal,
@@ -188,7 +190,7 @@ test('update many to one (push)', updateTest.bind({
 
 test('update many to one (push) with 2nd degree', updateTest.bind({
   plan: 3,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user,
       [ 1, 2 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal,
@@ -212,7 +214,7 @@ test('update many to one (push) with 2nd degree', updateTest.bind({
 
 test('update many to one (pull)', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user,
       [ 2 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal,
@@ -239,7 +241,7 @@ test('update many to one (pull)', updateTest.bind({
 
 test('update many to one (set)', updateTest.bind({
   plan: 5,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
@@ -293,7 +295,7 @@ test('update many to one (set) #2', updateTest.bind({
 
 test('update many to one (set) #3', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
@@ -320,7 +322,7 @@ test('update many to one (set) #3', updateTest.bind({
 
 test('update many to one (unset)', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 2 ], 'change event shows updated IDs')
     t.deepEqual(data[methods.update].animal.sort((a, b) => a - b),
@@ -347,7 +349,7 @@ test('update many to one (unset)', updateTest.bind({
 
 test('update many to many (push)', updateTest.bind({
   plan: 2,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
@@ -369,7 +371,7 @@ test('update many to many (push)', updateTest.bind({
 
 test('update many to many (pull)', updateTest.bind({
   plan: 2,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 2, 3 ], 'change event shows updated IDs')
   },
@@ -391,7 +393,7 @@ test('update many to many (pull)', updateTest.bind({
 
 test('update many to many (set)', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2 ], 'change event shows updated IDs')
   },
@@ -419,7 +421,7 @@ test('update many to many (set)', updateTest.bind({
 
 test('update many to many (unset)', updateTest.bind({
   plan: 4,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
@@ -447,7 +449,7 @@ test('update many to many (unset)', updateTest.bind({
 
 test('update many to many (denormalized inverse)', updateTest.bind({
   plan: 5,
-  change: (t, methods, data) => {
+  change: (t, data) => {
     t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
       [ 1, 2, 3 ], 'change event shows updated IDs')
   },
@@ -479,8 +481,6 @@ test('update many to many (denormalized inverse)', updateTest.bind({
 function updateTest (t) {
   const { type, payload } = this
   let store
-  let methods
-  let change
 
   t.plan(this.plan)
 
@@ -490,11 +490,10 @@ function updateTest (t) {
 
   .then(instance => {
     store = instance
-    ; ({ methods, change } = store)
 
     if (this.change)
       store.on(change, data =>
-        this.change.call(this, t, methods, data))
+        this.change.call(this, t, data))
 
     return store.request({
       method: methods.update,
