@@ -24,6 +24,7 @@ test('create record', fetchTest('/animals', {
       type: 'animal',
       attributes: {
         name: 'Rover',
+        type: 'Chihuahua',
         birthday: Date.now(),
         picture: new Buffer('This is a string.').toString('base64')
       },

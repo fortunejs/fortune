@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-beta.22 (2015-07-15)
+##### 1.0.0-beta.23 (2015-07-15)
 - Fixed JSON API serializer handling of plural types.
+- Fixed JSON API serializer improperly deserializing reserved keywords.
 
 
 ##### 1.0.0-beta.21 (2015-07-14)
