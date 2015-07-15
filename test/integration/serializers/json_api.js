@@ -29,7 +29,7 @@ test('create record', fetchTest('/animals', {
       },
       relationships: {
         owner: {
-          data: { type: 'user', id: 1 }
+          data: { type: 'users', id: 1 }
         }
       }
     }
@@ -75,7 +75,7 @@ test('create record with wrong route should fail', fetchTest('/users/4', {
 }))
 
 
-test('create record with wrong type should fail', fetchTest('/user', {
+test('create record with wrong type should fail', fetchTest('/users', {
   method: 'post',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -86,29 +86,29 @@ test('create record with wrong type should fail', fetchTest('/user', {
 }))
 
 
-test('update record', fetchTest('/user/2', {
+test('update record', fetchTest('/users/2', {
   method: 'patch',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
   body: {
     data: {
       id: 2,
-      type: 'user',
+      type: 'users',
       attributes: {
         name: 'Jenny Death'
       },
       relationships: {
         spouse: {
-          data: { type: 'user', id: 3 }
+          data: { type: 'users', id: 3 }
         },
         enemies: {
           data: [
-            { type: 'user', id: 3 }
+            { type: 'users', id: 3 }
           ]
         },
         friends: {
           data: [
-            { type: 'user', id: 1 },
-            { type: 'user', id: 3 }
+            { type: 'users', id: 1 },
+            { type: 'users', id: 3 }
           ]
         }
       }

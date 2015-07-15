@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.22 (2015-07-15)
+- Fixed JSON API serializer handling of plural types.
+
+
 ##### 1.0.0-beta.21 (2015-07-14)
 - Moved JSON stringification out of serializers.
 - Added `options` optional parameter for `http` function.
