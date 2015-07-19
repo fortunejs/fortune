@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.24 (2015-07-19)
+- Removed extraneous `id` field in Micro API serializer.
+- Fixed sort implementation in serializers.
+
+
 ##### 1.0.0-beta.23 (2015-07-15)
 - Fixed JSON API serializer handling of plural types.
 - Fixed JSON API serializer improperly deserializing reserved keywords.

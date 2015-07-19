@@ -121,7 +121,7 @@ test('update record', fetchTest('/users/2', {
 
 
 test('sort a collection and use sparse fields', fetchTest(
-'/users?sort=+birthday,-name&fields[user]=name,birthday', {
+'/users?sort=birthday,-name&fields[user]=name,birthday', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
