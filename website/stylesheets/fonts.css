@@ -1,34 +1,34 @@
 @font-face {
-  font-family: 'Cabin';
+  font-family: 'Muli';
   font-style: normal;
   font-weight: 400;
-  src: url('cabin_regular.woff') format('woff');
+  src: url('Muli.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'Cabin';
+  font-family: 'Muli';
   font-style: italic;
   font-weight: 400;
-  src: url('cabin_italic.woff') format('woff');
+  src: url('Muli-Italic.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'Cabin';
+  font-family: 'Muli';
   font-style: normal;
   font-weight: 700;
-  src: url('cabin_bold.woff') format('woff');
+  src: url('Muli-Bold.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'Cabin';
+  font-family: 'Muli';
   font-style: italic;
   font-weight: 700;
-  src: url('cabin_bold_italic.woff') format('woff');
+  src: url('Muli-BoldItalic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Inconsolata';
   font-style: normal;
   font-weight: 400;
-  src: url('inconsolata.woff') format('woff');
+  src: url('Inconsolata.woff') format('woff');
 }
