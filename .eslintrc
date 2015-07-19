@@ -18,7 +18,7 @@ rules:
   eqeqeq: 2
   func-names: 2
   guard-for-in: 0
-  indent: [ 2, 2 ]
+  # indent: [ 2, 2 ]
   key-spacing: [ 2, { beforeColon: false, afterColon: true } ]
   max-len: [ 2, 79, 4 ]
   new-cap: 2
