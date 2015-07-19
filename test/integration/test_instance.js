@@ -36,6 +36,10 @@ export default (t, options) => {
 
   .defineType('animal', {
     name: { type: String },
+
+    // Implementations may have problems with this reserved word.
+    type: { type: String },
+
     birthday: { type: Date },
     picture: { type: Buffer },
 
