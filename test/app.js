@@ -32,7 +32,7 @@ function configureApp(harvesterApp) {
     .resource('cat', {
         name: Joi.string().required().description('name'),
         hasToy: Joi.boolean().required().description('hasToy'),
-        numToys: Joi.number().required().description('numToys'),
+        numToys: Joi.number().required().description('numToys')
     }, {namespace: 'animals'})
 
     .resource('foobar', {
@@ -59,7 +59,17 @@ function configureApp(harvesterApp) {
         } else {
             return foobar;
         }
-    });
+    })
+
+    .resource('readers', {
+        name: Joi.string().description('name')
+    })
+    .readOnly()
+
+    .resource('immutable', {
+        name: Joi.string().description('name')
+    })
+    .immutable();
 
 
     harvesterApp.router.get('/random-error', function (req, res, next) {
