@@ -32,7 +32,7 @@ test('show collection', fetchTest('/dXNlcnM', {
 
 
 test('show individual record with include',
-fetchTest('/dXNlcnMvMQ?include=spouse', {
+fetchTest('/dXNlcnMvMQ?include=spouse,spouse.friends', {
   method: 'get',
   headers: { 'Accept': mediaType }
 }, (t, response) => {
@@ -40,7 +40,7 @@ fetchTest('/dXNlcnMvMQ?include=spouse', {
   t.equal(response.headers.get('content-type'), mediaType,
     'content type is correct')
   t.equal(Object.keys(response.body['@graph']).length,
-    2, 'number of records correct')
+    3, 'number of records correct')
 }))
 
 
