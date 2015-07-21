@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-beta.26 (2015-07-21)
+##### 1.0.0-beta.27 (2015-07-21)
 - Prevent `include` from throwing an error.
+- Improve include implementation.
 
 
 ##### 1.0.0-beta.25 (2015-07-21)
