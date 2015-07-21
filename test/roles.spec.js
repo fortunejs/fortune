@@ -10,6 +10,7 @@ describe('Roles', function () {
 
     var harvesterInstance;
     var harvesterPort = 8008;
+    var harvesterSeedPort = 8009;
     var seedingHarvesterPort = harvesterPort + 1;
     var baseUrl = 'http://localhost:' + harvesterPort;
     var seedingBaseUrl = 'http://localhost:' + seedingHarvesterPort;
@@ -37,7 +38,7 @@ describe('Roles', function () {
         seedingHarvesterInstance.resource('person', resourceSchema);
         seedingHarvesterInstance.resource('pets', resourceSchema);
         seedingHarvesterInstance.resource('user', resourceSchema);
-        seedingHarvesterInstance.listen(harvesterPort + 1);
+        seedingHarvesterInstance.listen(harvesterSeedPort);
         this.seedingHarvesterInstance = seedingHarvesterInstance;
     });
     beforeEach(function () {

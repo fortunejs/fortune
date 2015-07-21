@@ -48,6 +48,7 @@ describe("includes", function () {
             request(config.baseUrl).get('/people?include=lovers').expect(200).end(function (err, res) {
                 should.not.exist(err);
                 var body = JSON.parse(res.text);
+                should.exist(body.linked);
                 (body.linked).should.be.an.Object;
                 (body.linked.people).should.be.an.Array;
                 (body.linked.people.length).should.be.above(0);
@@ -70,7 +71,7 @@ describe("includes", function () {
     //Todo: add test for "," support.
 
     describe("repeated entities", function () {
-        it.skip('should deduplicate included soulmate & lovers when querying people', function (done) {
+        it('should deduplicate included soulmate & lovers when querying people', function (done) {
             request(config.baseUrl).get('/people?include=soulmate,lovers').expect(200).end(function (err, res) {
                 should.not.exist(err);
                 var body = JSON.parse(res.text);
