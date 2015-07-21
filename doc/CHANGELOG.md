@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.0.0-beta.28 (2015-07-21)
+##### 1.0.0-beta.29 (2015-07-21)
 - Expose abstract base classes in default export.
 - Fix prototype checking in adapter and serializer.
 - Prevent `include` from throwing an error.
