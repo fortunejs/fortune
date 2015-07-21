@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.26 (2015-07-21)
+- Prevent `include` from throwing an error.
+
+
 ##### 1.0.0-beta.25 (2015-07-21)
 - Fixed `self` link and `data` type for related records in JSON API serializer.
 
