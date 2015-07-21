@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.25 (2015-07-21)
+- Fixed `self` link and `data` type for related records in JSON API serializer.
+
+
 ##### 1.0.0-beta.24 (2015-07-19)
 - Removed extraneous `id` field in Micro API serializer.
 - Fixed sort implementation in serializers.

@@ -180,6 +180,28 @@ test('delete a single record', fetchTest('/animals/2', {
 }))
 
 
+test('find a singular related record',
+fetchTest('/users/2/spouse', {
+  method: 'get',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 200, 'status is correct')
+  t.equal(response.body.links.self, '/users/2/spouse', 'link is correct')
+  t.ok(!Array.isArray(response.body.data), 'data type is correct')
+}))
+
+
+test('find a plural related record',
+fetchTest('/users/2/pets', {
+  method: 'get',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.status, 200, 'status is correct')
+  t.equal(response.body.links.self, '/users/2/pets', 'link is correct')
+  t.ok(response.body.data.length === 2, 'data length is correct')
+}))
+
+
 test('find a collection of non-existent related records',
 fetchTest('/users/3/pets', {
   method: 'get',
