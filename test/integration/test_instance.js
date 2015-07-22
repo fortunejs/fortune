@@ -13,6 +13,7 @@ export default (t, options) => {
 
   .defineType('user', {
     name: { type: String },
+    camelCaseField: { type: String },
     birthday: { type: Date },
     picture: { type: Buffer },
 
