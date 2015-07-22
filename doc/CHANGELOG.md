@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.0.0-beta.30 (2015-07-22)
+- Fix page limit option in JSON API serializer.
+- Change implementation of limit in serializers so that arbitrary max limit cannot be specified.
+- Rename options `pageLimit` to `maxLimit`, and `includeDepth` to `includeLimit`.
+
+
 ##### 1.0.0-beta.29 (2015-07-21)
 - Expose abstract base classes in default export.
 - Fix prototype checking in adapter and serializer.
