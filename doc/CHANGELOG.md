@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.31 (2015-07-22)
+- Fix camel cased key names not working properly in JSON API serializer. Thanks [@dalefukami](https://github.com/dalefukami)!
+
+
 ##### 1.0.0-beta.30 (2015-07-22)
 - Fix page limit option in JSON API serializer.
 - Change implementation of limit in serializers so that arbitrary max limit cannot be specified.
@@ -20,7 +24,7 @@
 
 ##### 1.0.0-beta.24 (2015-07-19)
 - Removed extraneous `id` field in Micro API serializer.
-- Fixed sort implementation in serializers.
+- Fixed sort implementation in serializers. Thanks [@nickschot](https://github.com/nickschot)!
 
 
 ##### 1.0.0-beta.23 (2015-07-15)
