@@ -2,6 +2,7 @@ export default [
   {
     id: 1,
     name: 'John Doe',
+    camelCaseField: 'Something with a camel case field',
     birthday: new Date(1992, 11, 7),
     spouse: 2,
     pets: [ 1 ],

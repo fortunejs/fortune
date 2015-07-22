@@ -48,7 +48,6 @@ test('create record', fetchTest('/animals', {
     .getTime() < 60 * 1000, 'date is close enough')
 }))
 
-
 test('create record with existing ID should fail', fetchTest('/users', {
   method: 'post',
   headers: { 'Accept': mediaType, 'Content-Type': mediaType },
@@ -143,6 +142,15 @@ test('filter a collection', fetchTest('/users?filter[name]=John Doe', {
   t.deepEqual(
     response.body.data.map(record => record.attributes.name).sort(),
     [ 'John Doe' ], 'match is correct')
+}))
+
+
+test('dasherizes the camel cased fields', fetchTest('/users/1', {
+  method: 'get',
+  headers: { 'Accept': mediaType }
+}, (t, response) => {
+  t.equal(response.body.data.attributes['camel-case-field'],
+    'Something with a camel case field', 'camel case field is correct')
 }))
 
 
