@@ -21,6 +21,15 @@ function configureApp(harvesterApp) {
         }
     })
 
+    .resource('vehicle', {
+        name: Joi.string(),
+        links: {
+            owners: [
+                {ref: 'person'}
+            ]
+        }
+    })
+
     .resource('pet', {
         name: Joi.string().required().description('name'),
         appearances: Joi.number().required().description('appearances'),
