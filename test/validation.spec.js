@@ -115,10 +115,10 @@ describe('validation', function () {
                 expect(bodyDetails[1].path).to.equal('stuff.0.links.bar');
                 expect(bodyDetails[1].message).to.equal('"bar" must be a valid GUID');
 
-                expect(bodyDetails[2].path).to.equal('stuff.0.links');
+                expect(bodyDetails[2].path).to.equal('stuff.0.links.baz');
                 expect(bodyDetails[2].message).to.equal('"baz" is not allowed');
 
-                expect(bodyDetails[3].path).to.equal('stuff.0');
+                expect(bodyDetails[3].path).to.equal('stuff.0.bla');
                 expect(bodyDetails[3].message).to.equal('"bla" is not allowed');
 
             });
@@ -274,7 +274,7 @@ describe('validation', function () {
                         var bodyDetails = error.meta.validationErrorDetails.body;
 
                         expect(error.detail).to.equal('validation failed on incoming request');
-                        expect(bodyDetails[0].path).to.equal('pets.0');
+                        expect(bodyDetails[0].path).to.equal('pets.0.foo');
                         expect(bodyDetails[0].message).to.equal('"foo" is not allowed');
                     })
                     .end(function (err, res) {
