@@ -4,12 +4,12 @@
 
 - Website layout redux (?)
 - Consider using ES7 features (?)
-- Improve inflection to also use dasherize.
 - 100% test coverage.
 
 
 ### Done
 
+- Improve inflection to also use dasherize.
 - Test the default serializer.
 - Web Storage adapter.
 - PostgreSQL adapter.
