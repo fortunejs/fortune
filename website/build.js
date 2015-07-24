@@ -144,17 +144,17 @@ function processAPI (ns, obj) {
 }
 
 const render = description => marked(description, markedOptions)
+const outputDoc = doc => {
+  const buffer = fs.readFileSync(path.join(apiPath, doc))
+  const output = docchi.parse(buffer).output({ render })
+  return output
+}
 
 for (let container of api) {
   let docs = container.path
-  if(!Array.isArray(docs)) docs = [ docs ]
+  if (!Array.isArray(docs)) docs = [ docs ]
 
-  container.docs = [].concat(
-    ...docs.map(doc => {
-      const buffer = fs.readFileSync(path.join(apiPath, doc))
-      const output = docchi.parse(buffer).output({ render })
-      return output
-    }))
+  container.docs = [].concat(...docs.map(outputDoc))
     .map(processAPI.bind(null, container.module))
 }
 
