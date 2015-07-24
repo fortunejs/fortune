@@ -1,14 +1,9 @@
 import assert from 'assert'
-import { pass, fail } from 'tapdance'
+import { pass } from 'tapdance'
 
 
 export function ok (expression, message) {
   pass(() => assert(expression), message)
-}
-
-
-export function notOk (expression, message) {
-  fail(() => assert(expression), message)
 }
 
 
