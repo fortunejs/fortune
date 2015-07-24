@@ -19,5 +19,6 @@ run(() => {
     ok(store instanceof fortune, 'instantiation works')
     return store.disconnect()
   })
-  .then(end, end)
+  .then(() => end())
+  .catch(end)
 })
