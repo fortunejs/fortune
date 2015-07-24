@@ -1,8 +1,9 @@
-import test from 'tape'
+import { pass, fail, comment, run } from 'tapdance'
 import ensureTypes from '../../lib/record_type/ensure_types'
 import validate from '../../lib/record_type/validate'
 import enforce from '../../lib/record_type/enforce'
 import * as keys from '../../lib/common/keys'
+import { equal, deepEqual } from '../helpers'
 
 
 const recordType = 'person'
@@ -22,96 +23,84 @@ const testFields = fields => () => validate(fields)
 const testField = field => () => validate({ [field]: fields[field] })
 
 
-test('validate field definition', t => {
+run(() => {
+  comment('validate field definition')
+
   // Test for valid fields.
   const valid = 'valid field is valid'
 
-  t.doesNotThrow(testField('name'), valid)
-  t.doesNotThrow(testField('birthdate'), valid)
-  t.doesNotThrow(testField('mugshot'), valid)
-  t.doesNotThrow(testField('luckyNumbers'), valid)
-  t.doesNotThrow(testField('friends'), valid)
-  t.doesNotThrow(testField('toys'), valid)
-  t.doesNotThrow(testField('location'), valid)
+  pass(testField('name'), valid)
+  pass(testField('birthdate'), valid)
+  pass(testField('mugshot'), valid)
+  pass(testField('luckyNumbers'), valid)
+  pass(testField('friends'), valid)
+  pass(testField('toys'), valid)
+  pass(testField('location'), valid)
 
   // Test for invalid fields.
   const invalid = 'invalid field throws error'
 
-  t.throws(testFields({
-    badType: 'asdf'
-  }), invalid)
-
-  t.throws(testFields({
-    nested: { thing: { type: String } }
-  }), invalid)
-
-  t.throws(testFields({
+  fail(testFields({ badType: 'asdf' }), invalid)
+  fail(testFields({ nested: { thing: { type: String } } }), invalid)
+  fail(testFields({
     typeAndLink: { type: String, link: 'y', inverse: 'friends' }
   }), invalid)
-
-  t.throws(testFields({
-    nonexistent: NaN
-  }), invalid)
-
-  t.throws(testFields({
-    nullEdgeCase: null
-  }), invalid)
-
-  t.throws(testFields({
-    fake: { type: Array }
-  }), invalid)
-
-  t.end()
+  fail(testFields({ nonexistent: NaN }), invalid)
+  fail(testFields({ nullEdgeCase: null }), invalid)
+  fail(testFields({ fake: { type: Array } }), invalid)
 })
 
 
-test('enforce field definition', t => {
+run(() => {
+  comment('enforce field definition')
+
   const testRecord = record => () => enforce(recordType, record, fields)
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
-  t.throws(testRecord({ [keys.primary]: 1, spouse: 1 }), bad)
-  t.throws(testRecord({ spouse: [ 2 ] }), bad)
-  t.throws(testRecord({ friends: 2 }), bad)
-  t.throws(testRecord({ [keys.primary]: 1, friends: [ 1 ] }), bad)
-  t.throws(testRecord({ name: {} }), bad)
-  t.doesNotThrow(testRecord({ name: '' }), good)
-  t.throws(testRecord({ birthdate: {} }), bad)
-  t.doesNotThrow(testRecord({ birthdate: new Date() }), good)
-  t.throws(testRecord({ mugshot: {} }), bad)
-  t.doesNotThrow(testRecord({ mugshot: new Buffer(1) }), good)
-  t.throws(testRecord({ luckyNumbers: 1 }), bad)
-  t.doesNotThrow(testRecord({ luckyNumbers: [ 1 ] }), good)
-  t.doesNotThrow(testRecord({ location: new ArrayBuffer(8) }), good)
-  t.throws(testRecord({
+  fail(testRecord({ [keys.primary]: 1, spouse: 1 }), bad)
+  fail(testRecord({ spouse: [ 2 ] }), bad)
+  fail(testRecord({ friends: 2 }), bad)
+  fail(testRecord({ [keys.primary]: 1, friends: [ 1 ] }), bad)
+  fail(testRecord({ name: {} }), bad)
+  pass(testRecord({ name: '' }), good)
+  fail(testRecord({ birthdate: {} }), bad)
+  pass(testRecord({ birthdate: new Date() }), good)
+  fail(testRecord({ mugshot: {} }), bad)
+  pass(testRecord({ mugshot: new Buffer(1) }), good)
+  fail(testRecord({ luckyNumbers: 1 }), bad)
+  pass(testRecord({ luckyNumbers: [ 1 ] }), good)
+  pass(testRecord({ location: new ArrayBuffer(8) }), good)
+  fail(testRecord({
     [keys.primary]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  t.deepEqual(enforce(recordType,
+  deepEqual(enforce(recordType,
     { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, fields).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
-  t.equal(enforce(recordType, { random: 'abc' }, fields, true).random,
-    undefined, 'arbitrary fields are dropped')
-  t.end()
+  equal(
+    enforce(recordType, { random: 'abc' }, fields, true).random, undefined,
+    'arbitrary fields are dropped')
 })
 
 
-test('ensure record types', t => {
+run(() => {
+  comment('ensure record types')
   const check = recordTypes => () => ensureTypes(recordTypes)
 
-  t.throws(check({
+  fail(check({
     post: {
       comments: { link: 'comment', isArray: true }
     }
   }), 'record type must exist')
 
-  t.throws(check({
+  fail(check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     }
   }), 'inverse must exist')
 
-  t.throws(check({
+  fail(check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     },
@@ -120,7 +109,7 @@ test('ensure record types', t => {
     }
   }), 'inverse is incorrect')
 
-  t.throws(check({
+  fail(check({
     post: {
       comments: { link: 'comment', inverse: 'post' }
     },
@@ -129,7 +118,7 @@ test('ensure record types', t => {
     }
   }), 'inverse link is incorrect')
 
-  t.doesNotThrow(check({
+  pass(check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     },
@@ -138,7 +127,7 @@ test('ensure record types', t => {
     }
   }), 'valid linking')
 
-  t.doesNotThrow(check({
+  pass(check({
     user: {
       friends: { link: 'user', isArray: true, inverse: 'friends' }
     }
@@ -155,17 +144,19 @@ test('ensure record types', t => {
 
   const denormalizedField = '__post_comments_inverse'
 
-  t.equal(recordTypes.post.comments[keys.inverse], denormalizedField,
+  equal(
+    recordTypes.post.comments[keys.inverse], denormalizedField,
     'denormalized inverse field assigned')
 
-  t.equal(recordTypes.comment[denormalizedField][keys.link],
-    'post', 'denormalized inverse field link correct')
+  equal(
+    recordTypes.comment[denormalizedField][keys.link], 'post',
+    'denormalized inverse field link correct')
 
-  t.equal(recordTypes.comment[denormalizedField][keys.isArray],
-    true, 'denormalized inverse field is array')
+  equal(
+    recordTypes.comment[denormalizedField][keys.isArray], true,
+    'denormalized inverse field is array')
 
-  t.equal(recordTypes.comment[denormalizedField][keys.denormalizedInverse],
-    true, 'denormalized inverse field set')
-
-  t.end()
+  equal(
+    recordTypes.comment[denormalizedField][keys.denormalizedInverse], true,
+    'denormalized inverse field set')
 })
