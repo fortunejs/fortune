@@ -1,3 +1,4 @@
+import { fail } from 'tapdance'
 import testInstance from './test_instance'
 import http from 'http'
 import chalk from 'chalk'
@@ -12,13 +13,11 @@ const port = 1337
 fetch.Promise = Promise
 
 
-export default (path, request, fn) => arg => {
+export default (path, request, fn) => {
   let store
   let server
 
-  const t = arg
-
-  return testInstance(t)
+  return testInstance()
 
   .then(instance => {
     store = instance
@@ -27,7 +26,7 @@ export default (path, request, fn) => arg => {
 
     server = http.createServer((request, response) => {
       listener(request, response)
-      .catch(error => stderr.error.call(t, error))
+      .catch(error => stderr.error(error))
     })
     .listen(port)
 
@@ -44,8 +43,8 @@ export default (path, request, fn) => arg => {
 
     .then(response => {
       server.close()
-      stderr.debug.call(t, chalk.bold('Response status: ' + response.status),
-        response.headers.raw())
+      stderr.debug(chalk.bold('Response status: ' + response.status))
+      stderr.debug(response.headers.raw())
       ; ({ headers, status } = response)
       return store.disconnect().then(() => response.text())
     })
@@ -54,29 +53,26 @@ export default (path, request, fn) => arg => {
       try {
         if (text.length) {
           text = JSON.parse(text)
-          stderr.log.call(t, text)
+          stderr.log(text)
         }
       }
       catch (error) {
-        stderr.warn.call(t, `Failed to parse JSON.`)
-        stderr.log.call(t, text)
+        stderr.warn(`Failed to parse JSON.`)
+        stderr.log(text)
       }
 
-      return fn(t, {
+      return fn({
         status,
         headers,
         body: text
       })
     })
-
-    .then(t.end)
   })
 
   .catch(error => {
-    stderr.error.call(t, error)
+    stderr.error(error)
     if (store) store.disconnect()
     if (server) server.close()
-    t.fail(error)
-    t.end()
+    fail(error)
   })
 }
