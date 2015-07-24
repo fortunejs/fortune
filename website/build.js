@@ -32,7 +32,7 @@ const api = [
   { module: 'Fortune', path: 'core.js' },
   { module: 'Adapter', path: 'adapter/index.js' },
   { module: 'Serializer', path: 'serializer/index.js' },
-  { module: 'Net', path: 'net/http.js' }
+  { module: 'Net', path: [ 'net/http.js', 'net/websocket.js' ] }
 ]
 
 const renderer = new marked.Renderer()
@@ -145,10 +145,18 @@ function processAPI (ns, obj) {
 
 const render = description => marked(description, markedOptions)
 
-for (let container of api)
-  container.docs = docchi.parse(fs.readFileSync(
-    path.join(apiPath, container.path))).output({ render })
+for (let container of api) {
+  let docs = container.path
+  if(!Array.isArray(docs)) docs = [ docs ]
+
+  container.docs = [].concat(
+    ...docs.map(doc => {
+      const buffer = fs.readFileSync(path.join(apiPath, doc))
+      const output = docchi.parse(buffer).output({ render })
+      return output
+    }))
     .map(processAPI.bind(null, container.module))
+}
 
 for (let file of fs.readdirSync(templatePath))
   templates[path.basename(file, '.mustache')] =
