@@ -1,34 +1,39 @@
-import test from 'tape'
+import { fail, comment, run } from 'tapdance'
 import DefaultSerializer from '../../lib/serializer/default'
 import * as errors from '../../lib/common/errors'
+import { deepEqual, ok } from '../helpers'
 
 
 const recordTypes = { foo: {}, bar: {} }
 const serializer = new DefaultSerializer({ errors, recordTypes })
 
 
-test('show response: no records', t => {
+run(() => {
+  comment('show response: no records')
+
   const context = { response: {} }
 
   serializer.showResponse(context)
 
-  t.deepEqual(context.response.payload, [ 'foo', 'bar' ], 'types displayed')
-  t.end()
+  deepEqual(context.response.payload, [ 'foo', 'bar' ], 'types displayed')
 })
 
 
-test('show response: records', t => {
+run(() => {
+  comment('show response: records')
+
   const context = { response: {} }
   const records = [ 1, 2, 3 ]
 
   serializer.showResponse(context, records)
 
-  t.deepEqual(context.response.payload, records, 'records displayed')
-  t.end()
+  deepEqual(context.response.payload, records, 'records displayed')
 })
 
 
-test('show response: records with include', t => {
+run(() => {
+  comment('show response: records with include')
+
   const context = { response: {} }
   const records = [ 1, 2, 3 ]
   const include = {
@@ -37,47 +42,47 @@ test('show response: records with include', t => {
 
   serializer.showResponse(context, records, include)
 
-  t.deepEqual(context.response.payload, records, 'records displayed')
-  t.deepEqual(context.response.payload.include, include, 'include displayed')
-  t.end()
+  deepEqual(context.response.payload, records, 'records displayed')
+  deepEqual(context.response.payload.include, include, 'include displayed')
 })
 
 
-test('show error', t => {
+run(() => {
+  comment('show error')
+
   const context = { response: {} }
   const error = new TypeError('wtf')
 
   serializer.showError(context, error)
 
-  t.ok(~context.response.payload.indexOf('TypeError'), 'error name displayed')
-  t.ok(~context.response.payload.indexOf('wtf'), 'error message displayed')
-  t.end()
+  ok(~context.response.payload.indexOf('TypeError'), 'error name displayed')
+  ok(~context.response.payload.indexOf('wtf'), 'error message displayed')
 })
 
 
-test('parse create', t => {
-  const idsSpecified = () =>
-    serializer.parseCreate({ request: { ids: [] } })
-  const noRecords = () =>
-    serializer.parseCreate({ request: { payload: [] } })
+run(() => {
+  comment('parse create')
 
-  t.throws(idsSpecified, 'ids can\'t be specified in ids field')
-  t.throws(noRecords, 'records must be specified')
-  t.deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
+  fail(() =>
+    serializer.parseCreate({ request: { ids: [] } }),
+    'ids can\'t be specified in ids field')
+  fail(() =>
+    serializer.parseCreate({ request: { payload: [] } }),
+    'records must be specified')
+  deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
-  t.end()
 })
 
 
-test('parse update', t => {
-  const idsSpecified = () =>
-    serializer.parseCreate({ request: { ids: [] } })
-  const noUpdates = () =>
-    serializer.parseCreate({ request: { payload: [] } })
+run(() => {
+  comment('parse update')
 
-  t.throws(idsSpecified, 'ids can\'t be specified in ids field')
-  t.throws(noUpdates, 'updates must be specified')
-  t.deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
+  fail(() =>
+    serializer.parseCreate({ request: { ids: [] } }),
+    'ids can\'t be specified in ids field')
+  fail(() =>
+    serializer.parseCreate({ request: { payload: [] } }),
+    'updates must be specified')
+  deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
-  t.end()
 })

@@ -1,9 +1,10 @@
-import test from 'tape'
+import { fail, comment, run } from 'tapdance'
 import Adapter from '../../lib/adapter'
 import * as arrayProxy from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
+import { ok, equal, deepEqual } from '../helpers'
 
 
 const type = 'user'
@@ -49,270 +50,327 @@ const records = [
   }
 ]
 
-const testIds = records => arrayProxy.find(records.map(record =>
-  arrayProxy.includes([ 'string', 'number' ], typeof record[keys.primary])),
-  b => !b) === undefined
 
+export default function () {
+  const test = runTest.bind(null, ...arguments)
 
-export default (adapter, options) => {
-  const run = runTest.bind(null, adapter, options)
+  run(() => {
+    comment('find: nothing')
+    return test(adapter =>
+      adapter.find(type, [])
+      .then(records => {
+        equal(records.count, 0, 'count is correct')
+      }))
+  })
 
-  test('find: nothing', run((t, adapter) =>
-    adapter.find(type, [])
-    .then(records => {
-      t.equal(records.count, 0, 'count is correct')
-    })
-  ))
+  run(() => {
+    comment('find: id, type checking #1')
+    return test(adapter =>
+      adapter.find(type, [ 1 ])
+      .then(records => {
+        equal(records.count, 1, 'count is correct')
+        equal(records[0][keys.primary], 1, 'id is correct')
+        ok(records[0].birthday instanceof Date,
+          'date type is correct')
+        equal(typeof records[0].isAlive, 'boolean',
+          'boolean type is correct')
+        equal(typeof records[0].age, 'number',
+          'number type is correct')
+        deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] },
+          'object value is correct')
+        ok(!arrayProxy.includes(Object.keys(records[0],
+          '__user_nemesis_inverse')), 'denormalized fields not enumerable')
+      }))
+  })
 
-  test('find: id, type checking #1', run((t, adapter) =>
-    adapter.find(type, [ 1 ])
-    .then(records => {
-      t.equal(records.count, 1, 'count is correct')
-      t.equal(records[0][keys.primary], 1, 'id is correct')
-      t.ok(records[0].birthday instanceof Date, 'date type is correct')
-      t.ok(typeof records[0].isAlive === 'boolean', 'boolean type is correct')
-      t.ok(typeof records[0].age === 'number', 'number type is correct')
-      t.deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] },
-        'object value is correct')
-      t.ok(!arrayProxy.includes(Object.keys(records[0]),
-        '__user_nemesis_inverse'), 'denormalized fields not enumerable')
-    })
-  ))
+  run(() => {
+    comment('find: id, type checking #2')
+    return test(adapter =>
+      adapter.find(type, [ 2 ])
+      .then(records => {
+        equal(records.count, 1, 'count is correct')
+        equal(records[0][keys.primary], 2, 'id is correct')
+        ok(Buffer.isBuffer(records[0].picture),
+          'buffer type is correct')
+        ok(deadbeef.equals(records[0].picture),
+          'buffer value is correct')
+      }))
+  })
 
-  test('find: id, type checking #2', run((t, adapter) =>
-    adapter.find(type, [ 2 ])
-    .then(records => {
-      t.equal(records.count, 1, 'count is correct')
-      t.equal(records[0][keys.primary], 2, 'id is correct')
-      t.ok(Buffer.isBuffer(records[0].picture), 'buffer type is correct')
-      t.ok(deadbeef.equals(records[0].picture), 'buffer value is correct')
-    })
-  ))
+  run(() => {
+    comment('find: collection')
+    return test(adapter =>
+      adapter.find(type)
+      .then(records => {
+        equal(records.count, 2, 'count is correct')
+        testIds(records, 'id type is correct')
+      }))
+  })
 
-  test('find: collection', run((t, adapter) =>
-    adapter.find(type)
-    .then(records => {
-      t.equal(records.count, 2, 'count is correct')
-      t.ok(testIds(records), 'id type is correct')
-    })
-  ))
+  run(() => {
+    comment('find: match (string)')
+    return test(adapter =>
+      adapter.find(type, null, { match: { name: 'john' } })
+      .then(records => {
+        equal(records.length, 1, 'match length is correct')
+        equal(records[0].name, 'john', 'matched correct record')
+      }))
+  })
 
-  test('find: match (string)', run((t, adapter) =>
-    adapter.find(type, null, { match: { name: 'john' } })
-    .then(records => {
-      t.equal(records.length, 1, 'match length is correct')
-      t.equal(records[0].name, 'john', 'matched correct record')
-    })
-  ))
+  run(() => {
+    comment('find: match (buffer)')
+    return test(adapter =>
+      adapter.find(type, null, { match: { picture: deadbeef } })
+      .then(records => {
+        equal(records.length, 1, 'match length is correct')
+        ok(records[0].picture.equals(deadbeef),
+          'matched correct record')
+      }))
+  })
 
-  test('find: match (buffer)', run((t, adapter) =>
-    adapter.find(type, null, { match: { picture: deadbeef } })
-    .then(records => {
-      t.equal(records.length, 1, 'match length is correct')
-      t.ok(records[0].picture.equals(deadbeef), 'matched correct record')
-    })
-  ))
+  run(() => {
+    comment('find: sort ascending')
+    return test(adapter =>
+      adapter.find(type, null, { sort: { age: true } })
+      .then(records => {
+        deepEqual(records.map(record => record.age), [ 36, 42 ],
+          'ascending sort order correct')
+      }))
+  })
 
-  test('find: sort ascending', run((t, adapter) =>
-    adapter.find(type, null, { sort: { age: true } })
-    .then(records => {
-      t.deepEqual(records.map(record => record.age), [ 36, 42 ],
-        'ascending sort order correct')
-    })
-  ))
+  run(() => {
+    comment('find: sort descending')
+    return test(adapter =>
+      adapter.find(type, null, { sort: { age: false } })
+      .then(records => {
+        deepEqual(records.map(record => record.age), [ 42, 36 ],
+          'descending sort order correct')
+      }))
+  })
 
-  test('find: sort descending', run((t, adapter) =>
-    adapter.find(type, null, { sort: { age: false } })
-    .then(records => {
-      t.deepEqual(records.map(record => record.age), [ 42, 36 ],
-        'descending sort order correct')
-    })
-  ))
+  run(() => {
+    comment('find: limit')
+    return test(adapter =>
+      adapter.find(type, null, { limit: 1, sort: { name: true } })
+      .then(records => {
+        equal(records[0].name, 'bob', 'record is correct')
+        equal(records.length, 1, 'limit length is correct')
+      }))
+  })
 
-  test('find: limit', run((t, adapter) =>
-    adapter.find(type, null, { limit: 1, sort: { name: true } })
-    .then(records => {
-      t.equal(records[0].name, 'bob', 'record is correct')
-      t.equal(records.length, 1, 'limit length is correct')
-    })
-  ))
+  run(() => {
+    comment('find: offset')
+    return test(adapter =>
+      adapter.find(type, null, { offset: 1, sort: { name: true } })
+      .then(records => {
+        equal(records[0].name, 'john', 'record is correct')
+        equal(records.length, 1, 'offset length is correct')
+      }))
+  })
 
-  test('find: offset', run((t, adapter) =>
-    adapter.find(type, null, { offset: 1, sort: { name: true } })
-    .then(records => {
-      t.equal(records[0].name, 'john', 'record is correct')
-      t.equal(records.length, 1, 'offset length is correct')
-    })
-  ))
+  run(() => {
+    comment('find: fields #1')
+    return test(adapter =>
+      adapter.find(type, null, { fields: { name: true, isAlive: true } })
+      .then(records => {
+        ok(records.every(record => Object.keys(record).length === 3),
+          'fields length is correct')
+      }))
+  })
 
-  test('find: fields #1', run((t, adapter) =>
-    adapter.find(type, null, { fields: { name: true, isAlive: true } })
-    .then(records => {
-      t.ok(records.every(record => Object.keys(record).length === 3),
-        'fields length is correct')
-    })
-  ))
+  run(() => {
+    comment('find: fields #2')
+    return test(adapter =>
+      adapter.find(type, null, { fields: { name: false, isAlive: false } })
+      .then(records => {
+        ok(records.every(record => Object.keys(record).length === 9),
+          'fields length is correct')
+      }))
+  })
 
-  test('find: fields #2', run((t, adapter) =>
-    adapter.find(type, null, { fields: { name: false, isAlive: false } })
-    .then(records => {
-      t.ok(records.every(record => Object.keys(record).length === 9),
-        'fields length is correct')
-    })
-  ))
+  run(() => {
+    comment('create: no-op')
+    return test(adapter =>
+      adapter.create(type, [])
+      .then(records => {
+        deepEqual(records, [], 'response is correct')
+      }))
+  })
 
-  test('create: no-op', run((t, adapter) =>
-    adapter.create(type, [])
-    .then(records => {
-      t.deepEqual(records, [], 'response is correct')
-    })
-  ))
+  run(() => {
+    comment('create: type check')
+    return test(adapter => {
+      const date = new Date()
 
-  test('create: type check', run((t, adapter) => {
-    const date = new Date()
+      return adapter.create(type, [ {
+        id: 3,
+        picture: deadbeef,
+        birthday: date
+      } ])
+      .then(records => {
+        ok(deadbeef.equals(records[0].picture),
+          'buffer type is correct')
+        ok(
+          Math.abs(records[0].birthday.getTime() - date.getTime()) < 1000,
+          'date value is correct')
+      })
+    })
+  })
 
-    return adapter.create(type, [ {
-      id: 3,
-      picture: deadbeef,
-      birthday: date
-    } ])
-    .then(records => {
-      t.ok(deadbeef.equals(records[0].picture), 'buffer type is correct')
-      t.ok(Math.abs(records[0].birthday.getTime() - date.getTime()) < 1000,
-        'date value is correct')
+  run(() => {
+    comment('create: duplicate id creation should fail')
+    return test(adapter => {
+      return adapter.create(type, [ {
+        [keys.primary]: 1
+      } ])
+      .then(() => {
+        fail('duplicate id creation should have failed')
+      })
+      .catch(error => {
+        ok(error instanceof errors.ConflictError,
+          'error type is correct')
+      })
     })
-  }))
+  })
 
-  test('create: duplicate id creation should fail', run((t, adapter) => {
-    return adapter.create(type, [ {
-      [keys.primary]: 1
-    } ])
-    .then(() => {
-      t.fail('duplicate id creation should have failed')
-    })
-    .catch(error => {
-      t.ok(error instanceof errors.ConflictError, 'error type is correct')
-    })
-  }))
+  run(() => {
+    comment('create: id generation and lookup')
+    return test(adapter => {
+      let id
 
-  test('create: id generation and lookup', run((t, adapter) => {
-    let id
+      return adapter.create(type, [ {
+        name: 'joe'
+      } ])
+      .then(records => {
+        id = records[0][keys.primary]
+        testIds(records, 'id type is correct')
 
-    return adapter.create(type, [ {
-      name: 'joe'
-    } ])
-    .then(records => {
-      id = records[0][keys.primary]
-      t.ok(testIds(records), 'id type is correct')
+        return adapter.find(type, [ id ])
+      })
+      .then(records => {
+        equal(records.length, 1, 'match length is correct')
+        equal(records[0][keys.primary], id, 'id is matching')
+        testIds(records, 'id type is correct')
+      })
+    })
+  })
 
-      return adapter.find(type, [ id ])
-    })
-    .then(records => {
-      t.equal(records.length, 1, 'match length is correct')
-      t.equal(records[0][keys.primary], id, 'id is matching')
-      t.ok(testIds(records), 'id type is correct')
-    })
-  }))
+  run(() => {
+    comment('update: no-op')
+    return test(adapter =>
+      adapter.update(type, [])
+      .then(number => {
+        equal(number, 0, 'number is correct')
+      }))
+  })
 
-  test('update: no-op', run((t, adapter) =>
-    adapter.update(type, [])
-    .then(number => {
-      t.equal(number, 0, 'number is correct')
-    })
-  ))
+  run(() => {
+    comment('update: not found')
+    return test(adapter =>
+      adapter.update(type, [ {
+        [keys.primary]: 3,
+        replace: { foo: 'bar' }
+      } ])
+      .then(number => {
+        equal(number, 0, 'number is correct')
+      }))
+  })
 
-  test('update: not found', run((t, adapter) =>
-    adapter.update(type, [ {
-      [keys.primary]: 3,
-      replace: { foo: 'bar' }
-    } ])
-    .then(number => {
-      t.equal(number, 0, 'number is correct')
-    })
-  ))
+  run(() => {
+    comment('update: replace')
+    return test(adapter =>
+      adapter.update(type, [
+        { [keys.primary]: 1, replace: { name: 'billy' } },
+        { [keys.primary]: 2,
+          replace: { name: 'billy', nicknames: [ 'pepe' ] } }
+      ])
+      .then(number => {
+        equal(number, 2, 'number updated correct')
+        return adapter.find(type)
+      })
+      .then(records => {
+        deepEqual(arrayProxy.find(records, record =>
+          record[keys.primary] === 2).nicknames, [ 'pepe' ], 'array updated')
+        equal(records.filter(record => record.name !== 'billy').length,
+          0, 'field updated on set')
+      }))
+  })
 
-  test('update: replace', run((t, adapter) =>
-    adapter.update(type, [
-      { [keys.primary]: 1, replace: { name: 'billy' } },
-      { [keys.primary]: 2, replace: { name: 'billy', nicknames: [ 'pepe' ] } }
-    ])
-    .then(number => {
-      t.equal(number, 2, 'number updated correct')
-      return adapter.find(type)
-    })
-    .then(records => {
-      t.deepEqual(arrayProxy.find(records, record =>
-        record[keys.primary] === 2).nicknames, [ 'pepe' ], 'array updated')
-      t.equal(records.filter(record => record.name !== 'billy').length,
-        0, 'field updated on set')
-    })
-  ))
+  run(() => {
+    comment('update: unset')
+    return test(adapter =>
+      adapter.update(type, [
+        { [keys.primary]: 1, replace: { name: null } },
+        { [keys.primary]: 2, replace: { name: null } }
+      ])
+      .then(number => {
+        equal(number, 2, 'number updated correct')
+        return adapter.find(type)
+      })
+      .then(records => {
+        equal(records.filter(record => record.name !== null).length,
+          0, 'field updated on unset')
+      }))
+  })
 
-  test('update: unset', run((t, adapter) =>
-    adapter.update(type, [
-      { [keys.primary]: 1, replace: { name: null } },
-      { [keys.primary]: 2, replace: { name: null } }
-    ])
-    .then(number => {
-      t.equal(number, 2, 'number updated correct')
-      return adapter.find(type)
-    })
-    .then(records => {
-      t.equal(records.filter(record => record.name !== null).length,
-        0, 'field updated on unset')
-    })
-  ))
+  run(() => {
+    comment('update: push')
+    return test(adapter =>
+      adapter.update(type, [
+        { [keys.primary]: 1, push: { friends: 5 } },
+        { [keys.primary]: 2, push: { friends: [ 5 ] } }
+      ])
+      .then(number => {
+        equal(number, 2, 'number updated correct')
+        return adapter.find(type)
+      })
+      .then(records => {
+        equal(records.filter(record =>
+          arrayProxy.includes(record.friends, 5)).length,
+          records.length, 'value pushed')
+      }))
+  })
 
-  test('update: push', run((t, adapter) =>
-    adapter.update(type, [
-      { [keys.primary]: 1, push: { friends: 5 } },
-      { [keys.primary]: 2, push: { friends: [ 5 ] } }
-    ])
-    .then(number => {
-      t.equal(number, 2, 'number updated correct')
-      return adapter.find(type)
-    })
-    .then(records => {
-      t.equal(records.filter(record =>
-        arrayProxy.includes(record.friends, 5)).length,
-        records.length, 'value pushed')
-    })
-  ))
+  run(() => {
+    comment('update: pull')
+    return test(adapter =>
+      adapter.update(type, [
+        { [keys.primary]: 1, pull: { friends: 2 } },
+        { [keys.primary]: 2, pull: { friends: [ 1 ] } }
+      ])
+      .then(number => {
+        equal(number, 2, 'number updated correct')
+        return adapter.find(type)
+      })
+      .then(records => {
+        equal(records.filter(record => record.friends.length).length,
+          0, 'value pulled')
+      }))
+  })
 
-  test('update: pull', run((t, adapter) =>
-    adapter.update(type, [
-      { [keys.primary]: 1, pull: { friends: 2 } },
-      { [keys.primary]: 2, pull: { friends: [ 1 ] } }
-    ])
-    .then(number => {
-      t.equal(number, 2, 'number updated correct')
-      return adapter.find(type)
-    })
-    .then(records => {
-      t.equal(records.filter(record => record.friends.length).length,
-        0, 'value pulled')
-    })
-  ))
+  run(() => {
+    comment('delete: no-op')
+    return test(adapter =>
+      adapter.delete(type, [])
+      .then(number => {
+        equal(number, 0, 'number is correct')
+      }))
+  })
 
-  test('delete: no-op', run((t, adapter) =>
-    adapter.delete(type, [])
-    .then(number => {
-      t.equal(number, 0, 'number is correct')
-    })
-  ))
-
-  test('delete', run((t, adapter) =>
-    adapter.delete(type, [ 1, 3 ])
-    .then(number => {
-      t.equal(number, 1, 'number deleted correct')
-      return adapter.find(type, [ 1, 2 ])
-    })
-    .then(records => {
-      t.equal(records.count, 1, 'count correct')
-      t.deepEqual(records.map(record => record[keys.primary]),
-        [ 2 ], 'record deleted')
-    })
-  ))
+  run(() => {
+    comment('delete')
+    return test(adapter =>
+      adapter.delete(type, [ 1, 3 ])
+      .then(number => {
+        equal(number, 1, 'number deleted correct')
+        return adapter.find(type, [ 1, 2 ])
+      })
+      .then(records => {
+        equal(records.count, 1, 'count correct')
+        deepEqual(records.map(record => record[keys.primary]),
+          [ 2 ], 'record deleted')
+      }))
+  })
 }
 
 
@@ -326,25 +384,33 @@ function runTest (a, options = {}, fn) {
     options, keys, errors, recordTypes
   })
 
-  return t => adapter.connect()
+  return adapter.connect()
   .then(() => adapter.delete(type))
   .then(() => adapter.create(type, records))
   .then(r => {
-    t.equal(r.length, records.length, 'number created is correct')
-    t.equal(arrayProxy.find(r, record => record[keys.primary] === 1)
-      .picture, null, 'missing singular value is null')
-    t.deepEqual(arrayProxy.find(r, record => record[keys.primary] === 1)
-      .nicknames, [], 'missing array value is empty array')
-    return fn(t, adapter)
+    equal(r.length, records.length,
+      'number created is correct')
+    equal(
+      arrayProxy.find(r, record => record[keys.primary] === 1).picture, null,
+      'missing singular value is null')
+    deepEqual(
+      arrayProxy.find(r, record => record[keys.primary] === 1).nicknames, [],
+      'missing array value is empty array')
+    return fn(adapter)
   })
   .then(() => adapter.delete(type,
     records.map(record => record[keys.primary])))
   .then(() => adapter.disconnect())
-  .then(t.end)
   .catch(error => {
-    stderr.error.call(t, error)
+    stderr.error(error)
     adapter.disconnect()
-    t.fail(error)
-    t.end()
+    fail(error)
   })
+}
+
+
+function testIds (records, message) {
+  equal(arrayProxy.find(records.map(record =>
+    arrayProxy.includes([ 'string', 'number' ], typeof record[keys.primary])),
+    b => !b), undefined, message)
 }

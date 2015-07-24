@@ -1,80 +1,92 @@
-import test from 'tape'
+import { fail, comment, run } from 'tapdance'
+import { deepEqual, equal } from '../../helpers'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as keys from '../../../lib/common/keys'
 
 
-test('get index', findTest.bind({
-  response: (t, response) => {
-    t.deepEqual(response.payload.sort(),
-      [ 'animal', 'user', '☯' ], 'gets the index')
-  }
-}))
+run(() => {
+  comment('get index')
+  return findTest({
+    response: response => {
+      deepEqual(response.payload.sort(),
+        [ 'animal', 'user', '☯' ], 'gets the index')
+    }
+  })
+})
 
 
-test('get collection', findTest.bind({
-  request: {
-    type: 'user'
-  },
-  response: (t, response) => {
-    t.equal(response.payload.length, 3, 'gets all records')
-  }
-}))
+run(() => {
+  comment('get collection')
+  return findTest({
+    request: {
+      type: 'user'
+    },
+    response: response => {
+      equal(response.payload.length, 3, 'gets all records')
+    }
+  })
+})
 
 
-test('get IDs', findTest.bind({
-  request: {
-    type: 'user',
-    ids: [ 2, 1 ]
-  },
-  response: (t, response) => {
-    t.deepEqual(response.payload
-      .map(record => record[keys.primary]).sort((a, b) => a - b),
-      [ 1, 2 ], 'gets records with IDs')
-  }
-}))
+run(() => {
+  comment('get IDs')
+  return findTest({
+    request: {
+      type: 'user',
+      ids: [ 2, 1 ]
+    },
+    response: response => {
+      deepEqual(response.payload
+        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        [ 1, 2 ], 'gets records with IDs')
+    }
+  })
+})
 
 
-test('get includes', findTest.bind({
-  request: {
-    type: 'user',
-    ids: [ 1, 2 ],
-    include: [ [ 'pets' ] ]
-  },
-  response: (t, response) => {
-    t.deepEqual(response.payload
-      .map(record => record[keys.primary]).sort((a, b) => a - b),
-      [ 1, 2 ], 'gets records with IDs')
-    t.deepEqual(response.payload.include.animal
-      .map(record => record[keys.primary]).sort((a, b) => a - b),
-      [ 1, 2, 3 ], 'gets included records')
-  }
-}))
+run(() => {
+  comment('get includes')
+  return findTest({
+    request: {
+      type: 'user',
+      ids: [ 1, 2 ],
+      include: [ [ 'pets' ] ]
+    },
+    response: response => {
+      deepEqual(response.payload
+        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        [ 1, 2 ], 'gets records with IDs')
+      deepEqual(response.payload.include.animal
+        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        [ 1, 2, 3 ], 'gets included records')
+    }
+  })
+})
 
 
-function findTest (t) {
+function findTest (o) {
   let store
 
-  testInstance(t, {
+  testInstance({
     serializers: []
   })
 
   .then(instance => {
     store = instance
 
-    return store.request(this.request)
+    return store.request(o.request)
   })
 
   .then(response => {
-    this.response(t, response)
+    o.response(response)
 
-    return store.disconnect().then(() => t.end())
+    return store.disconnect()
   })
 
   .catch(error => {
-    stderr.error.call(t, error)
+    stderr.error(error)
     store.disconnect()
-    t.fail(error)
-    t.end()
+    fail(error)
   })
 }
