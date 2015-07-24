@@ -1,7 +1,7 @@
 import './integration/adapters/indexeddb'
 import './integration/adapters/webstorage'
 
-import { comment, end, run } from 'tapdance'
+import { fail, comment, end, run } from 'tapdance'
 import fortune from '../lib/browser'
 import { ok } from './helpers'
 
@@ -20,5 +20,8 @@ run(() => {
     return store.disconnect()
   })
   .then(() => end())
-  .catch(end)
+  .catch(error => {
+    fail(error)
+    end()
+  })
 })
