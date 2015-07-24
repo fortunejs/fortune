@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.34 (2015-07-24)
+- Call WebSocket handler functions in the context of the socket.
+
+
 ##### 1.0.0-beta.33 (2015-07-24)
 - Implement WebSocket network module.
 
