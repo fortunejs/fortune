@@ -1,4 +1,5 @@
-import test from 'tape'
+import { fail, run, comment } from 'tapdance'
+import { ok, deepEqual, equal } from '../../helpers'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
@@ -21,12 +22,12 @@ const records = [
 ]
 
 
-test('create record', t => {
+run(() => {
+  comment('create record')
+
   let store
 
-  t.plan(8)
-
-  testInstance(t, {
+  testInstance({
     serializers: []
   })
 
@@ -34,9 +35,9 @@ test('create record', t => {
     store = instance
 
     store.on(change, data => {
-      t.ok(arrayProxy.find(data[methods.create].user, id => id === 4),
+      ok(arrayProxy.find(data[methods.create].user, id => id === 4),
         'change event shows created ID')
-      t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      deepEqual(data[methods.update].user.sort((a, b) => a - b),
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
@@ -48,14 +49,14 @@ test('create record', t => {
   })
 
   .then(response => {
-    t.ok(deadcode.equals(response.payload[0].picture) &&
+    ok(deadcode.equals(response.payload[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    t.equal(response.payload.length, 1, 'record created')
-    t.equal(response.payload[0][keys.primary], 4, 'record has correct ID')
-    t.ok(response.payload[0].birthday instanceof Date,
+    equal(response.payload.length, 1, 'record created')
+    equal(response.payload[0][keys.primary], 4, 'record has correct ID')
+    ok(response.payload[0].birthday instanceof Date,
       'field has correct type')
-    t.equal(response.payload[0].name, 'Slimer McGee',
+    equal(response.payload[0].name, 'Slimer McGee',
       'record has correct field value')
 
     return store.request({
@@ -66,17 +67,16 @@ test('create record', t => {
   })
 
   .then(response => {
-    t.deepEqual(response.payload.map(record =>
+    deepEqual(response.payload.map(record =>
       arrayProxy.find(record.friends, id => id === 4)),
       [ 4, 4 ], 'related records updated')
 
-    return store.disconnect().then(() => t.end())
+    return store.disconnect()
   })
 
   .catch(error => {
-    stderr.error.call(t, error)
+    stderr.error(error)
     store.disconnect()
-    t.fail(error)
-    t.end()
+    fail(error)
   })
 })

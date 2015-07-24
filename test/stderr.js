@@ -36,10 +36,9 @@ function helper (color, ...args) {
   const output = Array.from(args, argument =>
     typeof argument === 'object' ? util.inspect(argument, {
       depth: null
-    }) : argument)
+    }) : argument).join(' ')
 
   const decorate = line => chalk[color](line)
 
-  for (let argument of output)
-    argument.split(newLine).map(decorate).forEach(comment)
+  output.split(newLine).map(decorate).forEach(comment)
 }

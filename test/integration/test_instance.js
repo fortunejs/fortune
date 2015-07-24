@@ -8,7 +8,7 @@ const inParens = /\(([^\)]+)\)/
 const { change } = fortune
 
 
-export default (t, options) => {
+export default options => {
   const store = fortune.create(options)
 
   .defineType('user', {
@@ -59,7 +59,7 @@ export default (t, options) => {
     for (let symbol of Object.getOwnPropertySymbols(data))
       assignDescription(data, symbol)
 
-    stderr.info.call(t, chalk.bold('Change event:'), data)
+    stderr.info(chalk.bold('Change event:'), data)
   })
 
   return store.connect()

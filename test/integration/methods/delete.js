@@ -1,4 +1,5 @@
-import test from 'tape'
+import { fail, run, comment } from 'tapdance'
+import { ok, deepEqual, equal } from '../../helpers'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
@@ -6,12 +7,12 @@ import * as methods from '../../../lib/common/methods'
 import change from '../../../lib/common/change'
 
 
-test('delete record', t => {
+run(() => {
+  comment('delete record')
+
   let store
 
-  t.plan(4)
-
-  testInstance(t, {
+  testInstance({
     serializers: []
   })
 
@@ -19,9 +20,9 @@ test('delete record', t => {
     store = instance
 
     store.on(change, data => {
-      t.ok(arrayProxy.find(data[methods.delete].user, id => id === 3),
+      ok(arrayProxy.find(data[methods.delete].user, id => id === 3),
         'change event shows deleted ID')
-      t.deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      deepEqual(data[methods.update].user.sort((a, b) => a - b),
         [ 1, 2 ], 'change event shows updated IDs')
     })
 
@@ -33,7 +34,7 @@ test('delete record', t => {
   })
 
   .then(response => {
-    t.equal(response.payload.length, 1, 'records deleted')
+    equal(response.payload.length, 1, 'records deleted')
 
     return store.request({
       type: 'user',
@@ -43,19 +44,16 @@ test('delete record', t => {
   })
 
   .then(response => {
-    t.deepEqual(response.payload.map(record =>
+    deepEqual(response.payload.map(record =>
       arrayProxy.find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
 
     return store.disconnect()
   })
 
-  .then(() => t.end())
-
   .catch(error => {
-    stderr.error.call(t, error)
+    stderr.error(error)
     store.disconnect()
-    t.fail(error)
-    t.end()
+    fail(error)
   })
 })
