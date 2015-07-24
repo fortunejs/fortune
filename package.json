@@ -31,14 +31,14 @@
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "array-buffer": "^1.0.1",
+    "array-buffer": "^1.0.2",
     "babel-runtime": "^5.8.3",
     "chalk": "^1.1.0",
     "error-class": "^1.0.5",
     "inflection": "^1.7.1",
     "nedb": "^1.1.2",
     "negotiator": "^0.5.3",
-    "tapdance": "^2.4.1",
+    "tapdance": "^3.0.0",
     "uri-templates": "^0.1.7"
   },
   "devDependencies": {

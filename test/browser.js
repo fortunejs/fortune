@@ -1,7 +1,7 @@
 import './integration/adapters/indexeddb'
 import './integration/adapters/webstorage'
 
-import { fail, comment, end, run } from 'tapdance'
+import { fail, comment, run } from 'tapdance'
 import fortune from '../lib/browser'
 import { ok } from './helpers'
 
@@ -14,14 +14,10 @@ run(() => {
 
   const store = fortune.create()
 
-  store.connect()
+  return store.connect()
   .then(store => {
     ok(store instanceof fortune, 'instantiation works')
     return store.disconnect()
   })
-  .then(() => end())
-  .catch(error => {
-    fail(error)
-    end()
-  })
+  .catch(error => fail(error))
 })
