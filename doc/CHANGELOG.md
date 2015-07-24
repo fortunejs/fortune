@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.32 (2015-07-24)
+- Internal refactoring of tests.
+- Fix camel cased key names not working properly in JSON API serializer for link fields.
+
+
 ##### 1.0.0-beta.31 (2015-07-22)
 - Fix camel cased key names not working properly in JSON API serializer. Thanks [@dalefukami](https://github.com/dalefukami)!
 
