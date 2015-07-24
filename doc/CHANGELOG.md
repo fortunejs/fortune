@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.33 (2015-07-24)
+- Implement WebSocket network module.
+
+
 ##### 1.0.0-beta.32 (2015-07-24)
 - Internal refactoring of tests.
 - Fix camel cased key names not working properly in JSON API serializer for link fields.
