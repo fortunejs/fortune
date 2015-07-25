@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.35 (2015-07-26)
+- Cast type of query string `match` in serializers.
+
+
 ##### 1.0.0-beta.34 (2015-07-24)
 - Call WebSocket handler functions in the context of the socket.
 

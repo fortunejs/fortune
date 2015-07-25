@@ -159,7 +159,8 @@ run(() => {
 
 run(() => {
   comment('filter a collection')
-  return fetchTest('/users?filter[name]=John Doe', {
+  return fetchTest('/users?filter[name]=John Doe' +
+  '&filter[birthday]=1992-12-06T23:00:00.000Z', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {

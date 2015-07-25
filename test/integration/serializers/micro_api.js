@@ -71,7 +71,8 @@ run(() => {
 
 run(() => {
   comment('match on a collection')
-  return fetchTest('/dXNlcnM?match[name]=John Doe', {
+  return fetchTest('/dXNlcnM?match[name]=John Doe' +
+  '&match[birthday]=1992-12-06T23:00:00.000Z', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
