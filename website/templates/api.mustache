@@ -1,6 +1,6 @@
 <div class="api">
   {{#.}}
-    <h6>{{module}} <span>(<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{path}}">{{path}}</a>)</span></h6>
+    <h6>{{module}} <span>({{#path}}<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{.}}"><em>{{.}}</em></a>{{/path}})</span></h6>
     {{#docs}}
       <h2 id="{{context.anchor}}">
         {{#context.isClass}}

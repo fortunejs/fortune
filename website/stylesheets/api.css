@@ -7,8 +7,24 @@
   margin-bottom: calc(var(--line-height) / var(--small-size) * 1 / 3);
 }
 
+.api h6 em {
+  text-decoration: underline;
+}
+
 .api h6 span {
   font-weight: 400;
+}
+
+.api h6 a {
+  text-decoration: none;
+}
+
+.api h6 a:after {
+  content: ', ';
+}
+
+.api h6 a:last-of-type:after {
+  display: none;
 }
 
 .api .class {
