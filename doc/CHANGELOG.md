@@ -4,6 +4,7 @@
 ##### 1.0.0-beta.36 (2015-07-26)
 - Cast type of query string `match` in serializers.
 - Fix handling of Date and Buffer types in serializers.
+- Breaking change: simplified signature of WebSocket function.
 
 
 ##### 1.0.0-beta.34 (2015-07-24)
