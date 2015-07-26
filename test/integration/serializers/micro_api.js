@@ -72,7 +72,7 @@ run(() => {
 run(() => {
   comment('match on a collection')
   return fetchTest('/dXNlcnM?match[name]=John Doe' +
-  '&match[birthday]=1992-12-06T23:00:00.000Z', {
+  '&match[birthday]=1992-12-07', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -150,7 +150,7 @@ run(() => {
       '@graph': [ {
         '@type': 'animal',
         name: 'Rover',
-        birthday: Date.now(),
+        birthday: new Date().toJSON(),
         picture: new Buffer('This is a string.').toString('base64'),
         owner: { 'id': 1 }
       } ]

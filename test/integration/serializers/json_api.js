@@ -31,7 +31,7 @@ run(() => {
         attributes: {
           name: 'Rover',
           type: 'Chihuahua',
-          birthday: Date.now(),
+          birthday: new Date().toJSON(),
           picture: new Buffer('This is a string.').toString('base64')
         },
         relationships: {
@@ -160,7 +160,7 @@ run(() => {
 run(() => {
   comment('filter a collection')
   return fetchTest('/users?filter[name]=John Doe' +
-  '&filter[birthday]=1992-12-06T23:00:00.000Z', {
+  '&filter[birthday]=1992-12-07', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {

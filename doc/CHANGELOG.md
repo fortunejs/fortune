@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-beta.35 (2015-07-26)
+##### 1.0.0-beta.36 (2015-07-26)
 - Cast type of query string `match` in serializers.
+- Fix handling of Date and Buffer types in serializers.
 
 
 ##### 1.0.0-beta.34 (2015-07-24)
