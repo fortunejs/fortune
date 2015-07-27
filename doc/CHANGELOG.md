@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-beta.39 (2015-07-27)
+- Fix `null` values not being accepted for `Date` and `Buffer` types in the serializers.
+
+
 ##### 1.0.0-beta.38 (2015-07-26)
 - Cast type of query string `match` in serializers.
 - Fix handling of Date and Buffer types in serializers.
