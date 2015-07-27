@@ -107,7 +107,7 @@ run(() => {
 })
 
 
-run(() => {
+run.only(() => {
   comment('update record')
   return fetchTest('/users/2', {
     method: 'patch',
@@ -123,6 +123,11 @@ run(() => {
         relationships: {
           spouse: {
             data: { type: 'users', id: 3 }
+          },
+          'owned-pets': {
+            data: [
+              { type: 'animals', id: 3 }
+            ]
           },
           enemies: {
             data: [
