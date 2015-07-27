@@ -27,9 +27,7 @@ run(() => {
 
   let store
 
-  testInstance({
-    serializers: []
-  })
+  return testInstance()
 
   .then(instance => {
     store = instance

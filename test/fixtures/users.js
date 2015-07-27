@@ -5,7 +5,7 @@ export default [
     camelCaseField: 'Something with a camel case field',
     birthday: new Date(Date.UTC(1992, 11, 7)),
     spouse: 2,
-    pets: [ 1 ],
+    ownedPets: [ 1 ],
     friends: [ 3 ]
   },
   {
@@ -13,7 +13,7 @@ export default [
     name: 'Jane Doe',
     birthday: new Date(Date.UTC(1997, 6, 30)),
     spouse: 1,
-    pets: [ 2, 3 ],
+    ownedPets: [ 2, 3 ],
     friends: [ 3 ],
     enemies: [ 3 ]
   },

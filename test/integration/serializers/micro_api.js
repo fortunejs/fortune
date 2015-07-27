@@ -25,7 +25,7 @@ run(() => {
 
 run(() => {
   comment('show collection')
-  return fetchTest('/dXNlcnM', {
+  return fetchTest('/users', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -40,7 +40,7 @@ run(() => {
 
 run(() => {
   comment('show individual record with include')
-  return fetchTest('/dXNlcnMvMQ?include=spouse,spouse.friends', {
+  return fetchTest('/users/1?include=spouse,spouse.friends', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -56,7 +56,7 @@ run(() => {
 run(() => {
   comment('sort a collection and use sparse fields')
   return fetchTest(
-  '/dXNlcnM?sort=birthday,-name&fields[user]=name,birthday', {
+  '/users?sort=birthday,-name&fields[user]=name,birthday', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -71,7 +71,7 @@ run(() => {
 
 run(() => {
   comment('match on a collection')
-  return fetchTest('/dXNlcnM?match[name]=John Doe' +
+  return fetchTest('/users?match[name]=John Doe' +
   '&match[birthday]=1992-12-07', {
     method: 'get',
     headers: { 'Accept': mediaType }
@@ -86,7 +86,7 @@ run(() => {
 
 run(() => {
   comment('show related records')
-  return fetchTest('/dXNlcnMvMi9wZXRz', {
+  return fetchTest('/users/2/ownedPets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -101,7 +101,7 @@ run(() => {
 
 run(() => {
   comment('find an empty collection')
-  return fetchTest('/JUUyJTk4JUFGcw', {
+  return fetchTest('/☯s', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -115,7 +115,7 @@ run(() => {
 
 run(() => {
   comment('find a single non-existent record')
-  return fetchTest('/YW5pbWFscy80MDQ', {
+  return fetchTest('/users/4', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -129,7 +129,7 @@ run(() => {
 
 run(() => {
   comment('find a collection of non-existent related records')
-  return fetchTest('/dXNlcnMvMy9wZXRz', {
+  return fetchTest('/users/3/ownedPets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -143,7 +143,7 @@ run(() => {
 
 run(() => {
   comment('create record')
-  return fetchTest('/YW5pbWFscw', {
+  return fetchTest('/animals', {
     method: 'post',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
@@ -173,7 +173,7 @@ run(() => {
 
 run(() => {
   comment('create record with existing ID should fail')
-  return fetchTest('/dXNlcnM', {
+  return fetchTest('/user', {
     method: 'post',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
@@ -190,7 +190,7 @@ run(() => {
 
 run(() => {
   comment('create record on wrong route should fail')
-  return fetchTest('/dXNlcnMvMQ', {
+  return fetchTest('/users/1', {
     method: 'post',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType }
   }, response => {
@@ -206,7 +206,7 @@ run(() => {
 
 run(() => {
   comment('create record with wrong type should fail')
-  return fetchTest('/dXNlcnM', {
+  return fetchTest('/users', {
     method: 'post',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -220,7 +220,7 @@ run(() => {
 
 run(() => {
   comment('update record')
-  return fetchTest('/dXNlcnMvMg', {
+  return fetchTest('/users/2', {
     method: 'patch',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
@@ -241,7 +241,7 @@ run(() => {
 
 run(() => {
   comment('delete a single record')
-  return fetchTest('/YW5pbWFscy8y', {
+  return fetchTest('/animals/3', {
     method: 'delete',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -265,7 +265,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: collection')
-  return fetchTest('/dXNlcnM', {
+  return fetchTest('/users', {
     method: 'options',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -278,7 +278,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: IDs')
-  return fetchTest('/dXNlcnMvMQ', {
+  return fetchTest('/users/3', {
     method: 'options',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -291,7 +291,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: related')
-  return fetchTest('/dXNlcnMvMi9wZXRz', {
+  return fetchTest('/users/3/ownedPets', {
     method: 'options',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -304,7 +304,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: fail')
-  return fetchTest('/Zm9v', {
+  return fetchTest('/foo', {
     method: 'options',
     headers: { 'Accept': mediaType }
   }, response => {

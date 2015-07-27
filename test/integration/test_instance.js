@@ -27,7 +27,7 @@ export default options => {
     spouse: { link: 'user', inverse: 'spouse' },
 
     // Many to one
-    pets: { link: 'animal', inverse: 'owner', isArray: true }
+    ownedPets: { link: 'animal', inverse: 'owner', isArray: true }
   })
 
   .transformOutput((context, record) => {
@@ -41,11 +41,13 @@ export default options => {
     // Implementations may have problems with this reserved word.
     type: { type: String },
 
+    favoriteFood: { type: String },
+
     birthday: { type: Date },
     picture: { type: Buffer },
 
     // One to many
-    owner: { link: 'user', inverse: 'pets' }
+    owner: { link: 'user', inverse: 'ownedPets' }
   })
 
   .transformOutput((context, record) => {

@@ -141,10 +141,10 @@ run(() => {
     relatedType: 'user',
     related: response => {
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 1).pets, [],
+        record => record[keys.primary] === 1).ownedPets, [],
         'related field pulled')
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 2).pets.sort((a, b) => a - b),
+        record => record[keys.primary] === 2).ownedPets.sort((a, b) => a - b),
         [ 1, 2, 3 ], 'related field pushed')
     }
   })
@@ -170,7 +170,7 @@ run(() => {
     relatedType: 'user',
     related: response => {
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 1).pets, [],
+        record => record[keys.primary] === 1).ownedPets, [],
         'related field pulled')
     }
   })
@@ -190,7 +190,7 @@ run(() => {
     payload: [
       {
         [keys.primary]: 2,
-        push: { pets: 1 }
+        push: { ownedPets: 1 }
       }
     ],
     relatedType: 'animal',
@@ -216,7 +216,7 @@ run(() => {
     payload: [
       {
         [keys.primary]: 1,
-        push: { pets: 2 }
+        push: { ownedPets: 2 }
       }
     ],
     relatedType: 'animal',
@@ -242,7 +242,7 @@ run(() => {
     payload: [
       {
         [keys.primary]: 2,
-        pull: { pets: [ 2, 3 ] }
+        pull: { ownedPets: [ 2, 3 ] }
       }
     ],
     relatedType: 'animal',
@@ -271,19 +271,19 @@ run(() => {
     payload: [
       {
         [keys.primary]: 3,
-        replace: { pets: [ 1, 2, 3 ] }
+        replace: { ownedPets: [ 1, 2, 3 ] }
       }
     ],
     relatedType: 'user',
     related: response => {
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 1).pets, [],
+        record => record[keys.primary] === 1).ownedPets, [],
         'related field pulled')
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 2).pets, [],
+        record => record[keys.primary] === 2).ownedPets, [],
         'related field pulled')
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 3).pets, [ 1, 2, 3 ],
+        record => record[keys.primary] === 3).ownedPets, [ 1, 2, 3 ],
         'field set')
     }
   })
@@ -297,7 +297,7 @@ run(() => {
     payload: [
       {
         [keys.primary]: 3,
-        replace: { pets: [ 1, 2, 3 ] }
+        replace: { ownedPets: [ 1, 2, 3 ] }
       }
     ],
     relatedType: 'animal',
@@ -329,16 +329,16 @@ run(() => {
     payload: [
       {
         [keys.primary]: 2,
-        replace: { pets: [ 1, 2 ] }
+        replace: { ownedPets: [ 1, 2 ] }
       }
     ],
     relatedType: 'user',
     related: response => {
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 1).pets, [],
+        record => record[keys.primary] === 1).ownedPets, [],
         'related field pulled')
       deepEqual(arrayProxy.find(response.payload,
-        record => record[keys.primary] === 2).pets, [ 1, 2 ],
+        record => record[keys.primary] === 2).ownedPets, [ 1, 2 ],
         'field set')
     }
   })
@@ -358,7 +358,7 @@ run(() => {
     payload: [
       {
         [keys.primary]: 2,
-        replace: { pets: [] }
+        replace: { ownedPets: [] }
       }
     ],
     relatedType: 'animal',
@@ -518,9 +518,7 @@ run(() => {
 function updateTest (o) {
   let store
 
-  return testInstance({
-    serializers: []
-  })
+  return testInstance()
 
   .then(instance => {
     store = instance

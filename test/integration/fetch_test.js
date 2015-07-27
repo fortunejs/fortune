@@ -17,7 +17,13 @@ export default (path, request, fn) => {
   let store
   let server
 
-  return testInstance()
+  return testInstance({
+    serializers: [
+      { type: fortune.serializers.JSONAPI },
+      { type: fortune.serializers.MicroAPI,
+        options: { obfuscateURIs: false } }
+    ]
+  })
 
   .then(instance => {
     store = instance

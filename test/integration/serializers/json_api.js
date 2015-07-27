@@ -32,7 +32,8 @@ run(() => {
           name: 'Rover',
           type: 'Chihuahua',
           birthday: new Date().toJSON(),
-          picture: new Buffer('This is a string.').toString('base64')
+          picture: new Buffer('This is a string.').toString('base64'),
+          'favorite-food': 'Bacon'
         },
         relationships: {
           owner: {
@@ -48,6 +49,8 @@ run(() => {
     equal(response.headers.get('location'), '/animals/4',
       'location header looks right')
     equal(response.body.data.type, 'animals', 'type is correct')
+    equal(response.body.data.attributes['favorite-food'], 'Bacon',
+      'inflected key value is correct')
     equal(new Buffer(response.body.data.attributes.picture, 'base64')
       .toString(), 'This is a string.', 'buffer is correct')
     ok(Date.now() - new Date(response.body.data.attributes.birthday)
@@ -114,7 +117,8 @@ run(() => {
         id: 2,
         type: 'users',
         attributes: {
-          name: 'Jenny Death'
+          name: 'Jenny Death',
+          'camel-case-field': 'foobar'
         },
         relationships: {
           spouse: {
@@ -242,12 +246,12 @@ run(() => {
 
 run(() => {
   comment('find a plural related record')
-  return fetchTest('/users/2/pets', {
+  return fetchTest('/users/2/owned-pets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
     equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users/2/pets', 'link is correct')
+    equal(response.body.links.self, '/users/2/owned-pets', 'link is correct')
     ok(response.body.data.length === 2, 'data length is correct')
   })
 })
@@ -255,12 +259,12 @@ run(() => {
 
 run(() => {
   comment('find a collection of non-existent related records')
-  return fetchTest('/users/3/pets', {
+  return fetchTest('/users/3/owned-pets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
     equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users/3/pets', 'link is correct')
+    equal(response.body.links.self, '/users/3/owned-pets', 'link is correct')
     ok(Array.isArray(response.body.data) && !response.body.data.length,
       'data is empty array')
   })
@@ -284,12 +288,12 @@ run(() => {
 
 run(() => {
   comment('get an array relationship entity')
-  return fetchTest('/users/2/relationships/pets', {
+  return fetchTest('/users/2/relationships/owned-pets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
     equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users/2/relationships/pets',
+    equal(response.body.links.self, '/users/2/relationships/owned-pets',
       'link is correct')
     deepEqual(response.body.data.map(data => data.id), [ 2, 3 ],
       'ids are correct')
@@ -299,12 +303,12 @@ run(() => {
 
 run(() => {
   comment('get an empty array relationship entity')
-  return fetchTest('/users/3/relationships/pets', {
+  return fetchTest('/users/3/relationships/owned-pets', {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
     equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users/3/relationships/pets',
+    equal(response.body.links.self, '/users/3/relationships/owned-pets',
       'link is correct')
     deepEqual(response.body.data, [], 'data is correct')
   })
@@ -356,7 +360,7 @@ run(() => {
 
 run(() => {
   comment('update an array relationship entity')
-  return fetchTest('/users/1/relationships/pets', {
+  return fetchTest('/users/1/relationships/owned-pets', {
     method: 'patch',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {
@@ -370,7 +374,7 @@ run(() => {
 
 run(() => {
   comment('post to an array relationship entity')
-  return fetchTest('/users/1/relationships/pets', {
+  return fetchTest('/users/1/relationships/owned-pets', {
     method: 'post',
     headers: { 'Accept': mediaType, 'Content-Type': mediaType },
     body: {

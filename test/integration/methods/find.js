@@ -51,7 +51,7 @@ run(() => {
     request: {
       type: 'user',
       ids: [ 1, 2 ],
-      include: [ [ 'pets' ] ]
+      include: [ [ 'ownedPets' ] ]
     },
     response: response => {
       deepEqual(response.payload
@@ -68,9 +68,7 @@ run(() => {
 function findTest (o) {
   let store
 
-  testInstance({
-    serializers: []
-  })
+  return testInstance()
 
   .then(instance => {
     store = instance

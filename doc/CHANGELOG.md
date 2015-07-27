@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.40 (2015-07-27)
+- Fix plural type in JSON API ad-hoc index.
+- Fix key inflection in JSON API serializer.
+
+
 ##### 1.0.0-beta.39 (2015-07-27)
 - Fix `null` values not being accepted for `Date` and `Buffer` types in the serializers.
 
