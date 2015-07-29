@@ -58,9 +58,9 @@ store.defineType('post', {
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an HTTP API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. The default serializers emit an index route with hyperlinks and respond to `OPTIONS` requests appropriately, so that clients which understand the media types can consume the API without technical documentation. The JSON API serializer emits routes specified [here](http://jsonapi.org/recommendations/).
+This yields a hypermedia API that conforms to the [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org) specifications. The default serializers emit an index route with hyperlinks and respond to `OPTIONS` requests appropriately, so that clients which understand the media types can consume the API without technical documentation. The JSON API serializer emits routes specified [here](http://jsonapi.org/recommendations/).
 
-By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which runs in memory by default, but has options to persist to disk.
+By default, it is backed by an embedded document store, [NeDB](https://github.com/louischatriot/nedb), which runs in memory by default, but has options to persist to disk. There are adapters for other databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb) and [Postgres](https://github.com/fortunejs/fortune-postgres), enumerated in the [plugins page](http://fortunejs.com/plugins/).
 
 
 ## License

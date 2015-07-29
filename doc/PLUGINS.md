@@ -1,6 +1,6 @@
 # Plugins
 
-Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults. The Adapter and Serializer classes adhere to the [polymorphic open/closed principle](https://en.wikipedia.org/wiki/Open/closed_principle#Polymorphic_open.2Fclosed_principle), so they should be extended (subclassed) rather than modified.
+Fortune comes with some defaults to work out of the box, and there are alternatives to the defaults. The Adapter and Serializer classes adhere to the [polymorphic open/closed principle](https://en.wikipedia.org/wiki/Open/closed_principle#Polymorphic_open.2Fclosed_principle), so they should be extended (subclassed) rather than modified. It should be entirely possible to use Fortune without modifying its source code by extending adapters, serializers, and adding external network code.
 
 
 ### Adapters
@@ -13,7 +13,7 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 | IndexedDB (included) | [0x8890](https://github.com/0x8890) | Data storage adapter that works in modern browsers. |
 | Web Storage (included) | [0x8890](https://github.com/0x8890) | Data storage adapter that works in most browsers. |
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | [0x8890](https://github.com/0x8890) | Document data store. MongoDB is [web scale](http://www.mongodb-is-web-scale.com/). |
-| [PostgreSQL](https://github.com/fortunejs/fortune-pg) | [0x8890](https://github.com/0x8890) | Relational database adapter, translates adapter method inputs to SQL. |
+| [Postgres](https://github.com/fortunejs/fortune-postgres) | [0x8890](https://github.com/0x8890) | Relational database adapter, translates adapter method inputs to SQL. |
 
 
 ### Serializers
