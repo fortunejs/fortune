@@ -88,9 +88,20 @@ module.exports = function(options){
         .end(function(err, res){
           should.not.exist(err);
           var body = JSON.parse(res.text);
+          console.log(body);
           body.people.length.should.equal(ids.people.length);
           done();
         });
     });
+    it('should be able to run action generic action', function(done) {
+      request(baseUrl).post('/people/action/aggregate-by-birthday')
+        .expect(200)
+        .end(function(err,res) {
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.length.should.equal(1);
+          done();
+        })
+    })
   });
 };

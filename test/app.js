@@ -112,7 +112,8 @@ module.exports = function(options, port, ioPort) {
       },
       actions: {
         'reset-password': require('./testing-actions').peopleResetPassword,
-        'send-through': require('./testing-actions').genericSendThrough
+        'send-through': require('./testing-actions').genericSendThrough,
+        'aggregate-by-birthday' : require('./testing-actions').genericAction
       }
     })
     .beforeRead([{

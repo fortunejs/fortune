@@ -36,7 +36,8 @@
     "supertest": "~0.8.0"
   },
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha --recursive -R spec"
+    "test": "node_modules/mocha/bin/mocha --recursive -R spec",
+    "coverage":"istanbul cover --dir ./reports _mocha -- "
   },
   "engines": {
     "node": ">=0.10"
