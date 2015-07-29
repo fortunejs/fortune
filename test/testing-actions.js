@@ -27,3 +27,19 @@ exports.genericSendThrough = {
     }
   }
 };
+
+exports.genericAction = {
+  name: 'aggregate-by-birthday',
+  adapter_binding: 'aggregate',
+  method: 'POST',
+  config: [{
+    $match: {
+      'birthday': new Date('2000-01-01')
+    }
+  }],
+  init: function(options) {
+    return function(req, res) {
+      res.send(200, 'ok');
+    };
+  }
+}
