@@ -107,7 +107,7 @@ run(() => {
 })
 
 
-run.only(() => {
+run(() => {
   comment('update record')
   return fetchTest('/users/2', {
     method: 'patch',
