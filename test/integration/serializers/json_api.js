@@ -155,7 +155,7 @@ run(() => {
   return fetchTest(
   `/users?${qs.stringify({
     'sort': 'birthday,-name',
-    'fields[user]' : 'name,birthday' })}`, {
+    'fields[user]': 'name,birthday' })}`, {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
