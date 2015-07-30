@@ -15,6 +15,7 @@
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
     "clean": "rimraf dist/lib dist/test coverage",
+    "coverage": "babel-node $(npm bin)/isparta cover --report html test",
     "deploy": "npm run publish",
     "deploy:website": "npm run build:website && ./website/deploy.sh",
     "build": "npm run build:lib && npm run build:test",
@@ -27,7 +28,6 @@
     "test:server": "npm run build && node dist/test | tap-dot",
     "test:browser": "browserify test/browser.js | tape-run -b firefox | tap-dot",
     "test:lint": "eslint lib test website",
-    "test:coverage": "npm run build && istanbul cover dist/test",
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
@@ -53,7 +53,7 @@
     "highlight.js": "^8.7.0",
     "html-minifier": "^0.7.2",
     "http-server": "^0.8.0",
-    "istanbul": "^0.3.17",
+    "isparta": "^3.0.3",
     "marked": "^0.3.4",
     "mkdirp": "^0.5.1",
     "mustache": "^2.1.3",
