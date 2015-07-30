@@ -45,7 +45,7 @@ export default (path, request, fn) => {
       request.headers['Content-Length'] = request.body.length
     }
 
-    return fetch(encodeURI(`http://localhost:${port}${path}`), request)
+    return fetch(`http://localhost:${port}${path}`, request)
 
     .then(response => {
       server.close()

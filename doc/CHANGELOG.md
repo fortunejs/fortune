@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-beta.41 (2015-07-30)
+- Fix URI encoding behavior in the serializers.
+- Fix JSON API serializer to include nested include fields even if they were not specified.
+
+
 ##### 1.0.0-beta.40 (2015-07-27)
 - Fix plural type in JSON API ad-hoc index.
 - Fix key inflection in JSON API serializer.

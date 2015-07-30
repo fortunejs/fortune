@@ -1,3 +1,4 @@
+import qs from 'querystring'
 import { run, comment } from 'tapdance'
 import { ok, deepEqual, equal } from '../../helpers'
 import fetchTest from '../fetch_test'
@@ -152,7 +153,9 @@ run(() => {
 run(() => {
   comment('sort a collection and use sparse fields')
   return fetchTest(
-  '/users?sort=birthday,-name&fields[user]=name,birthday', {
+  `/users?${qs.stringify({
+    'sort': 'birthday,-name',
+    'fields[user]' : 'name,birthday' })}`, {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -168,8 +171,9 @@ run(() => {
 
 run(() => {
   comment('filter a collection')
-  return fetchTest('/users?filter[name]=John Doe' +
-  '&filter[birthday]=1992-12-07', {
+  return fetchTest(`/users?${qs.stringify({
+    'filter[name]': 'John Doe',
+    'filter[birthday]': '1992-12-07' })}`, {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -196,7 +200,8 @@ run(() => {
 
 run(() => {
   comment('find a single record with include')
-  return fetchTest('/animals/1?include=owner,owner.friends', {
+  return fetchTest(
+    `/animals/1?${qs.stringify({ include: 'owner.friends' })}`, {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
@@ -278,7 +283,7 @@ run(() => {
 
 run(() => {
   comment('find an empty collection')
-  return fetchTest('/☯s', {
+  return fetchTest(encodeURI('/☯s'), {
     method: 'get',
     headers: { 'Accept': mediaType }
   }, response => {
