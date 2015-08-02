@@ -34,7 +34,14 @@ function configureApp(harvesterApp) {
         name: Joi.string().required().description('name'),
         appearances: Joi.number().required().description('appearances'),
         links: {
-            owner: 'person'
+            owner: 'person',
+            food: 'foobar'
+        }
+    })
+
+    .resource('collar', {
+        links: {
+            collarOwner: 'pet'
         }
     })
 
