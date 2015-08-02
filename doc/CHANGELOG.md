@@ -2,7 +2,8 @@
 
 
 ##### 1.0.0-rc.1 (2015-08-02)
-- New website.
+- New website, vastly simplified design.
+- Added error handling message about links in Micro API.
 
 
 ##### 1.0.0-beta.41 (2015-07-30)
