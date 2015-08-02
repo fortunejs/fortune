@@ -1,104 +1,59 @@
+@custom-selector :--header h1, h2, h3, h4, h5, h6;
+
 html, body {
-  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
   background-color: var(--color-background);
-  color: var(--color-primary);
-  font-size: var(--body-size);
-  font-family: var(--body-font);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  color: var(--color-body);
   line-height: var(--line-height);
-  padding-right: calc(var(--line-height) * 2);
-  padding-left: calc(var(--line-height) * 2);
-}
-
-p, pre, table, ul, ol {
-  margin: 0 0 calc(var(--line-height) * 1);
 }
 
 a {
   color: inherit;
-  transition: color var(--fade-speed) ease;
+  text-decoration: inherit;
 }
 
-a:hover {
-  color: var(--color-accent);
+:--header {
+  font-size: 1em;
+  margin: calc(var(--line-height) * 3) 0 var(--line-height);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  font-size: calc(1em * var(--big-size));
-  line-height: calc(var(--line-height) / var(--big-size));
-  margin-top: calc(var(--line-height) / var(--big-size) * -1 / 3);
-  padding-top: calc(var(--line-height) / var(--big-size) * 4 / 3);
-  margin-bottom: calc(var(--line-height) / var(--big-size) * 1);
-  text-align: left;
+:--header a.anchor {
+  color: var(--color-light);
+  margin-left: calc(1em * 1 / 2);
 }
 
-h1 {
-  color: var(--color-attribute);
-  text-transform: uppercase;
-  letter-spacing: calc(1em / 12);
-  margin-bottom: calc(var(--line-height) / var(--big-size) * 4 / 3);
-}
-
-h1 + h2, h1 + h3, h1 + h4, h1 + h5, h1 + h6 {
-  margin-top: calc(var(--line-height) / var(--big-size) * -2 / 3);
-}
-
-ul, ol {
-  margin-left: calc(var(--line-height) * 1);
-}
-
-main {
-  margin: auto;
-  max-width: var(--max-width);
-  hyphens: auto;
-  position: relative;
-  min-height: 100%;
-}
-
-main:before {
-  position: absolute;
-  z-index: -1;
-  content: ' ';
-  display: block;
-  top: 0;
-  right: 100%;
-  width: 200%;
-  height: 100%;
-  background-color: var(--color-menu);
-}
-
-section {
-  padding:
-    calc(var(--line-height) * 4 / 3)
-    calc(var(--line-height) * 1)
-    calc(var(--line-height) * 2 / 3)
-    calc(var(--line-height) * 3);
-  margin-left: var(--menu-width);
-  overflow: hidden;
+p, ul, ol, pre, table {
+  margin: 0 0 var(--line-height);
 }
 
 pre, code {
-  font-family: var(--mono-font);
+  font-family: var(--font-mono);
 }
 
 pre {
-  box-shadow: 0 1px 0 var(--color-offside) inset;
-  background-color: var(--color-menu);
-  padding:
-    calc(var(--line-height) * 1 / 3)
-    calc(var(--line-height) * 2 / 3);
+  padding: calc(var(--mono-height) * 2 / 3) calc(var(--mono-height) * 4 / 5);
+  background-color: rgba(0, 0, 0, calc(1 / 32));
   border-radius: var(--border-radius);
-  overflow: auto;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, calc(1 / 16));
+  line-height: var(--mono-height);
+}
+
+pre.install code:before {
+  content: '$ ';
+  color: var(--color-light);
 }
 
 table {
   border-spacing: 0;
   border-collapse: collapse;
   position: relative;
-  box-shadow: 0 1px 0 var(--color-offside) inset;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, calc(1 / 16)) inset;
   width: 100%;
 }
 
@@ -111,7 +66,7 @@ table td, table th {
 table th {
   hyphens: none;
   white-space: nowrap;
-  background-color: var(--color-menu);
+  background-color: rgba(0, 0, 0, calc(1 / 32));
 }
 
 tbody code {
@@ -120,87 +75,111 @@ tbody code {
 }
 
 tbody tr:nth-of-type(2n) {
-  background-color: var(--color-menu);
+  background-color: rgba(0, 0, 0, calc(1 / 32));
 }
 
-footer {
+section {
+  max-width: var(--max-width);
+  margin: 0 auto;
   position: relative;
-  text-align: right;
-  margin-top: calc(var(--line-height) * 3);
-  padding-top: calc(var(--line-height) * 2 / 3);
 }
 
-footer:before {
-  position: absolute;
-  top: 0;
-  left: 0;
+section:after {
   content: ' ';
   display: block;
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-offside);
-}
-
-footer p {
-  font-size: calc(1em * var(--small-size));
-  line-height: calc(var(--line-height) / var(--small-size));
-  color: var(--color-secondary);
-}
-
-footer span:before {
-  content: '⁄';
-  margin: 0 1em;
-  pointer-events: none;
-  color: var(--color-tertiary);
+  clear: both;
 }
 
 header {
-  text-align: right;
-  margin-bottom: calc(var(--line-height) * 7 / 6);
+  background-color: var(--color-accent);
+  text-align: center;
+  padding-top: calc(var(--line-height) * 4 / 2);
 }
 
-header a {
-  text-decoration: none;
-  font-size: calc(1em * var(--small-size));
-  line-height: calc(var(--line-height) / var(--small-size));
-  color: var(--color-secondary);
+header > a {
+  display: block;
+  margin: 0 auto;
+  width: 12em;
 }
 
-header a:hover {
-  color: var(--color-accent);
+header .emblem {
+  display: block;
+  height: calc(var(--line-height) * 4);
+  margin: 0 auto;
+  padding-bottom: calc(var(--line-height) * 3 / 4);
 }
 
-header a:after {
+header .logo-type {
+  display: block;
+  height: calc(var(--line-height) * 1);
+  margin: 0 auto calc(var(--line-height) * 3 / 2);
+}
+
+header nav {
+  position: relative;
+  padding: calc(var(--line-height) * 1) var(--line-height);
+}
+
+header nav:before {
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, calc(1 / 8));
+}
+
+header nav a {
+  color: var(--color-alt);
+}
+
+header nav a:after {
   content: '⁄';
-  margin: 0 1em;
-  color: var(--color-tertiary);
-  pointer-events: none;
+  margin-right: calc(1em * 4 / 3);
+  padding-left: calc(1em * 4 / 3);
+  color: var(--color-light);
 }
 
-header a:last-of-type:after {
+header nav a:last-of-type:after {
   display: none;
 }
 
-hr {
-  display: block;
-  height: 0;
-  width: 100%;
+article {
+  max-width: var(--max-width);
+  margin: calc(var(--line-height) * 3) auto;
+  padding: 0 var(--line-height);
+  text-align: justify;
+  hyphens: auto;
+}
+
+article a {
+  color: var(--color-link);
+}
+
+footer {
+  text-align: center;
+  max-width: var(--max-width);
   position: relative;
+  margin: calc(var(--line-height) * 3) auto;
+  color: var(--color-alt);
 }
 
-hr:before {
+footer p {
+  margin: 0;
+}
+
+#corner {
   position: absolute;
-  top: 100%;
-  left: 0;
-  content: ' ';
+  top: calc(var(--line-height) * -4 / 3);
+  right: calc(-10em / (2 * 0.707106781));
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  width: 15.2em;
+  line-height: calc(var(--line-height) * 4 / 3);
+  text-align: center;
   display: block;
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-offside);
-}
-
-.anchor {
-  text-decoration: none;
-  color: var(--color-tertiary);
-  margin-left: 0.5em;
+  background-color: #fca889;
+  color: #fff;
 }

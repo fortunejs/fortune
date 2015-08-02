@@ -1,30 +1,25 @@
 :root {
 
   /* colors */
-  --color-background:   #FFFFFF;
-  --color-menu:         rgba(0, 0, 0, 0.03);
-  --color-offside:      rgba(0, 0, 0, 0.09);
-  --color-primary:      rgba(0, 0, 0, 0.75);
-  --color-secondary:    rgba(0, 0, 0, 0.45);
-  --color-tertiary:     rgba(0, 0, 0, 0.21);
-  --color-accent:       #ED7041;
-
-  --color-attribute:    #9E559D;
-  --color-value:        #C56752;
-  --color-literal:      #0A7F81;
+  --color-background: #FFF;
+  --color-body: rgba(0, 0, 0, 0.75);
+  --color-alt: rgba(0, 0, 0, 0.5);
+  --color-light: rgba(0, 0, 0, 0.25);
+  --color-accent: #FE7;
+  --color-link: #36967B;
+  --color-literal: #8B599E;
+  --color-attribute: #B55E3E;
 
   /* fonts */
-  --body-font: 'Muli', sans-serif;
-  --mono-font: 'Inconsolata', monospace;
+  --font-body: 'Muli', sans-serif;
+  --font-mono: 'Anonymous Pro', monospace;
 
   /* measurements */
-  --max-width: 72em;
-  --menu-width: 16em;
-  --body-size: 16px;
-  --small-size: calc(14 / 16);
-  --big-size: calc(20 / 16);
-  --line-height: calc(1em * 30 / 16);
-  --border-radius: 6px;
+  --max-width: 48em;
+  --size-body: 16px;
+  --line-height: calc(1em * 5 / 3);
+  --mono-height: calc(1em * 4 / 3);
+  --border-radius: calc(1em / 2);
   --fade-speed: 0.15s;
 
 }

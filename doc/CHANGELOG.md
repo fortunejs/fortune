@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-rc.1 (2015-08-02)
+- New website.
+
+
 ##### 1.0.0-beta.41 (2015-07-30)
 - Fix URI encoding behavior in the serializers.
 - Fix JSON API serializer to include nested include fields even if they were not specified.

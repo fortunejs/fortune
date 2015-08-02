@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import docchi from 'docchi'
-import myth from 'myth'
+import cssnext from 'cssnext'
 import mustache from 'mustache'
 import marked from 'marked'
 import mkdirp from 'mkdirp'
@@ -206,12 +206,12 @@ for (let file of fs.readdirSync(assetPath))
 // =================
 
 ; (() => {
-  const inputFile = path.join(stylesheetPath, 'style.css')
+  const inputFile = path.join(stylesheetPath, 'index.css')
 
-  fs.writeFileSync(path.join(outputPath, 'assets/style.css'),
-    myth(fs.readFileSync(inputFile).toString(), {
+  fs.writeFileSync(path.join(outputPath, 'assets/index.css'),
+    cssnext(fs.readFileSync(inputFile).toString(), {
       compress: true,
-      source: path.join(stylesheetPath, 'style.css')
+      from: path.join(stylesheetPath, 'index.css')
     }))
 })()
 
