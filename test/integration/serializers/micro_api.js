@@ -43,15 +43,15 @@ run(() => {
   comment('show individual record with include')
   return fetchTest(`/users/1?${qs.stringify({
     'include': 'spouse,spouse.friends' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    equal(response.headers.get('content-type'), mediaType,
-      'content type is correct')
-    equal(Object.keys(response.body['@graph']).length,
-      3, 'number of records correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      equal(response.headers.get('content-type'), mediaType,
+        'content type is correct')
+      equal(Object.keys(response.body['@graph']).length,
+        3, 'number of records correct')
+    })
 })
 
 
@@ -61,15 +61,15 @@ run(() => {
   `/users?${qs.stringify({
     'sort': 'birthday,-name',
     'fields[user]': 'name,birthday' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    deepEqual(
-      response.body['@graph'].map(record => record.name),
-      [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
-      'sort order is correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      deepEqual(
+        response.body['@graph'].map(record => record.name),
+        [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
+        'sort order is correct')
+    })
 })
 
 
@@ -78,14 +78,14 @@ run(() => {
   return fetchTest(`/users?${qs.stringify({
     'match[name]': 'John Doe',
     'match[birthday]': '1992-12-07' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    deepEqual(
-      response.body['@graph'].map(record => record.name).sort(),
-      [ 'John Doe' ], 'match is correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      deepEqual(
+        response.body['@graph'].map(record => record.name).sort(),
+        [ 'John Doe' ], 'match is correct')
+    })
 })
 
 

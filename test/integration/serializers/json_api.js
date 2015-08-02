@@ -156,16 +156,16 @@ run(() => {
   `/users?${qs.stringify({
     'sort': 'birthday,-name',
     'fields[user]': 'name,birthday' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users', 'link is correct')
-    deepEqual(
-      response.body.data.map(record => record.attributes.name),
-      [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
-      'sort order is correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      equal(response.body.links.self, '/users', 'link is correct')
+      deepEqual(
+        response.body.data.map(record => record.attributes.name),
+        [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
+        'sort order is correct')
+    })
 })
 
 
@@ -174,15 +174,15 @@ run(() => {
   return fetchTest(`/users?${qs.stringify({
     'filter[name]': 'John Doe',
     'filter[birthday]': '1992-12-07' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/users', 'link is correct')
-    deepEqual(
-      response.body.data.map(record => record.attributes.name).sort(),
-      [ 'John Doe' ], 'match is correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      equal(response.body.links.self, '/users', 'link is correct')
+      deepEqual(
+        response.body.data.map(record => record.attributes.name).sort(),
+        [ 'John Doe' ], 'match is correct')
+    })
 })
 
 
@@ -202,17 +202,17 @@ run(() => {
   comment('find a single record with include')
   return fetchTest(
     `/animals/1?${qs.stringify({ include: 'owner.friends' })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
-    equal(response.status, 200, 'status is correct')
-    equal(response.body.links.self, '/animals/1', 'link is correct')
-    equal(response.body.data.id, '1', 'id is correct')
-    deepEqual(response.body.included.map(record => record.type),
-      [ 'users', 'users' ], 'type is correct')
-    deepEqual(response.body.included.map(record => record.id)
-      .sort((a, b) => a - b), [ '1', '3' ], 'id is correct')
-  })
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      equal(response.body.links.self, '/animals/1', 'link is correct')
+      equal(response.body.data.id, '1', 'id is correct')
+      deepEqual(response.body.included.map(record => record.type),
+        [ 'users', 'users' ], 'type is correct')
+      deepEqual(response.body.included.map(record => record.id)
+        .sort((a, b) => a - b), [ '1', '3' ], 'id is correct')
+    })
 })
 
 

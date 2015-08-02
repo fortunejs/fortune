@@ -13,46 +13,24 @@ https://github.com/fortunejs/fortune/tree/master/website
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="utf-8">
     <link rel="icon" href="{{{root}}}assets/piggu.png">
-    <link rel="stylesheet" href="{{{root}}}assets/style.css">
+    <link rel="stylesheet" href="{{{root}}}assets/index.css">
   </head>
   <body>
-    <main>
+    <header>
+      <a href="https://github.com/fortunejs/fortune" id="corner">Fork on GitHub</a>
+      <a href="{{{root}}}"><img src="{{{root}}}assets/piggu.svg" alt="Piggu" class="emblem"></a>
+      <a href="{{{root}}}"><img src="{{{root}}}assets/fortune_type.svg" alt="Fortune.js" class="logo-type"></a>
       <nav>
-        <a href="{{{root}}}"><img src="{{{root}}}assets/piggu.svg" alt="Piggu" class="logo"></a><!--
-        --><a href="{{{root}}}"><img src="{{{root}}}assets/fortune_type.svg" alt="Fortune.js" class="type"></a>
-        <ul class="docs">
-          <li><a href="{{{root}}}getting-started/">Getting Started<span>⚙</span></a></li>
-          <li><a href="{{{root}}}plugins/">Plugins<span>⚒</span></a></li>
-          <li><a href="{{{root}}}changelog/">Changelog<span>⚐</span></a></li>
-          <li><a href="{{{root}}}contributing/">Contributing<span>✤</span></a></li>
-          <li><a href="{{{root}}}caveats/">Caveats<span>⚖</span></a></li>
-          <li><a href="{{{root}}}api/">API Reference<span>⏣</span></a></li>
-        </ul>
-        {{#api}}
-          <h4>{{module}}</h4>
-          <ul class="api">
-            {{#docs}}
-              {{#context}}
-                <li{{#isProperty}} class="property"{{/isProperty}}>
-                  <a href="{{{root}}}api/#{{anchor}}">{{name}}</a>
-                </li>
-              {{/context}}
-            {{/docs}}
-          </ul>
-        {{/api}}
+        <a href="{{{root}}}getting-started/">Getting Started</a><!--
+        --><a href="{{{root}}}api/">API Reference</a><!--
+        --><a href="{{{root}}}plugins/">Plugins</a>
       </nav>
-      <section>
-        <header>
-          <a href="https://www.npmjs.com/package/fortune">npm</a><!--
-          --><a href="https://github.com/fortunejs/fortune">GitHub</a>
-        </header>
-        <article>
-          {{{content}}}
-        </article>
-        <footer>
-          <p>&copy; {{year}} &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a></p>
-        </footer>
-      </section>
-    </main>
+    </header>
+    <article>
+      {{{content}}}
+    </article>
+    <footer>
+      <p>&copy; {{year}} &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a></p>
+    </footer>
   </body>
 </html>

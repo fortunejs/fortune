@@ -12,15 +12,7 @@ Fortune is a high-level I/O library for web applications.
 $ npm install fortune@latest --save
 ```
 
-Currently *beta* software. Things will break, check the [changelog](http://fortunejs.com/changelog/).
-
-
-## Key Features
-
-- Define record types as the basis for working with persistent data.
-- Abstract base classes for implementing data storage and serialization.
-- Map to network protocols such as HTTP and WebSocket.
-- Run in a browser using IndexedDB & Web Storage as a fallback.
+Currently in *release candidate* stage. Things may break, check the [changelog](http://fortunejs.com/changelog/).
 
 
 ## Example

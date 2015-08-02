@@ -27,8 +27,8 @@
 }
 
 @font-face {
-  font-family: 'Inconsolata';
+  font-family: 'Anonymous Pro';
   font-style: normal;
   font-weight: 400;
-  src: url('Inconsolata.woff') format('woff');
+  src: url('AnonymousPro.woff') format('woff');
 }

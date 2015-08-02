@@ -8,13 +8,13 @@
 .hljs-literal,
 .hljs-number,
 .hljs-subst {
-  color: var(--color-value);
-}
-
-.hljs-string {
   color: var(--color-literal);
 }
 
+.hljs-string {
+  color: var(--color-link);
+}
+
 .hljs-comment {
-  color: var(--color-secondary);
+  color: var(--color-alt);
 }
