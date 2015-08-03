@@ -78,8 +78,17 @@ function configureApp(harvesterApp) {
     .resource('immutable', {
         name: Joi.string().description('name')
     })
-    .immutable();
+    .immutable()
 
+    .resource('object', {
+        foo: Joi.object().required().keys({
+            bar: Joi.string(),
+            tab: Joi.object().keys({
+                bats: Joi.array()
+            }),
+            any: Joi.any()
+        })
+    });
 
     harvesterApp.router.get('/random-error', function (req, res, next) {
         next(new Error('this is an error'));

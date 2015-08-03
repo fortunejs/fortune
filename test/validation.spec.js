@@ -335,6 +335,83 @@ describe('validation', function () {
                     });
             });
         });
+
+        describe('when resource has Joi.object property', function () {
+            it('should allow persisting valid object', function (done) {
+                var object = {
+                    foo: {
+                        bar: 'Jack',
+                        any: 'ali boom boom'
+                    }
+                };
+                request(config.baseUrl).post('/objects').send({objects: [object]})
+                    .expect('Content-Type', /json/)
+                    .expect(201)
+                    .end(function (err) {
+                        should.not.exist(err);
+                        done()
+                    });
+            });
+            it('should allow persisting another valid object', function (done) {
+                var object = {
+                    foo: {
+                        bar: 'Jack',
+                        tab: {
+                            bats: [1, 2, 3]
+                        },
+                        any: {
+                            ali: 'boom boom'
+                        }
+                    }
+                };
+                request(config.baseUrl).post('/objects').send({objects: [object]})
+                    .expect('Content-Type', /json/)
+                    .expect(201)
+                    .end(function (err) {
+                        should.not.exist(err);
+                        done()
+                    });
+            });
+            it('should NOT allow persisting object with missing required object property', function (done) {
+                var object = {
+                };
+                request(config.baseUrl).post('/objects').send({objects: [object]})
+                    .expect('Content-Type', /json/)
+                    .expect(400)
+                    .expect(function (res) {
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.validationErrorDetails.body;
+                        expect(error.detail).to.equal('validation failed on incoming request');
+                        expect(bodyDetails[0].path).to.equal('objects.0.foo');
+                        expect(bodyDetails[0].message).to.equal('"foo" is required');
+                    })
+                    .end(function (err) {
+                        should.not.exist(err);
+                        done()
+                    });
+            });
+            it('should NOT allow persisting object with additional inner property not defined in schema', function (done) {
+                var object = {
+                    foo: {
+                        rab: 'Jack'
+                    }
+                };
+                request(config.baseUrl).post('/objects').send({objects: [object]})
+                    .expect('Content-Type', /json/)
+                    .expect(400)
+                    .expect(function (res) {
+                        var error = JSON.parse(res.text).errors[0];
+                        var bodyDetails = error.meta.validationErrorDetails.body;
+                        expect(error.detail).to.equal('validation failed on incoming request');
+                        expect(bodyDetails[0].path).to.equal('objects.0.foo.rab');
+                        expect(bodyDetails[0].message).to.equal('"rab" is not allowed');
+                    })
+                    .end(function (err) {
+                        should.not.exist(err);
+                        done()
+                    });
+            });
+        });
     });
 
 
