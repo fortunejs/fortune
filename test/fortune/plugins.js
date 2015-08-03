@@ -118,20 +118,30 @@ module.exports = function(options){
     describe('websockets plugin', function(){
       var socket;
       before(function(done) {
+        console.log("websockets plugin before");
         socket = io.connect("http://localhost:" + options.ioPort + "/people");
         socket.on('connect', function(err) {
           done();
         });
       });
 
-      afterEach(function(done) {
+      beforeEach(function(done) {
+        console.log("websockets plugin beforeEach resetting connections");
         socket.off('add');
         socket.off('update');
         socket.off('delete');
         done();
       });
 
-      it('should inform users when a resource is added', function(done) {
+      afterEach(function(done) {
+        console.log("websockets plugin afterEach resetting connections");
+        socket.off('add');
+        socket.off('update');
+        socket.off('delete');
+        done();
+      });
+
+      it('should inform users when a resource is added @now', function(done) {
         socket.on('add', function(data) {
           console.log("socket add", data);
           data.people.should.be.an.Array;
