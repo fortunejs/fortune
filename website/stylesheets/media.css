@@ -1,4 +1,4 @@
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 800px) {
   body {
     font-size: calc(var(--size-body) - 2px);
   }
@@ -36,5 +36,11 @@
 
   #corner {
     display: none;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    font-size: calc(var(--size-body) - 3px);
   }
 }

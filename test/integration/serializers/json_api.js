@@ -193,7 +193,7 @@ run(() => {
     headers: { 'Accept': mediaType }
   }, response => {
     equal(response.body.data.attributes['camel-case-field'],
-      'Something with a camel case field', 'camel case field is correct')
+      'Something with a camel case field.', 'camel case field is correct')
   })
 })
 

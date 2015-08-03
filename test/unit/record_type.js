@@ -79,7 +79,7 @@ run(() => {
     { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, fields).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
   equal(
-    enforce(recordType, { random: 'abc' }, fields, true).random, undefined,
+    enforce(recordType, { random: 'abc' }, fields).random, undefined,
     'arbitrary fields are dropped')
 })
 

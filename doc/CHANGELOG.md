@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.0.0-rc.2 (2015-08-03)
+- Breaking change: `transformInput` may accept 3 arguments for an `update` method, the last argument being the update itself, mutating the record has no effect.
+- Breaking change: all integrity checking is done after input transform.
+- Fix: asynchronous input transform for `delete` method.
+
+
 ##### 1.0.0-rc.1 (2015-08-02)
 - New website, vastly simplified design.
 - Added error handling message about links in Micro API.

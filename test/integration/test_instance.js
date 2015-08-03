@@ -5,7 +5,7 @@ import * as fixtures from '../fixtures'
 
 
 const inParens = /\(([^\)]+)\)/
-const { change } = fortune
+const { change, methods } = fortune
 
 
 export default options => {
@@ -16,6 +16,8 @@ export default options => {
     camelCaseField: { type: String },
     birthday: { type: Date },
     picture: { type: Buffer },
+    createdAt: { type: Date },
+    lastModified: { type: Date },
 
     // Many to many
     friends: { link: 'user', inverse: 'friends', isArray: true },
@@ -28,6 +30,24 @@ export default options => {
 
     // Many to one
     ownedPets: { link: 'animal', inverse: 'owner', isArray: true }
+  })
+
+  .transformInput((context, record, update) => {
+    const { request: { method } } = context
+
+    if (method === methods.create) {
+      record.createdAt = new Date()
+      return record
+    }
+
+    if (method === methods.update) {
+      if (!('replace' in update)) update.replace = {}
+      update.replace.lastModified = new Date()
+      return update
+    }
+
+    // For the `delete` method, return value doesn't matter.
+    return null
   })
 
   .transformOutput((context, record) => {
@@ -44,10 +64,30 @@ export default options => {
     favoriteFood: { type: String },
 
     birthday: { type: Date },
+    createdAt: { type: Date },
+    lastModified: { type: Date },
     picture: { type: Buffer },
 
     // One to many
     owner: { link: 'user', inverse: 'ownedPets' }
+  })
+
+  .transformInput((context, record, update) => {
+    const { request: { method } } = context
+
+    if (method === methods.create) {
+      record.createdAt = new Date()
+      return record
+    }
+
+    if (method === methods.update) {
+      if (!('replace' in update)) update.replace = {}
+      update.replace.lastModified = new Date()
+      return update
+    }
+
+    // For the `delete` method, return value doesn't matter.
+    return null
   })
 
   .transformOutput((context, record) => {
