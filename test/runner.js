@@ -78,7 +78,7 @@ describe('Fortune test runner', function(){
 
   beforeEach(function(done) { 
     var createResources = [];
-    console.log("runner beforeEach inserting resources");
+    // console.log("runner beforeEach inserting resources");
 
     _.each(fixtures, function (resources, collection) {
       createResources.push(new Promise(function (resolve) {
