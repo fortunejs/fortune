@@ -133,6 +133,7 @@ module.exports = function(options){
 
       it('should inform users when a resource is added', function(done) {
         socket.on('add', function(data) {
+          console.log("socket add", data);
           data.people.should.be.an.Array;
           data.people.length.should.equal(1);
           done();
