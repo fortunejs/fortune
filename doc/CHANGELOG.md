@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-rc.3 (2015-08-03)
+- Fix: when an update is modified in an input transform function, let the serializer know that the update has been modified and return the appropriate response.
+
+
 ##### 1.0.0-rc.2 (2015-08-03)
 - Breaking change: `transformInput` may accept 3 arguments for an `update` method, the last argument being the update itself, mutating the record has no effect.
 - Breaking change: all integrity checking is done after input transform.

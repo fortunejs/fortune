@@ -145,7 +145,9 @@ run(() => {
       }
     }
   }, response => {
-    equal(response.status, 204, 'status is correct')
+    equal(response.status, 200, 'status is correct')
+    ok(Math.abs(new Date(response.body.data.attributes['last-modified'])
+      .getTime() - Date.now()) < 5 * 1000, 'update modifier is correct')
   })
 })
 

@@ -49,7 +49,7 @@ This defines a `user` record type that has a relationship to the `group` type. B
 
 ## Transformation
 
-Transformations can be defined per record type. Transform functions accept exactly two arguments, the `context` object, and the record. The record for an input transform may be the record to be created or deleted, or an updated record with updates applied. The method of an input transform may be any method except `find`, and an output transform may be applied to all methods.
+Transformations can be defined per record type. Transform functions accept at least two arguments, the `context` object, the record, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied to all methods.
 
 Here are some implementation details for dealing with passwords:
 
@@ -83,10 +83,9 @@ This is a pretty basic implementation using the `crypto` module provided by Node
 ```js
 const { methods, errors } = fortune
 
-store.transformInput('user', (context, record) => {
-  const { method, type, meta } = context.request
-  const { password, id } = record
-  let { key, salt } = record
+store.transformInput('user', (context, record, update) => {
+  const { request: { method, type, meta } } = context
+  let { key, salt, password } = record
 
   if (method === methods.create && !password)
     throw new errors.BadRequestError(`Password must be specified.`)
@@ -100,8 +99,9 @@ store.transformInput('user', (context, record) => {
   })
 
   .then(() => {
-    // If we're not updating the password, don't need to do more.
-    if (!password || method === methods.delete) return record
+    if (method === methods.delete) return null
+    if (!password) password = update.replace.password
+
     return generateSalt()
     .then(buffer => {
       salt = buffer
@@ -109,18 +109,19 @@ store.transformInput('user', (context, record) => {
     })
     .then(buffer => {
       key = buffer
-      record.key = key
-      record.salt = salt
-      if (method === methods.create) return record
-      return store.adapter.update(type, {
-        id, replace: { key, salt }
-      }).then(() => record)
+      if (method === methods.create) {
+        record.key = key
+        record.salt = salt
+        return record
+      }
+      update.replace = { key, salt }
+      return update
     })
   })
 })
 ```
 
-Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type. Arbitrary fields should be parsed on create and update but not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
+Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type, arbitrary fields are not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
 
 It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
 
