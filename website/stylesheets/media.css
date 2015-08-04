@@ -38,9 +38,3 @@
     display: none;
   }
 }
-
-@media screen and (max-width: 640px) {
-  body {
-    font-size: calc(var(--size-body) - 4px);
-  }
-}

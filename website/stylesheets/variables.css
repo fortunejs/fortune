@@ -17,8 +17,8 @@
   /* measurements */
   --max-width: 48em;
   --size-body: 16px;
-  --line-height: calc(1em * 5 / 3);
-  --mono-height: calc(1em * 4 / 3);
+  --line-height: calc(1em * 8 / 5);
+  --mono-height: calc(1em * 6 / 5);
   --border-radius: calc(1em / 2);
   --fade-speed: 0.15s;
 
