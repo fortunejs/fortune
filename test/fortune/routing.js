@@ -496,6 +496,25 @@ module.exports = function(options){
               });
           });
       });
+      it('should update fields the client knows about and leave intact the others', function(done){
+        request(baseUrl).get('/people/dilbert@mailbert.com')
+          .end(function(err,res){
+            should.not.exist(err);
+            var init = JSON.parse(res.text);
+            init.people[0].name.should.equal('Dilbert');
+            var upd = {people: [{appearances: 23}]};
+            request(baseUrl).put('/people/dilbert@mailbert.com')
+              .set('content-type', 'application/json')
+              .send(JSON.stringify(upd))
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                body.people[0].name.should.equal('Dilbert');
+                body.people[0].appearances.should.equal(23);
+                done();
+              });
+          });
+      });
     });
     describe('resources metadata', function(){
       it('should be able to expose resources metadata', function(done){
