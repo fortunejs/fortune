@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### Unreleased
+- Polish: do not send `Content-Type` header for `204` responses.
+
+
 ##### 1.0.0-rc.3 (2015-08-03)
 - Fix: when an update is modified in an input transform function, let the serializer know that the update has been modified and return the appropriate response.
 
