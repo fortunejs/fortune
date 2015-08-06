@@ -146,7 +146,7 @@ run(() => {
 })
 
 
-run.only(() => {
+run(() => {
   comment('create record')
   return fetchTest('/animals', {
     method: 'post',
