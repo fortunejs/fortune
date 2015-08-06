@@ -1,7 +1,8 @@
 # Changelog
 
 
-##### Unreleased
+##### 1.0.0-rc.4 (2015-08-06)
+- Fix: `change` event for created record shows ID instead of `undefined`. Thanks [@unindented](https://github.com/unindented) for reporting!
 - Polish: do not send `Content-Type` header for `204` responses.
 
 

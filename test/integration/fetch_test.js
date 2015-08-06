@@ -13,7 +13,7 @@ const port = 1337
 fetch.Promise = Promise
 
 
-export default (path, request, fn) => {
+export default (path, request, fn, change) => {
   let store
   let server
 
@@ -27,6 +27,9 @@ export default (path, request, fn) => {
 
   .then(instance => {
     store = instance
+
+    if (typeof change === 'function')
+      store.on(fortune.change, data => change(data, fortune.methods))
 
     const listener = fortune.net.http(store)
 

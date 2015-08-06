@@ -146,7 +146,7 @@ run(() => {
 })
 
 
-run(() => {
+run.only(() => {
   comment('create record')
   return fetchTest('/animals', {
     method: 'post',
@@ -172,6 +172,8 @@ run(() => {
       .toString(), 'This is a string.', 'buffer is correct')
     ok(Date.now() - new Date(response.body['@graph'][0].birthday)
       .getTime() < 60 * 1000, 'date is close enough')
+  }, (change, methods) => {
+    ok(change[methods.create].animal[0], 'created ID exists')
   })
 })
 
