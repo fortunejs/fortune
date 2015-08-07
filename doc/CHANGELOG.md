@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.0.0-rc.5 (2015-08-07)
+##### 1.0.0-rc.6 (2015-08-07)
 - Prevent document replacement in NeDB adapter if no updates are specified.
 
 
