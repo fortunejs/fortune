@@ -33,12 +33,12 @@ Network helpers may map external input to a request and map the response to an e
 | Implementation   | Author         | Description                             |
 |:-----------------|:---------------|:----------------------------------------|
 | [HTTP](http://fortunejs.com/api/#net-http) (included) | [0x8890](https://github.com/0x8890) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
-| [WebSocket](http://fortunejs.com/api/#net-websocket) (included) | [0x8890](https://github.com/0x8890) | WebSocket implementation which uses the `ws` module. |
+| [WebSocket](http://fortunejs.com/api/#net-websocket) (included) | [0x8890](https://github.com/0x8890) | Server-side WebSocket implementation which uses the `ws` module. |
 
 
 ### Browser
 
-Fortune includes a browser build, which comes with only an IndexedDB adapter and the default serializer. A CommonJS-compatible build pipeline is required to use it, along with a bundler that supports the `browser` feature of `package.json`.
+Fortune includes a browser build, which comes with the IndexedDB & WebStorage adapters and the default serializer. A CommonJS-compatible build pipeline is required to use it, along with a bundler that supports the `browser` feature of `package.json`.
 
 ```js
 import fortune from 'fortune' // Works in browser environment.

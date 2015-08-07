@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "High-level I/O library for web applications.",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",

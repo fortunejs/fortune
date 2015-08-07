@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-rc.5 (2015-08-07)
+- Prevent document replacement in NeDB adapter if no updates are specified.
+
+
 ##### 1.0.0-rc.4 (2015-08-06)
 - Fix: `change` event for created record shows ID instead of `undefined`. Thanks [@unindented](https://github.com/unindented) for reporting!
 - Polish: do not send `Content-Type` header for `204` responses.
