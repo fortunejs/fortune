@@ -1,0 +1,10 @@
+{
+  "name": "harvesterjs-examples",
+  "dependencies": {
+    "event-source-stream": "git+https://github.com/agco/event-source-stream.git",
+    "http-as-promised": "^1.0.0"
+  },
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC"
+}

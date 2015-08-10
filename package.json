@@ -1,7 +1,7 @@
 {
   "name": "harvesterjs",
   "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
-  "version": "0.3.1",
+  "version": "2.1.0",
   "license": "MIT",
   "author": {
     "name": "Kristof Sajdak",
@@ -19,30 +19,35 @@
     "url": "https://github.com/agco/harvesterjs"
   },
   "scripts": {
-    "test": "node test/runner mongodb://127.0.0.1:27017/ mongodb://127.0.0.1/local"
+    "test": "mocha"
   },
   "main": "./lib/harvester.js",
   "dependencies": {
+    "bluebird": "^2.9.27",
     "body-parser": "~1.4.3",
+    "debug": "^2.1.1",
     "express": "~4.6.1",
-    "lodash": "~2.4.1",
+    "i": "~0.3.2",
+    "joi": "^6.4.3",
+    "lodash": "~3.7.0",
+    "longjohn": "^0.2.4",
     "mkdirp": "~0.5.0",
     "mongodb": "^1.4.26",
     "mongojs": "^0.18.0",
-    "mongoose": "^3.8.0",
+    "mongoose": "3.8.25",
+    "node-uuid": "^1.4.3",
     "rsvp": "~3.0.9",
-    "underscore.string": "^2.4.0",
-    "i": "~0.3.2",
-    "debug": "^2.1.1",
-    "longjohn": "^0.2.4"
+    "tiny-sse": "0.0.0",
+    "underscore.string": "^2.4.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
     "chai-http": "^1.0.0",
+    "event-source-stream": "git+https://github.com/agco/event-source-stream.git",
+    "mocha": "~1.20.1",
     "coveralls": "^2.11.2",
     "http-as-promised": "^0.1.0",
     "istanbul": "^0.3.7",
-    "mocha": "~1.20.1",
     "mocha-lcov-reporter": "0.0.2",
     "nock": "^0.56.0",
     "profanity-util": "0.0.2",
