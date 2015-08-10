@@ -33,7 +33,6 @@ describe("includes", function () {
         return RSVP.all([
             link('/people/' + ids.people[0], '/people/0/soulmate', ids.people[1]), //TODO: harvester should take care about this on its own
             link('/people/' + ids.people[1], '/people/0/soulmate', ids.people[0]),
-
             link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
             link('/pets/' + ids.pets[0], '/pets/0/owner', [ids.people[0]]),
             link('/pets/' + ids.pets[0], '/pets/0/food', [ids.foobars[0]]),
