@@ -18,7 +18,7 @@ describe('sorting', function () {
         request(config.baseUrl).get('/people?sort=name').expect(200).end(function (err, res) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            _.pluck(body.people, "name").should.eql(["Dilbert", "Wally"]);
+            _.pluck(body.people, "name").should.eql(["Catbert", "Dilbert", "Wally"]);
             done();
         });
     });
@@ -27,7 +27,7 @@ describe('sorting', function () {
         request(config.baseUrl).get('/people?sort=-name').expect(200).end(function (err, res) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            _.pluck(body.people, "name").should.eql(["Wally", "Dilbert"]);
+            _.pluck(body.people, "name").should.eql(["Wally", "Dilbert", "Catbert"]);
             done();
         });
     });
@@ -36,7 +36,7 @@ describe('sorting', function () {
         request(config.baseUrl).get('/people?sort=appearances').expect(200).end(function (err, res) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            _.pluck(body.people, "name").should.eql(["Wally", "Dilbert"]);
+            _.pluck(body.people, "name").should.eql(["Catbert", "Wally", "Dilbert"]);
             done();
         });
     });

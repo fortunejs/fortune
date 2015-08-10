@@ -248,7 +248,7 @@ describe("filters", function () {
         request(config.baseUrl).get('/people?appearances=lt=1935').expect(200).end(function (err, res) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            (body.people.length).should.equal(1);
+            (body.people.length).should.equal(2);
             (body.people[0].name).should.equal('Wally');
             done();
         });
@@ -257,7 +257,7 @@ describe("filters", function () {
         request(config.baseUrl).get('/people?appearances=le=1934').expect(200).end(function (err, res) {
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            (body.people.length).should.equal(1);
+            (body.people.length).should.equal(2);
             (body.people[0].name).should.equal('Wally');
             done();
         });
