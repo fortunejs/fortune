@@ -55,22 +55,22 @@ run(() => {
 })
 
 
-run.only(() => {
+run(() => {
   comment('show individual record with encoded ID')
   return fetchTest(`/animals/%2Fwtf?${qs.stringify({
     'fields[animal]': 'birthday,type'
   })}`, {
-      method: 'get',
-      headers: { 'Accept': mediaType }
-    }, response => {
-      equal(response.status, 200, 'status is correct')
-      equal(response.headers.get('content-type'), mediaType,
-        'content type is correct')
-      equal(response.body['@graph'].length,
-        1, 'number of records correct')
-      equal(Object.keys(response.body['@graph'][0]).length,
-        6, 'number of fields correct')
-    })
+    method: 'get',
+    headers: { 'Accept': mediaType }
+  }, response => {
+    equal(response.status, 200, 'status is correct')
+    equal(response.headers.get('content-type'), mediaType,
+      'content type is correct')
+    equal(response.body['@graph'].length,
+      1, 'number of records correct')
+    equal(Object.keys(response.body['@graph'][0]).length,
+      6, 'number of fields correct')
+  })
 })
 
 

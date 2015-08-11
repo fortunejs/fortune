@@ -221,13 +221,13 @@ run(() => {
 run(() => {
   comment('show individual record with encoded ID')
   return fetchTest(`/animals/%2Fwtf`, {
-      method: 'get',
-      headers: { 'Accept': mediaType }
-    }, response => {
-      equal(response.status, 200, 'status is correct')
-      equal(response.body.links.self, '/animals/%2Fwtf', 'link is correct')
-      equal(response.body.data.id, '/wtf', 'id is correct')
-    })
+    method: 'get',
+    headers: { 'Accept': mediaType }
+  }, response => {
+    equal(response.status, 200, 'status is correct')
+    equal(response.body.links.self, '/animals/%2Fwtf', 'link is correct')
+    equal(response.body.data.id, '/wtf', 'id is correct')
+  })
 })
 
 
