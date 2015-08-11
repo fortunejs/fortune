@@ -16,5 +16,11 @@ export default [
     name: 'Sniffles',
     birthday: new Date(Date.UTC(2013, 5, 22)),
     owner: 2
+  },
+  {
+    id: '/wtf',
+    name: 'WTF',
+    birthday: new Date(Date.UTC(2020, 4, 20)),
+    type: 'Foobar'
   }
 ]

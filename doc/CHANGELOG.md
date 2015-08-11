@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-rc.7 (2015-08-11)
+- Fix: URI decoding bug when encoded characters are part of the path, not just the query. Thanks [@unindented](https://github.com/unindented) for reporting!
+
+
 ##### 1.0.0-rc.6 (2015-08-07)
 - Prevent document replacement in NeDB adapter if no updates are specified.
 

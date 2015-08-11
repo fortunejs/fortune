@@ -33,7 +33,7 @@ run(() => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
-    equal(Object.keys(response.body['@graph']).length,
+    equal(response.body['@graph'].length,
       3, 'number of records correct')
   })
 })
@@ -49,8 +49,27 @@ run(() => {
       equal(response.status, 200, 'status is correct')
       equal(response.headers.get('content-type'), mediaType,
         'content type is correct')
-      equal(Object.keys(response.body['@graph']).length,
+      equal(response.body['@graph'].length,
         3, 'number of records correct')
+    })
+})
+
+
+run.only(() => {
+  comment('show individual record with encoded ID')
+  return fetchTest(`/animals/%2Fwtf?${qs.stringify({
+    'fields[animal]': 'birthday,type'
+  })}`, {
+      method: 'get',
+      headers: { 'Accept': mediaType }
+    }, response => {
+      equal(response.status, 200, 'status is correct')
+      equal(response.headers.get('content-type'), mediaType,
+        'content type is correct')
+      equal(response.body['@graph'].length,
+        1, 'number of records correct')
+      equal(Object.keys(response.body['@graph'][0]).length,
+        6, 'number of fields correct')
     })
 })
 
@@ -98,7 +117,7 @@ run(() => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
-    equal(Object.keys(response.body['@graph']).length,
+    equal(response.body['@graph'].length,
       2, 'number of records correct')
   })
 })
