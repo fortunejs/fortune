@@ -106,4 +106,11 @@ describe("includes", function () {
             });
         });
     });
+
+    describe('empty inclusion array', function () {
+        it('should NOT throw error', function () {
+            var includes = require('../lib/includes.js')(this.harvesterApp, this.harvesterApp._schema);
+            includes.linked({people: []}, []);
+        });
+    });
 });
