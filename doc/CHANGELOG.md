@@ -1,8 +1,8 @@
 # Changelog
 
 
-##### 1.0.0-rc.9 (2015-08-13)
-- Allow `delete` method even if IDs are unspecified.
+##### 1.0.0-rc.10 (2015-08-13)
+- Allow `delete` method even if IDs are unspecified. A `delete` request with IDs unspecified will not return any records, but will emit a change event indicating the type deleted with a null value.
 
 
 ##### 1.0.0-rc.7 (2015-08-11)
