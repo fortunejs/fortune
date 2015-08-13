@@ -9,8 +9,10 @@
   },
   "homepage": "http://fortunejs.com",
   "repository": {
-    "type": "git",
-    "url": "git@github.com:fortunejs/fortune.git"
+    "url": "https://github.com/replicon/fortune"
+  },
+  "publishConfig": {
+    "registry": "https://replicon.myget.org/F/replicon/npm/"
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
@@ -23,7 +25,6 @@
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
     "build:website": "babel-node website/build",
     "prepublish": "npm run clean && npm run build",
-    "postpublish": "npm run deploy:website",
     "test": "npm run test:lint && npm run test:server && npm run test:browser",
     "test:server": "npm run build && node dist/test | tap-dot",
     "test:browser": "browserify test/browser.js | tape-run -b firefox | tap-dot",
