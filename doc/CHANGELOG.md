@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-rc.8 (2015-08-13)
+- Allow `delete` method even if IDs are unspecified.
+
+
 ##### 1.0.0-rc.7 (2015-08-11)
 - Fix: URI decoding bug when encoded characters are part of the path, not just the query. Thanks [@unindented](https://github.com/unindented) for reporting!
 
