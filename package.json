@@ -74,6 +74,12 @@
     "LICENSE"
   ],
   "main": "dist/lib/index.js",
+  "babel": {
+    "nonStandard": false,
+    "optional": [
+      "runtime"
+    ]
+  },
   "browser": "dist/lib/browser.js",
   "browserify": {
     "transform": [
