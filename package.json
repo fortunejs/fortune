@@ -1,5 +1,5 @@
 {
-  "name": "fortune",
+  "name": "replicon-fortune",
   "description": "High-level I/O library for web applications.",
   "version": "1.0.0-rc.5",
   "license": "MIT",
