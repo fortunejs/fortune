@@ -1,4 +1,4 @@
-import { fail, comment, run } from 'tapdance'
+import { fail, pass, comment, run } from 'tapdance'
 import DefaultSerializer from '../../lib/serializer/default'
 import * as errors from '../../lib/common/errors'
 import { deepEqual, ok } from '../helpers'
@@ -66,9 +66,9 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { ids: [] } }),
     'ids can\'t be specified in ids field')
-  fail(() =>
-    serializer.parseCreate({ request: { payload: [] } }),
-    'records must be specified')
+  pass(() =>
+    serializer.parseCreate({ request: { payload: null } }),
+    'payload may be empty')
   deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
 })
@@ -80,9 +80,9 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { ids: [] } }),
     'ids can\'t be specified in ids field')
-  fail(() =>
-    serializer.parseCreate({ request: { payload: [] } }),
-    'updates must be specified')
+  pass(() =>
+    serializer.parseCreate({ request: { payload: null } }),
+    'payload may be empty')
   deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
 })
