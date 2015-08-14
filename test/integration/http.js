@@ -13,17 +13,11 @@ const port = 1337
 fetch.Promise = Promise
 
 
-export default (path, request, fn, change) => {
+export default function httpTest (options, path, request, fn, change) {
   let store
   let server
 
-  return testInstance({
-    serializers: [
-      { type: fortune.serializers.JSONAPI },
-      { type: fortune.serializers.MicroAPI,
-        options: { obfuscateURIs: false } }
-    ]
-  })
+  return testInstance(options)
 
   .then(instance => {
     store = instance
@@ -42,10 +36,10 @@ export default (path, request, fn, change) => {
     let headers
     let status
 
-    if (typeof request.body === 'object') {
+    if (request && typeof request.body === 'object') {
       request.body = JSON.stringify(request.body)
       if (!request.headers) request.headers = {}
-      request.headers['Content-Length'] = request.body.length
+      request.headers['Content-Length'] = Buffer.byteLength(request.body)
     }
 
     return fetch(`http://localhost:${port}${path}`, request)
@@ -80,7 +74,6 @@ export default (path, request, fn, change) => {
 
   .catch(error => {
     stderr.error(error)
-    if (store) store.disconnect()
     if (server) server.close()
     fail(error)
   })

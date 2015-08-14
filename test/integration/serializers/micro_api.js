@@ -1,18 +1,19 @@
 import qs from 'querystring'
 import { run, comment } from 'tapdance'
 import { ok, deepEqual, equal } from '../../helpers'
-import fetchTest from '../fetch_test'
+import httpTest from '../http'
+import microApi from '../../../lib/serializer/serializers/micro_api'
 
 
 const mediaType = 'application/vnd.micro+json'
+const test = httpTest.bind(null, {
+  serializers: [ { type: microApi, options: { obfuscateURIs: false } } ]
+})
 
 
 run(() => {
   comment('show index')
-  return fetchTest('/', {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/', null, response => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
@@ -26,10 +27,7 @@ run(() => {
 
 run(() => {
   comment('show collection')
-  return fetchTest('/users', {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users', null, response => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
@@ -41,28 +39,23 @@ run(() => {
 
 run(() => {
   comment('show individual record with include')
-  return fetchTest(`/users/1?${qs.stringify({
-    'include': 'spouse,spouse.friends' })}`, {
-      method: 'get',
-      headers: { 'Accept': mediaType }
-    }, response => {
-      equal(response.status, 200, 'status is correct')
-      equal(response.headers.get('content-type'), mediaType,
-        'content type is correct')
-      equal(response.body['@graph'].length,
-        3, 'number of records correct')
-    })
+  return test(`/users/1?${qs.stringify({
+    'include': 'spouse,spouse.friends'
+  })}`, null, response => {
+    equal(response.status, 200, 'status is correct')
+    equal(response.headers.get('content-type'), mediaType,
+      'content type is correct')
+    equal(response.body['@graph'].length,
+      3, 'number of records correct')
+  })
 })
 
 
 run(() => {
   comment('show individual record with encoded ID')
-  return fetchTest(`/animals/%2Fwtf?${qs.stringify({
+  return test(`/animals/%2Fwtf?${qs.stringify({
     'fields[animal]': 'birthday,type'
-  })}`, {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  })}`, null, response => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
@@ -76,44 +69,37 @@ run(() => {
 
 run(() => {
   comment('sort a collection and use sparse fields')
-  return fetchTest(
+  return test(
   `/users?${qs.stringify({
     'sort': 'birthday,-name',
-    'fields[user]': 'name,birthday' })}`, {
-      method: 'get',
-      headers: { 'Accept': mediaType }
-    }, response => {
-      equal(response.status, 200, 'status is correct')
-      deepEqual(
-        response.body['@graph'].map(record => record.name),
-        [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
-        'sort order is correct')
-    })
+    'fields[user]': 'name,birthday'
+  })}`, null, response => {
+    equal(response.status, 200, 'status is correct')
+    deepEqual(
+      response.body['@graph'].map(record => record.name),
+      [ 'John Doe', 'Microsoft Bob', 'Jane Doe' ],
+      'sort order is correct')
+  })
 })
 
 
 run(() => {
   comment('match on a collection')
-  return fetchTest(`/users?${qs.stringify({
+  return test(`/users?${qs.stringify({
     'match[name]': 'John Doe',
-    'match[birthday]': '1992-12-07' })}`, {
-      method: 'get',
-      headers: { 'Accept': mediaType }
-    }, response => {
-      equal(response.status, 200, 'status is correct')
-      deepEqual(
-        response.body['@graph'].map(record => record.name).sort(),
-        [ 'John Doe' ], 'match is correct')
-    })
+    'match[birthday]': '1992-12-07'
+  })}`, null, response => {
+    equal(response.status, 200, 'status is correct')
+    deepEqual(
+      response.body['@graph'].map(record => record.name).sort(),
+      [ 'John Doe' ], 'match is correct')
+  })
 })
 
 
 run(() => {
   comment('show related records')
-  return fetchTest('/users/2/ownedPets', {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users/2/ownedPets', null, response => {
     equal(response.status, 200, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
@@ -125,10 +111,7 @@ run(() => {
 
 run(() => {
   comment('find an empty collection')
-  return fetchTest(encodeURI('/☯s'), {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test(encodeURI('/☯s'), null, response => {
     equal(response.status, 200, 'status is correct')
     ok(Array.isArray(response.body['@graph']) &&
       !response.body['@graph'].length,
@@ -139,10 +122,7 @@ run(() => {
 
 run(() => {
   comment('find a single non-existent record')
-  return fetchTest('/users/4', {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users/4', null, response => {
     equal(response.status, 404, 'status is correct')
     ok('@error' in response.body, 'error object exists')
     equal(response.body['@error'].name, 'NotFoundError', 'name is correct')
@@ -153,10 +133,7 @@ run(() => {
 
 run(() => {
   comment('find a collection of non-existent related records')
-  return fetchTest('/users/3/ownedPets', {
-    method: 'get',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users/3/ownedPets', null, response => {
     equal(response.status, 200, 'status is correct')
     ok(Array.isArray(response.body['@graph']) &&
       !response.body['@graph'].length,
@@ -167,9 +144,9 @@ run(() => {
 
 run(() => {
   comment('create record')
-  return fetchTest('/animals', {
+  return test('/animals', {
     method: 'post',
-    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
+    headers: { 'Content-Type': mediaType },
     body: {
       '@graph': [ {
         '@type': 'animal',
@@ -199,9 +176,9 @@ run(() => {
 
 run(() => {
   comment('create record with existing ID should fail')
-  return fetchTest('/user', {
+  return test('/user', {
     method: 'post',
-    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
+    headers: { 'Content-Type': mediaType },
     body: {
       '@graph': [ { '@type': 'user', id: 1 } ]
     }
@@ -216,9 +193,9 @@ run(() => {
 
 run(() => {
   comment('create record on wrong route should fail')
-  return fetchTest('/users/1', {
+  return test('/users/1', {
     method: 'post',
-    headers: { 'Accept': mediaType, 'Content-Type': mediaType }
+    headers: { 'Content-Type': mediaType }
   }, response => {
     equal(response.status, 405, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
@@ -232,10 +209,7 @@ run(() => {
 
 run(() => {
   comment('create record with wrong type should fail')
-  return fetchTest('/users', {
-    method: 'post',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users', { method: 'post' }, response => {
     equal(response.status, 415, 'status is correct')
     equal(response.headers.get('content-type'), mediaType,
       'content type is correct')
@@ -246,9 +220,9 @@ run(() => {
 
 run(() => {
   comment('update record')
-  return fetchTest('/users/2', {
+  return test('/users/2', {
     method: 'patch',
-    headers: { 'Accept': mediaType, 'Content-Type': mediaType },
+    headers: { 'Content-Type': mediaType },
     body: {
       '@graph': [ {
         '@type': 'user',
@@ -269,10 +243,7 @@ run(() => {
 
 run(() => {
   comment('delete a single record')
-  return fetchTest('/animals/3', {
-    method: 'delete',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/animals/3', { method: 'delete' }, response => {
     equal(response.status, 204, 'status is correct')
   })
 })
@@ -280,10 +251,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: index')
-  return fetchTest('/', {
-    method: 'options',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/', { method: 'options' }, response => {
     equal(response.status, 204, 'status is correct')
     equal(response.headers.get('allow'),
       'GET', 'allow header is correct')
@@ -293,10 +261,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: collection')
-  return fetchTest('/users', {
-    method: 'options',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users', { method: 'options' }, response => {
     equal(response.status, 204, 'status is correct')
     equal(response.headers.get('allow'),
       'GET, POST, PATCH, DELETE', 'allow header is correct')
@@ -306,10 +271,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: IDs')
-  return fetchTest('/users/3', {
-    method: 'options',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users/3', { method: 'options' }, response => {
     equal(response.status, 204, 'status is correct')
     equal(response.headers.get('allow'),
       'GET, PATCH, DELETE', 'allow header is correct')
@@ -319,10 +281,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: related')
-  return fetchTest('/users/3/ownedPets', {
-    method: 'options',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/users/3/ownedPets', { method: 'options' }, response => {
     equal(response.status, 204, 'status is correct')
     equal(response.headers.get('allow'),
       'GET, PATCH, DELETE', 'allow header is correct')
@@ -332,10 +291,7 @@ run(() => {
 
 run(() => {
   comment('respond to options: fail')
-  return fetchTest('/foo', {
-    method: 'options',
-    headers: { 'Accept': mediaType }
-  }, response => {
+  return test('/foo', { method: 'options' }, response => {
     equal(response.status, 404, 'status is correct')
   })
 })

@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.0-rc.11 (2015-08-15)
+- Harden serializer error handling, now rendered errors will never leak native errors, but `catch` handler will always receive the actual error.
+- Implemented ad-hoc JSON-over-HTTP serializer, intended to be the new included default serializer.
+
+
 ##### 1.0.0-rc.10 (2015-08-13)
 - Allow `delete` method even if IDs are unspecified. A `delete` request with IDs unspecified will not return any records, but will emit a change event indicating the type deleted with a null value.
 
