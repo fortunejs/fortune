@@ -28,7 +28,7 @@ module.exports = function(opts){
           var body = JSON.parse(res.text);
           body.meta.sins.should.be.an.Array;
           body.meta.sins.length.should.equal(1);
-          body.meta.sins[0].should.equal('Dilbert is sinner');
+          body.meta.sins[0].should.equal('Dilbert is a sinner');
           done();
         });
     });

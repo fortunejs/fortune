@@ -300,6 +300,46 @@ module.exports = function(options, port, ioPort) {
     })
   });
 
+  app.addMetadataProvider({
+    key: 'ping',
+    init: function(){
+      return function(req, res){
+        return 'pong';
+      }
+    }
+  });
+
+  app.addMetadataProvider({
+    key: 'sync',
+    init: function(){return function(){return 'sync'}}
+  });
+
+  app.addMetadataProvider({
+    key: 'async',
+    init: function(){
+      return function(){
+        return new RSVP.Promise(function(resolve){
+          setImmediate(function(){
+            resolve('async');
+          });
+        });
+      }
+    }
+  });
+
+  app.addMetadataProvider({
+    key: 'sins',
+    init: function(){
+      return function(req, res){
+        var resource = req.path.split('/')[1];
+        if (resource !== 'people') return [];
+        return _.map(this[resource], function(item){
+          return item.name + ' is a sinner';
+        });
+      }
+    }
+  });
+
   return app;
 };
 
