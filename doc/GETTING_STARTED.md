@@ -1,8 +1,6 @@
 # Getting Started
 
-Fortune provides generic features (mostly [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and [serialization](https://en.wikipedia.org/wiki/Serialization)) intended to be used in web applications, or [*skins around databases*](https://www.reddit.com/r/programming/comments/1a2mf7/programming_is_terriblelessons_learned_from_a/c8tjzl5) for the haters. The purpose is to provide data persistence and manipulation given a set of record types that conform to [some limitations](http://fortunejs.com/api/#fortune-definetype).
-
-The first thing you'll have to do is install [Node.js](https://nodejs.org/) (if you're on Linux, install `nodejs` from your package manager). Optionally, you will need [Babel](http://babeljs.io) to run ES6 code:
+The first thing you'll have to do is install [Node.js](https://nodejs.org/) (if you're on Linux, install `nodejs` from your package manager). Optionally, you will need an ES6 transpiler such as [Babel](http://babeljs.io) to run ES6 code:
 
 ```sh
 $ npm install -g babel
@@ -26,7 +24,7 @@ const store = fortune.create()
 We don't need to pass any arguments to the constructor for now, the defaults should work.
 
 
-## Linking
+## Entity-relationship Modelling
 
 The instance must have record types to be useful. Let's start with a basic example:
 
@@ -170,3 +168,5 @@ $ curl -X GET -H "Accept: application/json" -v http://localhost:1337
 ```
 
 The response should be an enumeration of types. Subsequent requests are templated: `/:type/:ids`. IDs may be comma separated.
+
+It is advisable to use a hypermedia format over the wire, such as [Micro API](http://micro-api.org), there is [a serializer available](https://github.com/fortunejs/fortune-micro-api). Also it would be useful to persist data to disk, consult the [plugins page](http://fortunejs.com/plugins/) for more information.
