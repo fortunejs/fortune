@@ -6,6 +6,11 @@
   overflow: hidden;
 }
 
+.api h6:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+
 .api h6 em {
   text-decoration: underline;
 }
