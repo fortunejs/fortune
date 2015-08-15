@@ -22,9 +22,10 @@ Serializers process data, they must subclass and implement the Serializer class.
 
 | Serializer       | Description                                              |
 |:-----------------|:---------------------------------------------------------|
+| Default (included, default) | Standard serializer for programmatic use. |
 | Ad-hoc JSON-over-HTTP (included, default) | A thin mapping of Fortune over HTTP. |
 | [Micro API](https://github.com/fortunejs/fortune-micro-api) [[spec](http://micro-api.org)] | A minimal serialization format for hypermedia APIs. |
-| [JSON API](https://github.com/fortunejs/fortune-json-api) [[spec](http://jsonapi.org)] | Tracking JSON API 1.0, useful for clients such as [Ember Data](https://github.com/emberjs/data). |
+| [JSON API](https://github.com/fortunejs/fortune-json-api) [[spec](http://jsonapi.org)] | JSON API 1.0 compatible, useful for clients such as [Ember Data](https://github.com/emberjs/data). |
 
 
 ### Networking
