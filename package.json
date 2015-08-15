@@ -75,6 +75,11 @@
   ],
   "main": "dist/lib/index.js",
   "babel": {
+    "ignore": [
+      "test/adapter.js",
+      "test/harness.js",
+      "test/http.js"
+    ],
     "nonStandard": false,
     "optional": [
       "runtime"
