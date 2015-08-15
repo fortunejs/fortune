@@ -2,7 +2,7 @@
 
 *This file is marked for deletion after 1.0.*
 
-- Implement memory adapter, move NeDB, IndexedDB, and Web Storage adapters out of core.
+- Implement memory adapter, move NeDB adapter out of core.
 - Consider using ES7 features (?)
 - 100% test coverage.
 

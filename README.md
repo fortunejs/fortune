@@ -59,4 +59,4 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
 ## License
 
-Fortune is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE).
+This software is licensed under the [MIT license](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE).
