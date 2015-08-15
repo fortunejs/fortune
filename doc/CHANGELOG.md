@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.0.0-rc.11 (2015-08-15)
+##### 1.0.0-rc.12 (2015-08-15)
 - Harden serializer error handling, now rendered errors will never leak native errors, but `catch` handler will always receive the actual error.
 - Implemented ad-hoc JSON-over-HTTP serializer, intended to be the new included default serializer.
 
