@@ -3,13 +3,13 @@
 *This file is marked for deletion after 1.0.*
 
 - Implement memory adapter, move NeDB, IndexedDB, and Web Storage adapters out of core.
-- Remove Micro API and JSON API serializers from core, move to separate modules.
 - Consider using ES7 features (?)
 - 100% test coverage.
 
 
 ### Done
 
+- Remove Micro API and JSON API serializers from core, move to separate modules.
 - Refactor `castValue` to be more generic, inject into serializer as common dependency, remove `castString`.
 - Improve inflection to also use dasherize.
 - Test the default serializer.
