@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.0.0-rc.14 (2015-08-15)
+- Implemented memory adapter, which replaces NeDB as the default adapter.
+- Breaking change: removed NeDB adapter, now belongs to a separate module: `fortune-nedb`.
+- Breaking change: browser build now defaults to memory adapter.
+
+
 ##### 1.0.0-rc.13 (2015-08-15)
 - Breaking change: remove Micro API and JSON API serializers from this package, they are now external modules: `fortune-micro-api` and `fortune-json-api`.
 

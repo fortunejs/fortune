@@ -9,8 +9,8 @@ import { ok } from './helpers'
 run(() => {
   comment('can run in browser')
 
-  ok('IndexedDB' in fortune.adapters, 'indexeddb adapter exists')
-  ok('WebStorage' in fortune.adapters, 'web storage adapter exists')
+  ok('indexedDB' in fortune.adapters, 'indexeddb adapter exists')
+  ok('webStorage' in fortune.adapters, 'web storage adapter exists')
 
   const store = fortune.create()
 
