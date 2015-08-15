@@ -174,10 +174,10 @@ footer p {
 #corner {
   position: absolute;
   top: calc(var(--line-height) * -4 / 3);
-  right: calc(-10em / (2 * 0.707106781));
+  right: calc(-9.6em / (2 * 0.707106781));
   transform: rotate(45deg);
   transform-origin: 0 0;
-  width: 15.2em;
+  width: 15em;
   line-height: calc(var(--line-height) * 4 / 3);
   text-align: center;
   display: block;

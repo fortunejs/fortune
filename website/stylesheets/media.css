@@ -1,6 +1,6 @@
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   body {
-    font-size: calc(var(--size-body) - 3px);
+    font-size: calc(var(--size-body) - 2px);
   }
 
   header {
@@ -35,6 +35,19 @@
   }
 
   #corner {
+    top: calc(var(--line-height) * -4 / 3);
+    right: calc(-6.8em / (2 * 0.707106781));
+    width: 9em;
+  }
+
+  #corner span {
     display: none;
+  }
+}
+
+
+@media screen and (max-width: 640px) {
+  body {
+    font-size: calc(var(--size-body) - 3px);
   }
 }
