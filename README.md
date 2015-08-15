@@ -9,10 +9,8 @@ Fortune is a high-level I/O library for web applications.
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
 ```sh
-$ npm install fortune@latest --save
+$ npm install fortune --save
 ```
-
-Currently in *release candidate* stage. Things may break, check the [changelog](http://fortunejs.com/changelog/).
 
 
 ## Example

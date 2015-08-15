@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0 (2015-08-15)
+- Initial release of major version.
+
+
 ##### 1.0.0-rc.14 (2015-08-15)
 - Implemented memory adapter, which replaces NeDB as the default adapter.
 - Breaking change: removed NeDB adapter, now belongs to a separate module: `fortune-nedb`.

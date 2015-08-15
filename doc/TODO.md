@@ -1,7 +1,5 @@
 # To-do list
 
-*This file is marked for deletion after 1.0.*
-
 - Consider using ES7 features (?)
 - 100% test coverage.
 
