@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is a high-level I/O library for web applications.
+Fortune is a high-level I/O library for web applications. It provides an implementation of [entity-relationship modelling](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model), is agnostic about data storage, and can be used to power [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([REST Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)).
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -48,7 +48,7 @@ store.defineType('post', {
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an *ad hoc* HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) and [JSON API](https://github.com/fortunejs/fortune-json-api).
+This yields an *ad hoc* HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (hypermedia) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
 By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
 
