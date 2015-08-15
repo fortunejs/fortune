@@ -166,7 +166,7 @@ $ babel-node .
 Making a cURL request to the server:
 
 ```sh
-$ curl -X GET -H "Accept: application/vnd.micro+json" -v http://localhost:1337
+$ curl -X GET -H "Accept: application/json" -v http://localhost:1337
 ```
 
-The response should be the entry point, in [Micro API](http://micro-api.org/#entry-point) format. Every Micro API entity includes hyperlinks, so the API should be mostly self-discoverable.
+The response should be an enumeration of types. Subsequent requests are templated: `/:type/:ids`. IDs may be comma separated.
