@@ -1,7 +1,7 @@
 import { fail, pass, comment, run } from 'tapdance'
 import DefaultSerializer from '../../lib/serializer/default'
 import * as errors from '../../lib/common/errors'
-import { deepEqual, ok } from '../helpers'
+import { equal, deepEqual } from '../helpers'
 
 
 const recordTypes = { foo: {}, bar: {} }
@@ -55,8 +55,8 @@ run(() => {
 
   serializer.showError(context, error)
 
-  ok(~context.response.payload.indexOf('TypeError'), 'error name displayed')
-  ok(~context.response.payload.indexOf('wtf'), 'error message displayed')
+  equal(context.response.payload.name, 'TypeError', 'error name displayed')
+  equal(context.response.payload.message, 'wtf', 'error message displayed')
 })
 
 
