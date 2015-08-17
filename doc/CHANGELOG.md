@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.2 (2015-08-17)
+- Improvement: default priority of adapters in browser build: IndexedDB -> WebStorage -> memory adapter.
+
+
 ##### 1.0.1 (2015-08-17)
 - Fix: improve error handling for edge cases, so that they are not swallowed.
 - Polish: drop `babel-eslint`.
