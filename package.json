@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "High-level I/O for web applications.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -22,12 +22,12 @@
     "build:lib": "mkdirp dist/lib && babel lib --out-dir dist/lib",
     "build:test": "mkdirp dist/test && babel test --out-dir dist/test",
     "build:website": "babel-node website/build",
+    "lint": "eslint lib test website",
     "prepublish": "npm run clean && npm run build",
     "postpublish": "npm run deploy:website",
-    "test": "npm run test:lint && npm run test:server && npm run test:browser",
+    "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "npm run build && node dist/test | tap-dot",
     "test:browser": "browserify test/browser.js | tape-run -b firefox | tap-dot",
-    "test:lint": "eslint lib test website",
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "babel": "^5.8.21",
-    "babel-eslint": "^4.0.5",
     "babelify": "^6.1.3",
     "browserify": "^11.0.1",
     "cssnext": "^1.8.3",

@@ -174,22 +174,20 @@ for (let file of fs.readdirSync(docPath)) {
   }
 }
 
-(() => {
-  const readme = fs.readFileSync(
-    path.join(__dirname, '..', 'README.md')).toString()
+const readme = fs.readFileSync(
+  path.join(__dirname, '..', 'README.md')).toString()
 
-  const example = (/(## Example([\s\S]+)(?=\n#))/g).exec(readme)[2]
+const example = (/(## Example([\s\S]+)(?=\n#))/g).exec(readme)[2]
 
-  docs.readme = {
-    root: './',
-    title: 'Fortune.js',
-    year, api,
-    description: pkg.description,
-    keywords: pkg.keywords.join(','),
-    content: mustache.render(templates.home, { version: pkg.version }) +
-      marked(example, markedOptions)
-  }
-})()
+docs.readme = {
+  root: './',
+  title: 'Fortune.js',
+  year, api,
+  description: pkg.description,
+  keywords: pkg.keywords.join(','),
+  content: mustache.render(templates.home, { version: pkg.version }) +
+    marked(example, markedOptions)
+}
 
 
 // Copy assets
@@ -205,15 +203,13 @@ for (let file of fs.readdirSync(assetPath))
 // Build stylesheets
 // =================
 
-; (() => {
-  const inputFile = path.join(stylesheetPath, 'index.css')
+const cssEntryPoint = path.join(stylesheetPath, 'index.css')
 
-  fs.writeFileSync(path.join(outputPath, 'assets/index.css'),
-    cssnext(fs.readFileSync(inputFile).toString(), {
-      compress: true,
-      from: path.join(stylesheetPath, 'index.css')
-    }))
-})()
+fs.writeFileSync(path.join(outputPath, 'assets/index.css'),
+  cssnext(fs.readFileSync(cssEntryPoint).toString(), {
+    compress: true,
+    from: path.join(stylesheetPath, 'index.css')
+  }))
 
 
 // Build the pages
