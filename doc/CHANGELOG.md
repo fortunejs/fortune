@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.0.1 (2015-08-17)
+- Fix: improve error handling for edge cases, so that they are not swallowed.
+- Polish: drop `babel-eslint`.
+
+
 ##### 1.0.0 (2015-08-15)
 - Initial release of major version.
 
