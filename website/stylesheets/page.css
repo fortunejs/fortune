@@ -1,9 +1,8 @@
 @custom-selector :--header h1, h2, h3, h4, h5, h6;
 
 html, body {
-  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 body {
@@ -95,6 +94,7 @@ header {
   background-color: var(--color-accent);
   text-align: center;
   padding-top: calc(var(--line-height) * 4 / 2);
+  overflow: hidden;
 }
 
 header > a {
