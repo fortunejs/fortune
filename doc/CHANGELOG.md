@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.3 (2015-08-18)
+- Minor bugfix: do not mutate update object in the request payload.
+
+
 ##### 1.0.2 (2015-08-17)
 - Improvement: default priority of adapters in browser build: IndexedDB -> WebStorage -> memory adapter.
 
