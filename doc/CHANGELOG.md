@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.4 (2015-08-19)
+- Improvement: do not run `prepublish` script.
+
+
 ##### 1.0.3 (2015-08-18)
 - Minor bugfix: do not mutate update object in the request payload.
 
