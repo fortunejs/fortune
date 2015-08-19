@@ -1,8 +1,8 @@
 # Changelog
 
 
-##### 1.0.4 (2015-08-19)
-- Improvement: do not run `prepublish` script.
+##### 1.0.5 (2015-08-19)
+- Improvement: do not run `prepublish` script on install.
 
 
 ##### 1.0.3 (2015-08-18)
