@@ -48,7 +48,7 @@
     "browserify": "^11.0.1",
     "cssnext": "^1.8.3",
     "docchi": "^0.11.0",
-    "eslint": "^1.2.0",
+    "eslint": "^1.2.1",
     "highlight.js": "^8.7.0",
     "html-minifier": "^0.7.2",
     "http-server": "^0.8.0",
