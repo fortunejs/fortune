@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.1.0 (2015-08-20)
+- Feature: pass request meta-data to adapters. Thanks [@avens19](https://github.com/avens19)!
+- Revert: do run `prepublish` on install.
+
+
 ##### 1.0.5 (2015-08-19)
 - Improvement: do not run `prepublish` script on install.
 
