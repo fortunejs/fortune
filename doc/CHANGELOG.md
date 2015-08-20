@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.1 (2015-08-20)
+- Fix: sorting implementation in built-in adapters.
+
+
 ##### 1.1.0 (2015-08-20)
 - Feature: pass request meta-data to adapters. Thanks [@avens19](https://github.com/avens19)!
 - Revert: do run `prepublish` on install.

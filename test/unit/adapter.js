@@ -1,6 +1,6 @@
 import { fail, comment, run } from 'tapdance'
 import Adapter from '../../lib/adapter'
-import * as arrayProxy from '../../lib/common/array_proxy'
+import { find, includes } from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
@@ -78,7 +78,7 @@ export default function () {
           'number type is correct')
         deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] },
           'object value is correct')
-        ok(!arrayProxy.includes(Object.keys(records[0],
+        ok(!includes(Object.keys(records[0],
           '__user_nemesis_inverse')), 'denormalized fields not enumerable')
       }))
   })
@@ -149,19 +149,19 @@ export default function () {
   })
 
   run(() => {
-    comment('find: limit')
+    comment('find: sort combination')
     return test(adapter =>
-      adapter.find(type, null, { limit: 1, sort: { name: true } })
+      adapter.find(type, null, { sort: { age: true, name: true } })
       .then(records => {
-        equal(records[0].name, 'bob', 'record is correct')
-        equal(records.length, 1, 'limit length is correct')
+        deepEqual(records.map(record => record.age), [ 36, 42 ],
+          'sort order is correct')
       }))
   })
 
   run(() => {
-    comment('find: offset')
+    comment('find: offset + limit')
     return test(adapter =>
-      adapter.find(type, null, { offset: 1, sort: { name: true } })
+      adapter.find(type, null, { offset: 1, limit: 1, sort: { name: true } })
       .then(records => {
         equal(records[0].name, 'john', 'record is correct')
         equal(records.length, 1, 'offset length is correct')
@@ -245,6 +245,11 @@ export default function () {
         id = records[0][keys.primary]
         testIds(records, 'id type is correct')
 
+        equal(records[0].picture, null,
+          'missing singular value is null')
+        deepEqual(records[0].nicknames, [],
+          'missing array value is empty array')
+
         return adapter.find(type, [ id ])
       })
       .then(records => {
@@ -289,7 +294,7 @@ export default function () {
         return adapter.find(type)
       })
       .then(records => {
-        deepEqual(arrayProxy.find(records, record =>
+        deepEqual(find(records, record =>
           record[keys.primary] === 2).nicknames, [ 'pepe' ], 'array updated')
         equal(records.filter(record => record.name !== 'billy').length,
           0, 'field updated on set')
@@ -326,7 +331,7 @@ export default function () {
       })
       .then(records => {
         equal(records.filter(record =>
-          arrayProxy.includes(record.friends, 5)).length,
+          includes(record.friends, 5)).length,
           records.length, 'value pushed')
       }))
   })
@@ -387,17 +392,7 @@ function runTest (a, options = {}, fn) {
   return adapter.connect()
   .then(() => adapter.delete(type))
   .then(() => adapter.create(type, records))
-  .then(r => {
-    equal(r.length, records.length,
-      'number created is correct')
-    equal(
-      arrayProxy.find(r, record => record[keys.primary] === 1).picture, null,
-      'missing singular value is null')
-    deepEqual(
-      arrayProxy.find(r, record => record[keys.primary] === 1).nicknames, [],
-      'missing array value is empty array')
-    return fn(adapter)
-  })
+  .then(() => fn(adapter))
   .then(() => adapter.delete(type,
     records.map(record => record[keys.primary])))
   .then(() => adapter.disconnect())
@@ -410,7 +405,7 @@ function runTest (a, options = {}, fn) {
 
 
 function testIds (records, message) {
-  equal(arrayProxy.find(records.map(record =>
-    arrayProxy.includes([ 'string', 'number' ], typeof record[keys.primary])),
+  equal(find(records.map(record =>
+    includes([ 'string', 'number' ], typeof record[keys.primary])),
     b => !b), undefined, message)
 }
