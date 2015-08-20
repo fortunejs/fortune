@@ -110,7 +110,7 @@ export default function () {
   run(() => {
     comment('find: match (string)')
     return test(adapter =>
-      adapter.find(type, null, { match: { name: 'john' } })
+      adapter.find(type, null, { match: { name: [ 'john', 'xyz' ], age: 36 } })
       .then(records => {
         equal(records.length, 1, 'match length is correct')
         equal(records[0].name, 'john', 'matched correct record')
@@ -125,6 +125,15 @@ export default function () {
         equal(records.length, 1, 'match length is correct')
         ok(records[0].picture.equals(deadbeef),
           'matched correct record')
+      }))
+  })
+
+  run(() => {
+    comment('find: match (nothing)')
+    return test(adapter =>
+      adapter.find(type, null, { match: { name: 'bob', age: 36 } })
+      .then(records => {
+        equal(records.length, 0, 'match length is correct')
       }))
   })
 

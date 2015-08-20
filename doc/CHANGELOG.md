@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.1.1 (2015-08-20)
+##### 1.1.2 (2015-08-20)
 - Fix: sorting implementation in built-in adapters.
+- Fix: matching implementation in built-in adapters.
 
 
 ##### 1.1.0 (2015-08-20)
