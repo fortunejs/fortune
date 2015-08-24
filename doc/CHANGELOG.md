@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.4 (2015-08-24)
+- Fix: use `deep-equal` for object equality checking in the included adapters.
+
+
 ##### 1.1.3 (2015-08-24)
 - Feature: support HTTP compression by default.
 
