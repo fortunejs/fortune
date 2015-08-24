@@ -1,10 +1,5 @@
 @custom-selector :--header h1, h2, h3, h4, h5, h6;
 
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
 body {
   background-color: var(--color-background);
   font-family: var(--font-body);
@@ -94,6 +89,7 @@ header {
   background-color: var(--color-accent);
   text-align: center;
   padding-top: calc(var(--line-height) * 4 / 2);
+  position: relative;
   overflow: hidden;
 }
 
@@ -171,12 +167,18 @@ footer p {
   margin: 0;
 }
 
+footer p:last-of-type {
+  color: rgba(0, 0, 0, calc(1 / 8));
+  margin-top: calc(var(--line-height) * 1 / 2);
+  font-size: 2em;
+}
+
 #corner {
   position: absolute;
-  top: calc(var(--line-height) * -4 / 3);
-  right: calc(-9.6em / (2 * 0.707106781));
+  top: 2.6em;
+  right: -4em;
   transform: rotate(45deg);
-  transform-origin: 0 0;
+  transform-origin: center;
   width: 15em;
   line-height: calc(var(--line-height) * 4 / 3);
   text-align: center;

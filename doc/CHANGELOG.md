@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.3 (2015-08-24)
+- Feature: support HTTP compression by default.
+
+
 ##### 1.1.2 (2015-08-20)
 - Fix: sorting implementation in built-in adapters.
 - Fix: matching implementation in built-in adapters.

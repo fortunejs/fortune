@@ -44,8 +44,8 @@
   }
 
   #corner {
-    top: calc(var(--line-height) * -4 / 3);
-    right: calc(-6.8em / (2 * 0.707106781));
+    top: 1.2em;
+    right: -2.5em;
     width: 9em;
   }
 
