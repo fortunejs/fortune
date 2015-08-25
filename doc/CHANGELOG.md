@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.2.0 (2015-08-25)
+- Fix: cast array values in ad-hoc serializer.
+- Polish: payload will always be a buffer when using `http` module.
+- Feature: `x-www-form-urlencoded` serializer, used only for creating records.
+
+
 ##### 1.1.4 (2015-08-24)
 - Fix: use `deep-equal` for object equality checking in the included adapters.
 

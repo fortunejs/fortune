@@ -67,6 +67,7 @@ export default options => {
     createdAt: { type: Date },
     lastModified: { type: Date },
     picture: { type: Buffer },
+    nicknames: { type: String, isArray: true },
 
     // One to many
     owner: { link: 'user', inverse: 'ownedPets' }
