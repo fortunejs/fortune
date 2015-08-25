@@ -47,6 +47,61 @@ describe('authorization', function () {
         });
     });
 
+    describe('when authorizationStrategy returns custom JSONAPI_Error', function () {
+        beforeEach(function () {
+            authorizationStrategy = function () {
+                return new JSONAPI_Error({status: 403});
+            }
+        });
+        it('should return the same status code', function (done) {
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(403).end(done);
+        });
+    });
+
+    describe('when authorizationStrategy throws error', function () {
+        beforeEach(function () {
+            authorizationStrategy = function () {
+                return new Error;
+            }
+        });
+        it('should return 500 status code', function (done) {
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(500).end(done);
+        });
+    });
+
+    describe('when authorizationStrategy throws JSONAPI_Error', function () {
+        beforeEach(function () {
+            authorizationStrategy = function () {
+                return new JSONAPI_Error({status: 403});
+            }
+        });
+        it('should return the same status code', function (done) {
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(403).end(done);
+        });
+    });
+
+    describe('when authorizationStrategy returns JSONAPI_Error promise', function () {
+        beforeEach(function () {
+            authorizationStrategy = function () {
+                return Promise.resolve(new JSONAPI_Error({status: 403}));
+            }
+        });
+        it('should return the same status code', function (done) {
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(403).end(done);
+        });
+    });
+
+    describe('when authorizationStrategy returns Error promise', function () {
+        beforeEach(function () {
+            authorizationStrategy = function () {
+                return Promise.resolve(new Error);
+            }
+        });
+        it('should return the same status code', function (done) {
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(500).end(done);
+        });
+    });
+
     describe('when authorizationStrategy returns resolved promise', function () {
         beforeEach(function () {
             authorizationStrategy = function () {
