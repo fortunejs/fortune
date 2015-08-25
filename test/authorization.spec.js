@@ -83,11 +83,11 @@ describe('authorization', function () {
     describe('when authorizationStrategy returns JSONAPI_Error promise', function () {
         beforeEach(function () {
             authorizationStrategy = function () {
-                return Promise.resolve(new JSONAPI_Error({status: 403}));
+                return Promise.resolve(new JSONAPI_Error({status: 499}));
             }
         });
         it('should return the same status code', function (done) {
-            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(403).end(done);
+            request(baseUrl).get('/categories').expect('Content-Type', /json/).expect(499).end(done);
         });
     });
 
