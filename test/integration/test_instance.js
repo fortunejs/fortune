@@ -18,6 +18,7 @@ export default options => {
     picture: { type: Buffer },
     createdAt: { type: Date },
     lastModified: { type: Date },
+    nicknames: { type: String, isArray: true },
 
     // Many to many
     friends: { link: 'user', inverse: 'friends', isArray: true },
