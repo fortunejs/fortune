@@ -3,6 +3,7 @@
 
 ##### 1.2.2 (2015-08-26)
 - Fix: edge case in `processResponse` call not resolving to a promise.
+- Polish: do not set response status code if it's already been set.
 
 
 ##### 1.2.0 (2015-08-25)
