@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.2.2 (2015-08-26)
+- Fix: edge case in `processResponse` call not resolving to a promise.
+
+
 ##### 1.2.0 (2015-08-25)
 - Fix: cast array values in ad-hoc serializer.
 - Polish: payload will always be a buffer when using `http` module.
