@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### Unreleased
+- Polish: do not expose missing related records error, should be internal error.
+- Polish: use UTF-8 charset for ad hoc serializer.
+
+
 ##### 1.2.2 (2015-08-26)
 - Fix: edge case in `processResponse` call not resolving to a promise.
 - Polish: do not set response status code if it's already been set.
