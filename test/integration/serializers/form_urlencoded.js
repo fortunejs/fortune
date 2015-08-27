@@ -1,6 +1,6 @@
 import qs from 'querystring'
 import { run, comment } from 'tapdance'
-import { deepEqual, equal } from '../../helpers'
+import { ok, deepEqual, equal } from '../../helpers'
 import httpTest from '../http'
 import adHoc from
   '../../../lib/serializer/serializers/ad_hoc'
@@ -35,7 +35,7 @@ run(() => {
     })
   }, response => {
     equal(response.status, 201, 'status is correct')
-    equal(response.headers.get('content-type'), 'application/json',
+    ok(~response.headers.get('content-type').indexOf('application/json'),
       'content type is correct')
     deepEqual(response.body.map(record => record.name),
       [ 'Ayy lmao' ], 'response body is correct')

@@ -4,6 +4,7 @@
 ##### Unreleased
 - Polish: do not expose missing related records error, should be internal error.
 - Polish: use UTF-8 charset for ad hoc serializer.
+- Fix: match query in ad hoc serializer for array values.
 
 
 ##### 1.2.2 (2015-08-26)
