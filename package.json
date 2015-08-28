@@ -38,6 +38,7 @@
     "mongoose": "3.8.25",
     "node-uuid": "^1.4.3",
     "rsvp": "~3.0.9",
+    "throttle-function": "^0.1.0",
     "tiny-sse": "0.0.0",
     "underscore.string": "^2.4.0"
   },
