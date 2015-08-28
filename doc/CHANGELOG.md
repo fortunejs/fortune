@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.2.4 (2015-08-29)
+- Feature: add `enforceLinks` option, when set as `false` it will ignore referential integrity errors. Useful for client-side use.
+
+
 ##### 1.2.3 (2015-08-28)
 - Polish: do not expose missing related records error, should be internal error.
 - Polish: use UTF-8 charset for ad hoc serializer.

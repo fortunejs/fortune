@@ -107,7 +107,8 @@ run(() => {
     headers: { 'Content-Type': mediaType },
     body: [ {
       name: 'Ayy lmao',
-      nicknames: [ 'ayy', 'lmao' ]
+      nicknames: [ 'ayy', 'lmao' ],
+      owner: 1
     } ]
   }, response => {
     equal(response.status, 201, 'status is correct')
