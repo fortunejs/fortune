@@ -262,7 +262,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             });
         });
 
-        describe('When a post is added 10000 times', function () {
+        describe.skip('When a post is added 10000 times', function () {
             it('should process very fast', function (done) {
                 var that = this;
                 that.timeout(100000);
