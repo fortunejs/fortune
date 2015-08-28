@@ -11,10 +11,10 @@ var harvester = require('../lib/harvester');
 
 var harvesterOptions = {
     adapter: 'mongodb',
-    connectionString: 'mongodb://127.0.0.1:27017/testDB',
+    connectionString: 'mongodb://192.168.59.103:27017/testDB',
     db: 'testDB',
     inflect: true,
-    oplogConnectionString: 'mongodb://127.0.0.1:27017/local?slaveOk=true'
+    oplogConnectionString: 'mongodb://192.168.59.103:27017/local?slaveOk=true'
 };
 
 describe('remote link', function () {
