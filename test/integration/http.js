@@ -2,15 +2,11 @@ import { fail } from 'tapdance'
 import testInstance from './test_instance'
 import http from 'http'
 import chalk from 'chalk'
-import fetch from 'node-fetch'
 import fortune from '../../lib'
 import * as stderr from '../stderr'
 
 
 const port = 1337
-
-// Set promise polyfill for old versions of Node.
-fetch.Promise = Promise
 
 
 export default function httpTest (options, path, request, fn, change) {
@@ -42,14 +38,23 @@ export default function httpTest (options, path, request, fn, change) {
       request.headers['Content-Length'] = Buffer.byteLength(request.body)
     }
 
-    return fetch(`http://localhost:${port}${path}`, request)
+    return new Promise((resolve, reject) =>
+      http.request(Object.assign({ port, path }, request), response => {
+        headers = response.headers
+        status = response.statusCode
+
+        const chunks = []
+
+        response.on('error', reject)
+        response.on('data', chunk => chunks.push(chunk))
+        response.on('end', () => resolve(Buffer.concat(chunks)))
+      }).end(request ? request.body : null))
 
     .then(response => {
       server.close()
-      stderr.debug(chalk.bold('Response status: ' + response.status))
-      stderr.debug(response.headers.raw())
-      ; ({ headers, status } = response)
-      return store.disconnect().then(() => response.text())
+      stderr.debug(chalk.bold('Response status: ' + status))
+      stderr.debug(headers)
+      return store.disconnect().then(() => response.toString())
     })
 
     .then(text => {

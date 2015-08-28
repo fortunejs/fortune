@@ -35,7 +35,7 @@ run(() => {
     })
   }, response => {
     equal(response.status, 201, 'status is correct')
-    ok(~response.headers.get('content-type').indexOf('application/json'),
+    ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
     deepEqual(response.body.map(record => record.name),
       [ 'Ayy lmao' ], 'response body is correct')

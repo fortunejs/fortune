@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.2.5 (2015-08-29)
+- Polish: drop `node-fetch` as a dependency for testing, instead use `http` module directly.
+
+
 ##### 1.2.4 (2015-08-29)
 - Feature: add `enforceLinks` option, when set as `false` it will ignore referential integrity errors. Useful for client-side use.
 
