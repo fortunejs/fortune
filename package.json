@@ -33,6 +33,7 @@
   "dependencies": {
     "array-buffer": "^1.0.2",
     "babel-runtime": "^5.8.20",
+    "busboy": "^0.2.9",
     "chalk": "^1.1.1",
     "clone": "^1.0.2",
     "deep-equal": "^1.0.1",
