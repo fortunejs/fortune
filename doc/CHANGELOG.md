@@ -1,6 +1,13 @@
 # Changelog
 
 
+##### 1.3.1 (2015-09-01)
+- Polish: don't rely on `import *` so much, instead import exactly which exports are needed.
+- Polish: rename `AdHocSerializer` to `JsonSerializer`, renamed key name from `adHoc` to `json`.
+- Feature: support update from form serializer.
+- Feature: support custom HTTP method override headers in ad hoc JSON serializer.
+
+
 ##### 1.3.0 (2015-09-01)
 - Polish: all serializer methods may return a Promise.
 - Feature: Form serializer now accepts `application/x-www-form-urlencoded` or `multipart/form-data`.
