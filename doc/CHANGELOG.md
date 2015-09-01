@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.3.0 (2015-09-01)
+- Polish: all serializer methods may return a Promise.
+- Feature: Form serializer now accepts `application/x-www-form-urlencoded` or `multipart/form-data`.
+
+
 ##### 1.2.5 (2015-08-29)
 - Polish: drop `node-fetch` as a dependency for testing, instead use `http` module directly.
 
