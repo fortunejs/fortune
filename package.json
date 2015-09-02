@@ -39,6 +39,7 @@
     "deep-equal": "^1.0.1",
     "error-class": "^1.0.8",
     "negotiator": "^0.5.3",
+    "promise-compose": "^1.0.1",
     "tapdance": "^3.0.5",
     "ws": "^0.8.0"
   },
