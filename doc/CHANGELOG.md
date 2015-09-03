@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.2 (2015-09-03)
+- Fix: assign `inverse` field on denormalized inverse key. This allows for `inverse` field to be undefined.
+
+
 ##### 1.3.1 (2015-09-01)
 - Polish: don't rely on `import *` so much, instead import exactly which exports are needed.
 - Polish: rename `AdHocSerializer` to `JsonSerializer`, renamed key name from `adHoc` to `json`.
