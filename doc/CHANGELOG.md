@@ -3,6 +3,7 @@
 
 ##### 1.3.3 (2015-09-05)
 - Polish: add JSON parsing error, disallow empty payload in default serializer for create and update.
+- Fix: allow context to be mutated in `parseUpdate` and `parseCreate`.
 
 
 ##### 1.3.2 (2015-09-03)
