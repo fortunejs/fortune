@@ -66,9 +66,9 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { ids: [] } }),
     'ids can\'t be specified in ids field')
-  pass(() =>
+  fail(() =>
     serializer.parseCreate({ request: { payload: null } }),
-    'payload may be empty')
+    'payload can not be empty')
   deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
 })
@@ -80,9 +80,9 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { ids: [] } }),
     'ids can\'t be specified in ids field')
-  pass(() =>
+  fail(() =>
     serializer.parseCreate({ request: { payload: null } }),
-    'payload may be empty')
+    'payload can not be empty')
   deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
     [ 'foo' ], 'return value is correct')
 })

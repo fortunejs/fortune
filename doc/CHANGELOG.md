@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.3 (2015-09-05)
+- Polish: add JSON parsing error, disallow empty payload in default serializer for create and update.
+
+
 ##### 1.3.2 (2015-09-03)
 - Fix: assign `inverse` field on denormalized inverse key. This allows for `inverse` field to be undefined.
 
