@@ -1,9 +1,8 @@
-var RSVP = require('rsvp');
 var inflect = require('i')();
 var should = require('should');
 var _ = require('lodash');
 var request = require('supertest');
-var Promise = RSVP.Promise;
+var Promise = require('bluebird');
 var BSON = require('mongodb').BSONPure;
 var mongojs = require('mongojs');
 
@@ -20,7 +19,7 @@ var chai = require('chai');
 
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-chai.request.addPromises(RSVP.Promise);
+chai.request.addPromises(Promise);
 
 var $http = require('http-as-promised');
 
@@ -68,7 +67,15 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         post: 'post'
                     }
                 })
-                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage});
+                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage})
+                .resource('pet', {
+                    body: Joi.string()
+                })
+                .onChange({
+                    insert: function () {
+                        console.log('inserted a pet')
+                    }, asyncInMemory: true
+                });
 
             that.chaiExpress = chai.request(harvesterApp.router);
 
@@ -109,7 +116,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             var that = this;
             that.timeout(100000);
 
-            createReportResponseDfd = RSVP.defer();
+            createReportResponseDfd = Promise.defer();
             createReportPromise = createReportResponseDfd.promise;
 
             var oplogMongodbUri = config.harvester.options.oplogConnectionString;
@@ -119,7 +126,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 .then(function (EventsReader) {
                     that.eventsReader = new EventsReader();
                 })
-                .then(function() {
+                .then(function () {
                     return removeModelsData(harvesterApp, ['checkpoint', 'post', 'comment'])
                 })
                 .then(function () {
@@ -140,7 +147,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     });
                 }
 
-                return RSVP.all(_.map(models, removeModelData));
+                return Promise.all(_.map(models, removeModelData));
             }
 
 
@@ -255,6 +262,41 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 });
             });
         });
+
+        // not a very meaningful test but will have to do for now
+        describe('When a post is added 10000 times', function () {
+            it('should process very fast', function (done) {
+                var that = this;
+                that.timeout(100000);
+
+                that.checkpointCreated.then(function () {
+                    setTimeout(that.eventsReader.tail.bind(that.eventsReader), 500);
+                });
+
+                var range = _.range(10000);
+                var postPromises = Promise.resolve(range)
+                    .map(function (i) {
+                        return that.chaiExpress.post('/pets')
+                            .send({
+                                pets: [{
+                                    body: i + " test"
+                                }]
+                            })
+                    }, {concurrency: 20});
+
+                Promise.all(postPromises)
+                    .then(function () {
+                        console.log('all posted');
+                        setTimeout(done, 3000)
+                    })
+                    .catch(function (err) {
+                        console.trace(err);
+                        done(err);
+                    });
+
+            });
+        });
+
 
     });
 
