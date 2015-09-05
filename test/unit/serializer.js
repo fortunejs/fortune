@@ -1,4 +1,4 @@
-import { fail, pass, comment, run } from 'tapdance'
+import { fail, comment, run } from 'tapdance'
 import DefaultSerializer from '../../lib/serializer/default'
 import * as errors from '../../lib/common/errors'
 import { equal, deepEqual } from '../helpers'
