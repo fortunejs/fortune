@@ -17,6 +17,7 @@ const recordTypes = {
     birthday: { type: Date },
     junk: { type: Object },
     picture: { type: Buffer },
+    privateKeys: { type: Buffer, isArray: true },
     nicknames: { type: String, isArray: true },
     friends: { link: 'user', isArray: true, inverse: 'friends' },
     nemesis: { link: 'user', inverse: '__user_nemesis_inverse' },
@@ -26,8 +27,9 @@ const recordTypes = {
   }
 }
 
-const deadbeef = new Buffer(4)
-deadbeef.writeUInt32BE(0xdeadbeef, 0)
+const deadbeef = new Buffer('deadbeef', 'hex')
+const key1 = new Buffer('cafe', 'hex')
+const key2 = new Buffer('babe', 'hex')
 
 const records = [
   {
@@ -45,6 +47,7 @@ const records = [
     age: 36,
     isAlive: false,
     picture: deadbeef,
+    privateKeys: [ key1, key2 ],
     friends: [ 1 ],
     bestFriend: 1
   }
@@ -94,6 +97,8 @@ export default function () {
           'buffer type is correct')
         ok(deadbeef.equals(records[0].picture),
           'buffer value is correct')
+        deepEqual(records[0].privateKeys, [ key1, key2 ],
+          'array of buffers is correct')
       }))
   })
 
@@ -192,7 +197,7 @@ export default function () {
     return test(adapter =>
       adapter.find(type, null, { fields: { name: false, isAlive: false } })
       .then(records => {
-        ok(records.every(record => Object.keys(record).length === 9),
+        ok(records.every(record => Object.keys(record).length === 10),
           'fields length is correct')
       }))
   })
