@@ -1,7 +1,12 @@
 # Changelog
 
 
-##### 1.3.3 (2015-09-05)
+##### 1.3.6 (2015-09-09)
+- Polish: improve prototype checking in serializer and adapter.
+- Polish: add more form handling logic.
+
+
+##### 1.3.4 (2015-09-05)
 - Polish: add JSON parsing error, disallow empty payload in default serializer for create and update.
 - Fix: allow context to be mutated in `parseUpdate` and `parseCreate`.
 
