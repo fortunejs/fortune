@@ -1,4 +1,4 @@
-import { fail, run, comment } from 'tapdance'
+import { pass, fail, run, comment } from 'tapdance'
 import { deepEqual, equal } from '../../helpers'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
@@ -91,6 +91,27 @@ run(() => {
         record => record[keys.primary] === 2).spouse, 1,
         'field is same')
     }
+  })
+})
+
+
+run(() => {
+  comment('update one to one with multiple same value should fail')
+
+  return testInstance()
+  .then(store => store.request({
+    method: methods.update,
+    type: 'user',
+    payload: [
+      { [keys.primary]: 2, replace: { spouse: 1 } },
+      { [keys.primary]: 3, replace: { spouse: 1 } }
+    ]
+  }))
+  .then(() => {
+    fail('should have failed')
+  })
+  .catch(() => {
+    pass('multiple same values failed')
   })
 })
 

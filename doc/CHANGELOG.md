@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.7 (2015-09-10)
+- Fix: check for invalid create/update payloads which have the same ID in multiple records for a to-one relationship.
+
+
 ##### 1.3.6 (2015-09-09)
 - Polish: improve prototype checking in serializer and adapter.
 - Polish: add more form handling logic.
