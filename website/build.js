@@ -10,7 +10,6 @@ import hjs from 'highlight.js'
 import inflection from 'inflection'
 import { minify } from 'html-minifier'
 
-
 // Declarations
 // ============
 
@@ -34,6 +33,9 @@ const api = [
   { module: 'Serializer', path: 'serializer/index.js' },
   { module: 'Net', path: [ 'net/http.js', 'net/websocket.js' ] }
 ]
+
+// ESDown does not interop with Babel very well.
+const Docchi = docchi.default
 
 const renderer = new marked.Renderer()
 
@@ -146,7 +148,7 @@ function processAPI (ns, obj) {
 const render = description => marked(description, markedOptions)
 const outputDoc = doc => {
   const buffer = fs.readFileSync(path.join(apiPath, doc))
-  const output = docchi.parse(buffer).output({ render })
+  const output = Docchi.parse(buffer).output({ render })
   return output
 }
 
