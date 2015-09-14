@@ -188,7 +188,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
         });
 
-        afterEach(function () {
+        afterEach(function (done) {
             this.eventsReader.stop()
                 .then(function () {
                     done();
