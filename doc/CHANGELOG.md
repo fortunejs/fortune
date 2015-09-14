@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.9 (2015-09-14)
+- Fix: avoid slicing on an undefined array field in update method.
+
+
 ##### 1.3.8 (2015-09-10)
 - Fix: faulty check for invalid create/update payloads.
 
