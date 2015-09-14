@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.3.9 (2015-09-14)
+##### 1.3.10 (2015-09-14)
 - Fix: avoid slicing on an undefined array field in update method.
 
 
