@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
-import docchi from 'docchi'
+import Docchi from 'docchi'
 import cssnext from 'cssnext'
 import mustache from 'mustache'
 import marked from 'marked'
@@ -33,9 +33,6 @@ const api = [
   { module: 'Serializer', path: 'serializer/index.js' },
   { module: 'Net', path: [ 'net/http.js', 'net/websocket.js' ] }
 ]
-
-// ESDown does not interop with Babel very well.
-const Docchi = docchi.default
 
 const renderer = new marked.Renderer()
 
