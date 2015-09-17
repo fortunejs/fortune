@@ -1,15 +1,12 @@
-var RSVP = require('rsvp');
 var chai = require('chai');
-var _ = require('lodash');
 var Joi = require('joi');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-chai.request.addPromises(RSVP.Promise);
+chai.request.addPromises(require('bluebird'));
 var expect = chai.expect;
 
 var should = require('should');
 var request = require('supertest');
-var Promise = RSVP.Promise;
 
 
 var validation = require('../lib/validation');
