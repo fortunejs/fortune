@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is a high-level I/O library for web applications. It provides an implementation of [entity-relationship modelling](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model), is agnostic about data storage, and can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)).
+Fortune is a high-level I/O library for web applications. It provides an implementation of [entity-relationship modelling](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model), a data storage adapter and serialization interface, and . These parts working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)).
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
