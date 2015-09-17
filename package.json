@@ -40,7 +40,7 @@
     "error-class": "^1.1.0",
     "negotiator": "^0.5.3",
     "promise-compose": "^1.1.0",
-    "tapdance": "^3.0.7",
+    "tapdance": "^3.0.9",
     "ws": "^0.8.0"
   },
   "devDependencies": {
