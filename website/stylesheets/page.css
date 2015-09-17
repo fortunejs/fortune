@@ -29,6 +29,7 @@ p, ul, ol, pre, table {
 
 pre, code {
   font-family: var(--font-mono);
+  font-size: var(--size-mono);
 }
 
 pre {

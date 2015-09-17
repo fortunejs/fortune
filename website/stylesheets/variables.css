@@ -11,14 +11,26 @@
   --color-attribute: #B55E3E;
 
   /* fonts */
-  --font-body: 'Muli', sans-serif;
-  --font-mono: 'Anonymous Pro', monospace;
+  --font-body:
+    'Avenir', /* Mac */
+    'Cantarell', /* Linux */
+    'Oxygen', /* Linux */
+    'Segoe UI', /* Windows */
+    'Bitstream Vera Sans', /* Linux fallback */
+    sans-serif /* Generic */;
+  --font-mono:
+    'Monaco',
+    'Consolas',
+    'Andale Mono',
+    'Lucida Console',
+    monospace;
 
   /* measurements */
-  --max-width: 52em;
+  --max-width: 50em;
   --size-body: 15px;
+  --size-mono: 13px;
   --line-height: calc(1em * 8 / 5);
-  --mono-height: calc(1em * 6 / 5);
+  --mono-height: calc(1em * 7 / 5);
   --border-radius: calc(1em / 2);
   --fade-speed: 0.15s;
 

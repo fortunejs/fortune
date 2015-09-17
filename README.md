@@ -15,19 +15,15 @@ $ npm install fortune --save
 
 ## Example
 
-Let's build an API that models Twitter's basic functionality:
+Let's model an API that models Twitter's basic functionality:
 
 ```js
-import fortune from 'fortune'
-import http from 'http'
+// store.js
+const fortune = require('fortune')
 
-const store = fortune.create()
+module.exports = fortune.create()
 
-// The `fortune.net.http` helper function returns a listener function which
-// does content negotiation, and maps the internal response to a HTTP response.
-const server = http.createServer(fortune.net.http(store))
-
-store.defineType('user', {
+.defineType('user', {
   name: { type: String },
 
   // Following and followers are inversely related (many-to-many).
@@ -38,15 +34,29 @@ store.defineType('user', {
   posts: { link: 'post', inverse: 'author', isArray: true }
 })
 
-store.defineType('post', {
+.defineType('post', {
   message: { type: String },
 
   // One-to-many relationship of post author to user posts.
   author: { link: 'user', inverse: 'posts' }
 })
+```
+
+Then lets add a HTTP server:
+
+```js
+// server.js
+const http = require('http')
+const fortune = require('fortune')
+const store = require('./store')
+
+// The `fortune.net.http` helper function returns a listener function which
+// does content negotiation, and maps the internal response to a HTTP response.
+const server = http.createServer(fortune.net.http(store))
 
 store.connect().then(() => server.listen(1337))
 ```
+
 
 This yields an *ad hoc* JSON-over-HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
