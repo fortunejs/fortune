@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.11 (2015-09-18)
+- Fix: prevent error on related update.
+
+
 ##### 1.3.10 (2015-09-14)
 - Fix: avoid slicing on an undefined array field in update method.
 
