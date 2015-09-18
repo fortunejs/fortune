@@ -18,11 +18,11 @@ var passwordResetEmail = {
 };
 
 fortune({
-
   adapter: "mongodb",
-  db: 'relationships_minimal'
-
+  db: 'relationships_minimal',
+  customInstrumentor: nr
 })
+
 
 /*!
  * Define resources
@@ -51,3 +51,6 @@ fortune({
  * Start the API
  */
 .listen(process.argv[2] || 1337);
+
+
+//console.log( fortune );
