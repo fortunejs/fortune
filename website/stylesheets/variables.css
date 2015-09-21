@@ -26,7 +26,7 @@
     monospace;
 
   /* measurements */
-  --max-width: 50em;
+  --max-width: 48em;
   --size-body: 15px;
   --size-mono: 13px;
   --line-height: calc(1em * 8 / 5);
