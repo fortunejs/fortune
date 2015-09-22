@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.12 (2015-09-22)
+- Polish: change event generation cleanup.
+
+
 ##### 1.3.11 (2015-09-18)
 - Fix: prevent error on related update.
 
