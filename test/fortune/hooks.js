@@ -78,6 +78,61 @@ module.exports = function(options){
         });
     });
   });
+  describe('onResponse hooks', function(){
+    it('should call beforeResponseSend hooks once per request', function(done){
+      request(baseUrl).get('/people')
+        .set('apply-before-response-send', 1)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.hookCallCount.should.equal(1);
+          done();
+        });
+    });
+    it('should be able to change response status code', function(done){
+      request(baseUrl).get('/people')
+        .set('overwrite-response-status-code', 123)
+        .end(function(err, res){
+          should.not.exist(err);
+          res.statusCode.should.equal(123);
+          done();
+        });
+    });
+    it('should call beforeResponseSend hooks for any type of operation', function(done){
+      request(baseUrl).post('/people')
+        .set('content-type', 'application/json')
+        .send(JSON.stringify({people: [
+          {email: 'testing'}
+        ]}))
+        .set('apply-before-response-send', 1)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.hookCallCount.should.equal(1);
+          request(baseUrl).patch('/people/testing')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'replace', path: '/people/0/name', value: 'updated'}
+            ]))
+            .set('apply-before-response-send', 1)
+            .end(function(err, res) {
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.hookCallCount.should.equal(1);
+              request(baseUrl).put('/people/testing')
+                .set('content-type', 'application/json')
+                .send(JSON.stringify({people: [{email: 'testing', name: 'changed'}]}))
+                .set('apply-before-response-send', 1)
+                .end(function(err, res) {
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.hookCallCount.should.equal(1);
+                  done();
+                });
+            })
+        });
+    });
+  });
   describe.skip("native mongoose middleware", function(){
     it("should be able to expose mongoose api to resources", function(done){
       new RSVP.Promise(function(resolve){

@@ -274,6 +274,26 @@ module.exports = function(options, port, ioPort) {
       return this;
     })
 
+    .beforeResponseSend('person', [{
+      name: 'before-response',
+      init: function(options){
+        return function(req, res){
+          var body = this;
+          if (req.headers['apply-before-response-send']){
+            req.headers['apply-before-response-send']++;
+            return _.extend(body, {hookCallCount: req.headers['apply-before-response-send'] - 1});
+          }
+          if (req.headers['overwrite-response-status-code']){
+            return {
+              body: body,
+              statusCode: req.headers['overwrite-response-status-code']
+            }
+          }
+          return body;
+        }
+      }
+    }])
+
     .afterRW('person',[{
       name: 'secondLegacyAfter',
       init: function() {
