@@ -1,5 +1,4 @@
-import { fail, comment, run } from 'tapdance'
-import { deepEqual, equal } from '../../helpers'
+import { fail, comment, run, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as keys from '../../../lib/common/keys'

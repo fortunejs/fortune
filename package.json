@@ -40,7 +40,7 @@
     "error-class": "^1.1.0",
     "negotiator": "^0.5.3",
     "promise-compose": "^1.1.0",
-    "tapdance": "^3.0.9",
+    "tapdance": "^3.1.2",
     "ws": "^0.8.0"
   },
   "devDependencies": {
@@ -49,12 +49,12 @@
     "browserify": "^11.1.0",
     "cssnext": "^1.8.4",
     "docchi": "^0.11.3",
-    "eslint": "^1.4.3",
+    "eslint": "^1.5.1",
     "eslint-config-0x8890": "^1.0.0",
     "form-data": "^1.0.0-rc3",
     "highlight.js": "^8.8.0",
     "html-minifier": "^0.7.2",
-    "http-server": "^0.8.0",
+    "http-server": "^0.8.4",
     "inflection": "^1.7.1",
     "isparta": "^3.0.4",
     "marked": "^0.3.5",

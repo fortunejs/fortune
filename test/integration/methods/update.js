@@ -1,5 +1,4 @@
-import { pass, fail, run, comment } from 'tapdance'
-import { deepEqual, equal } from '../../helpers'
+import { pass, fail, run, comment, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'

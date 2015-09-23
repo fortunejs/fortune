@@ -1,5 +1,4 @@
-import { fail, run, comment } from 'tapdance'
-import { deepEqual } from '../helpers'
+import { fail, run, comment, deepEqual } from 'tapdance'
 import fortune from '../../lib'
 import WebSocket from 'ws'
 

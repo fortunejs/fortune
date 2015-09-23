@@ -1,10 +1,9 @@
-import { fail, comment, run } from 'tapdance'
+import { fail, comment, run, ok, equal, deepEqual } from 'tapdance'
 import Adapter from '../../lib/adapter'
 import { find, includes } from '../../lib/common/array_proxy'
 import * as keys from '../../lib/common/keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
-import { ok, equal, deepEqual } from '../helpers'
 
 
 const type = 'user'
@@ -54,8 +53,8 @@ const records = [
 ]
 
 
-export default function () {
-  const test = runTest.bind(null, ...arguments)
+export default function (adapter, options) {
+  const test = runTest.bind(null, adapter, options)
 
   run(() => {
     comment('find: nothing')
@@ -393,7 +392,7 @@ export default function () {
 }
 
 
-function runTest (a, options = {}, fn) {
+function runTest (a, options, fn) {
   // Check if it's a class or a dependency injection function.
   try { a = a(Adapter) }
   catch (error) { if (!(error instanceof TypeError)) throw error }

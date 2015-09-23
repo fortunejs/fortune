@@ -1,9 +1,8 @@
-import { pass, fail, comment, run } from 'tapdance'
+import { pass, fail, comment, run, equal, deepEqual } from 'tapdance'
 import ensureTypes from '../../lib/record_type/ensure_types'
 import validate from '../../lib/record_type/validate'
 import enforce from '../../lib/record_type/enforce'
 import * as keys from '../../lib/common/keys'
-import { equal, deepEqual } from '../helpers'
 
 
 const recordType = 'person'

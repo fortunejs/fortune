@@ -1,9 +1,8 @@
 import './integration/adapters/indexeddb'
 import './integration/adapters/webstorage'
 
-import { fail, comment, run } from 'tapdance'
+import { ok, fail, comment, run } from 'tapdance'
 import fortune from '../lib/browser'
-import { ok } from './helpers'
 
 
 run(() => {

@@ -1,6 +1,5 @@
 import qs from 'querystring'
-import { run, comment } from 'tapdance'
-import { ok, deepEqual, equal } from '../../helpers'
+import { run, comment, ok, deepEqual, equal } from 'tapdance'
 import httpTest from '../http'
 import json from '../../../lib/serializer/serializers/json'
 
