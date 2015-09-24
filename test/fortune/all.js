@@ -35,6 +35,7 @@ describe('Fortune', function () {
   require('./resources')(options);
   require('./multitenant-integration')(options);
   require('./meta-providers')(options);
+  require('./instrumentor')(options);
 
   describe("Business key", function(){
     it("can be used as primary key for individual resource requests", function(done){
