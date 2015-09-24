@@ -51,6 +51,3 @@ fortune({
  * Start the API
  */
 .listen(process.argv[2] || 1337);
-
-
-//console.log( fortune );
