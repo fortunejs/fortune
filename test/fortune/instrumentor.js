@@ -15,21 +15,21 @@ module.exports = function(options){
 
     before( function(){
       mockInstrumentor = {
-        methods: {
+        instrumentor: {
           createTracer: sinon.stub().returnsArg( 1 )
         },
         options: {
           tracePrefix: 'Custom trace prefix: '
         }
       };
-      tracerStub = mockInstrumentor.methods.createTracer;
+      tracerStub = mockInstrumentor.instrumentor.createTracer;
 
       app = fortune({
         adapter: "mongodb",
         port: port,
         connectionString : 'mongodb://localhost/instrumentor-test',
         serviceName: "user-service",
-        customInstrumentor: mockInstrumentor
+        customInstrumentorObj: mockInstrumentor
       })
       .resource("user", {
         userType : String,
@@ -80,7 +80,7 @@ module.exports = function(options){
           port: port,
           connectionString : 'mongodb://localhost/instrumentor-test2',
           serviceName: "user-service2",
-          customInstrumentor: invalidInstrumentor
+          customInstrumentorObj: invalidInstrumentor
         })
         .resource("user", {
           userType : String,
