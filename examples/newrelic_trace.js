@@ -17,10 +17,19 @@ var passwordResetEmail = {
   }
 };
 
+var instrumentor ={
+  methods: {
+    createTracer: function(){
+      return nr.createTracer.apply( nr, arguments );
+    }
+  },
+  options: {}
+};
+
 fortune({
   adapter: "mongodb",
   db: 'relationships_minimal',
-  customInstrumentor: nr
+  customInstrumentor: instrumentor
 })
 
 
