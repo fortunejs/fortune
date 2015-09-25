@@ -39,11 +39,8 @@ module.exports = function(options){
       .listen( port )
 
     });
-    beforeEach( function(){
-    });
 
-
-    it('customInstrumentor should be called', function(done){
+    it('should be called', function(done){
 
       request( baseUrl ).get( '/users' )
         .expect(200)
@@ -53,7 +50,7 @@ module.exports = function(options){
       done()
     });
 
-    it('customInstrumentor traces should be named suitably', function(done){
+    it('traces should be named suitably', function(done){
       request( baseUrl ).get( '/users' )
         .expect(200)
         .end(function(err, res){
@@ -67,7 +64,7 @@ module.exports = function(options){
       done()
     });
 
-    it('invalid customInstrumentor should cause error', function(done){
+    it('should cause error when not valid', function(done){
 
       var invalidInstrumentor = {
         methods: {
