@@ -17,8 +17,8 @@ var passwordResetEmail = {
   }
 };
 
-var instrumentor ={
-  methods: {
+var instrumentorObj ={
+  instrumentor: {
     createTracer: function(){
       return nr.createTracer.apply( nr, arguments );
     }
@@ -29,7 +29,7 @@ var instrumentor ={
 fortune({
   adapter: "mongodb",
   db: 'relationships_minimal',
-  customInstrumentor: instrumentor
+  customInstrumentorObj: instrumentorObj
 })
 
 
