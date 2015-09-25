@@ -24,7 +24,8 @@
     "rsvp": "~3.0.6",
     "sift": "^0.2.3",
     "socket.io": "^1.2.1",
-    "validate.js": "~0.7.1"
+    "validate.js": "~0.7.1",
+    "when": "^3.7.3"
   },
   "devDependencies": {
     "fortune-mongodb": "git://github.com/flyvictor/fortune-mongodb.git#v1.1.5",
@@ -35,9 +36,9 @@
     "socket.io-client": "^1.2.1",
     "supertest": "~0.8.0"
   },
-  "scripts" : {
+  "scripts": {
     "test": "node_modules/mocha/bin/mocha --recursive -R spec",
-    "coverage":"istanbul cover --dir ./reports _mocha -- "
+    "coverage": "istanbul cover --dir ./reports _mocha -- "
   },
   "engines": {
     "node": ">=0.10"
