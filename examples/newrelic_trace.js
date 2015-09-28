@@ -11,18 +11,13 @@ var passwordResetEmail = {
   init: function(options){
     return function(req, res){
       console.log("Sending password reset email");
-
       res.send(200, 'ok');
     }
   }
 };
 
 var instrumentorObj ={
-  instrumentor: {
-    createTracer: function(){
-      return nr.createTracer.apply( nr, arguments );
-    }
-  },
+  instrumentor: nr,
   options: {}
 };
 
