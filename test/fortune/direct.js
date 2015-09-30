@@ -20,6 +20,16 @@ module.exports = function(options){
       });
     });
 
+    it("should be compatible with fortuneClient including metadata", function(done){
+      app.direct.get("people", {query: {includeMeta: true}}).then(function(res){
+        ids.people.forEach(function(id){
+          _.contains(_.pluck(res.body.people, 'id'), id).should.equal(true);
+        });
+        should.exist(res.body.meta);
+        done();
+      });
+    });
+
     it("gets a single resource", function(done){
       app.direct.get("people", {params: { id:ids.people[0] }}).then(function(res){
         res.body.people.length.should.be.equal(1);
