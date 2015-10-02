@@ -15,7 +15,7 @@ describe('EventSource implementation for multiple resources', function () {
     var sendAndCheckSSE = function(resources, payloads, done) {
         var index = 0;
         ess(baseUrl + '/changes/stream?resources=' + resources.join(','), {retry : false})
-        .on('data', function(data) {
+        .on('data', function(data, id) {
             lastEventId = data.id;
             var data = JSON.parse(data.data);
             //ignore ticker data
@@ -35,8 +35,6 @@ describe('EventSource implementation for multiple resources', function () {
                 
             }
 
-            console.log('---------->', data, index)
-            console.log('---------->', payloads[index])
             expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
             if(index === payloads.length - 1) done();
             index++;
@@ -91,7 +89,7 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe.only('Given a list of resources A, B, C' + 
+        describe('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
             '\nWhen a GET is made to base_url/changes/stream?resources=A,B,C ', function () {
             it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
@@ -117,6 +115,35 @@ describe('EventSource implementation for multiple resources', function () {
                         ]
                     }];
                 sendAndCheckSSE(['booka', 'bookb', 'bookc'], payloads, done);
+            });
+        });
+
+        describe.skip('Given a list of resources A, B, C' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
+            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+                var payloads = [{
+                        bookas: [
+                            {
+                                name: 'test name 1'
+                            }
+                        ]
+                    },
+                    {
+                        bookbs: [
+                            {
+                                name: 'test name 2'
+                            }
+                        ]
+                    },
+                    {
+                        bookcs: [
+                            {
+                                name: 'test name 3'
+                            }
+                        ]
+                    }];
+                sendAndCheckSSE(['booka', 'wrongResource'], payloads, done);
             });
         });
     });
