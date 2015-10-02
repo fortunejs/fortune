@@ -8,11 +8,41 @@ var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
 var Joi = require('joi');
+var Promise = require('bluebird');
 
 describe('EventSource implementation for multiple resources', function () {
 
+    var sendAndCheckSSE = function(resources, payloads, done) {
+        var index = 0;
+        ess(baseUrl + '/changes/stream?resources=' + resources.join(','), {retry : false})
+        .on('data', function(data) {
+            lastEventId = data.id;
+            var data = JSON.parse(data.data);
+            //ignore ticker data
+            if(_.isNumber(data)) {
+
+                //post data after we've hooked into change events and receive a ticker
+                return Promise.map(payloads, function(payload) {
+                    return seeder(harvesterApp, baseUrl).seedCustomFixture(payload).then(function() {
+                        console.log('done')
+                    })
+                    .catch(function(err) {
+                        console.log(err)
+                    })
+                });
+                
+            }
+
+            console.log('---------->', data, index)
+            console.log('---------->', payloads[index])
+            expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
+            if(index === payloads.length - 1) done();
+            index++;
+        });
+    }
+
     var harvesterApp;
-    describe.only('Server Sent Events', function () {
+    describe('Server Sent Events', function () {
         this.timeout(10000);
         var lastEventId;
         var lastDataId;
@@ -26,46 +56,66 @@ describe('EventSource implementation for multiple resources', function () {
                 oplogConnectionString: config.harvester.options.oplogConnectionString
             };
 
-            harvesterApp = harvester(options).resource('book', {
-                title: Joi.string(),
-                author: Joi.string()
-            });
-            console.log('hello')
+            harvesterApp = harvester(options)
+                            .resource('booka', {
+                                name: Joi.string()
+                            })
+                            .resource('bookb', {
+                                name: Joi.string()
+                            })
+                            .resource('bookc', {
+                                name: Joi.string()
+                            })
+                            .resource('bookd', {
+                                name: Joi.string()
+                            });
             harvesterApp.listen(8012);
 
-            return seeder(harvesterApp, baseUrl).dropCollections('books')
+            return seeder(harvesterApp, baseUrl).dropCollections('bookas')
         });
 
-        describe.only('When I post to the newly created resource', function () {
-            it('Then I should receive a change event with data but not the one before it', function (done) {
-                var that = this;
-                var dataReceived;
-                ess(baseUrl + '/changes/stream?resources=book', {retry : false})
-                .on('data', function(data) {
-                    console.log(data)
+        describe('Given a list of resources A, B, C' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A ', function () {
+            it('Then all events for resources A are streamed back to the API caller ', function (done) {
+                var payloads = [{
+                        bookas: [
+                            {
+                                name: 'test name 1'
+                            }
+                        ]
+                    }];
+                sendAndCheckSSE(['booka'], payloads, done);
+            });
+        });
 
-                    lastEventId = data.id;
-                    var data = JSON.parse(data.data);
-                    //ignore ticker data
-                    if(_.isNumber(data)) {
-                        //post data after we've hooked into change events and receive a ticker
-                        return seeder(harvesterApp, baseUrl).seedCustomFixture({
-                            books: [
-                                {
-                                    title: 'test title 2'
-                                }
-                            ]
-                        }).then(function() {
-                            console.log('done')
-                        })
-                    }
-                    if (dataReceived) return;
-                    expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 2'});
-                    dataReceived = true;
-                    done();
-                });
-            }
-              );
+        describe.only('Given a list of resources A, B, C' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,B,C ', function () {
+            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+                var payloads = [{
+                        bookas: [
+                            {
+                                name: 'test name 1'
+                            }
+                        ]
+                    },
+                    {
+                        bookbs: [
+                            {
+                                name: 'test name 2'
+                            }
+                        ]
+                    },
+                    {
+                        bookcs: [
+                            {
+                                name: 'test name 3'
+                            }
+                        ]
+                    }];
+                sendAndCheckSSE(['booka', 'bookb', 'bookc'], payloads, done);
+            });
         });
     });
 });
