@@ -23,7 +23,9 @@ describe('EventSource implementation for multiple resources', function () {
 
                 //post data after we've hooked into change events and receive a ticker
                 return Promise.map(payloads, function(payload) {
-                    return seeder(harvesterApp, baseUrl).seedCustomFixture(payload).then(function() {
+                    return seeder(harvesterApp, baseUrl).seedCustomFixture(payload)
+                    .delay(100)
+                    .then(function() {
                         console.log('done')
                     })
                     .catch(function(err) {
