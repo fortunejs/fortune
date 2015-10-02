@@ -1,4 +1,4 @@
-var $http = require('http-as-promised');
+var request = require('supertest');
 var harvester = require('../lib/harvester');
 var baseUrl = 'http://localhost:' + 8012;
 var chai = require('chai');
@@ -35,6 +35,8 @@ describe('EventSource implementation for multiple resources', function () {
                 
             }
 
+            console.log(data);
+
             expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
             if(index === payloads.length - 1) done();
             index++;
@@ -43,7 +45,7 @@ describe('EventSource implementation for multiple resources', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
-        this.timeout(10000);
+        this.timeout(20000);
         var lastEventId;
         var lastDataId;
 
@@ -118,32 +120,14 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe.skip('Given a list of resources A, B, C' + 
+        describe.only('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
             '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
             it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
-                var payloads = [{
-                        bookas: [
-                            {
-                                name: 'test name 1'
-                            }
-                        ]
-                    },
-                    {
-                        bookbs: [
-                            {
-                                name: 'test name 2'
-                            }
-                        ]
-                    },
-                    {
-                        bookcs: [
-                            {
-                                name: 'test name 3'
-                            }
-                        ]
-                    }];
-                sendAndCheckSSE(['booka', 'wrongResource'], payloads, done);
+                request(baseUrl)
+                    .get('/changes/stream?resources=booka,wrongResource')
+                    .expect(400)
+                    .end(done);
             });
         });
     });
