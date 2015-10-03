@@ -1,6 +1,6 @@
 var request = require('supertest');
 var harvester = require('../lib/harvester');
-var baseUrl = 'http://localhost:' + 8012;
+var baseUrl = 'http://localhost:' + 8020;
 var chai = require('chai');
 var expect = chai.expect;
 var ess = require('event-source-stream');
@@ -71,7 +71,7 @@ describe('EventSource implementation for multiple resources', function () {
                             .resource('bookd', {
                                 name: Joi.string()
                             });
-            harvesterApp.listen(8012);
+            harvesterApp.listen(8020);
 
             return seeder(harvesterApp, baseUrl).dropCollections('bookas')
         });
@@ -98,13 +98,18 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe('Given a list of resources A, B, C' + 
+        describe.only('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
             '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
             it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
                 request(baseUrl)
                     .get('/changes/stream?resources=booka,wrongResource')
                     .expect(400)
+                    .expect(function(res) {
+                        var error = JSON.parse(res.text);
+                        console.log(error.errors[0].detail)
+                        expect(error.errors[0].detail).to.equal('The follow resources don\'t exist wrongResource')
+                    })
                     .end(done);
             });
         });
