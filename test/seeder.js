@@ -27,7 +27,6 @@ module.exports = function (harvesterInstance, baseUrl) {
             var body = {};
             body[key] = value;
             request(baseUrl).post('/' + key).send(body).expect('Content-Type', /json/).expect(201).end(function (error, response) {
-                console.log(error)
                 if (error) {
                     console.error(response ? response.text : error);
                     reject(error);

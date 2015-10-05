@@ -10,7 +10,7 @@ var seeder = require('./seeder.js');
 var Joi = require('joi');
 var Promise = require('bluebird');
 
-describe('EventSource implementation for multiple resources', function () {
+describe.only('EventSource implementation for multiple resources', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
@@ -29,19 +29,10 @@ describe('EventSource implementation for multiple resources', function () {
 
                     //post data after we've hooked into change events and receive a ticker
                     return Promise.map(payloads, function(payload) {
-                        return seeder(harvesterApp, baseUrl).seedCustomFixture(payload)
-                        .delay(500)
-                        .then(function(res) {
-                            console.log('done', res)
-                        })
-                        .catch(function(err) {
-                            console.log(err)
-                        })
+                        return seeder(harvesterApp, baseUrl).seedCustomFixture(payload);
                     }, {concurrency : 1});
                     
                 }
-
-                console.log(data, index, resources);
 
                 expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
                 if(index === payloads.length - 1) done();
@@ -63,12 +54,6 @@ describe('EventSource implementation for multiple resources', function () {
                                 name: Joi.string()
                             })
                             .resource('bookb', {
-                                name: Joi.string()
-                            })
-                            .resource('bookc', {
-                                name: Joi.string()
-                            })
-                            .resource('bookd', {
                                 name: Joi.string()
                             });
             harvesterApp.listen(8020);
@@ -98,17 +83,47 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe.only('Given a list of resources A, B, C' + 
+        describe('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
             '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
-            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+            it('Then a 400 HTTP error code and a JSON API error specifying the invalid resource are returned to the API caller ', function (done) {
                 request(baseUrl)
                     .get('/changes/stream?resources=booka,wrongResource')
                     .expect(400)
                     .expect(function(res) {
                         var error = JSON.parse(res.text);
-                        console.log(error.errors[0].detail)
                         expect(error.errors[0].detail).to.equal('The follow resources don\'t exist wrongResource')
+                    })
+                    .end(done);
+            });
+        });
+
+        describe('Given a list of resources A, B, C' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
+            it('Then a 400 HTTP error code and a JSON API error specifying the invalid resource are returned to the API caller ', function (done) {
+                request(baseUrl)
+                    .get('/changes/stream')
+                    .expect(400)
+                    .expect(function(res) {
+                        var error = JSON.parse(res.text);
+                        expect(error.errors[0].detail).to.equal('You have not specified any resources, please do so by providing "resource?foo,bar" as query')
+                    })
+                    .end(done);
+            });
+        });
+
+        describe('Given a list of resources A, B, C' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
+            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+                request(baseUrl)
+                    .get('/changes/stream?resources=booka,bookb')
+                    .set('Last-Event-ID', '1234567_wrong')
+                    .expect(400)
+                    .expect(function(res) {
+                        var error = JSON.parse(res.text);
+                        expect(error.errors[0].detail).to.equal('Could not parse the time stamp provided')
                     })
                     .end(done);
             });
