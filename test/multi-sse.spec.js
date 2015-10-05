@@ -20,7 +20,7 @@ describe('EventSource implementation for multiple resources', function () {
 
         var sendAndCheckSSE = function(resources, payloads, done) {
             var index = 0;
-            ess(baseUrl + '/changes/stream?resources=' + resources.join(','), {retry : false})
+            var eventSource = ess(baseUrl + '/changes/stream?resources=' + resources.join(','), {retry : false})
             .on('data', function(data, id) {
                 lastEventId = data.id;
                 var data = JSON.parse(data.data);
@@ -35,7 +35,11 @@ describe('EventSource implementation for multiple resources', function () {
                 }
 
                 expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
-                if(index === payloads.length - 1) done();
+                if(index === payloads.length - 1) {
+                    done();
+                    eventSource.destroy();
+                }
+
                 index++;
             });
         }
@@ -58,7 +62,7 @@ describe('EventSource implementation for multiple resources', function () {
                             });
             harvesterApp.listen(8020);
 
-            return seeder(harvesterApp, baseUrl).dropCollections('bookas')
+            return seeder(harvesterApp, baseUrl).dropCollections('bookas', 'bookbs')
         });
 
         describe('Given a list of resources A, B, C' + 
