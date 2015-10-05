@@ -65,6 +65,21 @@ describe('EventSource implementation for multiple resources', function () {
             return seeder(harvesterApp, baseUrl).dropCollections('bookas', 'bookbs')
         });
 
+        describe('Given a resources A' + 
+            '\nAND base URL base_url' + 
+            '\nWhen a GET is made to base_url/changes/stream?resources=A', function () {
+            it('Then all events for resource A streamed back to the API caller ', function (done) {
+                var payloads = [{
+                        bookas: [
+                            {
+                                name: 'test name 1'
+                            }
+                        ]
+                    }];
+                sendAndCheckSSE(['booka'], payloads, done);
+            });
+        });
+
         describe('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
             '\nWhen a GET is made to base_url/changes/stream?resources=A,B,C ', function () {
@@ -104,7 +119,7 @@ describe('EventSource implementation for multiple resources', function () {
 
         describe('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
-            '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
+            '\nWhen a GET is made to base_url/changes/stream', function () {
             it('Then a 400 HTTP error code and a JSON API error specifying the invalid resource are returned to the API caller ', function (done) {
                 request(baseUrl)
                     .get('/changes/stream')
@@ -119,8 +134,8 @@ describe('EventSource implementation for multiple resources', function () {
 
         describe('Given a list of resources A, B, C' + 
             '\nAND base URL base_url' + 
-            '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
-            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,B ', function () {
+            it('Then a 400 HTTP error code and a JSON API error indicating the timestamp is invalid are returned to the API caller. ', function (done) {
                 request(baseUrl)
                     .get('/changes/stream?resources=booka,bookb')
                     .set('Last-Event-ID', '1234567_wrong')
