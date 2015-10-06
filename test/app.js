@@ -93,6 +93,10 @@ module.exports = function(options, port, ioPort) {
         field1: String,
         field2: String
       },
+      nestedArray: [{
+        nestedField1: String,
+        nestedField2: Number
+      }],
       upsertTest : String,
       _tenantId: String
     }, {
