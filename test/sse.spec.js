@@ -41,7 +41,7 @@ describe('EventSource implementation for resource changes', function () {
                 var that = this;
                 var dataReceived;
 
-                ess(baseUrl + '/books/changes/stream', {retry : false})
+                var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false})
                 .on('data', function(data) {
 
                     lastEventId = data.id;
@@ -61,6 +61,7 @@ describe('EventSource implementation for resource changes', function () {
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 2'});
                     dataReceived = true;
                     done();
+                    eventSource.destroy();
                 });
             }
               );
@@ -82,7 +83,7 @@ describe('EventSource implementation for resource changes', function () {
                         }
                     ]
                 });
-                ess(baseUrl + '/books/changes/stream?title=filtered&author=Asimov&limit=100', {retry : false, headers : {
+                var eventSource = ess(baseUrl + '/books/changes/stream?title=filtered&author=Asimov&limit=100', {retry : false, headers : {
                     'Last-Event-ID' : lastEventId
                 }}).on('data', function(data) {
                     lastEventId = data.id;
@@ -92,6 +93,7 @@ describe('EventSource implementation for resource changes', function () {
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'filtered', author : 'Asimov'});
                     dataReceived = true;
                     done();
+                    eventSource.destroy();
                 });
             });
         });
@@ -105,7 +107,7 @@ describe('EventSource implementation for resource changes', function () {
                         }
                     ]
                 });
-                ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
+                var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false, headers : {
                     'Last-Event-ID' : lastEventId
                 }}).on('data', function(data) {
                     var data = JSON.parse(data.data);
@@ -114,6 +116,7 @@ describe('EventSource implementation for resource changes', function () {
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 3'});
                     dataReceived = true;
                     done();
+                    eventSource.destroy();
                 });
             });
         });
