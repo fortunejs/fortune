@@ -2,7 +2,7 @@ import http from 'http'
 import qs from 'querystring'
 import FormData from 'form-data'
 import { run, comment, ok, deepEqual, equal } from 'tapdance'
-import httpTest from '../http'
+import httpTest from '../http_test'
 import json from
   '../../../lib/serializer/serializers/json'
 import { formUrlEncoded, formData } from

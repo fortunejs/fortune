@@ -1,6 +1,6 @@
 import qs from 'querystring'
 import { run, comment, ok, deepEqual, equal } from 'tapdance'
-import httpTest from '../http'
+import httpTest from '../http_test'
 import json from '../../../lib/serializer/serializers/json'
 
 
