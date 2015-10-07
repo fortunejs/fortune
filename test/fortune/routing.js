@@ -105,6 +105,115 @@ module.exports = function(options){
       });
     });
 
+    describe('non-destructive deletes on subresources', function(){
+      var nestedObjectId;
+      beforeEach(function(done){
+        var removeObjectId;
+        var nestedObject1 = {
+          nestedField1: 'A string',
+          nestedField2: 1000000
+        };
+        var nestedObject2 = {
+          nestedField1: 'Another string',
+          nestedField2: 1
+        };
+        var nestedObject3 = {
+          nestedField1: 'A third string',
+          nestedField2: 3
+        };
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'add', path: '/people/0/nestedArray/-', value: nestedObject1},
+            {op: 'add', path: '/people/0/nestedArray/-', value: nestedObject2},
+            {op: 'add', path: '/people/0/nestedArray/-', value: nestedObject3}
+          ]))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+
+            body.people[0].nestedArray.length.should.equal( 3 );
+            nestedObjectId = body.people[0].nestedArray[0]._id;
+            removeObjectId = body.people[0].nestedArray[2]._id;
+            done();
+          });
+        });
+        it('should remove subdocument by ID', function(done){
+          request(baseUrl).patch('/people/' + ids.people[0] )
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              { op: 'remove', path: '/people/0/nestedArray/' + nestedObjectId }
+            ]))
+            .expect( 200 )
+            .end( function( err, res ){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              body.people[0].nestedArray.length.should.equal( 2 );
+
+              var filteredArray = body.people[0].nestedArray.filter( function( arg ){
+                return arg._id === nestedObjectId;
+              });
+              filteredArray.length.should.equal(0);
+
+              done();
+            });
+        });
+        it('deleted subdocuments should be returned with includeDeleted flag', function(done){
+          request(baseUrl).patch('/people/' + ids.people[0] )
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              { op: 'remove', path: '/people/0/nestedArray/' + nestedObjectId }
+            ]))
+            .end( function( err, res ){
+              var body = JSON.parse(res.text);
+              body.people[0].nestedArray.length.should.equal( 2 );
+
+              request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=1' )
+                .set('content-type', 'application/json')
+                .expect( 200 )
+                .end( function( err, res ){
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.people[0].nestedArray.length.should.equal( 3 );
+
+                  var filteredArray = body.people[0].nestedArray.filter( function( arg ){
+                    return arg._id === nestedObjectId;
+                  });
+
+                  filteredArray.length.should.equal(1);
+                  done();
+                });
+            });
+        });
+        it('deleted subdocuments should have a deletedAt field', function(done){
+          request(baseUrl).patch('/people/' + ids.people[0] )
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              { op: 'remove', path: '/people/0/nestedArray/' + nestedObjectId }
+            ]))
+            .end( function( err, res ){
+              var body = JSON.parse(res.text);
+              body.people[0].nestedArray.length.should.equal( 2 );
+
+              request(baseUrl).get('/people/' + ids.people[0] + '?includeDeleted=1' )
+                .set('content-type', 'application/json')
+                .expect( 200 )
+                .end( function( err, res ){
+                  should.not.exist(err);
+                  var body = JSON.parse(res.text);
+                  body.people[0].nestedArray.length.should.equal( 3 );
+
+                  var filteredArray = body.people[0].nestedArray.filter( function( arg ){
+                    return arg._id === nestedObjectId;
+                  });
+
+                  filteredArray[ 0 ].should.have.ownProperty( 'deletedAt'  );
+                  done();
+                });
+            });
+        });
+      });
 
     describe('creating a list of resources', function(){
       it('should create a list of resources setting proper references', function(done){

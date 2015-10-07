@@ -267,10 +267,14 @@ module.exports = function(options){
         });
         it('should return all existing fields when no select is specified', function(){
           return adapter.findMany('person').then(function(docs){
+            var expected = 10;
+
+            if( docs[0]._internal ) expected++;
+
             //hooks add their black magic here.
             //See what you have in fixtures + what beforeWrite hooks assign in addiction
             var keys = Object.keys(docs[0]).length;
-            (keys).should.equal(9);
+            (keys).should.equal( expected );
           });
         });
         it('should not affect business id selection', function(){
@@ -334,7 +338,10 @@ module.exports = function(options){
               //hooks add their black magic here.
               //See what you have in fixtures + what beforeWrite hooks assign in addiction
               //+ soulmate from before each
-              (Object.keys(doc).length).should.equal(10);
+              var expected = 11;
+
+              if( doc._internal ) expected++;
+              Object.keys( doc ).length.should.equal( expected );
               done();
             });
         });
