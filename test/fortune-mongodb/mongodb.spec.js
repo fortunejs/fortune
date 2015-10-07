@@ -269,7 +269,7 @@ module.exports = function(options){
           return adapter.findMany('person').then(function(docs){
             var expected = 10;
 
-            if( docs[0].internal ) expected++;
+            if( docs[0]._internal ) expected++;
 
             //hooks add their black magic here.
             //See what you have in fixtures + what beforeWrite hooks assign in addiction
@@ -340,7 +340,7 @@ module.exports = function(options){
               //+ soulmate from before each
               var expected = 11;
 
-              if( doc.internal ) expected++;
+              if( doc._internal ) expected++;
               Object.keys( doc ).length.should.equal( expected );
               done();
             });
