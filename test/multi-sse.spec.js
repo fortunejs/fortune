@@ -31,7 +31,7 @@ describe('EventSource implementation for multiple resources', function () {
                     return Promise.map(payloads, function(payload) {
                         return seeder(harvesterApp, baseUrl).seedCustomFixture(payload);
                     }, {concurrency : 1});
-                    
+
                 }
 
                 expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
@@ -65,8 +65,8 @@ describe('EventSource implementation for multiple resources', function () {
             return seeder(harvesterApp, baseUrl).dropCollections('bookas', 'bookbs')
         });
 
-        describe('Given a resources A' + 
-            '\nAND base URL base_url' + 
+        describe('Given a resources A' +
+            '\nAND base URL base_url' +
             '\nWhen a GET is made to base_url/changes/stream?resources=A', function () {
             it('Then all events for resource A streamed back to the API caller ', function (done) {
                 var payloads = [{
@@ -80,8 +80,8 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe('Given a list of resources A, B, C' + 
-            '\nAND base URL base_url' + 
+        describe('Given a list of resources A, B, C' +
+            '\nAND base URL base_url' +
             '\nWhen a GET is made to base_url/changes/stream?resources=A,B,C ', function () {
             it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
                 var payloads = [{
@@ -102,8 +102,8 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe('Given a list of resources A, B, C' + 
-            '\nAND base URL base_url' + 
+        describe('Given a list of resources A, B, C' +
+            '\nAND base URL base_url' +
             '\nWhen a GET is made to base_url/changes/stream?resources=A,D ', function () {
             it('Then a 400 HTTP error code and a JSON API error specifying the invalid resource are returned to the API caller ', function (done) {
                 request(baseUrl)
@@ -117,8 +117,8 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe('Given a list of resources A, B, C' + 
-            '\nAND base URL base_url' + 
+        describe('Given a list of resources A, B, C' +
+            '\nAND base URL base_url' +
             '\nWhen a GET is made to base_url/changes/stream', function () {
             it('Then a 400 HTTP error code and a JSON API error specifying the invalid resource are returned to the API caller ', function (done) {
                 request(baseUrl)
@@ -132,8 +132,8 @@ describe('EventSource implementation for multiple resources', function () {
             });
         });
 
-        describe('Given a list of resources A, B, C' + 
-            '\nAND base URL base_url' + 
+        describe('Given a list of resources A, B, C' +
+            '\nAND base URL base_url' +
             '\nWhen a GET is made to base_url/changes/stream?resources=A,B ', function () {
             it('Then a 400 HTTP error code and a JSON API error indicating the timestamp is invalid are returned to the API caller. ', function (done) {
                 request(baseUrl)
