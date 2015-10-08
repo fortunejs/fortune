@@ -120,5 +120,52 @@ describe('EventSource implementation for resource changes', function () {
                 });
             });
         });
+
+        describe('Given a resource x with property y ' +
+                 '\nWhen the value of y changes', function () {
+            it('Then an SSE is broadcast with event set to x_update, ID set to the oplog timestamp' +
+                 'and data set to an instance of x that only contains the new value for property y', function (done) {
+                var that = this;
+                var counter = 0;
+
+                var payloads = [
+                    {
+                        books: [{
+                            title: 'test title 4',
+                            author: 'Asimov'
+                        }]
+                    },
+                    {
+                        books: [{
+                            title: 'test title 5'
+                        }]
+                    }
+                ];
+
+                var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false})
+                .on('data', function(data) {
+
+                    lastEventId = data.id;
+                    var data = JSON.parse(data.data);
+
+                    //ignore ticker data
+                    if(_.isNumber(data)) {
+                        //post data after we've hooked into change events and receive a ticker
+                        return $http.post(baseUrl + '/books', {json : payloads[0]})
+                        .spread(function(res) {
+                            return $http.put(baseUrl + '/books/' + res.body.books[0].id, {json : payloads[1]});
+                        });
+                    }
+
+                    expect(_.omit(data, 'id')).to.deep.equal(payloads[counter].books[0]);
+                    dataReceived = true;
+                    counter ++;
+                    if (counter === 1) {
+                        done();
+                        eventSource.destroy();
+                    }
+                });
+            });
+        });
     });
 });
