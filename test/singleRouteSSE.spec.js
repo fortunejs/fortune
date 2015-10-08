@@ -39,7 +39,6 @@ describe('EventSource implementation for resource changes', function () {
         describe('When I post to the newly created resource', function () {
             it('Then I should receive a change event with data but not the one before it', function (done) {
                 var that = this;
-                var dataReceived;
 
                 var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false})
                 .on('data', function(data) {
@@ -57,9 +56,7 @@ describe('EventSource implementation for resource changes', function () {
                             ]
                         });
                     }
-                    if (dataReceived) return;
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 2'});
-                    dataReceived = true;
                     done();
                     eventSource.destroy();
                 });
@@ -91,7 +88,6 @@ describe('EventSource implementation for resource changes', function () {
                     //ignore ticker data
                     if(_.isNumber(data)) return;
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'filtered', author : 'Asimov'});
-                    dataReceived = true;
                     done();
                     eventSource.destroy();
                 });
@@ -114,7 +110,6 @@ describe('EventSource implementation for resource changes', function () {
                     //ignore ticker data
                     if(_.isNumber(data)) return;
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 3'});
-                    dataReceived = true;
                     done();
                     eventSource.destroy();
                 });
@@ -158,7 +153,6 @@ describe('EventSource implementation for resource changes', function () {
                     }
 
                     expect(_.omit(data, 'id')).to.deep.equal(payloads[counter].books[0]);
-                    dataReceived = true;
                     counter ++;
                     if (counter === 1) {
                         done();
