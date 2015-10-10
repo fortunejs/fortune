@@ -115,7 +115,7 @@ header .logo-type {
 
 header nav {
   position: relative;
-  padding: calc(var(--line-height) * 1) var(--line-height);
+  padding: calc(var(--line-height) * 2 / 3) var(--line-height);
 }
 
 header nav:before {
