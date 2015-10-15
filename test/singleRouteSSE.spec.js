@@ -8,6 +8,7 @@ var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
 var Joi = require('joi');
+var Promise = require('bluebird');
 
 describe('EventSource implementation for resource changes', function () {
 
@@ -15,7 +16,6 @@ describe('EventSource implementation for resource changes', function () {
     describe('Server Sent Events', function () {
         this.timeout(20000);
         var lastEventId;
-        var lastDataId;
 
         before(function () {
             var options = {
@@ -26,14 +26,21 @@ describe('EventSource implementation for resource changes', function () {
                 oplogConnectionString: config.harvester.options.oplogConnectionString
             };
 
+            /**
+             * dvd resource  should be declared after book, to test if it does not overwrite book sse config
+             */
             harvesterApp = harvester(options).resource('book', {
                 title: Joi.string(),
                 author: Joi.string()
+            }).resource('superHero', {
+                timestamp: Joi.number()
+            }).resource('dvd', {
+                title: Joi.string()
             });
 
             harvesterApp.listen(8005);
 
-            return seeder(harvesterApp, baseUrl).dropCollections('books')
+            return seeder(harvesterApp, baseUrl).dropCollections('books', 'dvds', 'superHeros');
         });
 
         describe('When I post to the newly created resource', function () {
@@ -62,6 +69,29 @@ describe('EventSource implementation for resource changes', function () {
                 });
             }
               );
+        });
+
+        describe('When I post resource with uppercased characters in name', function () {
+            it('Then I should receive a change event', function (done) {
+                    var eventSource = ess(baseUrl + '/superHeros/changes/stream', {retry: false})
+                        .on('data', function (data) {
+                            data = JSON.parse(data.data);
+                            expect(_.omit(data, 'id')).to.deep.equal({timestamp: 123});
+                            done();
+                            eventSource.destroy();
+                        });
+
+                    Promise.delay(100).then(function () {
+                        seeder(harvesterApp, baseUrl).seedCustomFixture({
+                            superHeros: [
+                                {
+                                    timestamp: 123
+                                }
+                            ]
+                        });
+                    });
+                }
+            );
         });
 
         describe('when I ask for events with ids greater than a certain id with filters enabled', function () {
