@@ -1,7 +1,4 @@
-var _ = require('lodash');
 var request = require('supertest');
-var RSVP = require('rsvp');
-var Promise = RSVP.Promise;
 var should = require('should');
 
 var seeder = require('./seeder.js');

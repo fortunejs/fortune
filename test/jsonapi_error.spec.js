@@ -1,10 +1,5 @@
 var should = require('should');
-var _ = require('lodash');
-var RSVP = require('rsvp');
 var request = require('supertest');
-var Promise = RSVP.Promise;
-
-var seeder = require('./seeder.js');
 
 
 describe('jsonapi error handling', function () {

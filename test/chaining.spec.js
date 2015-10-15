@@ -1,6 +1,4 @@
 var should = require('should');
-var _ = require('lodash');
-var RSVP = require('rsvp');
 var Joi = require('joi');
 
 var seeder = require('./seeder.js');
