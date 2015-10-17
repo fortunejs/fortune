@@ -2,9 +2,12 @@ import { pass, fail, run, comment, ok, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
-import { primary as primaryKey } from '../../../lib/common/keys'
-import * as methods from '../../../lib/common/methods'
-import change from '../../../lib/common/change'
+
+var constants = require('../../../lib/common/constants')
+var changeEvent = constants.change
+var createMethod = constants.create
+var updateMethod = constants.update
+var primaryKey = constants.primary
 
 
 const deadcode = new Buffer('deadc0de', 'hex')
@@ -30,16 +33,16 @@ run(() => {
   .then(instance => {
     store = instance
 
-    store.on(change, data => {
-      deepEqual(data[methods.create].user.sort((a, b) => a - b),
+    store.on(changeEvent, data => {
+      deepEqual(data[createMethod].user.sort((a, b) => a - b),
         [ 4 ], 'change event shows created IDs')
-      deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
     return store.request({
       type: 'user',
-      method: methods.create,
+      method: createMethod,
       payload: records
     })
   })
@@ -57,7 +60,6 @@ run(() => {
 
     return store.request({
       type: 'user',
-      method: methods.find,
       ids: [ 1, 3 ]
     })
   })
@@ -90,7 +92,7 @@ run(() => {
 
     return store.request({
       type: 'user',
-      method: methods.create,
+      method: createMethod,
       payload: [ { spouse: 2 }, { spouse: 2 } ]
     })
   })

@@ -1,7 +1,9 @@
 import { fail, comment, run, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
-import * as keys from '../../../lib/common/keys'
+
+var constants = require('../../../lib/common/constants')
+var primaryKey = constants.primary
 
 
 run(() => {
@@ -37,7 +39,7 @@ run(() => {
     },
     response: response => {
       deepEqual(response.payload
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ], 'gets records with IDs')
     }
   })
@@ -54,10 +56,10 @@ run(() => {
     },
     response: response => {
       deepEqual(response.payload
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ], 'gets records with IDs')
       deepEqual(response.payload.include.animal
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2, 3 ], 'gets included records')
     }
   })

@@ -1,9 +1,12 @@
 import { fail, comment, run, ok, equal, deepEqual } from 'tapdance'
 import Adapter from '../../lib/adapter'
 import { find, includes } from '../../lib/common/array_proxy'
-import * as keys from '../../lib/common/keys'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
+
+var constants = require('../../lib/common/constants')
+var primaryKey = constants.primary
+var denormalizedInverseKey = constants.denormalizedInverse
 
 
 const type = 'user'
@@ -21,7 +24,7 @@ const recordTypes = {
     friends: { link: 'user', isArray: true, inverse: 'friends' },
     nemesis: { link: 'user', inverse: '__user_nemesis_inverse' },
     '__user_nemesis_inverse': { link: 'user', isArray: true,
-      inverse: 'nemesis', [keys.denormalizedInverse]: true },
+      inverse: 'nemesis', [denormalizedInverseKey]: true },
     bestFriend: { link: 'user', inverse: 'bestFriend' }
   }
 }
@@ -32,7 +35,7 @@ const key2 = new Buffer('babe', 'hex')
 
 const records = [
   {
-    [keys.primary]: 1,
+    [primaryKey]: 1,
     name: 'bob',
     age: 42,
     isAlive: true,
@@ -41,7 +44,7 @@ const records = [
     friends: [ 2 ],
     bestFriend: 2
   }, {
-    [keys.primary]: 2,
+    [primaryKey]: 2,
     name: 'john',
     age: 36,
     isAlive: false,
@@ -71,7 +74,7 @@ export default function (adapter, options) {
       adapter.find(type, [ 1 ])
       .then(records => {
         equal(records.count, 1, 'count is correct')
-        equal(records[0][keys.primary], 1, 'id is correct')
+        equal(records[0][primaryKey], 1, 'id is correct')
         ok(records[0].birthday instanceof Date,
           'date type is correct')
         equal(typeof records[0].isAlive, 'boolean',
@@ -91,7 +94,7 @@ export default function (adapter, options) {
       adapter.find(type, [ 2 ])
       .then(records => {
         equal(records.count, 1, 'count is correct')
-        equal(records[0][keys.primary], 2, 'id is correct')
+        equal(records[0][primaryKey], 2, 'id is correct')
         ok(Buffer.isBuffer(records[0].picture),
           'buffer type is correct')
         ok(deadbeef.equals(records[0].picture),
@@ -234,7 +237,7 @@ export default function (adapter, options) {
     comment('create: duplicate id creation should fail')
     return test(adapter => {
       return adapter.create(type, [ {
-        [keys.primary]: 1
+        [primaryKey]: 1
       } ])
       .then(() => {
         fail('duplicate id creation should have failed')
@@ -255,7 +258,7 @@ export default function (adapter, options) {
         name: 'joe'
       } ])
       .then(records => {
-        id = records[0][keys.primary]
+        id = records[0][primaryKey]
         testIds(records, 'id type is correct')
 
         equal(records[0].picture, null,
@@ -267,7 +270,7 @@ export default function (adapter, options) {
       })
       .then(records => {
         equal(records.length, 1, 'match length is correct')
-        equal(records[0][keys.primary], id, 'id is matching')
+        equal(records[0][primaryKey], id, 'id is matching')
         testIds(records, 'id type is correct')
       })
     })
@@ -286,7 +289,7 @@ export default function (adapter, options) {
     comment('update: not found')
     return test(adapter =>
       adapter.update(type, [ {
-        [keys.primary]: 3,
+        [primaryKey]: 3,
         replace: { foo: 'bar' }
       } ])
       .then(number => {
@@ -298,8 +301,8 @@ export default function (adapter, options) {
     comment('update: replace')
     return test(adapter =>
       adapter.update(type, [
-        { [keys.primary]: 1, replace: { name: 'billy' } },
-        { [keys.primary]: 2,
+        { [primaryKey]: 1, replace: { name: 'billy' } },
+        { [primaryKey]: 2,
           replace: { name: 'billy', nicknames: [ 'pepe' ] } }
       ])
       .then(number => {
@@ -308,7 +311,7 @@ export default function (adapter, options) {
       })
       .then(records => {
         deepEqual(find(records, record =>
-          record[keys.primary] === 2).nicknames, [ 'pepe' ], 'array updated')
+          record[primaryKey] === 2).nicknames, [ 'pepe' ], 'array updated')
         equal(records.filter(record => record.name !== 'billy').length,
           0, 'field updated on set')
       }))
@@ -318,8 +321,8 @@ export default function (adapter, options) {
     comment('update: unset')
     return test(adapter =>
       adapter.update(type, [
-        { [keys.primary]: 1, replace: { name: null } },
-        { [keys.primary]: 2, replace: { name: null } }
+        { [primaryKey]: 1, replace: { name: null } },
+        { [primaryKey]: 2, replace: { name: null } }
       ])
       .then(number => {
         equal(number, 2, 'number updated correct')
@@ -335,8 +338,8 @@ export default function (adapter, options) {
     comment('update: push')
     return test(adapter =>
       adapter.update(type, [
-        { [keys.primary]: 1, push: { friends: 5 } },
-        { [keys.primary]: 2, push: { friends: [ 5 ] } }
+        { [primaryKey]: 1, push: { friends: 5 } },
+        { [primaryKey]: 2, push: { friends: [ 5 ] } }
       ])
       .then(number => {
         equal(number, 2, 'number updated correct')
@@ -353,8 +356,8 @@ export default function (adapter, options) {
     comment('update: pull')
     return test(adapter =>
       adapter.update(type, [
-        { [keys.primary]: 1, pull: { friends: 2 } },
-        { [keys.primary]: 2, pull: { friends: [ 1 ] } }
+        { [primaryKey]: 1, pull: { friends: 2 } },
+        { [primaryKey]: 2, pull: { friends: [ 1 ] } }
       ])
       .then(number => {
         equal(number, 2, 'number updated correct')
@@ -385,7 +388,7 @@ export default function (adapter, options) {
       })
       .then(records => {
         equal(records.count, 1, 'count correct')
-        deepEqual(records.map(record => record[keys.primary]),
+        deepEqual(records.map(record => record[primaryKey]),
           [ 2 ], 'record deleted')
       }))
   })
@@ -399,7 +402,13 @@ function runTest (a, options, fn) {
 
   const A = a
   const adapter = new A({
-    options, keys, errors, recordTypes
+    options, keys: {
+      primary: constants.primary,
+      link: constants.link,
+      isArray: constants.isArray,
+      inverse: constants.inverse,
+      denormalizedInverse: constants.denormalizedInverse
+    }, errors, recordTypes
   })
 
   return adapter.connect()
@@ -407,7 +416,7 @@ function runTest (a, options, fn) {
   .then(() => adapter.create(type, records))
   .then(() => fn(adapter))
   .then(() => adapter.delete(type,
-    records.map(record => record[keys.primary])))
+    records.map(record => record[primaryKey])))
   .then(() => adapter.disconnect())
   .catch(error => {
     stderr.error(error)
@@ -419,6 +428,6 @@ function runTest (a, options, fn) {
 
 function testIds (records, message) {
   equal(find(records.map(record =>
-    includes([ 'string', 'number' ], typeof record[keys.primary])),
+    includes([ 'string', 'number' ], typeof record[primaryKey])),
     b => !b), undefined, message)
 }

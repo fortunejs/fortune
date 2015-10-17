@@ -2,8 +2,11 @@ import { fail, run, comment, ok, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
 import * as arrayProxy from '../../../lib/common/array_proxy'
-import * as methods from '../../../lib/common/methods'
-import change from '../../../lib/common/change'
+
+var constants = require('../../../lib/common/constants')
+var changeEvent = constants.change
+var deleteMethod = constants.delete
+var updateMethod = constants.update
 
 
 run(() => {
@@ -16,16 +19,16 @@ run(() => {
   .then(instance => {
     store = instance
 
-    store.on(change, data => {
-      ok(arrayProxy.find(data[methods.delete].user, id => id === 3),
+    store.on(changeEvent, data => {
+      ok(arrayProxy.find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')
-      deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
         [ 1, 2 ], 'change event shows updated IDs')
     })
 
     return store.request({
       type: 'user',
-      method: methods.delete,
+      method: deleteMethod,
       ids: [ 3 ]
     })
   })
@@ -35,7 +38,6 @@ run(() => {
 
     return store.request({
       type: 'user',
-      method: methods.find,
       ids: [ 1, 2 ]
     })
   })
