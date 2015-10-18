@@ -57,7 +57,7 @@ const minifyOptions = { collapseWhitespace: true }
 // ==============
 
 function processAPI (ns, obj) {
-  const { type } = obj.context
+  const { type, name } = obj.context
 
   if (ns === obj.context.name) {
     obj.context.anchor = ns.toLowerCase()
@@ -77,7 +77,8 @@ function processAPI (ns, obj) {
   if (type === 'method' || type === 'function' || type === 'constructor')
     obj.context.isFunction = true
 
-  if (type === 'constructor')
+  if (type === 'constructor' ||
+    (name === 'constructor' && obj.context.isFunction))
     obj.context.isConstructor = true
 
   const getName = element => {

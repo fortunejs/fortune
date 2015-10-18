@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is a high-level I/O library for web applications. It provides a data storage adapter, serialization interface, and networking wrappers. These parts working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs.
+Fortune is a data access layer for Node.js & web browsers. It provides abstract base classes for database adapters and serialization formats, and networking wrappers. These parts working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -42,6 +42,8 @@ module.exports = fortune.create()
 })
 ```
 
+By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
+
 Then lets add a HTTP server:
 
 ```js
@@ -57,10 +59,7 @@ const server = http.createServer(fortune.net.http(store))
 store.connect().then(() => server.listen(1337))
 ```
 
-
 This yields an *ad hoc* JSON-over-HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
-
-By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
 
 See the [plugins page](http://fortunejs.com/plugins/) for more details.
 

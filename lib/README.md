@@ -1,6 +1,6 @@
 # Codebase
 
-Written in ES6 with performance and Node.js compatibility in mind, transpiled to ES5 using Babel in the browser.
+Written in ECMAScript 5.1 with performance in mind.
 
 
 ## Adapter
