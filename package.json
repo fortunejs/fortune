@@ -91,7 +91,18 @@
     ]
   },
   "eslintConfig": {
-    "extends": "0x8890"
+    "extends": "0x8890",
+    "ecmaFeatures": {
+      "modules": false
+    },
+    "env": {
+      "es6": false
+    },
+    "rules": {
+      "func-names": 0,
+      "no-var": 0,
+      "one-var": 0
+    }
   },
   "engines": {
     "node": ">=0.12"

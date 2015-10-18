@@ -3,12 +3,12 @@ import ensureTypes from '../../lib/record_type/ensure_types'
 import validate from '../../lib/record_type/validate'
 import enforce from '../../lib/record_type/enforce'
 
-var constants = require('../../lib/common/constants')
-var primaryKey = constants.primary
-var linkKey = constants.link
-var isArrayKey = constants.isArray
-var inverseKey = constants.inverse
-var denormalizedInverseKey = constants.denormalizedInverse
+var keys = require('../../lib/common/keys')
+var primaryKey = keys.primary
+var linkKey = keys.link
+var isArrayKey = keys.isArray
+var inverseKey = keys.inverse
+var denormalizedInverseKey = keys.denormalizedInverse
 
 
 const recordType = 'person'

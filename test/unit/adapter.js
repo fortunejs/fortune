@@ -4,9 +4,9 @@ import { find, includes } from '../../lib/common/array_proxy'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 
-var constants = require('../../lib/common/constants')
-var primaryKey = constants.primary
-var denormalizedInverseKey = constants.denormalizedInverse
+var keys = require('../../lib/common/keys')
+var primaryKey = keys.primary
+var denormalizedInverseKey = keys.denormalizedInverse
 
 
 const type = 'user'
@@ -402,13 +402,7 @@ function runTest (a, options, fn) {
 
   const A = a
   const adapter = new A({
-    options, keys: {
-      primary: constants.primary,
-      link: constants.link,
-      isArray: constants.isArray,
-      inverse: constants.inverse,
-      denormalizedInverse: constants.denormalizedInverse
-    }, errors, recordTypes
+    options, keys, errors, recordTypes
   })
 
   return adapter.connect()
