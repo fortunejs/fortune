@@ -125,14 +125,14 @@ run(() => {
     headers: { 'Content-Type': 'application/json' },
     body: [ {
       id: '/wtf',
-      replace: { name: 'Ayy lmao' }
+      replace: { name: 1234 }
     } ]
   }, response => {
     equal(response.status, 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
     deepEqual(response.body.map(record => record.name),
-      [ 'Ayy lmao' ], 'response body is correct')
+      [ '1234' ], 'response body is correct')
   })
 })
 
