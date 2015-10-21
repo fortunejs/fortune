@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.14 (2015-10-21)
+- Polish: display bad request error if related record is non-existent.
+
+
 ##### 1.3.13 (2015-10-05)
 - Fix: HTTP content negotiation edge case when `Accept` media type is invalid.
 
