@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.15 (2015-10-23)
+- Fix: use `parseFloat` for `Number` type. Thanks [@diogoazevedos](https://github.com/diogoazevedos)!
+
+
 ##### 1.3.14 (2015-10-21)
 - Polish: display bad request error if related record is non-existent.
 
