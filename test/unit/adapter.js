@@ -1,6 +1,6 @@
 import { fail, comment, run, ok, equal, deepEqual } from 'tapdance'
 import Adapter from '../../lib/adapter'
-import { find, includes } from '../../lib/common/array_proxy'
+import { find, includes } from '../../lib/common/array'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 

@@ -1,7 +1,7 @@
 import { pass, fail, run, comment, ok, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
-import * as arrayProxy from '../../../lib/common/array_proxy'
+import * as arrayProxy from '../../../lib/common/array'
 
 var constants = require('../../../lib/common/constants')
 var changeEvent = constants.change
