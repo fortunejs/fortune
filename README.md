@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is a data access layer for Node.js & web browsers. It provides abstract base classes for database adapters and serialization formats, and networking wrappers. These parts working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs.
+Fortune is an application system for Node.js & web browsers. It provides a data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
