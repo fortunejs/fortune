@@ -1,3 +1,5 @@
+'use strict'
+
 var chalk = require('chalk')
 var tapdance = require('tapdance')
 var comment = tapdance.comment
@@ -5,19 +7,19 @@ var run = tapdance.run
 var start = Date.now()
 
 // Unit tests.
-import './unit/record_type'
-import './unit/serializer'
+require('./unit/record_type')
+require('./unit/serializer')
 
 // Integration tests.
-import './integration/methods/find'
-import './integration/methods/create'
-import './integration/methods/update'
-import './integration/methods/delete'
-import './integration/serializers/json'
-import './integration/serializers/form'
-import './integration/adapters/memory'
-import './integration/http'
-import './integration/websocket'
+require('./integration/methods/find')
+require('./integration/methods/create')
+require('./integration/methods/update')
+require('./integration/methods/delete')
+require('./integration/serializers/json')
+require('./integration/serializers/form')
+require('./integration/adapters/memory')
+require('./integration/http')
+require('./integration/websocket')
 
 run(function () {
   comment(chalk.yellow('Test finished in ' +

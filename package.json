@@ -125,7 +125,9 @@
       "block-scoped-var": 2,
       "func-names": 0,
       "no-var": 0,
-      "one-var": 0
+      "no-warning-comments": 1,
+      "one-var": 0,
+      "strict": [ 2, "global" ]
     }
   },
   "engines": {
