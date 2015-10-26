@@ -1,8 +1,10 @@
 import { fail, comment, run, ok, equal, deepEqual } from 'tapdance'
 import Adapter from '../../lib/adapter'
-import { find, includes } from '../../lib/common/array'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
+
+var find = require('../../lib/common/array/find')
+var includes = require('../../lib/common/array/includes')
 
 var keys = require('../../lib/common/keys')
 var primaryKey = keys.primary

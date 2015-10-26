@@ -1,7 +1,8 @@
 import { fail, run, comment, ok, deepEqual, equal } from 'tapdance'
 import testInstance from '../test_instance'
 import * as stderr from '../../stderr'
-import * as arrayProxy from '../../../lib/common/array'
+
+var find = require('../../../lib/common/array/find')
 
 var constants = require('../../../lib/common/constants')
 var changeEvent = constants.change
@@ -20,7 +21,7 @@ run(() => {
     store = instance
 
     store.on(changeEvent, data => {
-      ok(arrayProxy.find(data[deleteMethod].user, id => id === 3),
+      ok(find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')
       deepEqual(data[updateMethod].user.sort((a, b) => a - b),
         [ 1, 2 ], 'change event shows updated IDs')
@@ -44,7 +45,7 @@ run(() => {
 
   .then(response => {
     deepEqual(response.payload.map(record =>
-      arrayProxy.find(record.friends, id => id === 3)),
+      find(record.friends, id => id === 3)),
       [ undefined, undefined ], 'related records updated')
 
     return store.disconnect()
