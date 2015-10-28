@@ -15,7 +15,7 @@ $ npm install fortune --save
 
 ## Example
 
-Let's model an API that models Twitter's basic functionality:
+Let's build an API that models Twitter's basic functionality:
 
 ```js
 // store.js
