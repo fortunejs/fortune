@@ -3,6 +3,9 @@ import Adapter from '../../lib/adapter'
 import * as errors from '../../lib/common/errors'
 import * as stderr from '../stderr'
 
+var promise = require('../../lib/common/promise')
+var Promise = promise.Promise
+
 var find = require('../../lib/common/array/find')
 var includes = require('../../lib/common/array/includes')
 
@@ -404,7 +407,7 @@ function runTest (a, options, fn) {
 
   const A = a
   const adapter = new A({
-    options, keys, errors, recordTypes
+    options, keys, errors, recordTypes, Promise
   })
 
   return adapter.connect()
