@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.1 (2015-10-31)
+- Polish: downgraded codebase from ES6 to ES5.1, performance improvements.
+
+
 ##### 1.3.15 (2015-10-23)
 - Fix: use `parseFloat` for `Number` type. Thanks [@diogoazevedos](https://github.com/diogoazevedos)!
 
