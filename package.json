@@ -21,12 +21,12 @@
     "postpublish": "npm run deploy:website",
     "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "node test | tap-dot",
-    "test:browser": "browserify test/browser.js | tape-run -b firefox | tap-dot",
+    "test:browser": "browserify test/browser.js | tape-run | tap-dot",
     "test:website": "npm run build:website && http-server -p 8890 dist/web"
   },
   "dependencies": {
     "array-buffer": "^1.0.2",
-    "bluebird": "^3.0.0",
+    "bluebird": "^3.0.2",
     "busboy": "^0.2.11",
     "chalk": "^1.1.1",
     "clone": "^1.0.2",
@@ -37,10 +37,10 @@
     "ws": "^0.8.0"
   },
   "devDependencies": {
-    "browserify": "^12.0.0",
+    "browserify": "^12.0.1",
     "cssnext": "^1.8.4",
     "docchi": "^0.11.3",
-    "eslint": "^1.7.3",
+    "eslint": "^1.8.0",
     "eslint-config-0x8890": "^1.0.0",
     "form-data": "^1.0.0-rc3",
     "highlight.js": "^8.9.1",
@@ -54,7 +54,7 @@
     "normalize.css": "^3.0.3",
     "rimraf": "^2.4.3",
     "tap-dot": "^1.0.0",
-    "tape-run": "^1.1.0"
+    "tape-run": "^2.0.0"
   },
   "files": [
     "lib/",
