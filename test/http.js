@@ -1,2 +1,2 @@
 // Entry point for external modules to test HTTP implementation.
-module.exports = require('../dist/test/integration/http_test')
+module.exports = require('./integration/http_test')
