@@ -1,7 +1,15 @@
-import qs from 'querystring'
-import { run, comment, ok, deepEqual, equal } from 'tapdance'
-import httpTest from '../http_test'
-import json from '../../../lib/serializer/serializers/json'
+'use strict'
+
+const tapdance = require('tapdance')
+const comment = tapdance.comment
+const run = tapdance.run
+const ok = tapdance.ok
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const qs = require('querystring')
+const httpTest = require('../http_test')
+const json = require('../../../lib/serializer/serializers/json')
 
 
 const test = httpTest.bind(null, {
@@ -125,14 +133,14 @@ run(() => {
     headers: { 'Content-Type': 'application/json' },
     body: [ {
       id: '/wtf',
-      replace: { name: 'Ayy lmao' }
+      replace: { name: 1234 }
     } ]
   }, response => {
     equal(response.status, 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
     deepEqual(response.body.map(record => record.name),
-      [ 'Ayy lmao' ], 'response body is correct')
+      [ '1234' ], 'response body is correct')
   })
 })
 

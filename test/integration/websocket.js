@@ -1,9 +1,15 @@
-import { fail, run, comment, deepEqual } from 'tapdance'
-import fortune from '../../lib'
-import WebSocket from 'ws'
+'use strict'
 
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const deepEqual = tapdance.deepEqual
 
-const { methods } = fortune
+const fortune = require('../../lib')
+const WebSocket = require('ws')
+
+const methods = fortune.methods
 const store = fortune.create()
 const port = 2048
 const server = fortune.net.websocket(store, { port })

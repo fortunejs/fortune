@@ -1,7 +1,17 @@
-import { fail, comment, run, deepEqual, equal } from 'tapdance'
-import testInstance from '../test_instance'
-import * as stderr from '../../stderr'
-import * as keys from '../../../lib/common/keys'
+'use strict'
+
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const testInstance = require('../test_instance')
+const stderr = require('../../stderr')
+
+const constants = require('../../../lib/common/constants')
+const primaryKey = constants.primary
 
 
 run(() => {
@@ -37,7 +47,7 @@ run(() => {
     },
     response: response => {
       deepEqual(response.payload
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ], 'gets records with IDs')
     }
   })
@@ -54,10 +64,10 @@ run(() => {
     },
     response: response => {
       deepEqual(response.payload
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ], 'gets records with IDs')
       deepEqual(response.payload.include.animal
-        .map(record => record[keys.primary]).sort((a, b) => a - b),
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2, 3 ], 'gets included records')
     }
   })

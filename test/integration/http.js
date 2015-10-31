@@ -1,8 +1,13 @@
-import { run, comment, equal } from 'tapdance'
-import httpTest from '../integration/http_test'
+'use strict'
 
+const tapdance = require('tapdance')
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
 
-const test = httpTest.bind(null, undefined)
+const httpTest = require('../integration/http_test')
+
+const test = httpTest.bind(null, void 0)
 
 
 run(() => {

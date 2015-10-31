@@ -1,14 +1,31 @@
-import { fail, comment, run, ok, equal, deepEqual } from 'tapdance'
-import Adapter from '../../lib/adapter'
-import { find, includes } from '../../lib/common/array_proxy'
-import * as keys from '../../lib/common/keys'
-import * as errors from '../../lib/common/errors'
-import * as stderr from '../stderr'
+'use strict'
 
+var tapdance = require('tapdance')
+var ok = tapdance.ok
+var fail = tapdance.fail
+var comment = tapdance.comment
+var run = tapdance.run
+var equal = tapdance.equal
+var deepEqual = tapdance.deepEqual
 
-const type = 'user'
+var Adapter = require('../../lib/adapter')
+var errors = require('../../lib/common/errors')
+var stderr = require('../stderr')
 
-const recordTypes = {
+var promise = require('../../lib/common/promise')
+var Promise = promise.Promise
+
+var map = require('../../lib/common/array/map')
+var find = require('../../lib/common/array/find')
+var includes = require('../../lib/common/array/includes')
+var filter = require('../../lib/common/array/filter')
+
+var keys = require('../../lib/common/keys')
+var primaryKey = keys.primary
+
+var type = 'user'
+
+var recordTypes = {
   user: {
     name: { type: String },
     age: { type: Number },
@@ -21,18 +38,18 @@ const recordTypes = {
     friends: { link: 'user', isArray: true, inverse: 'friends' },
     nemesis: { link: 'user', inverse: '__user_nemesis_inverse' },
     '__user_nemesis_inverse': { link: 'user', isArray: true,
-      inverse: 'nemesis', [keys.denormalizedInverse]: true },
+      inverse: 'nemesis', '__denormalizedInverse': true },
     bestFriend: { link: 'user', inverse: 'bestFriend' }
   }
 }
 
-const deadbeef = new Buffer('deadbeef', 'hex')
-const key1 = new Buffer('cafe', 'hex')
-const key2 = new Buffer('babe', 'hex')
+var deadbeef = new Buffer('deadbeef', 'hex')
+var key1 = new Buffer('cafe', 'hex')
+var key2 = new Buffer('babe', 'hex')
 
-const records = [
+var records = [
   {
-    [keys.primary]: 1,
+    id: 1,
     name: 'bob',
     age: 42,
     isAlive: true,
@@ -41,7 +58,7 @@ const records = [
     friends: [ 2 ],
     bestFriend: 2
   }, {
-    [keys.primary]: 2,
+    id: 2,
     name: 'john',
     age: 36,
     isAlive: false,
@@ -53,25 +70,26 @@ const records = [
 ]
 
 
-export default function (adapter, options) {
-  const test = runTest.bind(null, adapter, options)
+module.exports = function (adapter, options) {
+  function test (fn) { return runTest(adapter, options, fn) }
 
-  run(() => {
+  run(function () {
     comment('find: nothing')
-    return test(adapter =>
-      adapter.find(type, [])
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, [])
+      .then(function (records) {
         equal(records.count, 0, 'count is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: id, type checking #1')
-    return test(adapter =>
-      adapter.find(type, [ 1 ])
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, [ 1 ])
+      .then(function (records) {
         equal(records.count, 1, 'count is correct')
-        equal(records[0][keys.primary], 1, 'id is correct')
+        equal(records[0][primaryKey], 1, 'id is correct')
         ok(records[0].birthday instanceof Date,
           'date type is correct')
         equal(typeof records[0].isAlive, 'boolean',
@@ -82,145 +100,165 @@ export default function (adapter, options) {
           'object value is correct')
         ok(!includes(Object.keys(records[0],
           '__user_nemesis_inverse')), 'denormalized fields not enumerable')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: id, type checking #2')
-    return test(adapter =>
-      adapter.find(type, [ 2 ])
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, [ 2 ])
+      .then(function (records) {
         equal(records.count, 1, 'count is correct')
-        equal(records[0][keys.primary], 2, 'id is correct')
+        equal(records[0][primaryKey], 2, 'id is correct')
         ok(Buffer.isBuffer(records[0].picture),
           'buffer type is correct')
         ok(deadbeef.equals(records[0].picture),
           'buffer value is correct')
         deepEqual(records[0].privateKeys, [ key1, key2 ],
           'array of buffers is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: collection')
-    return test(adapter =>
-      adapter.find(type)
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type)
+      .then(function (records) {
         equal(records.count, 2, 'count is correct')
         testIds(records, 'id type is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: match (string)')
-    return test(adapter =>
-      adapter.find(type, null, { match: { name: [ 'john', 'xyz' ], age: 36 } })
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, null,
+        { match: { name: [ 'john', 'xyz' ], age: 36 } })
+      .then(function (records) {
         equal(records.length, 1, 'match length is correct')
         equal(records[0].name, 'john', 'matched correct record')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: match (buffer)')
-    return test(adapter =>
-      adapter.find(type, null, { match: { picture: deadbeef } })
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, null, { match: { picture: deadbeef } })
+      .then(function (records) {
         equal(records.length, 1, 'match length is correct')
         ok(records[0].picture.equals(deadbeef),
           'matched correct record')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: match (nothing)')
-    return test(adapter =>
-      adapter.find(type, null, { match: { name: 'bob', age: 36 } })
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, null, { match: { name: 'bob', age: 36 } })
+      .then(function (records) {
         equal(records.length, 0, 'match length is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: sort ascending')
-    return test(adapter =>
-      adapter.find(type, null, { sort: { age: true } })
-      .then(records => {
-        deepEqual(records.map(record => record.age), [ 36, 42 ],
-          'ascending sort order correct')
-      }))
+    return test(function (adapter) {
+      return adapter.find(type, null, { sort: { age: true } })
+      .then(function (records) {
+        deepEqual(map(records, function (record) { return record.age }),
+          [ 36, 42 ], 'ascending sort order correct')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: sort descending')
-    return test(adapter =>
-      adapter.find(type, null, { sort: { age: false } })
-      .then(records => {
-        deepEqual(records.map(record => record.age), [ 42, 36 ],
-          'descending sort order correct')
-      }))
+    return test(function (adapter) {
+      return adapter.find(type, null, { sort: { age: false } })
+      .then(function (records) {
+        deepEqual(map(records, function (record) { return record.age }),
+          [ 42, 36 ], 'descending sort order correct')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: sort combination')
-    return test(adapter =>
-      adapter.find(type, null, { sort: { age: true, name: true } })
-      .then(records => {
-        deepEqual(records.map(record => record.age), [ 36, 42 ],
-          'sort order is correct')
-      }))
+    return test(function (adapter) {
+      return adapter.find(type, null, { sort: { age: true, name: true } })
+      .then(function (records) {
+        deepEqual(map(records, function (record) { return record.age }),
+          [ 36, 42 ], 'sort order is correct')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: offset + limit')
-    return test(adapter =>
-      adapter.find(type, null, { offset: 1, limit: 1, sort: { name: true } })
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.find(type, null,
+        { offset: 1, limit: 1, sort: { name: true } })
+      .then(function (records) {
         equal(records[0].name, 'john', 'record is correct')
         equal(records.length, 1, 'offset length is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: fields #1')
-    return test(adapter =>
-      adapter.find(type, null, { fields: { name: true, isAlive: true } })
-      .then(records => {
-        ok(records.every(record => Object.keys(record).length === 3),
-          'fields length is correct')
-      }))
+    return test(function (adapter) {
+      return adapter.find(type, null,
+        { fields: { name: true, isAlive: true } })
+      .then(function (records) {
+        ok(!find(records, function (record) {
+          comment(Object.keys(record))
+          return Object.keys(record).length !== 3
+        }), 'fields length is correct')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('find: fields #2')
-    return test(adapter =>
-      adapter.find(type, null, { fields: { name: false, isAlive: false } })
-      .then(records => {
-        ok(records.every(record => Object.keys(record).length === 10),
-          'fields length is correct')
-      }))
+    return test(function (adapter) {
+      return adapter.find(type, null,
+        { fields: { name: false, isAlive: false } })
+      .then(function (records) {
+        ok(!find(records, function (record) {
+          return Object.keys(record).length !== 10
+        }), 'fields length is correct')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('create: no-op')
-    return test(adapter =>
-      adapter.create(type, [])
-      .then(records => {
+    return test(function (adapter) {
+      return adapter.create(type, [])
+      .then(function (records) {
         deepEqual(records, [], 'response is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('create: type check')
-    return test(adapter => {
-      const date = new Date()
+    return test(function (adapter) {
+      var date = new Date()
 
       return adapter.create(type, [ {
         id: 3,
         picture: deadbeef,
         birthday: date
       } ])
-      .then(records => {
+      .then(function (records) {
         ok(deadbeef.equals(records[0].picture),
           'buffer type is correct')
         ok(
@@ -230,32 +268,30 @@ export default function (adapter, options) {
     })
   })
 
-  run(() => {
+  run(function () {
     comment('create: duplicate id creation should fail')
-    return test(adapter => {
-      return adapter.create(type, [ {
-        [keys.primary]: 1
-      } ])
-      .then(() => {
+    return test(function (adapter) {
+      return adapter.create(type, [ { id: 1 } ])
+      .then(function () {
         fail('duplicate id creation should have failed')
       })
-      .catch(error => {
+      .catch(function (error) {
         ok(error instanceof errors.ConflictError,
           'error type is correct')
       })
     })
   })
 
-  run(() => {
+  run(function () {
     comment('create: id generation and lookup')
-    return test(adapter => {
-      let id
+    return test(function (adapter) {
+      var id
 
       return adapter.create(type, [ {
         name: 'joe'
       } ])
-      .then(records => {
-        id = records[0][keys.primary]
+      .then(function (records) {
+        id = records[0][primaryKey]
         testIds(records, 'id type is correct')
 
         equal(records[0].picture, null,
@@ -265,151 +301,173 @@ export default function (adapter, options) {
 
         return adapter.find(type, [ id ])
       })
-      .then(records => {
+      .then(function (records) {
         equal(records.length, 1, 'match length is correct')
-        equal(records[0][keys.primary], id, 'id is matching')
+        equal(records[0][primaryKey], id, 'id is matching')
         testIds(records, 'id type is correct')
       })
     })
   })
 
-  run(() => {
+  run(function () {
     comment('update: no-op')
-    return test(adapter =>
-      adapter.update(type, [])
-      .then(number => {
+    return test(function (adapter) {
+      return adapter.update(type, [])
+      .then(function (number) {
         equal(number, 0, 'number is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('update: not found')
-    return test(adapter =>
-      adapter.update(type, [ {
-        [keys.primary]: 3,
+    return test(function (adapter) {
+      return adapter.update(type, [ {
+        id: 3,
         replace: { foo: 'bar' }
       } ])
-      .then(number => {
+      .then(function (number) {
         equal(number, 0, 'number is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('update: replace')
-    return test(adapter =>
-      adapter.update(type, [
-        { [keys.primary]: 1, replace: { name: 'billy' } },
-        { [keys.primary]: 2,
-          replace: { name: 'billy', nicknames: [ 'pepe' ] } }
+    return test(function (adapter) {
+      return adapter.update(type, [
+        { id: 1, replace: { name: 'billy' } },
+        { id: 2, replace: { name: 'billy', nicknames: [ 'pepe' ] } }
       ])
-      .then(number => {
+      .then(function (number) {
         equal(number, 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then(records => {
-        deepEqual(find(records, record =>
-          record[keys.primary] === 2).nicknames, [ 'pepe' ], 'array updated')
-        equal(records.filter(record => record.name !== 'billy').length,
-          0, 'field updated on set')
-      }))
+      .then(function (records) {
+        deepEqual(find(records, function (record) {
+          return record[primaryKey] === 2
+        }).nicknames, [ 'pepe' ], 'array updated')
+        equal(filter(records, function (record) {
+          return record.name !== 'billy'
+        }).length, 0, 'field updated on set')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('update: unset')
-    return test(adapter =>
-      adapter.update(type, [
-        { [keys.primary]: 1, replace: { name: null } },
-        { [keys.primary]: 2, replace: { name: null } }
+    return test(function (adapter) {
+      return adapter.update(type, [
+        { id: 1, replace: { name: null } },
+        { id: 2, replace: { name: null } }
       ])
-      .then(number => {
+      .then(function (number) {
         equal(number, 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then(records => {
-        equal(records.filter(record => record.name !== null).length,
-          0, 'field updated on unset')
-      }))
+      .then(function (records) {
+        equal(filter(records, function (record) {
+          return record.name !== null
+        }).length, 0, 'field updated on unset')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('update: push')
-    return test(adapter =>
-      adapter.update(type, [
-        { [keys.primary]: 1, push: { friends: 5 } },
-        { [keys.primary]: 2, push: { friends: [ 5 ] } }
+    return test(function (adapter) {
+      return adapter.update(type, [
+        { id: 1, push: { friends: 5 } },
+        { id: 2, push: { friends: [ 5 ] } }
       ])
-      .then(number => {
+      .then(function (number) {
         equal(number, 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then(records => {
-        equal(records.filter(record =>
-          includes(record.friends, 5)).length,
-          records.length, 'value pushed')
-      }))
+      .then(function (records) {
+        equal(filter(records, function (record) {
+          return includes(record.friends, 5)
+        }).length, records.length, 'value pushed')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('update: pull')
-    return test(adapter =>
-      adapter.update(type, [
-        { [keys.primary]: 1, pull: { friends: 2 } },
-        { [keys.primary]: 2, pull: { friends: [ 1 ] } }
+    return test(function (adapter) {
+      return adapter.update(type, [
+        { id: 1, pull: { friends: 2 } },
+        { id: 2, pull: { friends: [ 1 ] } }
       ])
-      .then(number => {
+      .then(function (number) {
         equal(number, 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then(records => {
-        equal(records.filter(record => record.friends.length).length,
-          0, 'value pulled')
-      }))
+      .then(function (records) {
+        equal(filter(records, function (record) {
+          return record.friends.length
+        }).length, 0, 'value pulled')
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('delete: no-op')
-    return test(adapter =>
-      adapter.delete(type, [])
-      .then(number => {
+    return test(function (adapter) {
+      return adapter.delete(type, [])
+      .then(function (number) {
         equal(number, 0, 'number is correct')
-      }))
+      })
+    })
   })
 
-  run(() => {
+  run(function () {
     comment('delete')
-    return test(adapter =>
-      adapter.delete(type, [ 1, 3 ])
-      .then(number => {
+    return test(function (adapter) {
+      return adapter.delete(type, [ 1, 3 ])
+      .then(function (number) {
         equal(number, 1, 'number deleted correct')
         return adapter.find(type, [ 1, 2 ])
       })
-      .then(records => {
+      .then(function (records) {
         equal(records.count, 1, 'count correct')
-        deepEqual(records.map(record => record[keys.primary]),
-          [ 2 ], 'record deleted')
-      }))
+        deepEqual(map(records, function (record) {
+          return record[primaryKey]
+        }), [ 2 ], 'record deleted')
+      })
+    })
   })
 }
 
 
 function runTest (a, options, fn) {
+  var A, adapter
+
   // Check if it's a class or a dependency injection function.
   try { a = a(Adapter) }
   catch (error) { if (!(error instanceof TypeError)) throw error }
 
-  const A = a
-  const adapter = new A({
-    options, keys, errors, recordTypes
+  A = a
+  adapter = new A({
+    options: options,
+    keys: keys,
+    errors: errors,
+    recordTypes: recordTypes,
+    Promise: Promise
   })
 
   return adapter.connect()
-  .then(() => adapter.delete(type))
-  .then(() => adapter.create(type, records))
-  .then(() => fn(adapter))
-  .then(() => adapter.delete(type,
-    records.map(record => record[keys.primary])))
-  .then(() => adapter.disconnect())
-  .catch(error => {
+  .then(function () { return adapter.delete(type) })
+  .then(function () { return adapter.create(type, records) })
+  .then(function () { return fn(adapter) })
+  .then(function () {
+    return adapter.delete(type,
+      map(records, function (record) {
+        return record[primaryKey]
+      }))
+  })
+  .then(function () { return adapter.disconnect() })
+  .catch(function (error) {
     stderr.error(error)
     adapter.disconnect()
     fail(error)
@@ -418,7 +476,9 @@ function runTest (a, options, fn) {
 
 
 function testIds (records, message) {
-  equal(find(records.map(record =>
-    includes([ 'string', 'number' ], typeof record[keys.primary])),
-    b => !b), undefined, message)
+  var types = [ 'string', 'number' ]
+
+  equal(find(map(records, function (record) {
+    return includes(types, typeof record[primaryKey])
+  }), function (x) { return !x }), void 0, message)
 }

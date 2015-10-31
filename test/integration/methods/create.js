@@ -1,10 +1,24 @@
-import { pass, fail, run, comment, ok, deepEqual, equal } from 'tapdance'
-import testInstance from '../test_instance'
-import * as stderr from '../../stderr'
-import * as arrayProxy from '../../../lib/common/array_proxy'
-import { primary as primaryKey } from '../../../lib/common/keys'
-import * as methods from '../../../lib/common/methods'
-import change from '../../../lib/common/change'
+'use strict'
+
+const tapdance = require('tapdance')
+const pass = tapdance.pass
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const ok = tapdance.ok
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const testInstance = require('../test_instance')
+const stderr = require('../../stderr')
+
+const find = require('../../../lib/common/array/find')
+
+const constants = require('../../../lib/common/constants')
+const changeEvent = constants.change
+const createMethod = constants.create
+const updateMethod = constants.update
+const primaryKey = constants.primary
 
 
 const deadcode = new Buffer('deadc0de', 'hex')
@@ -30,16 +44,16 @@ run(() => {
   .then(instance => {
     store = instance
 
-    store.on(change, data => {
-      deepEqual(data[methods.create].user.sort((a, b) => a - b),
+    store.on(changeEvent, data => {
+      deepEqual(data[createMethod].user.sort((a, b) => a - b),
         [ 4 ], 'change event shows created IDs')
-      deepEqual(data[methods.update].user.sort((a, b) => a - b),
+      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
         [ 1, 3 ], 'change event shows updated IDs')
     })
 
     return store.request({
       type: 'user',
-      method: methods.create,
+      method: createMethod,
       payload: records
     })
   })
@@ -57,14 +71,13 @@ run(() => {
 
     return store.request({
       type: 'user',
-      method: methods.find,
       ids: [ 1, 3 ]
     })
   })
 
   .then(response => {
     deepEqual(response.payload.map(record =>
-      arrayProxy.find(record.friends, id => id === 4)),
+      find(record.friends, id => id === 4)),
       [ 4, 4 ], 'related records updated')
 
     return store.disconnect()
@@ -90,7 +103,7 @@ run(() => {
 
     return store.request({
       type: 'user',
-      method: methods.create,
+      method: createMethod,
       payload: [ { spouse: 2 }, { spouse: 2 } ]
     })
   })

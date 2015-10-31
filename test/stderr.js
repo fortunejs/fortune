@@ -1,26 +1,28 @@
-import { comment } from 'tapdance'
-import chalk from 'chalk'
-import util from 'util'
+'use strict'
 
+var chalk = require('chalk')
+var util = require('util')
+var map = require('../lib/common/array/map')
 
-const newLine = '\n'
+var tapdance = require('tapdance')
+var comment = tapdance.comment
 
+var newLine = '\n'
 
-export function warn () { return helper('yellow', ...arguments) }
-export function log () { return helper('green', ...arguments) }
-export function info () { return helper('blue', ...arguments) }
-export function debug () { return helper('cyan', ...arguments) }
+exports.warn = function (x, y, z) { return helper('yellow', x, y, z) }
+exports.log = function (x, y, z) { return helper('green', x, y, z) }
+exports.info = function (x, y, z) { return helper('blue', x, y, z) }
+exports.debug = function (x, y, z) { return helper('cyan', x, y, z) }
 
-
-export function error () {
-  const formatLine = line => '  ' + line.trim()
-
-  for (let argument of arguments) {
+exports.error = function () {
+  var i, j, argument, output, lines, error, trace
+  for (i = 0, j = arguments.length; i < j; i++) {
+    argument = arguments[i]
     if (argument instanceof Error) {
-      const output = argument.stack || argument.name
-      const lines = output.split(newLine)
-      const error = lines[0]
-      const trace = lines.slice(1).map(formatLine).join(newLine)
+      output = argument.stack || argument.name
+      lines = output.split(newLine)
+      error = lines[0]
+      trace = map(lines.slice(1), formatLine).join(newLine)
 
       helper('red', error)
       if (trace.length) helper('gray', trace)
@@ -31,14 +33,18 @@ export function error () {
   }
 }
 
+function formatLine (line) {
+  return '  ' + line.trim()
+}
 
-function helper (color, ...args) {
-  const output = Array.from(args, argument =>
-    typeof argument === 'object' ? util.inspect(argument, {
-      depth: null
-    }) : argument).join(' ')
+function helper (color, x, y, z) {
+  var output = map([x, y, z], function (argument) {
+    return typeof argument === 'object' ?
+      util.inspect(argument, { depth: null }) :
+      argument
+  }).join(' ')
 
-  const decorate = line => chalk[color](line)
-
-  output.split(newLine).map(decorate).forEach(comment)
+  map(output.split(newLine), function (line) {
+    return comment(chalk[color](line))
+  })
 }

@@ -1,14 +1,17 @@
-import fs from 'fs'
-import path from 'path'
-import chalk from 'chalk'
-import Docchi from 'docchi'
-import cssnext from 'cssnext'
-import mustache from 'mustache'
-import marked from 'marked'
-import mkdirp from 'mkdirp'
-import hjs from 'highlight.js'
-import inflection from 'inflection'
-import { minify } from 'html-minifier'
+'use strict'
+
+const fs = require('fs')
+const path = require('path')
+const chalk = require('chalk')
+const Docchi = require('docchi')
+const cssnext = require('cssnext')
+const mustache = require('mustache')
+const marked = require('marked')
+const mkdirp = require('mkdirp')
+const hjs = require('highlight.js')
+const inflection = require('inflection')
+const minifier = require('html-minifier')
+const minify = minifier.minify
 
 // Declarations
 // ============
@@ -57,15 +60,17 @@ const minifyOptions = { collapseWhitespace: true }
 // ==============
 
 function processAPI (ns, obj) {
-  const { type } = obj.context
+  const context = obj.context
+  const type = context.type
+  const name = context.name
 
-  if (ns === obj.context.name) {
+  if (ns === name) {
     obj.context.anchor = ns.toLowerCase()
     obj.context.path = ns
   }
   else {
-    obj.context.anchor = (`${ns}-${obj.context.name}`).toLowerCase()
-    obj.context.path = `${ns}.<span class="key">${obj.context.name}</span>`
+    obj.context.anchor = (`${ns}-${name}`).toLowerCase()
+    obj.context.path = `${ns}.<span class="key">${name}</span>`
   }
 
   if (type === 'class')
@@ -77,7 +82,8 @@ function processAPI (ns, obj) {
   if (type === 'method' || type === 'function' || type === 'constructor')
     obj.context.isFunction = true
 
-  if (type === 'constructor')
+  if (type === 'constructor' ||
+    (name === 'constructor' && obj.context.isFunction))
     obj.context.isConstructor = true
 
   const getName = element => {
@@ -153,7 +159,8 @@ for (let container of api) {
   let docs = container.path
   if (!Array.isArray(docs)) docs = [ docs ]
 
-  container.docs = [].concat(...docs.map(outputDoc))
+  container.docs = Array.prototype
+    .concat.apply([], docs.map(outputDoc))
     .map(processAPI.bind(null, container.module))
 }
 

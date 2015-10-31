@@ -1,6 +1,6 @@
 # Codebase
 
-Written in ES6 and transpiled down to ES5 using Babel.
+Written in ECMAScript 5.1.
 
 
 ## Adapter

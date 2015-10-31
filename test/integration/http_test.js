@@ -1,15 +1,18 @@
-import { fail } from 'tapdance'
-import testInstance from './test_instance'
-import http from 'http'
-import chalk from 'chalk'
-import fortune from '../../lib'
-import * as stderr from '../stderr'
+'use strict'
 
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+
+const testInstance = require('./test_instance')
+const http = require('http')
+const chalk = require('chalk')
+const fortune = require('../../lib')
+const stderr = require('../stderr')
 
 const port = 1337
 
 
-export default function httpTest (options, path, request, fn, change) {
+module.exports = function httpTest (options, path, request, fn, change) {
   let store
   let server
 

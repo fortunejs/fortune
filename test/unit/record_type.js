@@ -1,8 +1,23 @@
-import { pass, fail, comment, run, equal, deepEqual } from 'tapdance'
-import ensureTypes from '../../lib/record_type/ensure_types'
-import validate from '../../lib/record_type/validate'
-import enforce from '../../lib/record_type/enforce'
-import * as keys from '../../lib/common/keys'
+'use strict'
+
+const tapdance = require('tapdance')
+const pass = tapdance.pass
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const ensureTypes = require('../../lib/record_type/ensure_types')
+const validate = require('../../lib/record_type/validate')
+const enforce = require('../../lib/record_type/enforce')
+
+const keys = require('../../lib/common/keys')
+const primaryKey = keys.primary
+const linkKey = keys.link
+const isArrayKey = keys.isArray
+const inverseKey = keys.inverse
+const denormalizedInverseKey = keys.denormalizedInverse
 
 
 const recordType = 'person'
@@ -57,10 +72,10 @@ run(() => {
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
-  fail(testRecord({ [keys.primary]: 1, spouse: 1 }), bad)
+  fail(testRecord({ [primaryKey]: 1, spouse: 1 }), bad)
   fail(testRecord({ spouse: [ 2 ] }), bad)
   fail(testRecord({ friends: 2 }), bad)
-  fail(testRecord({ [keys.primary]: 1, friends: [ 1 ] }), bad)
+  fail(testRecord({ [primaryKey]: 1, friends: [ 1 ] }), bad)
   fail(testRecord({ name: {} }), bad)
   pass(testRecord({ name: '' }), good)
   fail(testRecord({ birthdate: {} }), bad)
@@ -71,7 +86,7 @@ run(() => {
   pass(testRecord({ luckyNumbers: [ 1 ] }), good)
   pass(testRecord({ location: new ArrayBuffer(8) }), good)
   fail(testRecord({
-    [keys.primary]: 1,
+    [primaryKey]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
   deepEqual(enforce(recordType,
@@ -144,18 +159,18 @@ run(() => {
   const denormalizedField = '__post_comments_inverse'
 
   equal(
-    recordTypes.post.comments[keys.inverse], denormalizedField,
+    recordTypes.post.comments[inverseKey], denormalizedField,
     'denormalized inverse field assigned')
 
   equal(
-    recordTypes.comment[denormalizedField][keys.link], 'post',
+    recordTypes.comment[denormalizedField][linkKey], 'post',
     'denormalized inverse field link correct')
 
   equal(
-    recordTypes.comment[denormalizedField][keys.isArray], true,
+    recordTypes.comment[denormalizedField][isArrayKey], true,
     'denormalized inverse field is array')
 
   equal(
-    recordTypes.comment[denormalizedField][keys.denormalizedInverse], true,
+    recordTypes.comment[denormalizedField][denormalizedInverseKey], true,
     'denormalized inverse field set')
 })
