@@ -1,15 +1,22 @@
-import http from 'http'
-import qs from 'querystring'
-import FormData from 'form-data'
-import { run, comment, ok, deepEqual, equal } from 'tapdance'
-import httpTest from '../http_test'
-import json from
-  '../../../lib/serializer/serializers/json'
-import { formUrlEncoded, formData } from
-  '../../../lib/serializer/serializers/form'
-import testInstance from '../test_instance'
-import fortune from '../../../lib'
+'use strict'
 
+const tapdance = require('tapdance')
+const comment = tapdance.comment
+const run = tapdance.run
+const ok = tapdance.ok
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const http = require('http')
+const qs = require('querystring')
+const FormData = require('form-data')
+const httpTest = require('../http_test')
+const testInstance = require('../test_instance')
+const fortune = require('../../../lib')
+const json = require('../../../lib/serializer/serializers/json')
+const form = require('../../../lib/serializer/serializers/form')
+const formUrlEncoded = form.formUrlEncoded
+const formData = form.formData
 
 const options = {
   serializers: [

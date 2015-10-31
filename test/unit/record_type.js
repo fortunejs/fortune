@@ -1,14 +1,23 @@
-import { pass, fail, comment, run, equal, deepEqual } from 'tapdance'
-import ensureTypes from '../../lib/record_type/ensure_types'
-import validate from '../../lib/record_type/validate'
-import enforce from '../../lib/record_type/enforce'
+'use strict'
 
-var keys = require('../../lib/common/keys')
-var primaryKey = keys.primary
-var linkKey = keys.link
-var isArrayKey = keys.isArray
-var inverseKey = keys.inverse
-var denormalizedInverseKey = keys.denormalizedInverse
+const tapdance = require('tapdance')
+const pass = tapdance.pass
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const ensureTypes = require('../../lib/record_type/ensure_types')
+const validate = require('../../lib/record_type/validate')
+const enforce = require('../../lib/record_type/enforce')
+
+const keys = require('../../lib/common/keys')
+const primaryKey = keys.primary
+const linkKey = keys.link
+const isArrayKey = keys.isArray
+const inverseKey = keys.inverse
+const denormalizedInverseKey = keys.denormalizedInverse
 
 
 const recordType = 'person'

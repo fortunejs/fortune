@@ -1,9 +1,17 @@
-import { fail, comment, run, deepEqual, equal } from 'tapdance'
-import testInstance from '../test_instance'
-import * as stderr from '../../stderr'
+'use strict'
 
-var constants = require('../../../lib/common/constants')
-var primaryKey = constants.primary
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const testInstance = require('../test_instance')
+const stderr = require('../../stderr')
+
+const constants = require('../../../lib/common/constants')
+const primaryKey = constants.primary
 
 
 run(() => {

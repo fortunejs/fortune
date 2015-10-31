@@ -1,7 +1,15 @@
-import qs from 'querystring'
-import { run, comment, ok, deepEqual, equal } from 'tapdance'
-import httpTest from '../http_test'
-import json from '../../../lib/serializer/serializers/json'
+'use strict'
+
+const tapdance = require('tapdance')
+const comment = tapdance.comment
+const run = tapdance.run
+const ok = tapdance.ok
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const qs = require('querystring')
+const httpTest = require('../http_test')
+const json = require('../../../lib/serializer/serializers/json')
 
 
 const test = httpTest.bind(null, {

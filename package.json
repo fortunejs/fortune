@@ -17,7 +17,7 @@
     "deploy": "npm run publish",
     "deploy:website": "npm run build:website && ./website/deploy.sh",
     "build:website": "node website/build",
-    "lint": "eslint lib test website",
+    "lint": "eslint lib",
     "postpublish": "npm run deploy:website",
     "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "node test | tap-dot",

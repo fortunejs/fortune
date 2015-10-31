@@ -1,13 +1,22 @@
-import { fail, run, comment, ok, deepEqual, equal } from 'tapdance'
-import testInstance from '../test_instance'
-import * as stderr from '../../stderr'
+'use strict'
 
-var find = require('../../../lib/common/array/find')
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const ok = tapdance.ok
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
 
-var constants = require('../../../lib/common/constants')
-var changeEvent = constants.change
-var deleteMethod = constants.delete
-var updateMethod = constants.update
+const testInstance = require('../test_instance')
+const stderr = require('../../stderr')
+
+const find = require('../../../lib/common/array/find')
+
+const constants = require('../../../lib/common/constants')
+const changeEvent = constants.change
+const deleteMethod = constants.delete
+const updateMethod = constants.update
 
 
 run(() => {

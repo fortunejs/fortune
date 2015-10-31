@@ -1,6 +1,6 @@
 # Codebase
 
-Written in ECMAScript 5.1 with performance in mind.
+Written in ECMAScript 5.1.
 
 
 ## Adapter

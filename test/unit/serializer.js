@@ -1,7 +1,14 @@
-import { fail, comment, run, equal, deepEqual } from 'tapdance'
-import DefaultSerializer from '../../lib/serializer/default'
-import * as errors from '../../lib/common/errors'
+'use strict'
 
+const tapdance = require('tapdance')
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
+const equal = tapdance.equal
+const deepEqual = tapdance.deepEqual
+
+const DefaultSerializer = require('../../lib/serializer/default')
+const errors = require('../../lib/common/errors')
 
 const recordTypes = { foo: {}, bar: {} }
 const serializer = new DefaultSerializer({ errors, recordTypes })

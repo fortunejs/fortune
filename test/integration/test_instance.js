@@ -1,14 +1,16 @@
-import chalk from 'chalk'
-import fortune from '../../lib'
-import * as stderr from '../stderr'
-import * as fixtures from '../fixtures'
+'use strict'
 
+const chalk = require('chalk')
+const fortune = require('../../lib')
+const stderr = require('../stderr')
+const fixtures = require('../fixtures')
 
 const inParens = /\(([^\)]+)\)/
-const { change, methods } = fortune
+const change = fortune.change
+const methods = fortune.methods
 
 
-export default options => {
+module.exports = options => {
   const store = fortune.create(options)
 
   .defineType('user', {
@@ -34,7 +36,7 @@ export default options => {
   })
 
   .transformInput((context, record, update) => {
-    const { request: { method } } = context
+    const method = context.request.method
 
     if (method === methods.create) {
       record.createdAt = new Date()
@@ -75,7 +77,7 @@ export default options => {
   })
 
   .transformInput((context, record, update) => {
-    const { request: { method } } = context
+    const method = context.request.method
 
     if (method === methods.create) {
       record.createdAt = new Date()

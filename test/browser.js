@@ -8,9 +8,9 @@ var run = tapdance.run
 
 var fortune = require('../lib/browser')
 
+require('./integration/adapters/memory')
 require('./integration/adapters/indexeddb')
 require('./integration/adapters/webstorage')
-
 
 run(function () {
   var store = fortune.create()

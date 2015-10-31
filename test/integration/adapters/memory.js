@@ -1,5 +1,4 @@
-import testAdapter from '../../unit/adapter'
-import memoryAdapter from '../../../lib/adapter/adapters/memory'
-
+var testAdapter = require('../../unit/adapter')
+var memoryAdapter = require('../../../lib/adapter/adapters/memory')
 
 testAdapter(memoryAdapter)
