@@ -4,13 +4,15 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is an [application system](http://systems-analysis.net/application/definition.html) for Node.js & web browsers. It provides a data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs.
+Fortune is an [application system](http://systems-analysis.net/application/definition.html) for Node.js & web browsers. It provides a data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together can be used to power real-time ([WebSocket](http://fortunejs.com/api/#net-websocket)) and [hypermedia](https://en.wikipedia.org/wiki/Hypermedia) applications ([RMM Level 3](http://martinfowler.com/articles/richardsonMaturityModel.html)), including web pages and HTTP APIs that conform to the [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) constraint.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
 ```sh
 $ npm install fortune --save
 ```
+
+There are roughly 3.2k lines of code, and its size is about 22kb (min+gzip).
 
 
 ## Example
