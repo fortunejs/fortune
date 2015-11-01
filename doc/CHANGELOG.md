@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.4 (2015-11-01)
+- Polish: fix ES6 class compatibility for Adapter and Serializer.
+
+
 ##### 1.4.1 (2015-10-31)
 - Polish: downgraded codebase from ES6 to ES5.1, performance improvements.
 
