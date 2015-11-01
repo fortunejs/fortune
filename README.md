@@ -12,7 +12,7 @@ Fortune is an [application system](http://systems-analysis.net/application/defin
 $ npm install fortune --save
 ```
 
-There are roughly 3.2k lines of code, and its size is about 22kb (min+gzip).
+There is roughly 3.2k lines of code, and its size is about 22kb (min+gzip).
 
 
 ## Example
@@ -44,9 +44,7 @@ module.exports = fortune.create()
 })
 ```
 
-By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
-
-Then lets add a HTTP server:
+By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). Then let's add a HTTP server:
 
 ```js
 // server.js
