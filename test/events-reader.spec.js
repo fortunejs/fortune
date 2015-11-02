@@ -73,7 +73,6 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 })
                 .onChange({
                     insert: function () {
-                        console.log('inserted a pet')
                     }, asyncInMemory: true
                 });
 
