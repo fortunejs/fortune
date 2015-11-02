@@ -16,7 +16,6 @@ describe('EventSource implementation for multiple resources', function () {
     describe('Server Sent Events', function () {
         this.timeout(20000);
         var lastEventId;
-        var lastDataId;
 
         var sendAndCheckSSE = function(resources, payloads, done) {
             var index = 0;
