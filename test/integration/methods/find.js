@@ -1,11 +1,10 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -18,8 +17,8 @@ run(() => {
   comment('get index')
   return findTest({
     response: response => {
-      deepEqual(response.payload.sort(),
-        [ 'animal', 'user', '☯' ], 'gets the index')
+      ok(deepEqual(response.payload.sort(),
+        [ 'animal', 'user', '☯' ]), 'gets the index')
     }
   })
 })
@@ -32,7 +31,7 @@ run(() => {
       type: 'user'
     },
     response: response => {
-      equal(response.payload.length, 3, 'gets all records')
+      ok(response.payload.length === 3, 'gets all records')
     }
   })
 })
@@ -46,9 +45,9 @@ run(() => {
       ids: [ 2, 1 ]
     },
     response: response => {
-      deepEqual(response.payload
+      ok(deepEqual(response.payload
         .map(record => record[primaryKey]).sort((a, b) => a - b),
-        [ 1, 2 ], 'gets records with IDs')
+        [ 1, 2 ]), 'gets records with IDs')
     }
   })
 })
@@ -63,12 +62,12 @@ run(() => {
       include: [ [ 'ownedPets' ] ]
     },
     response: response => {
-      deepEqual(response.payload
+      ok(deepEqual(response.payload
         .map(record => record[primaryKey]).sort((a, b) => a - b),
-        [ 1, 2 ], 'gets records with IDs')
-      deepEqual(response.payload.include.animal
+        [ 1, 2 ]), 'gets records with IDs')
+      ok(deepEqual(response.payload.include.animal
         .map(record => record[primaryKey]).sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'gets included records')
+        [ 1, 2, 3 ]), 'gets included records')
     }
   })
 })

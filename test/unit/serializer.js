@@ -1,11 +1,11 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
+const ok = tapdance.ok
 
 const DefaultSerializer = require('../../lib/serializer/default')
 const errors = require('../../lib/common/errors')
@@ -21,7 +21,7 @@ run(() => {
 
   serializer.showResponse(context)
 
-  deepEqual(context.response.payload, [ 'foo', 'bar' ], 'types displayed')
+  ok(deepEqual(context.response.payload, [ 'foo', 'bar' ]), 'types displayed')
 })
 
 
@@ -33,7 +33,7 @@ run(() => {
 
   serializer.showResponse(context, records)
 
-  deepEqual(context.response.payload, records, 'records displayed')
+  ok(deepEqual(context.response.payload, records), 'records displayed')
 })
 
 
@@ -48,8 +48,8 @@ run(() => {
 
   serializer.showResponse(context, records, include)
 
-  deepEqual(context.response.payload, records, 'records displayed')
-  deepEqual(context.response.payload.include, include, 'include displayed')
+  ok(deepEqual(context.response.payload, records), 'records displayed')
+  ok(deepEqual(context.response.payload.include, include), 'include displayed')
 })
 
 
@@ -61,8 +61,8 @@ run(() => {
 
   serializer.showError(context, error)
 
-  equal(context.response.payload.name, 'TypeError', 'error name displayed')
-  equal(context.response.payload.message, 'wtf', 'error message displayed')
+  ok(context.response.payload.name === 'TypeError', 'error name displayed')
+  ok(context.response.payload.message === 'wtf', 'error message displayed')
 })
 
 
@@ -75,8 +75,8 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { payload: null } }),
     'payload can not be empty')
-  deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
-    [ 'foo' ], 'return value is correct')
+  ok(deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
+    [ 'foo' ]), 'return value is correct')
 })
 
 
@@ -89,6 +89,6 @@ run(() => {
   fail(() =>
     serializer.parseCreate({ request: { payload: null } }),
     'payload can not be empty')
-  deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
-    [ 'foo' ], 'return value is correct')
+  ok(deepEqual(serializer.parseCreate({ request: { payload: [ 'foo' ] } }),
+    [ 'foo' ]), 'return value is correct')
 })

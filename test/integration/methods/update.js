@@ -1,12 +1,12 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
+const ok = tapdance.ok
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -23,8 +23,8 @@ run(() => {
   comment('update one to one with 2nd degree unset')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -35,14 +35,14 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 1).spouse, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).spouse === null,
         '2nd degree related field unset')
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).spouse, 3,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).spouse === 3,
         'related field set')
-      equal(find(response.payload,
-        record => record[primaryKey] === 3).spouse, 2,
+      ok(find(response.payload,
+        record => record[primaryKey] === 3).spouse === 2,
         'field updated')
     }
   })
@@ -53,8 +53,8 @@ run(() => {
   comment('update one to one with former related record')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -65,14 +65,14 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 1).spouse, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).spouse === null,
         'related field unset')
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).spouse, 3,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).spouse === 3,
         'field updated')
-      equal(find(response.payload,
-        record => record[primaryKey] === 3).spouse, 2,
+      ok(find(response.payload,
+        record => record[primaryKey] === 3).spouse === 2,
         'related field set')
     }
   })
@@ -83,8 +83,8 @@ run(() => {
   comment('update one to one with same value')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -95,11 +95,11 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 1).spouse, 2,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).spouse === 2,
         'related field is same')
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).spouse, 1,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).spouse === 1,
         'field is same')
     }
   })
@@ -131,8 +131,8 @@ run(() => {
   comment('update one to one with null value')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -143,11 +143,11 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 1).spouse, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).spouse === null,
         'related field is updated')
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).spouse, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).spouse === null,
         'field is updated')
     }
   })
@@ -158,10 +158,10 @@ run(() => {
   comment('update one to many (set)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].animal,
-        [ 1 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows related update IDs')
+      ok(deepEqual(data[updateMethod].animal,
+        [ 1 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows related update IDs')
     },
     type: 'animal',
     payload: [
@@ -172,12 +172,12 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).ownedPets, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 2).ownedPets.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'related field pushed')
+        [ 1, 2, 3 ]), 'related field pushed')
     }
   })
 })
@@ -187,10 +187,10 @@ run(() => {
   comment('update one to many (unset)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].animal,
-        [ 1 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1 ], 'change event shows related update IDs')
+      ok(deepEqual(data[updateMethod].animal,
+        [ 1 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1 ]), 'change event shows related update IDs')
     },
     type: 'animal',
     payload: [
@@ -201,8 +201,8 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).ownedPets, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
     }
   })
@@ -213,10 +213,10 @@ run(() => {
   comment('update many to one (push)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal,
-        [ 1 ], 'change event shows related update IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal,
+        [ 1 ]), 'change event shows related update IDs')
     },
     type: 'user',
     payload: [
@@ -227,8 +227,8 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 1).owner, 2,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).owner === 2,
         'related field set')
     }
   })
@@ -239,10 +239,10 @@ run(() => {
   comment('update many to one (push) with 2nd degree')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user,
-        [ 1, 2 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal,
-        [ 2 ], 'change event shows related update IDs')
+      ok(deepEqual(data[updateMethod].user,
+        [ 1, 2 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal,
+        [ 2 ]), 'change event shows related update IDs')
     },
     type: 'user',
     payload: [
@@ -253,8 +253,8 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).owner, 1,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).owner === 1,
         'related field set')
     }
   })
@@ -265,10 +265,10 @@ run(() => {
   comment('update many to one (pull)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user,
-        [ 2 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal,
-        [ 2, 3 ], 'change event shows related update IDs')
+      ok(deepEqual(data[updateMethod].user,
+        [ 2 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal,
+        [ 2, 3 ]), 'change event shows related update IDs')
     },
     type: 'user',
     payload: [
@@ -279,11 +279,11 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).owner, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).owner === null,
         'related field set')
-      equal(find(response.payload,
-        record => record[primaryKey] === 3).owner, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 3).owner === null,
         'related field set')
     }
   })
@@ -294,10 +294,10 @@ run(() => {
   comment('update many to one (set)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -308,14 +308,14 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).ownedPets, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 2).ownedPets, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 2).ownedPets, []),
         'related field pulled')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 3).ownedPets, [ 1, 2, 3 ],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 3).ownedPets, [ 1, 2, 3 ]),
         'field set')
     }
   })
@@ -334,14 +334,14 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).owner, 3,
+      ok(find(response.payload,
+        record => record[primaryKey] === 1).owner === 3,
         'related field set')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 2).owner, 3,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).owner === 3,
         'related field set')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 3).owner, 3,
+      ok(find(response.payload,
+        record => record[primaryKey] === 3).owner === 3,
         'related field set')
     }
   })
@@ -352,10 +352,10 @@ run(() => {
   comment('update many to one (set) #3')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
-        [ 1, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+        [ 1, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -366,11 +366,11 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).ownedPets, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 2).ownedPets, [ 1, 2 ],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 2).ownedPets, [ 1, 2 ]),
         'field set')
     }
   })
@@ -381,10 +381,10 @@ run(() => {
   comment('update many to one (unset)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 2 ], 'change event shows updated IDs')
-      deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
-        [ 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 2 ]), 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+        [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -395,11 +395,11 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      equal(find(response.payload,
-        record => record[primaryKey] === 2).owner, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 2).owner === null,
         'related field unset')
-      equal(find(response.payload,
-        record => record[primaryKey] === 3).owner, null,
+      ok(find(response.payload,
+        record => record[primaryKey] === 3).owner === null,
         'related field unset')
     }
   })
@@ -410,8 +410,8 @@ run(() => {
   comment('update many to many (push)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -422,9 +422,9 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
-        [ 1, 3 ], 'related ID pushed')
+        [ 1, 3 ]), 'related ID pushed')
     }
   })
 })
@@ -434,8 +434,8 @@ run(() => {
   comment('update many to many (pull)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -446,8 +446,8 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 2).friends, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 2).friends, []),
         'related ID pulled')
     }
   })
@@ -458,8 +458,8 @@ run(() => {
   comment('update many to many (set)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -470,15 +470,15 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 1).friends.sort((a, b) => a - b),
-        [ 2, 3 ], 'field set')
-      deepEqual(find(response.payload,
+        [ 2, 3 ]), 'field set')
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
-        [ 1, 3 ], 'related field pushed')
-      deepEqual(find(response.payload,
+        [ 1, 3 ]), 'related field pushed')
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 3).friends.sort((a, b) => a - b),
-        [ 1, 2 ], 'field unchanged')
+        [ 1, 2 ]), 'field unchanged')
     }
   })
 })
@@ -488,8 +488,8 @@ run(() => {
   comment('update many to many (unset)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -500,14 +500,14 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 1).friends, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 1).friends, []),
         'related field pulled')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 2).friends, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 2).friends, []),
         'related field pulled')
-      deepEqual(find(response.payload,
-        record => record[primaryKey] === 3).friends, [],
+      ok(deepEqual(find(response.payload,
+        record => record[primaryKey] === 3).friends, []),
         'field set')
     }
   })
@@ -518,8 +518,8 @@ run(() => {
   comment('update many to many (denormalized inverse)')
   return updateTest({
     change: data => {
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 2, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
@@ -530,18 +530,18 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 1).enemies.sort((a, b) => a - b),
-        [ 2, 3 ], 'field set')
-      deepEqual(find(response.payload,
+        [ 2, 3 ]), 'field set')
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 1)['__user_enemies_inverse'],
-        [], 'denormalized inverse field exists')
-      deepEqual(find(response.payload,
+        []), 'denormalized inverse field exists')
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 2)['__user_enemies_inverse'],
-        [ 1 ], 'related field updated')
-      deepEqual(find(response.payload,
+        [ 1 ]), 'related field updated')
+      ok(deepEqual(find(response.payload,
         record => record[primaryKey] === 3)['__user_enemies_inverse']
-        .sort((a, b) => a - b), [ 1, 2 ], 'related field updated')
+        .sort((a, b) => a - b), [ 1, 2 ]), 'related field updated')
     }
   })
 })

@@ -1,13 +1,12 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
 const ok = tapdance.ok
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -45,10 +44,10 @@ run(() => {
     store = instance
 
     store.on(changeEvent, data => {
-      deepEqual(data[createMethod].user.sort((a, b) => a - b),
-        [ 4 ], 'change event shows created IDs')
-      deepEqual(data[updateMethod].user.sort((a, b) => a - b),
-        [ 1, 3 ], 'change event shows updated IDs')
+      ok(deepEqual(data[createMethod].user.sort((a, b) => a - b),
+        [ 4 ]), 'change event shows created IDs')
+      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+        [ 1, 3 ]), 'change event shows updated IDs')
     })
 
     return store.request({
@@ -62,11 +61,11 @@ run(() => {
     ok(deadcode.equals(response.payload[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    equal(response.payload.length, 1, 'record created')
-    equal(response.payload[0][primaryKey], 4, 'record has correct ID')
+    ok(response.payload.length === 1, 'record created')
+    ok(response.payload[0][primaryKey] === 4, 'record has correct ID')
     ok(response.payload[0].birthday instanceof Date,
       'field has correct type')
-    equal(response.payload[0].name, 'Slimer McGee',
+    ok(response.payload[0].name === 'Slimer McGee',
       'record has correct field value')
 
     return store.request({
@@ -76,9 +75,9 @@ run(() => {
   })
 
   .then(response => {
-    deepEqual(response.payload.map(record =>
+    ok(deepEqual(response.payload.map(record =>
       find(record.friends, id => id === 4)),
-      [ 4, 4 ], 'related records updated')
+      [ 4, 4 ]), 'related records updated')
 
     return store.disconnect()
   })

@@ -1,10 +1,11 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
-const deepEqual = tapdance.deepEqual
+const ok = tapdance.ok
 
 const fortune = require('../../lib')
 const WebSocket = require('ws')
@@ -39,7 +40,7 @@ run(() => {
 
     connection.on('message', data => {
       const json = JSON.parse(data)
-      deepEqual(json, { create: { user: [ 1 ] } }, 'data looks correct')
+      ok(deepEqual(json, { create: { user: [ 1 ] } }), 'data looks correct')
       server.close()
       store.disconnect()
       resolve()

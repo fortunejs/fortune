@@ -33,12 +33,13 @@
     "deep-equal": "^1.0.1",
     "error-class": "^1.1.1",
     "negotiator": "^0.6.0",
-    "tapdance": "^3.3.0",
+    "tapdance": "^4.0.0",
     "ws": "^0.8.0"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
     "cssnext": "^1.8.4",
+    "deep-equal": "^1.0.1",
     "docchi": "^0.11.3",
     "eslint": "^1.8.0",
     "eslint-config-0x8890": "^1.0.0",

@@ -1,12 +1,12 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
+const ok = tapdance.ok
 
 const ensureTypes = require('../../lib/record_type/ensure_types')
 const validate = require('../../lib/record_type/validate')
@@ -89,11 +89,11 @@ run(() => {
     [primaryKey]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  deepEqual(enforce(recordType,
+  ok(deepEqual(enforce(recordType,
     { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, fields).friends,
-    [ 'a', 'b', 'c', 1, 2, 3 ], 'links are untouched')
-  equal(
-    enforce(recordType, { random: 'abc' }, fields).random, undefined,
+    [ 'a', 'b', 'c', 1, 2, 3 ]), 'links are untouched')
+  ok(
+    enforce(recordType, { random: 'abc' }, fields).random === void 0,
     'arbitrary fields are dropped')
 })
 
@@ -158,19 +158,19 @@ run(() => {
 
   const denormalizedField = '__post_comments_inverse'
 
-  equal(
-    recordTypes.post.comments[inverseKey], denormalizedField,
+  ok(
+    recordTypes.post.comments[inverseKey] === denormalizedField,
     'denormalized inverse field assigned')
 
-  equal(
-    recordTypes.comment[denormalizedField][linkKey], 'post',
+  ok(
+    recordTypes.comment[denormalizedField][linkKey] === 'post',
     'denormalized inverse field link correct')
 
-  equal(
-    recordTypes.comment[denormalizedField][isArrayKey], true,
+  ok(
+    recordTypes.comment[denormalizedField][isArrayKey] === true,
     'denormalized inverse field is array')
 
-  equal(
-    recordTypes.comment[denormalizedField][denormalizedInverseKey], true,
+  ok(
+    recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
     'denormalized inverse field set')
 })

@@ -1,11 +1,10 @@
 'use strict'
 
+const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const comment = tapdance.comment
 const run = tapdance.run
 const ok = tapdance.ok
-const equal = tapdance.equal
-const deepEqual = tapdance.deepEqual
 
 const http = require('http')
 const qs = require('querystring')
@@ -34,7 +33,7 @@ run(() => {
   return test('/', {
     headers: { 'Accept': 'application/x-www-form-urlencoded' }
   }, response => {
-    equal(response.status, 415, 'status is correct')
+    ok(response.status === 415, 'status is correct')
   })
 })
 
@@ -49,11 +48,11 @@ run(() => {
       nicknames: [ 'ayy', 'lmao' ]
     })
   }, response => {
-    equal(response.status, 201, 'status is correct')
+    ok(response.status === 201, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    deepEqual(response.body.map(record => record.name),
-      [ 'Ayy lmao' ], 'response body is correct')
+    ok(deepEqual(response.body.map(record => record.name),
+      [ 'Ayy lmao' ]), 'response body is correct')
   })
 })
 
@@ -72,11 +71,11 @@ run(() => {
       nicknames: [ 'ayy', 'lmao' ]
     })
   }, response => {
-    equal(response.status, 200, 'status is correct')
+    ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    deepEqual(response.body.map(record => record.name),
-      [ 'Ayy lmao' ], 'response body is correct')
+    ok(deepEqual(response.body.map(record => record.name),
+      [ 'Ayy lmao' ]), 'response body is correct')
   })
 })
 
@@ -101,7 +100,7 @@ run(() => {
     form.submit('http://localhost:4000/animal', (error, response) => error ?
       reject(error) : resolve(response))))
   .then(response => {
-    equal(response.statusCode, 201, 'status is correct')
+    ok(response.statusCode === 201, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
 
@@ -113,10 +112,10 @@ run(() => {
   })
   .then(payload => {
     const body = JSON.parse(payload.toString())
-    deepEqual(body.map(record => record.name),
-      [ 'Ayy lmao' ], 'name is correct')
-    deepEqual(body.map(record => record.picture),
-      [ deadbeef.toString('base64') ], 'picture is correct')
+    ok(deepEqual(body.map(record => record.name),
+      [ 'Ayy lmao' ]), 'name is correct')
+    ok(deepEqual(body.map(record => record.picture),
+      [ deadbeef.toString('base64') ]), 'picture is correct')
     store.disconnect()
     server.close()
   })
@@ -149,7 +148,7 @@ run(() => {
     }, (error, response) => error ?
       reject(error) : resolve(response))))
   .then(response => {
-    equal(response.statusCode, 200, 'status is correct')
+    ok(response.statusCode === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
 
@@ -161,10 +160,10 @@ run(() => {
   })
   .then(payload => {
     const body = JSON.parse(payload.toString())
-    deepEqual(body.map(record => record.name),
-      [ 'Ayy lmao' ], 'name is correct')
-    deepEqual(body.map(record => record.picture),
-      [ deadbeef.toString('base64') ], 'picture is correct')
+    ok(deepEqual(body.map(record => record.name),
+      [ 'Ayy lmao' ]), 'name is correct')
+    ok(deepEqual(body.map(record => record.picture),
+      [ deadbeef.toString('base64') ]), 'picture is correct')
     store.disconnect()
     server.close()
   })

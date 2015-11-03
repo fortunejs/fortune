@@ -1,12 +1,11 @@
 'use strict'
 
+var deepEqual = require('deep-equal')
 var tapdance = require('tapdance')
 var ok = tapdance.ok
 var fail = tapdance.fail
 var comment = tapdance.comment
 var run = tapdance.run
-var equal = tapdance.equal
-var deepEqual = tapdance.deepEqual
 
 var Adapter = require('../../lib/adapter')
 var errors = require('../../lib/common/errors')
@@ -78,7 +77,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, [])
       .then(function (records) {
-        equal(records.count, 0, 'count is correct')
+        ok(records.count === 0, 'count is correct')
       })
     })
   })
@@ -88,15 +87,15 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, [ 1 ])
       .then(function (records) {
-        equal(records.count, 1, 'count is correct')
-        equal(records[0][primaryKey], 1, 'id is correct')
+        ok(records.count === 1, 'count is correct')
+        ok(records[0][primaryKey] === 1, 'id is correct')
         ok(records[0].birthday instanceof Date,
           'date type is correct')
-        equal(typeof records[0].isAlive, 'boolean',
+        ok(typeof records[0].isAlive === 'boolean',
           'boolean type is correct')
-        equal(typeof records[0].age, 'number',
+        ok(typeof records[0].age === 'number',
           'number type is correct')
-        deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] },
+        ok(deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] }),
           'object value is correct')
         ok(!includes(Object.keys(records[0],
           '__user_nemesis_inverse')), 'denormalized fields not enumerable')
@@ -109,13 +108,13 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, [ 2 ])
       .then(function (records) {
-        equal(records.count, 1, 'count is correct')
-        equal(records[0][primaryKey], 2, 'id is correct')
+        ok(records.count === 1, 'count is correct')
+        ok(records[0][primaryKey] === 2, 'id is correct')
         ok(Buffer.isBuffer(records[0].picture),
           'buffer type is correct')
         ok(deadbeef.equals(records[0].picture),
           'buffer value is correct')
-        deepEqual(records[0].privateKeys, [ key1, key2 ],
+        ok(deepEqual(records[0].privateKeys, [ key1, key2 ]),
           'array of buffers is correct')
       })
     })
@@ -126,7 +125,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type)
       .then(function (records) {
-        equal(records.count, 2, 'count is correct')
+        ok(records.count === 2, 'count is correct')
         testIds(records, 'id type is correct')
       })
     })
@@ -138,8 +137,8 @@ module.exports = function (adapter, options) {
       return adapter.find(type, null,
         { match: { name: [ 'john', 'xyz' ], age: 36 } })
       .then(function (records) {
-        equal(records.length, 1, 'match length is correct')
-        equal(records[0].name, 'john', 'matched correct record')
+        ok(records.length === 1, 'match length is correct')
+        ok(records[0].name === 'john', 'matched correct record')
       })
     })
   })
@@ -149,7 +148,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, null, { match: { picture: deadbeef } })
       .then(function (records) {
-        equal(records.length, 1, 'match length is correct')
+        ok(records.length === 1, 'match length is correct')
         ok(records[0].picture.equals(deadbeef),
           'matched correct record')
       })
@@ -161,7 +160,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, null, { match: { name: 'bob', age: 36 } })
       .then(function (records) {
-        equal(records.length, 0, 'match length is correct')
+        ok(records.length === 0, 'match length is correct')
       })
     })
   })
@@ -171,8 +170,8 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, null, { sort: { age: true } })
       .then(function (records) {
-        deepEqual(map(records, function (record) { return record.age }),
-          [ 36, 42 ], 'ascending sort order correct')
+        ok(deepEqual(map(records, function (record) { return record.age }),
+          [ 36, 42 ]), 'ascending sort order correct')
       })
     })
   })
@@ -182,8 +181,8 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, null, { sort: { age: false } })
       .then(function (records) {
-        deepEqual(map(records, function (record) { return record.age }),
-          [ 42, 36 ], 'descending sort order correct')
+        ok(deepEqual(map(records, function (record) { return record.age }),
+          [ 42, 36 ]), 'descending sort order correct')
       })
     })
   })
@@ -193,8 +192,8 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.find(type, null, { sort: { age: true, name: true } })
       .then(function (records) {
-        deepEqual(map(records, function (record) { return record.age }),
-          [ 36, 42 ], 'sort order is correct')
+        ok(deepEqual(map(records, function (record) { return record.age }),
+          [ 36, 42 ]), 'sort order is correct')
       })
     })
   })
@@ -205,8 +204,8 @@ module.exports = function (adapter, options) {
       return adapter.find(type, null,
         { offset: 1, limit: 1, sort: { name: true } })
       .then(function (records) {
-        equal(records[0].name, 'john', 'record is correct')
-        equal(records.length, 1, 'offset length is correct')
+        ok(records[0].name === 'john', 'record is correct')
+        ok(records.length === 1, 'offset length is correct')
       })
     })
   })
@@ -243,7 +242,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.create(type, [])
       .then(function (records) {
-        deepEqual(records, [], 'response is correct')
+        ok(deepEqual(records, []), 'response is correct')
       })
     })
   })
@@ -294,16 +293,16 @@ module.exports = function (adapter, options) {
         id = records[0][primaryKey]
         testIds(records, 'id type is correct')
 
-        equal(records[0].picture, null,
+        ok(records[0].picture === null,
           'missing singular value is null')
-        deepEqual(records[0].nicknames, [],
+        ok(deepEqual(records[0].nicknames, []),
           'missing array value is empty array')
 
         return adapter.find(type, [ id ])
       })
       .then(function (records) {
-        equal(records.length, 1, 'match length is correct')
-        equal(records[0][primaryKey], id, 'id is matching')
+        ok(records.length === 1, 'match length is correct')
+        ok(records[0][primaryKey] === id, 'id is matching')
         testIds(records, 'id type is correct')
       })
     })
@@ -314,7 +313,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.update(type, [])
       .then(function (number) {
-        equal(number, 0, 'number is correct')
+        ok(number === 0, 'number is correct')
       })
     })
   })
@@ -327,7 +326,7 @@ module.exports = function (adapter, options) {
         replace: { foo: 'bar' }
       } ])
       .then(function (number) {
-        equal(number, 0, 'number is correct')
+        ok(number === 0, 'number is correct')
       })
     })
   })
@@ -340,16 +339,16 @@ module.exports = function (adapter, options) {
         { id: 2, replace: { name: 'billy', nicknames: [ 'pepe' ] } }
       ])
       .then(function (number) {
-        equal(number, 2, 'number updated correct')
+        ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(function (records) {
-        deepEqual(find(records, function (record) {
+        ok(deepEqual(find(records, function (record) {
           return record[primaryKey] === 2
-        }).nicknames, [ 'pepe' ], 'array updated')
-        equal(filter(records, function (record) {
+        }).nicknames, [ 'pepe' ]), 'array updated')
+        ok(filter(records, function (record) {
           return record.name !== 'billy'
-        }).length, 0, 'field updated on set')
+        }).length === 0, 'field updated on set')
       })
     })
   })
@@ -362,13 +361,13 @@ module.exports = function (adapter, options) {
         { id: 2, replace: { name: null } }
       ])
       .then(function (number) {
-        equal(number, 2, 'number updated correct')
+        ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(function (records) {
-        equal(filter(records, function (record) {
+        ok(filter(records, function (record) {
           return record.name !== null
-        }).length, 0, 'field updated on unset')
+        }).length === 0, 'field updated on unset')
       })
     })
   })
@@ -381,13 +380,13 @@ module.exports = function (adapter, options) {
         { id: 2, push: { friends: [ 5 ] } }
       ])
       .then(function (number) {
-        equal(number, 2, 'number updated correct')
+        ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(function (records) {
-        equal(filter(records, function (record) {
+        ok(filter(records, function (record) {
           return includes(record.friends, 5)
-        }).length, records.length, 'value pushed')
+        }).length === records.length, 'value pushed')
       })
     })
   })
@@ -400,13 +399,13 @@ module.exports = function (adapter, options) {
         { id: 2, pull: { friends: [ 1 ] } }
       ])
       .then(function (number) {
-        equal(number, 2, 'number updated correct')
+        ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(function (records) {
-        equal(filter(records, function (record) {
+        ok(filter(records, function (record) {
           return record.friends.length
-        }).length, 0, 'value pulled')
+        }).length === 0, 'value pulled')
       })
     })
   })
@@ -416,7 +415,7 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.delete(type, [])
       .then(function (number) {
-        equal(number, 0, 'number is correct')
+        ok(number === 0, 'number is correct')
       })
     })
   })
@@ -426,14 +425,14 @@ module.exports = function (adapter, options) {
     return test(function (adapter) {
       return adapter.delete(type, [ 1, 3 ])
       .then(function (number) {
-        equal(number, 1, 'number deleted correct')
+        ok(number === 1, 'number deleted correct')
         return adapter.find(type, [ 1, 2 ])
       })
       .then(function (records) {
-        equal(records.count, 1, 'count correct')
-        deepEqual(map(records, function (record) {
+        ok(records.count === 1, 'count correct')
+        ok(deepEqual(map(records, function (record) {
           return record[primaryKey]
-        }), [ 2 ], 'record deleted')
+        }), [ 2 ]), 'record deleted')
       })
     })
   })
@@ -478,7 +477,7 @@ function runTest (a, options, fn) {
 function testIds (records, message) {
   var types = [ 'string', 'number' ]
 
-  equal(find(map(records, function (record) {
+  ok(find(map(records, function (record) {
     return includes(types, typeof record[primaryKey])
-  }), function (x) { return !x }), void 0, message)
+  }), function (x) { return !x }) === void 0, message)
 }
