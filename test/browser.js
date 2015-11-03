@@ -1,5 +1,6 @@
 'use strict'
 
+var Promise = require('bluebird')
 var tapdance = require('tapdance')
 var ok = tapdance.ok
 var fail = tapdance.fail
@@ -7,6 +8,9 @@ var comment = tapdance.comment
 var run = tapdance.run
 
 var fortune = require('../lib/browser')
+
+tapdance.Promise = fortune.Promise = Promise
+tapdance.isConcurrent = false
 
 require('./integration/adapters/memory')
 require('./integration/adapters/indexeddb')

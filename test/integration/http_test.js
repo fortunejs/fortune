@@ -9,12 +9,15 @@ const chalk = require('chalk')
 const fortune = require('../../lib')
 const stderr = require('../stderr')
 
-const port = 1337
+let i = 0
 
 
 module.exports = function httpTest (options, path, request, fn, change) {
   let store
   let server
+  let port = 1024 + i
+
+  i++
 
   return testInstance(options)
 

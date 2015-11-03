@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "array-buffer": "^1.0.2",
-    "bluebird": "^3.0.2",
+    "bluebird": "^3.0.5",
     "busboy": "^0.2.11",
     "chalk": "^1.1.1",
     "clone": "^1.0.2",
     "deep-equal": "^1.0.1",
     "error-class": "^1.1.1",
     "negotiator": "^0.6.0",
-    "tapdance": "^3.2.0",
+    "tapdance": "^3.3.0",
     "ws": "^0.8.0"
   },
   "devDependencies": {
@@ -54,7 +54,7 @@
     "normalize.css": "^3.0.3",
     "rimraf": "^2.4.3",
     "tap-dot": "^1.0.0",
-    "tape-run": "^2.0.0"
+    "tape-run": "^2.1.0"
   },
   "files": [
     "lib/",

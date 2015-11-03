@@ -95,10 +95,10 @@ run(() => {
   return testInstance(options)
   .then(s => {
     store = s
-    server = http.createServer(fortune.net.http(store)).listen(1337)
+    server = http.createServer(fortune.net.http(store)).listen(4000)
   })
   .then(() => new Promise((resolve, reject) =>
-    form.submit('http://localhost:1337/animal', (error, response) => error ?
+    form.submit('http://localhost:4000/animal', (error, response) => error ?
       reject(error) : resolve(response))))
   .then(response => {
     equal(response.statusCode, 201, 'status is correct')
@@ -138,12 +138,12 @@ run(() => {
   return testInstance(options)
   .then(s => {
     store = s
-    server = http.createServer(fortune.net.http(store)).listen(1337)
+    server = http.createServer(fortune.net.http(store)).listen(4001)
   })
   .then(() => new Promise((resolve, reject) =>
     form.submit({
       host: 'localhost',
-      port: 1337,
+      port: 4001,
       path: '/animal',
       headers: { 'X-HTTP-Method': 'PATCH' }
     }, (error, response) => error ?
