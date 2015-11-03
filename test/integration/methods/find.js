@@ -5,6 +5,7 @@ const tapdance = require('tapdance')
 const fail = tapdance.fail
 const comment = tapdance.comment
 const run = tapdance.run
+const ok = tapdance.ok
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
