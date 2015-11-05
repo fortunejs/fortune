@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.6 (2015-11-05)
+- Polish: drop `clone` module, use own implementation due to performance.
+
+
 ##### 1.4.5 (2015-11-05)
 - Polish: fix ES6 class compatibility for Adapter and Serializer.
 

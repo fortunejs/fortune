@@ -217,7 +217,6 @@ module.exports = function (adapter, options) {
         { fields: { name: true, isAlive: true } })
       .then(function (records) {
         ok(!find(records, function (record) {
-          comment(Object.keys(record))
           return Object.keys(record).length !== 3
         }), 'fields length is correct')
       })

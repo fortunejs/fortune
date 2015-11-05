@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application system for Node.js and web browsers.",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -29,7 +29,6 @@
     "bluebird": "^3.0.5",
     "busboy": "^0.2.11",
     "chalk": "^1.1.1",
-    "clone": "^1.0.2",
     "deep-equal": "^1.0.1",
     "error-class": "^1.1.1",
     "negotiator": "^0.6.0",
