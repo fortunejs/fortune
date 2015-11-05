@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.4.4 (2015-11-01)
+##### 1.4.5 (2015-11-05)
 - Polish: fix ES6 class compatibility for Adapter and Serializer.
 
 
