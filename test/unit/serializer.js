@@ -11,7 +11,9 @@ const DefaultSerializer = require('../../lib/serializer/default')
 const errors = require('../../lib/common/errors')
 
 const recordTypes = { foo: {}, bar: {} }
-const serializer = new DefaultSerializer({ errors, recordTypes })
+const serializer = new DefaultSerializer({
+  errors, recordTypes, transforms: {}
+})
 
 
 run(() => {

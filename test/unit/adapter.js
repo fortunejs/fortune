@@ -451,6 +451,7 @@ function runTest (a, options, fn) {
     keys: keys,
     errors: errors,
     recordTypes: recordTypes,
+    transforms: {},
     Promise: Promise
   })
 

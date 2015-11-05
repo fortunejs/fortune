@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.4.6 (2015-11-05)
+##### 1.4.7 (2015-11-05)
 - Polish: drop `clone` module, use own implementation due to performance.
+- Polish: expose `transforms` object to adapter and serializer, mostly used to check for existence.
 
 
 ##### 1.4.5 (2015-11-05)
