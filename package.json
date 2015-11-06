@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application system for Node.js and web browsers.",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -32,7 +32,7 @@
     "deep-equal": "^1.0.1",
     "error-class": "^1.1.1",
     "negotiator": "^0.6.0",
-    "tapdance": "^4.0.0",
+    "tapdance": "^4.0.1",
     "ws": "^0.8.0"
   },
   "devDependencies": {

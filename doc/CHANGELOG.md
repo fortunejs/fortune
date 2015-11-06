@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.10 (2015-11-06)
+- Polish: do not expose `transforms` object, keep it internal.
+
+
 ##### 1.4.9 (2015-11-06)
 - Polish: drop `clone` module, use own implementation due to performance.
 - Polish: expose `transforms` object to adapter and serializer, mostly used to check for existence.
