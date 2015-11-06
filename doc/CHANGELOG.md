@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.11 (2015-11-06)
+- Fix: try to fix ES6 class compatibility again.
+
+
 ##### 1.4.10 (2015-11-06)
 - Polish: do not expose `transforms` object, keep it internal.
 
