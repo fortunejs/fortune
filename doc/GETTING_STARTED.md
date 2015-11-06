@@ -1,14 +1,6 @@
 # Getting Started
 
-The first thing you'll have to do is install [Node.js](https://nodejs.org/) (if you're on Linux, install `nodejs` from your package manager). Optionally, you will need an ES6 transpiler such as [Babel](http://babeljs.io) to run ES6 code:
-
-```sh
-$ npm install -g babel
-```
-
-*Note: if the above did not work, you probably don't have permissions, [here are workarounds](https://docs.npmjs.com/getting-started/fixing-npm-permissions).*
-
-Then install Fortune from the command-line:
+The first thing you'll have to do is install [Node.js](https://nodejs.org/) 4.2+ (if you're on Linux, install `nodejs` from your package manager). Then install Fortune from the command-line:
 
 ```sh
 $ npm install fortune
@@ -17,7 +9,7 @@ $ npm install fortune
 Then create an empty `index.js` file next to the `node_modules` folder, and start by importing Fortune and creating an instance:
 
 ```js
-import fortune from 'fortune'
+const fortune = require('fortune')
 const store = fortune.create()
 ```
 
@@ -52,10 +44,11 @@ Transformations can be defined per record type. Transform functions accept at le
 Here are some implementation details for dealing with passwords:
 
 ```js
-import crypto from 'crypto'
+const crypto = require('crypto')
 
-const [ iterations, keyLength, saltLength ] =
-  [ Math.pow(2, 15), Math.pow(2, 9), Math.pow(2, 6) ]
+const iterations = Math.pow(2, 15)
+const keyLength = Math.pow(2, 9)
+const saltLength = Math.pow(2, 6)
 
 function passwordCheck (password, key, salt) {
   return new Promise((resolve, reject) => crypto.pbkdf2(
@@ -79,11 +72,17 @@ function generateKey (password, salt) {
 This is a pretty basic implementation using the `crypto` module provided by Node.js to check and generate passwords. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide sensitive fields when displaying the record.
 
 ```js
-const { methods, errors } = fortune
+const methods = fortune.methods, errors = fortune.errors
 
 store.transformInput('user', (context, record, update) => {
-  const { request: { method, type, meta } } = context
-  let { key, salt, password } = record
+  const request = context.request,
+    method = request.method,
+    type = request.type,
+    meta = request.meta
+
+  let key = record.key,
+    salt = record.salt,
+    password = record.password
 
   if (method === methods.create && !password)
     throw new errors.BadRequestError(`Password must be specified.`)
