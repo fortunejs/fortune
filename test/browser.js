@@ -17,7 +17,7 @@ require('./integration/adapters/indexeddb')
 require('./integration/adapters/webstorage')
 
 run(function () {
-  var store = fortune.create()
+  var store = fortune()
 
   comment('can run in browser')
   ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')

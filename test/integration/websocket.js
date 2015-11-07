@@ -11,7 +11,7 @@ const fortune = require('../../lib')
 const WebSocket = require('ws')
 
 const methods = fortune.methods
-const store = fortune.create()
+const store = fortune()
 const port = 2048
 const server = fortune.net.websocket(store, { port })
 

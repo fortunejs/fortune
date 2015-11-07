@@ -11,7 +11,7 @@ const methods = fortune.methods
 
 
 module.exports = options => {
-  const store = fortune.create(options)
+  const store = fortune(options)
 
   .defineType('user', {
     name: { type: String },

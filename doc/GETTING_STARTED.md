@@ -10,7 +10,7 @@ Then create an empty `index.js` file next to the `node_modules` folder, and star
 
 ```js
 const fortune = require('fortune')
-const store = fortune.create()
+const store = fortune()
 ```
 
 We don't need to pass any arguments to the constructor for now, the defaults should work.

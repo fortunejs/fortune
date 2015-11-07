@@ -23,7 +23,7 @@ Let's build an API that models Twitter's basic functionality:
 // store.js
 const fortune = require('fortune')
 
-module.exports = fortune.create()
+module.exports = fortune()
 
 .defineType('user', {
   name: { type: String },
