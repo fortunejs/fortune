@@ -1,7 +1,8 @@
 # Changelog
 
 
-##### 1.4.13 (2015-11-08)
+##### 1.4.14 (2015-11-08)
+- Fix: don't swallow native input error.
 - Feature: allow singular objects to be valid for creating and updating in the default serializer.
 
 
