@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.13 (2015-11-08)
+- Feature: allow singular objects to be valid for creating and updating in the default serializer.
+
+
 ##### 1.4.12 (2015-11-07)
 - Polish: add deprecation warning for `Fortune.create` method.
 
