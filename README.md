@@ -12,7 +12,7 @@ Fortune is an [application system](http://systems-analysis.net/architecture/intr
 $ npm install fortune --save
 ```
 
-There is roughly 3.2k lines of code, and its size is about 22kb (min+gzip).
+There is roughly 2.7k lines of code each for Node.js and the web browser (3.2k total), and its size is about 22kb (min+gzip).
 
 
 ## Example
