@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.4.16 (2015-11-10)
+- Fix: allow different object to be returned from `transformInput` on `create` method.
+
+
 ##### 1.4.15 (2015-11-08)
 - Fix: Error when extending default serializer.
 - Fix: don't swallow native input error.

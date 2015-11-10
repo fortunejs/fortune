@@ -38,10 +38,10 @@ module.exports = options => {
   .transformInput((context, record, update) => {
     const method = context.request.method
 
-    if (method === methods.create) {
-      record.createdAt = new Date()
-      return record
-    }
+    if (method === methods.create)
+      return Object.assign({}, record, {
+        createdAt: new Date()
+      })
 
     if (method === methods.update) {
       if (!('replace' in update)) update.replace = {}
@@ -79,10 +79,10 @@ module.exports = options => {
   .transformInput((context, record, update) => {
     const method = context.request.method
 
-    if (method === methods.create) {
-      record.createdAt = new Date()
-      return record
-    }
+    if (method === methods.create)
+      return Object.assign({}, record, {
+        createdAt: new Date()
+      })
 
     if (method === methods.update) {
       if (!('replace' in update)) update.replace = {}

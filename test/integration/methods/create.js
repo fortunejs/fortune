@@ -61,6 +61,7 @@ run(() => {
     ok(deadcode.equals(response.payload[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
+    ok(response.payload[0].createdAt !== null, 'transform applied')
     ok(response.payload.length === 1, 'record created')
     ok(response.payload[0][primaryKey] === 4, 'record has correct ID')
     ok(response.payload[0].birthday instanceof Date,
