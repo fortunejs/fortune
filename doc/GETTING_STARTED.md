@@ -6,17 +6,22 @@ The first thing you'll have to do is install [Node.js](https://nodejs.org/) 4.2+
 $ npm install fortune
 ```
 
-Then create an empty `index.js` file next to the `node_modules` folder, and start by importing Fortune and creating an instance:
+Then create an empty `index.js` file adjacent to the `node_modules` folder, and start by importing Fortune and creating an instance:
 
 ```js
 const fortune = require('fortune')
 const store = fortune()
 ```
 
-We don't need to pass any arguments to the constructor for now, the defaults should work.
+The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument. We don't need to pass any arguments to the constructor for now, the defaults should work.
 
 
-## Entity-relationship Modelling
+## Application System
+
+Fortune is not a web framework, it does not even require a server. Rather it provides a set of inter-operable classes that cover common application use cases: data access (`Adapter`), business logic (`transform`), and presentation (`Serializer`). These layers are re-usable in server and client contexts.
+
+
+## Entity-Relationship Modelling
 
 The instance must have record types to be useful. Let's start with a basic example:
 
