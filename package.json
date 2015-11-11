@@ -12,15 +12,16 @@
     "url": "git@github.com:flyvictor/fortune.git"
   },
   "dependencies": {
+    "body-parser": "^1.14.1",
     "datejs": "^1.0.0-rc3",
-    "express": "~3.5.1",
+    "express": "4.13.3",
     "i": "~0.3.2",
     "lodash": "~2.4.1",
     "mkdirp": "~0.3.5",
     "moment": "~2.8.4",
     "mongoose": "~3.8.21",
     "nedb": "~0.10.4",
-    "qs": "^2.3.3",
+    "qs": "2.4.2",
     "rsvp": "~3.0.6",
     "sift": "^0.2.3",
     "socket.io": "^1.2.1",

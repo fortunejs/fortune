@@ -239,7 +239,7 @@ module.exports = function(options){
         ];
         //Give a man a pet
         request(baseUrl).patch('/people/' + ids.people[0])
-          .set('Content-Type', 'application/vnd.api+json')
+          .set('Content-Type', 'application/json')
           .send(JSON.stringify(cmd))
           .expect(200)
           .end(function(err){
