@@ -75,6 +75,17 @@ module.exports = function(options){
             done();
           });
       });
+      it('should set correct route type and expose it to hooks', function(done){
+        request(baseUrl).get('/people/' + ids.people[0] + '/addresses')
+          .set('route-type-match', 'getSubresources')
+          .expect(200)
+          .expect('route-type', 'getSubresources')
+          .expect('route-type-match', 'true')
+          .end(function(err){
+            should.not.exist(err);
+            done();
+          });
+      });
       it('should be able to return subresource', function(done){
         request(baseUrl).get('/people/' + ids.people[0] + '/addresses')
           .expect(200)

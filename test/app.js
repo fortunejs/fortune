@@ -307,6 +307,16 @@ module.exports = function(options, port, ioPort) {
         };
       }
     }])
+    .afterRW('person', [{
+      name: 'echo-route-type',
+      init: function(){
+        return function(req, res){
+          res.setHeader('route-type', req.fortune.routeMetadata.type);
+          res.setHeader('route-type-match', req.get('route-type-match') === req.fortune.routeMetadata.type);
+          return this;
+        }
+      }
+    }])
     .listen(port)
     .ioListen(ioPort);
 
