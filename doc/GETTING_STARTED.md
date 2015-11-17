@@ -18,7 +18,9 @@ The `fortune` function returns a new instance of Fortune, and accepts a configur
 
 ## Application System
 
-Fortune is not a web framework, it does not even require a server. Rather it provides a set of inter-operable classes that cover common application use cases: data access (`Adapter`), business logic (`transform`), and presentation (`Serializer`). These layers are re-usable in server and client contexts.
+Fortune is not a framework, as it does not try to impose any architecture, design patterns, or inversion of control. However, it does provide a set of features that even fully-fledged frameworks don't handle.
+
+Fortune exports two abstract base classes which work well with each other: Adapter (data access) & Serializer (presentation). Methods of these classes are called by Fortune in a request lifecycle, along with transform functions (business logic). These implementations are re-usable in server and client contexts.
 
 
 ## Entity-Relationship Modelling

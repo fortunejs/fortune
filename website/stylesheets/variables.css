@@ -24,11 +24,11 @@
     monospace;
 
   /* measurements */
-  --max-width: 51em;
+  --max-width: 52em;
   --size-body: 15px;
   --size-mono: 13px;
-  --line-height: calc(1em * 17 / 10);
-  --mono-height: calc(1em * 15 / 10);
+  --line-height: calc(1em * 8 / 5);
+  --mono-height: calc(1em * 3 / 2);
   --border-radius: calc(1em / 2);
   --fade-speed: 0.15s;
 
