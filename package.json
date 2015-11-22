@@ -14,14 +14,14 @@
   },
   "bugs": "https://github.com/fortunejs/fortune/issues",
   "scripts": {
-    "deploy": "npm run build:website && ./website/deploy.sh",
+    "deploy": "npm run build && ./website/deploy.sh",
     "build": "node website/build",
     "lint": "eslint lib",
-    "postpublish": "npm run deploy:website",
+    "postpublish": "npm run deploy",
     "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "node test | tap-dot",
     "test:browser": "browserify test/browser.js | tape-run | tap-dot",
-    "test:website": "npm run build:website && http-server -p 8890 dist/web"
+    "test:website": "npm run build && http-server -p 8890 dist/web"
   },
   "dependencies": {
     "array-buffer": "^1.0.2",
