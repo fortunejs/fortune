@@ -213,8 +213,7 @@ const cssEntryPoint = path.join(stylesheetPath, 'index.css')
 
 fs.writeFileSync(path.join(outputPath, 'assets/index.css'),
   cssnext(fs.readFileSync(cssEntryPoint).toString(), {
-    compress: true,
-    from: path.join(stylesheetPath, 'index.css')
+    compress: true, from: cssEntryPoint
   }))
 
 
