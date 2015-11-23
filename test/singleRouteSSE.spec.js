@@ -48,10 +48,10 @@ describe('EventSource implementation for resource changes', function () {
                 var that = this;
 
                 var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false})
-                .on('data', function(data) {
+                .on('data', function(res) {
 
-                    lastEventId = data.id;
-                    var data = JSON.parse(data.data);
+                    lastEventId = res.id;
+                    var data = JSON.parse(res.data);
                     //ignore ticker data
                     if(_.isNumber(data)) {
                         //post data after we've hooked into change events and receive a ticker
@@ -63,6 +63,7 @@ describe('EventSource implementation for resource changes', function () {
                             ]
                         });
                     }
+                    expect(res.event.trim()).to.equal('books_i');
                     expect(_.omit(data, 'id')).to.deep.equal({title : 'test title 2'});
                     done();
                     eventSource.destroy();
