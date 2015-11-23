@@ -20,9 +20,9 @@ describe('EventSource implementation for multiple resources', function () {
         var sendAndCheckSSE = function(resources, payloads, done) {
             var index = 0;
             var eventSource = ess(baseUrl + '/changes/stream?resources=' + resources.join(','), {retry : false})
-            .on('data', function(data, id) {
-                lastEventId = data.id;
-                var data = JSON.parse(data.data);
+            .on('data', function(res, id) {
+                lastEventId = res.id;
+                var data = JSON.parse(res.data);
                 //ignore ticker data
                 if(_.isNumber(data)) {
 
@@ -33,6 +33,7 @@ describe('EventSource implementation for multiple resources', function () {
 
                 }
 
+                expect(res.event.trim()).to.equal('bookas_i');
                 expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
                 if(index === payloads.length - 1) {
                     done();
