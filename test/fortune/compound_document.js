@@ -32,7 +32,7 @@ module.exports = function(options){
           .end(function (error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+            (body.people[0].links.pets).should.containEql(ids.pets[0]);
             resolve();
           });
       }).then(function(){
@@ -48,7 +48,7 @@ module.exports = function(options){
             .end(function (error, response) {
               should.not.exist(error);
               var body = JSON.parse(response.text);
-              (body.people[0].links.pets).should.includeEql(ids.pets[1]);
+              (body.people[0].links.pets).should.containEql(ids.pets[1]);
             });
         }).then(function(){
           request(baseUrl)
