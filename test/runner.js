@@ -39,7 +39,7 @@ describe('Fortune test runner', function(){
         app.adapter.mongoose.connections[1].db.collectionNames(function(err, collections){
           resolve(_.compact(_.map(collections, function(collection){
 
-            var name = collection.name.split(".")[1];
+            var name = collection.name.split(".")[0];
             if(name && name !== "system"){
               return new RSVP.Promise(function(resolve){
                 app.adapter.mongoose.connections[1].db.collection(name, function(err, collection){

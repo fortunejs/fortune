@@ -4,8 +4,8 @@ var _ = require("lodash");
 var request = require("supertest");
 var fortune = require("../../lib/fortune");
 
-var port = 8895;
-var port2 = 8896;
+var port = 9895;
+var port2 = 9896;
 var baseUrl = 'http://localhost:' + port;
 
 module.exports = function(options){

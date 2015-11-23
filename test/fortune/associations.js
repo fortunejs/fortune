@@ -29,7 +29,7 @@ module.exports = function(options){
           .end(function(error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+            (body.people[0].links.pets).should.containEql(ids.pets[0]);
             done();
           });
       });
@@ -101,7 +101,7 @@ module.exports = function(options){
           .end(function(error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            (body.people[0].links.pets).should.includeEql(ids.pets[0]);
+            (body.people[0].links.pets).should.containEql(ids.pets[0]);
             done();
           });
       });
@@ -248,7 +248,7 @@ module.exports = function(options){
           .end(function(error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            (body.people[0].links.lovers).should.includeEql(ids.people[1]);
+            (body.people[0].links.lovers).should.containEql(ids.people[1]);
             done();
           });
       });
@@ -260,7 +260,7 @@ module.exports = function(options){
           .end(function(error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            (body.people[0].links.lovers).should.includeEql(ids.people[0]);
+            (body.people[0].links.lovers).should.containEql(ids.people[0]);
             done();
           });
       });
