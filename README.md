@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune is an [application system](http://systems-analysis.net/architecture/introduction.html) for Node.js & web browsers. It provides a data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
+Fortune provides data serialization middleware, from storage up to the presentation. It covers the whole [application system](http://systems-analysis.net/architecture/introduction.html) including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 

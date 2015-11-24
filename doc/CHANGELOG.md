@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.4.18 (2015-11-24)
+- Fix: boolean matching in default JSON serializer.
+- Polish: update dependencies, update readme.
+
+
 ##### 1.4.16 (2015-11-10)
 - Fix: allow different object to be returned from `transformInput` on `create` method.
 
