@@ -1,8 +1,5 @@
 var should = require('should');
-var _ = require('lodash');
-var RSVP = require('rsvp');
 var request = require('supertest');
-var Promise = RSVP.Promise;
 var uuid = require('node-uuid');
 
 var seeder = require('./seeder.js');
@@ -89,7 +86,7 @@ describe('associations', function () {
                     should.not.exist(error);
                     var body = JSON.parse(response.text);
                     should.equal(body.pets[0].links.owner, ids.people[0]);
-                    done()
+                    done();
                 });
         });
         it('should be able to dissociate', function (done) {

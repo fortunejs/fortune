@@ -1,8 +1,7 @@
 var should = require('should');
 var _ = require('lodash');
-var RSVP = require('rsvp');
 var request = require('supertest');
-var Promise = RSVP.Promise;
+var Promise = require('bluebird');
 
 var seeder = require('./seeder.js');
 
@@ -30,7 +29,7 @@ describe("includes", function () {
             });
         }
 
-        return RSVP.all([
+        return Promise.all([
             link('/people/' + ids.people[0], '/people/0/soulmate', ids.people[1]), //TODO: harvester should take care about this on its own
             link('/people/' + ids.people[1], '/people/0/soulmate', ids.people[0]),
             link('/people/' + ids.people[0], '/people/0/lovers', [ids.people[1]]),
@@ -104,6 +103,13 @@ describe("includes", function () {
                 (body.linked.foobars.length).should.be.equal(1);
                 done();
             });
+        });
+    });
+
+    describe('empty inclusion array', function () {
+        it('should NOT throw error', function () {
+            var includes = require('../lib/includes.js')(this.harvesterApp, this.harvesterApp._schema);
+            includes.linked({people: []}, []);
         });
     });
 });

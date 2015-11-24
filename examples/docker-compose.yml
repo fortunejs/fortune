@@ -5,3 +5,12 @@ db:
     - "27017"
   ports:
     - "27017:27017"
+
+es:
+  image: library/elasticsearch
+  expose:
+    - "9200"
+    - "9300"
+  ports:
+    - "9200:9200"
+    - "9300:9300"

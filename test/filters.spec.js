@@ -1,8 +1,6 @@
 var should = require('should');
-var _ = require('lodash');
-var RSVP = require('rsvp');
 var request = require('supertest');
-var Promise = RSVP.Promise;
+var Promise = require('bluebird');
 
 var seeder = require('./seeder.js');
 
