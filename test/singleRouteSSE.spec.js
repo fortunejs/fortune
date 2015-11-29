@@ -10,7 +10,7 @@ var seeder = require('./seeder.js');
 var Joi = require('joi');
 var Promise = require('bluebird');
 
-describe('EventSource implementation for resource changes', function () {
+describe.only('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
@@ -43,7 +43,7 @@ describe('EventSource implementation for resource changes', function () {
             return seeder(harvesterApp, baseUrl).dropCollections('books', 'dvds', 'superHeros');
         });
 
-        describe.only('When I post to the newly created resource', function () {
+        describe('When I post to the newly created resource', function () {
             it('Then I should receive a change event with data but not the one before it', function (done) {
                 var that = this;
 
