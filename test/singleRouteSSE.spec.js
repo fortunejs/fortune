@@ -43,7 +43,7 @@ describe('EventSource implementation for resource changes', function () {
             return seeder(harvesterApp, baseUrl).dropCollections('books', 'dvds', 'superHeros');
         });
 
-        describe('When I post to the newly created resource', function () {
+        describe.only('When I post to the newly created resource', function () {
             it('Then I should receive a change event with data but not the one before it', function (done) {
                 var that = this;
 
