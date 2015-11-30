@@ -32,15 +32,15 @@
     "error-class": "^2.0.0",
     "negotiator": "^0.6.0",
     "tapdance": "^4.0.1",
-    "ws": "^0.8.0"
+    "ws": "^0.8.1"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
     "cssnext": "^1.8.4",
     "deep-equal": "^1.0.1",
     "docchi": "^0.11.3",
-    "eslint": "^1.10.1",
-    "eslint-config-0x8890": "^1.0.0",
+    "eslint": "^1.10.2",
+    "eslint-config-0x8890": "^1.0.1",
     "form-data": "^1.0.0-rc3",
     "highlight.js": "^8.9.1",
     "html-minifier": "^1.0.0",
@@ -52,7 +52,7 @@
     "myth": "^1.5.0",
     "normalize.css": "^3.0.3",
     "rimraf": "^2.4.4",
-    "tap-dot": "^1.0.0",
+    "tap-dot": "^1.0.1",
     "tape-run": "^2.1.0"
   },
   "files": [

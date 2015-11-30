@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js provides data transformation middleware. It covers the whole [application system](http://systems-analysis.net/architecture/introduction.html) including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
+Fortune.js is an [application system](http://systems-analysis.net/architecture/introduction.html) for Node.js and web browsers, including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
