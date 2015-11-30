@@ -20,7 +20,7 @@
     "postpublish": "npm run deploy",
     "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "node test | tap-dot",
-    "test:browser": "browserify test/browser.js | tape-run",
+    "test:browser": "browserify test/browser.js | tape-run | tap-dot",
     "test:website": "npm run build && http-server -p 8890 dist/web"
   },
   "dependencies": {
