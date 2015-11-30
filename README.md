@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune provides data serialization middleware, from storage up to the presentation. It covers the whole [application system](http://systems-analysis.net/architecture/introduction.html) including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
+Fortune.js provides data transformation middleware. It covers the whole [application system](http://systems-analysis.net/architecture/introduction.html) including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -15,9 +15,20 @@ $ npm install fortune --save
 There is roughly 2.7k lines of code each for Node.js and the web browser (3.2k shared), and its size is about 22kb (min+gz).
 
 
+## Approach
+
+>Most web apps at heart are user experience and business logic around a persistent store.
+
+Fortune.js is built with a reductionist approach to application development. It has one primary interface to do I/O, the `request` method, which dynamic dispatches `Adapter`, `Serializer`, and `transform` calls. Networking wrappers call the `request` method, so it is not coupled with any external protocol. Typically it is not needed to use the `request` method directly.
+
+The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB and Web Storage in the web browser.
+
+The `Serializer` abstraction allows for multiple serialization formats, including hypermedia media types such as Micro API, standard input formats such as URL encoded and form data, and custom serializers for HTML.
+
+
 ## Example
 
-Let's build an API that models Twitter's basic functionality:
+The only necessary input is record type definitions. Record types in Fortune.js are like what `struct` is in C: declarations of complex data types. Let's model Twitter's basic functionality:
 
 ```js
 // store.js

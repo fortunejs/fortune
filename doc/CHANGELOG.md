@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.4.19 (2015-11-30)
+- Polish: improve messaging in the documentation.
+- Fix: IndexedDB and Web Storage adapter connect implementation.
+
+
 ##### 1.4.18 (2015-11-24)
 - Fix: boolean matching in default JSON serializer.
 - Polish: update dependencies, update readme.

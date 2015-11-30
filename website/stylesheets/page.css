@@ -21,10 +21,17 @@ a {
 :--header a.anchor {
   color: var(--color-light);
   margin-left: calc(1em * 1 / 2);
+  text-decoration: none;
 }
 
-p, ul, ol, pre, table {
+p, ul, ol, pre, table, blockquote {
   margin: 0 0 var(--line-height);
+}
+
+blockquote {
+  color: var(--color-alt);
+  border-left: 3px rgba(0, 0, 0, 0.125) solid;
+  padding-left: calc(1em * 2 / 3);
 }
 
 pre, code {

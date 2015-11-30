@@ -183,7 +183,8 @@ for (let file of fs.readdirSync(docPath)) {
 const readme = fs.readFileSync(
   path.join(__dirname, '..', 'README.md')).toString()
 
-const example = (/(## Example([\s\S]+)(?=\n#))/g).exec(readme)[2]
+const example = (/(##([\s\S]+)(?=\n## License))/g).exec(readme)[1]
+  .replace('##', '####')
 
 docs.readme = {
   root: './',
