@@ -10,7 +10,7 @@ var seeder = require('./seeder.js');
 var Joi = require('joi');
 var Promise = require('bluebird');
 
-describe.only('EventSource implementation for resource changes', function () {
+describe('EventSource implementation for resource changes', function () {
 
     var harvesterApp;
     describe('Server Sent Events', function () {
