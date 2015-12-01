@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Data transformation middleware for Node.js and web browsers.",
+  "description": "Application middleware for Node.js and web browsers.",
   "version": "1.4.21",
   "license": "MIT",
   "author": {
