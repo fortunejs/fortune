@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Data transformation middleware for Node.js and web browsers.",
-  "version": "1.4.19",
+  "version": "1.4.20",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
