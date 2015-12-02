@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.4.21 (2015-12-01)
+##### 1.4.22 (2015-12-02)
 - Polish: avoid unnecessary cloning, may be breaking change but unlikely.
+- Polish: add runtime check for the primary key on update objects.
 
 
 ##### 1.4.19 (2015-11-30)
