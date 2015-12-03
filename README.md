@@ -15,7 +15,7 @@ $ npm install fortune --save
 There are roughly 2.7k lines of code each for Node.js and the web browser (3.2k shared), and its size is about 22kb (min+gz).
 
 
-## Approach
+## Abstract
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
@@ -28,7 +28,7 @@ The `Serializer` abstraction allows for multiple serialization formats, includin
 
 ## Example
 
-The only necessary input is record type definitions. Record types in Fortune.js are like what `struct` is in C: declarations of complex data types. Let's model Twitter's basic functionality:
+The only necessary input is record type definitions. Record types in Fortune.js are like what `struct` is in C: declarations of complex data types. Let's model a subset of Twitter's functionality:
 
 ```js
 // store.js

@@ -1,11 +1,11 @@
 # To-do list
 
-- Consider using ES7 features (?)
 - 100% test coverage.
 
 
 ### Done
 
+- Implement custom types.
 - Implement memory adapter, move NeDB adapter out of core.
 - Remove Micro API and JSON API serializers from core, move to separate modules.
 - Refactor `castValue` to be more generic, inject into serializer as common dependency, remove `castString`.

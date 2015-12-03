@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.5.0 (2015-12-03)
+- Feature: implemented user-defined type feature.
+- Polish: removed `Symbol` as a valid type on record type definitions.
+
+
 ##### 1.4.24 (2015-12-02)
 - Polish: avoid unnecessary cloning, may be breaking change but unlikely.
 - Polish: add runtime check for the primary key on update objects.

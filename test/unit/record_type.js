@@ -25,11 +25,11 @@ const fields = {
   name: { type: String },
   birthdate: { type: Date, junk: 'asdf' },
   mugshot: { type: Buffer },
+  integer: { type: Integer },
   luckyNumbers: { type: Number, isArray: true },
   friends: { link: 'person', isArray: true, inverse: 'friends' },
   spouse: { link: 'person', inverse: 'spouse' },
-  toys: { type: Object, isArray: true },
-  location: { type: Symbol('Geolocation data') }
+  toys: { type: Object, isArray: true }
 }
 
 
@@ -49,7 +49,7 @@ run(() => {
   pass(testField('luckyNumbers'), valid)
   pass(testField('friends'), valid)
   pass(testField('toys'), valid)
-  pass(testField('location'), valid)
+  pass(testField('integer'), valid)
 
   // Test for invalid fields.
   const invalid = 'invalid field throws error'
@@ -61,7 +61,7 @@ run(() => {
   }), invalid)
   fail(testFields({ nonexistent: NaN }), invalid)
   fail(testFields({ nullEdgeCase: null }), invalid)
-  fail(testFields({ fake: { type: Array } }), invalid)
+  fail(testFields({ fake: { type: 'x' } }), invalid)
 })
 
 
@@ -84,7 +84,8 @@ run(() => {
   pass(testRecord({ mugshot: new Buffer(1) }), good)
   fail(testRecord({ luckyNumbers: 1 }), bad)
   pass(testRecord({ luckyNumbers: [ 1 ] }), good)
-  pass(testRecord({ location: new ArrayBuffer(8) }), good)
+  pass(testRecord({ integer: 1 }), good)
+  fail(testRecord({ integer: 1.1 }), bad)
   fail(testRecord({
     [primaryKey]: 1,
     friends: [ 0, 1, 2 ] }
@@ -158,19 +159,20 @@ run(() => {
 
   const denormalizedField = '__post_comments_inverse'
 
-  ok(
-    recordTypes.post.comments[inverseKey] === denormalizedField,
+  ok(recordTypes.post.comments[inverseKey] === denormalizedField,
     'denormalized inverse field assigned')
 
-  ok(
-    recordTypes.comment[denormalizedField][linkKey] === 'post',
+  ok(recordTypes.comment[denormalizedField][linkKey] === 'post',
     'denormalized inverse field link correct')
 
-  ok(
-    recordTypes.comment[denormalizedField][isArrayKey] === true,
+  ok(recordTypes.comment[denormalizedField][isArrayKey] === true,
     'denormalized inverse field is array')
 
-  ok(
-    recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
+  ok(recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
     'denormalized inverse field set')
 })
+
+
+function Integer (x) {
+  return (x | 0) === x
+}

@@ -16,16 +16,9 @@ const store = fortune()
 The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument. We don't need to pass any arguments to the constructor for now, the defaults should work.
 
 
-## Application System
+## Record Types
 
-Fortune is not a framework, as it does not try to impose any architecture, design patterns, or inversion of control. However, it does provide a set of features that even fully-fledged frameworks don't handle.
-
-Fortune exports two abstract base classes which work well with each other: Adapter (data access) & Serializer (presentation). Methods of these classes are called by Fortune in a request lifecycle, along with transform functions (business logic). These implementations are re-usable in server and client contexts.
-
-
-## Entity-Relationship Modelling
-
-The instance must have record types to be useful. Let's start with a basic example:
+The only necessary input is record type definitions. Let's start with a basic example:
 
 ```js
 store.defineType('user', {
