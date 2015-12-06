@@ -156,7 +156,7 @@ Using Fortune with HTTP is optional, but since the built-in serializers provide 
 Starting the application:
 
 ```sh
-$ babel-node .
+$ node .
 ```
 
 
