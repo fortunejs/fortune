@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application middleware for Node.js and web browsers.",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -31,14 +31,12 @@
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",
     "negotiator": "^0.6.0",
-    "tapdance": "^4.0.1",
-    "ws": "^0.8.1"
+    "tapdance": "^4.0.1"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
     "cssnext": "^1.8.4",
-    "deep-equal": "^1.0.1",
-    "docchi": "^0.11.3",
+    "docchi": "^0.11.4",
     "eslint": "^1.10.3",
     "eslint-config-0x8890": "^1.0.1",
     "form-data": "^1.0.0-rc3",

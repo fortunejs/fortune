@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.6.0 (2015-12-05)
+- Performance: use Web Worker for IndexedDB adapter.
+- Drop Web Storage adapter since its low quota makes it near useless.
+- Drop WebSocket implementation since it is impossible to generalize.
+
+
 ##### 1.5.0 (2015-12-03)
 - Feature: implemented user-defined type feature.
 - Polish: removed `Symbol` as a valid type on record type definitions.

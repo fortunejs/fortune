@@ -19,9 +19,9 @@ There are roughly 2.7k lines of code each for Node.js and the web browser (3.2k 
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js is built with a reductionist approach to application development. It has one primary interface to do I/O, the `request` method, which dynamically dispatches `Adapter`, `Serializer`, and `transform` calls. Networking wrappers call the `request` method, so it is not coupled with any external protocol. Typically it is not needed to use the `request` method directly.
+Fortune.js is built with a reductionist approach to application development. It has one primary interface to do I/O, the `request` method, which dynamically dispatches `Adapter`, `Serializer`, and `transform` calls. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
-The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB and Web Storage in the web browser.
+The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 
 The `Serializer` abstraction allows for multiple serialization formats, including hypermedia media types such as Micro API, standard input formats such as URL encoded and form data, and custom serializers for HTML.
 

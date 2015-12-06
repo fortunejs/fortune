@@ -14,7 +14,6 @@ tapdance.isConcurrent = false
 
 require('./integration/adapters/memory')
 require('./integration/adapters/indexeddb')
-require('./integration/adapters/webstorage')
 
 run(function () {
   var store = fortune({
@@ -23,7 +22,6 @@ run(function () {
 
   comment('can run in browser')
   ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
-  ok(fortune.adapters.webStorage, 'web storage adapter exists')
 
   store.defineType('model', {
     name: { type: String }
