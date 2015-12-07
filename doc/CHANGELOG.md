@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.6.1 (2015-12-07)
+- Fix: bugs in IndexedDB adapter.
+
+
 ##### 1.6.0 (2015-12-05)
 - Performance: use Web Worker for IndexedDB adapter.
 - Drop Web Storage adapter since its low quota makes it near useless.
