@@ -41,8 +41,8 @@ Network helpers may map external input to a request and map the response to an e
 
 ### Browser
 
-Fortune includes a browser build, which comes with the IndexedDB & WebStorage adapters and the default serializer. A CommonJS-compatible build pipeline is required to use it, along with a bundler that supports the `browser` feature of `package.json`.
+Fortune includes a browser build, which comes with the IndexedDB and memory adapter and the default serializer. A CommonJS-compatible build pipeline is required to use it, along with a bundler that supports the `browser` feature of `package.json`.
 
 ```js
-import fortune from 'fortune' // Works in browser environment.
+var fortune = require('fortune') // Works in a web browser.
 ```

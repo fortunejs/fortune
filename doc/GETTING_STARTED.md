@@ -139,7 +139,7 @@ The output transform has the same arguments as the input transform, but is appli
 To start the application, we need to call the `connect` method.
 
 ```js
-import http from 'http'
+const http = require('http')
 
 const listener = fortune.net.http(store)
 const server = http.createServer(listener)
