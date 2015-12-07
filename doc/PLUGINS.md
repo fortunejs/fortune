@@ -11,7 +11,6 @@ Adapters must subclass and implement the Adapter class. The adapter could be bac
 |:-----------------|:---------------------------------------------------------|
 | Memory (included, default) | In-memory adapter, does not persist to disk. |
 | IndexedDB (included) | Data storage adapter that works in modern browsers. |
-| Web Storage (included) | Data storage adapter that works in most browsers. |
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | Document data store. MongoDB is [web scale](http://www.mongodb-is-web-scale.com/). |
 | [Postgres](https://github.com/fortunejs/fortune-postgres) | Relational database adapter, translates adapter method inputs to SQL. |
 | [NeDB](https://github.com/fortunejs/fortune-nedb) | Embedded document data store with an API that is mostly compatible with MongoDB. |
