@@ -3,7 +3,7 @@ var harvester = require('../lib/harvester');
 var baseUrl = 'http://localhost:' + 8005;
 var chai = require('chai');
 var expect = chai.expect;
-var ess = require('event-source-stream');
+var ess = require('agco-event-source-stream');
 var _ = require('lodash');
 var config = require('./config.js');
 var seeder = require('./seeder.js');
@@ -190,6 +190,54 @@ describe('EventSource implementation for resource changes', function () {
                         eventSource.destroy();
                     }
                 });
+            });
+        });
+    });
+    
+    describe('Server Sent Events Expiry', function () {
+        this.timeout(20000);
+        var lastEventId;
+
+        before(function () {
+            var options = {
+                adapter: 'mongodb',
+                connectionString: config.harvester.options.connectionString,
+                db: 'test',
+                inflect: true,
+                oplogConnectionString: config.harvester.options.oplogConnectionString,
+                sseExpiry: 1000
+            };
+
+            /**
+             * dvd resource  should be declared after book, to test if it does not overwrite book sse config
+             */
+            harvesterApp = harvester(options).resource('book', {
+                title: Joi.string(),
+                author: Joi.string()
+            }).resource('superHero', {
+                timestamp: Joi.number()
+            }).resource('dvd', {
+                title: Joi.string()
+            });
+
+            harvesterApp.listen(8006);
+
+            return seeder(harvesterApp, baseUrl).dropCollections('books', 'dvds', 'superHeros');
+        });
+
+        describe('When I post to the newly created resource', function () {
+            it('Then I should receive a change event with data but not the one before it', function (done) {
+                var that = this;
+                
+                var eventSource = ess('http://localhost:8006/books/changes/stream', {retry : false})
+                .on('data', function(data) {
+                    expect(data).to.be.undefined;
+                });
+                
+                setTimeout(function() {
+                    eventSource.destroy();
+                    done();
+                }, 1500);
             });
         });
     });

@@ -27,7 +27,7 @@ harvester({
 
 
 // subscribe to the artists change events stream (SSE)
-var ess = require('event-source-stream');
+var ess = require('agco-event-source-stream');
 
 ess(apiHost + '/artists/changes/stream')
     .on('data', function(data) {

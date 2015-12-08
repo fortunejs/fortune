@@ -1,7 +1,7 @@
 {
   "name": "harvesterjs",
   "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "license": "MIT",
   "author": {
     "name": "Kristof Sajdak",
@@ -38,17 +38,17 @@
     "mongoose": "4.2.8",
     "node-uuid": "^1.4.3",
     "throttle-function": "^0.1.0",
-    "tiny-sse": "0.0.0",
+    "tiny-sse": "git+https://github.com/agco/node-tiny-sse.git",
     "underscore.string": "^2.4.0"
   },
   "devDependencies": {
+    "agco-event-source-stream": "^1.1.1",
     "chai": "^1.10.0",
     "chai-http": "^1.0.0",
-    "event-source-stream": "git+https://github.com/agco/event-source-stream.git",
-    "mocha": "~1.20.1",
     "coveralls": "^2.11.2",
     "http-as-promised": "^0.1.0",
     "istanbul": "^0.3.7",
+    "mocha": "~1.20.1",
     "mocha-lcov-reporter": "0.0.2",
     "nock": "^0.56.0",
     "profanity-util": "0.0.2",
