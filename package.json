@@ -38,7 +38,7 @@
     "mongoose": "4.2.8",
     "node-uuid": "^1.4.3",
     "throttle-function": "^0.1.0",
-    "tiny-sse": "0.0.0",
+    "tiny-sse": "git+https://github.com/agco/node-tiny-sse.git",
     "underscore.string": "^2.4.0"
   },
   "devDependencies": {
