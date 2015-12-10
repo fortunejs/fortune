@@ -152,7 +152,6 @@ describe('EventSource implementation for resource changes', function () {
             it('Then an SSE is broadcast with event set to x_update, ID set to the oplog timestamp' +
                  'and data set to an instance of x that only contains the new value for property y', function (done) {
                 var that = this;
-                var counter = 0;
 
                 var payloads = [
                     {
@@ -183,12 +182,9 @@ describe('EventSource implementation for resource changes', function () {
                         });
                     }
 
-                    expect(_.omit(data, 'id')).to.deep.equal(payloads[counter].books[0]);
-                    counter ++;
-                    if (counter === 1) {
-                        done();
-                        eventSource.destroy();
-                    }
+                    expect(_.omit(data, 'id')).to.deep.equal(payloads[1].books[0]);
+                    done();
+                    eventSource.destroy();
                 });
             });
         });
