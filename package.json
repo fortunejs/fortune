@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application middleware for Node.js and web browsers.",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -24,7 +24,6 @@
     "test:website": "npm run build && http-server -p 8890 dist/web"
   },
   "dependencies": {
-    "array-buffer": "^1.0.2",
     "bluebird": "^3.0.6",
     "busboy": "^0.2.12",
     "chalk": "^1.1.1",

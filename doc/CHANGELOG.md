@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.6.2 (2015-12-11)
+- Improve performance in IndexedDB adapter by stringifying everything.
+
+
 ##### 1.6.1 (2015-12-07)
 - Fix: bugs in IndexedDB adapter.
 
