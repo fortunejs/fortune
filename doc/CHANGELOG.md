@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.6.3 (2015-12-12)
+- Fix: equality check for link fields in the memory adapter.
+
+
 ##### 1.6.2 (2015-12-11)
 - Improve performance in IndexedDB adapter by stringifying everything.
 

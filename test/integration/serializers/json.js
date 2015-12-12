@@ -90,6 +90,19 @@ run(() => {
 
 
 run(() => {
+  comment('get records with match by link')
+  return test(`/animal?${qs.stringify({
+    'match[owner]': 1
+  })}`, null, response => {
+    ok(response.status === 200, 'status is correct')
+    ok(~response.headers['content-type'].indexOf('application/json'),
+      'content type is correct')
+    ok(response.body[0].name === 'Fido', 'match is correct')
+  })
+})
+
+
+run(() => {
   comment('get records with sort/limit/offset')
   return test(`/animal?${qs.stringify({
     sort: 'name',
