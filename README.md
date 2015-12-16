@@ -12,7 +12,7 @@ Fortune.js is a middleware for building web applications in Node.js and web brow
 $ npm install fortune --save
 ```
 
-There are roughly 2.7k lines of code each for Node.js and the web browser (3.2k shared), and its size is about 22kb (min+gz).
+There is roughly 3k lines of code, and its total size including dependencies is about 22kb (min+gz).
 
 
 ## Abstract
