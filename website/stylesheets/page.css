@@ -109,7 +109,7 @@ header > a {
 
 header .emblem {
   display: block;
-  height: calc(var(--line-height) * 4);
+  height: calc(var(--line-height) * 9 / 2);
   margin: 0 auto;
   padding-bottom: calc(var(--line-height) * 1 / 2);
 }
