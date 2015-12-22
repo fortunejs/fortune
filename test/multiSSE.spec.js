@@ -23,6 +23,7 @@ describe('EventSource implementation for multiple resources', function () {
             .on('data', function(res, id) {
                 lastEventId = res.id;
                 var data = JSON.parse(res.data);
+                var expectedEventName = resources[index] + 's_i';
                 //ignore ticker data
                 if(_.isNumber(data)) {
 
@@ -33,7 +34,7 @@ describe('EventSource implementation for multiple resources', function () {
 
                 }
 
-                expect(res.event.trim()).to.equal('bookas_i');
+                expect(res.event.trim()).to.equal(expectedEventName);
                 expect(_.omit(data, 'id')).to.deep.equal(payloads[index][resources[index] + 's'][0]);
                 if(index === payloads.length - 1) {
                     done();
@@ -77,6 +78,28 @@ describe('EventSource implementation for multiple resources', function () {
                         ]
                     }];
                 sendAndCheckSSE(['booka'], payloads, done);
+            });
+        });
+
+        describe('Given a list of resources A, B, C' +
+            '\nAND base URL base_url' +
+            '\nWhen a GET is made to base_url/changes/stream?resources=A,B,C ', function () {
+            it('Then all events for resources A, B and C are streamed back to the API caller ', function (done) {
+                var payloads = [{
+                        bookas: [
+                            {
+                                name: 'test name 1'
+                            }
+                        ]
+                    },
+                    {
+                        bookbs: [
+                            {
+                                name: 'test name 2'
+                            }
+                        ]
+                    }];
+                sendAndCheckSSE(['booka', 'bookb'], payloads, done);
             });
         });
 
