@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.7.1 (2015-12-30)
+- Fix: zero limit in default adapters should work properly now.
+- Feature: added `include` feature to default JSON serializer.
+
+
 ##### 1.7.0 (2015-12-30)
 - Feature: accept different languages for internal messages.
 - Feature: expose preferred language as `context.request.meta.language`.

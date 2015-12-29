@@ -19,7 +19,7 @@ There is roughly 3k lines of code, and its total size including dependencies is 
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js follows a reductionist approach: it has one primary interface to do I/O, the `request` method, which dynamically dispatches `Adapter`, `Serializer`, and `transform` calls based on the request data. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
+Fortune.js is data-driven. It has one primary interface to do I/O, the `request` method, which dynamically dispatches `Adapter`, `Serializer`, and `transform` calls based on the request data. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
 The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 

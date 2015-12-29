@@ -103,6 +103,20 @@ run(() => {
 
 
 run(() => {
+  comment('get records with include')
+  return test(`/animal/1?${qs.stringify({
+    'include': 'owner,owner.spouse'
+  })}`, null, response => {
+    ok(response.status === 200, 'status is correct')
+    ok(~response.headers['content-type'].indexOf('application/json'),
+      'content type is correct')
+    ok(deepEqual(response.body.map(record => record.id).sort((a, b) => a - b),
+      [ 1, 1, 2 ]), 'IDs are correct')
+  })
+})
+
+
+run(() => {
   comment('get records with sort/limit/offset')
   return test(`/animal?${qs.stringify({
     sort: 'name',
