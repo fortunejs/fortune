@@ -1,6 +1,13 @@
 # Changelog
 
 
+##### 1.7.0 (2015-12-30)
+- Feature: accept different languages for internal messages.
+- Feature: expose preferred language as `context.request.meta.language`.
+- Feature: expose message function on Serializer and Adapter class.
+- Moved headers to `context.request.meta.headers` and `context.response.meta.headers`.
+
+
 ##### 1.6.3 (2015-12-12)
 - Fix: equality check for link fields in the memory adapter.
 

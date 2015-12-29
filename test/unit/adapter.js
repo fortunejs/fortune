@@ -11,6 +11,7 @@ var Adapter = require('../../lib/adapter')
 var errors = require('../../lib/common/errors')
 var stderr = require('../stderr')
 
+var message = require('../../lib/common/message')
 var promise = require('../../lib/common/promise')
 var Promise = promise.Promise
 
@@ -450,6 +451,7 @@ function runTest (a, options, fn) {
     options: options,
     keys: keys,
     errors: errors,
+    message: message,
     recordTypes: recordTypes,
     transforms: {},
     Promise: Promise

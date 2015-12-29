@@ -18,6 +18,7 @@ module.exports = function httpTest (options, path, request, fn, change) {
   let port = 1024 + i
 
   i++
+  if (port >= 65535) i = 0
 
   return testInstance(options)
 
@@ -38,10 +39,12 @@ module.exports = function httpTest (options, path, request, fn, change) {
     let headers
     let status
 
-    if (request && typeof request.body === 'object') {
-      request.body = JSON.stringify(request.body)
+    if (request) {
       if (!request.headers) request.headers = {}
-      request.headers['Content-Length'] = Buffer.byteLength(request.body)
+      if (typeof request.body === 'object') {
+        request.body = JSON.stringify(request.body)
+        request.headers['Content-Length'] = Buffer.byteLength(request.body)
+      }
     }
 
     return new Promise((resolve, reject) =>

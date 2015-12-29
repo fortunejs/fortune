@@ -78,7 +78,7 @@ store.transformInput('user', (context, record, update) => {
   const request = context.request,
     method = request.method,
     type = request.type,
-    meta = request.meta
+    headers = request.meta.headers
 
   let key = record.key,
     salt = record.salt,
@@ -88,7 +88,7 @@ store.transformInput('user', (context, record, update) => {
     throw new errors.BadRequestError(`Password must be specified.`)
 
   return method !== methods.create ? passwordCheck(
-    new Buffer(meta['authorization'] || '', 'base64').toString(),
+    new Buffer(headers['authorization'] || '', 'base64').toString(),
     key, salt.toString()) : Promise.resolve()
 
   .catch(() => {
@@ -118,7 +118,7 @@ store.transformInput('user', (context, record, update) => {
 })
 ```
 
-Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type, arbitrary fields are not persisted. Updating the password in this example requires a field in the `meta` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
+Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type, arbitrary fields are not persisted. Updating the password in this example requires a field in the `meta.headers` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
 
 It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
 

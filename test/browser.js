@@ -10,7 +10,6 @@ var run = tapdance.run
 var fortune = require('../lib/browser')
 
 tapdance.Promise = fortune.Promise = Promise
-tapdance.isConcurrent = false
 
 require('./integration/adapters/memory')
 require('./integration/adapters/indexeddb')
