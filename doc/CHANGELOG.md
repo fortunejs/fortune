@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.7.2 (2015-12-30)
+- Fix: limit/offset fix in default adapters.
+- Fix: error messaging in default serializer.
+- Polish: improve ID check for transform function on an update request.
+
+
 ##### 1.7.1 (2015-12-30)
 - Fix: zero limit in default adapters should work properly now.
 - Feature: added `include` feature to default JSON serializer.
