@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.7.2 (2015-12-30)
+##### 1.7.3 (2015-12-30)
 - Fix: limit/offset fix in default adapters.
 - Fix: error messaging in default serializer.
 - Polish: improve ID check for transform function on an update request.
