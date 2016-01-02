@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.8.0 (2016-01-02)
+- Feature: expose `transaction` on context object, so that input transform can make use of it.
+
+
 ##### 1.7.3 (2015-12-30)
 - Fix: limit/offset fix in default adapters.
 - Fix: error messaging in default serializer.
