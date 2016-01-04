@@ -93,7 +93,21 @@ $ npm test
 
 ### Meta
 
+
+### Example services
+
+There are a number of example services in the examples folder. These are easily run, as an example :
+
+* Clone this repo & navigate to it
+* npm install
+* node examples/projects.js - starts a fortune server on port 1337
+* curl http://localhost:1337/projects - no projects are present
+* curl -H "Content-Type: application/json" -X POST -d '{ "projects": [{"id": "568a98d3347547eb0c04122b", "name":"Test project" }]}' http://localhost:1337/projects - create a project NB, it would be normal to allow the server to generate the ID by not setting it
+* curl -H "Content-Type: application/json" -X POST -d '{ "tasks" : [{ "name":"Test task", "links" : { "project" : "568a98d3347547eb0c04122b" } }]}' http://localhost:1337/tasks
+* curl http://localhost:1337/projects/568a98d3347547eb0c04122b?include=tasks - retrieve the created project and it's related task
+
 For release history and roadmap, see [CHANGELOG.md](//github.com/daliwali/fortune/blob/master/CHANGELOG.md).
 
 Fortune is licensed under the MIT license, see [LICENSE.md](//github.com/daliwali/fortune/blob/master/LICENSE.md).
 #
+
