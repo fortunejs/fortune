@@ -78,7 +78,7 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 ## Features and Non-Features
 
 - Entity-relationship modelling, via record type definitions.
-- Inverse relationships, handled internally when calling create, update, and delete.
+- Inverse relationships, handled internally when calling `request`.
 - Abstractions for manipulating data (`Adapter`, `Serializer`, `transform`).
 - *Isomorphic*, backed by IndexedDB in web browsers.
 - **No** architectural decisions like *MVC*, et al.
