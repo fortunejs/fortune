@@ -19,7 +19,7 @@ There is roughly 3k lines of code, and its total size including dependencies is 
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js is data-driven. It has one primary interface to do I/O, the `request` method, which dynamically dispatches `Adapter`, `Serializer`, and `transform` calls based on the request data. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
+Fortune.js is data-driven middleware that handles essential features of web applications. It does not do anything by itself directly, but rather it dynamically dispatches `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
 The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 
@@ -73,6 +73,20 @@ store.connect().then(() => server.listen(1337))
 This yields an *ad hoc* JSON-over-HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
 See the [plugins page](http://fortunejs.com/plugins/) for more details.
+
+
+## Features and Non-Features
+
+- Entity-relationship modelling, via record type definitions.
+- Inverse relationships, handled internally when calling create, update, and delete.
+- Abstractions for manipulating data (`Adapter`, `Serializer`, `transform`).
+- *Isomorphic*, backed by IndexedDB in web browsers.
+- **No** architectural decisions like *MVC*, et al.
+- **No** coupling with network protocol. Although a `http` listener is included, it's optional to use.
+- **No** routing in core, this may be handled by the `Serializer` implementation, or externally, or not at all.
+- **No** built-in templating, just bring your own templating engine if needed.
+
+The intent is to provide common functionality of web applications, without unnecessary concepts or bloat. Extra functionality should be delegated to appropriate tools instead of trying to do everything here.
 
 
 ## License
