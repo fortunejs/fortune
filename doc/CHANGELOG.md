@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.8.1 (2016-01-06)
+- Fix: correctly use specified Promise implementation. Thanks [@mctep](https://github.com/mctep) for reporting!
+
+
 ##### 1.8.0 (2016-01-02)
 - Feature: expose `transaction` on context object, so that input transform can make use of it.
 
