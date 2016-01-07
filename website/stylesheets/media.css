@@ -5,7 +5,6 @@
 
   header {
     background-color: var(--color-accent);
-    text-align: center;
     padding-top: calc(var(--line-height) * 3 / 2);
   }
 

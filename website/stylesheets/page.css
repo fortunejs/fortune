@@ -164,7 +164,6 @@ article {
   max-width: var(--max-width);
   margin: calc(var(--line-height) * 3) auto;
   padding: 0 var(--line-height);
-  text-align: justify;
   hyphens: auto;
 }
 
