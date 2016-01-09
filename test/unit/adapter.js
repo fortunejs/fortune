@@ -133,6 +133,56 @@ module.exports = function (adapter, options) {
   })
 
   run(function () {
+    comment('find: range (number)')
+    return test(function (adapter) {
+      return Promise.all([
+        adapter.find(type, null, { range: { age: [ 36, 38 ] } }),
+        adapter.find(type, null, { range: { age: [ null, 36 ] } })
+      ])
+      .then(function (results) {
+        results.forEach(function (records) {
+          ok(records.length === 1, 'match length is correct')
+          ok(records[0].name === 'john', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: range (string)')
+    return test(function (adapter) {
+      return Promise.all([
+        adapter.find(type, null, { range: { name: [ 'j', null ] } }),
+        adapter.find(type, null, { range: { name: [ 'i', 'k' ] } })
+      ])
+      .then(function (results) {
+        results.forEach(function (records) {
+          ok(records.length === 1, 'match length is correct')
+          ok(records[0].name === 'john', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: range (date)')
+    return test(function (adapter) {
+      return Promise.all([
+        adapter.find(type, null, { range: {
+          birthday: [ null, new Date() ] } }),
+        adapter.find(type, null, { range: {
+          birthday: [ new Date(Date.now() - 10 * 1000), new Date() ] } })
+      ])
+      .then(function (results) {
+        results.forEach(function (records) {
+          ok(records.length === 1, 'match length is correct')
+          ok(records[0].name === 'bob', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run(function () {
     comment('find: match (string)')
     return test(function (adapter) {
       return adapter.find(type, null,

@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.9.0 (2016-01-10)
+- Feature: specify `range` option in Adapter.
+
+
 ##### 1.8.1 (2016-01-06)
 - Fix: correctly use specified Promise implementation. Thanks [@mctep](https://github.com/mctep) for reporting!
 
