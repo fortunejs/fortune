@@ -183,6 +183,24 @@ module.exports = function (adapter, options) {
   })
 
   run(function () {
+    comment('find: range (array)')
+    return test(function (adapter) {
+      return Promise.all([
+        adapter.find(type, null, { range: {
+          privateKeys: [ 1, 2 ] } }),
+        adapter.find(type, null, { range: {
+          privateKeys: [ 1, null ] } })
+      ])
+      .then(function (results) {
+        results.forEach(function (records) {
+          ok(records.length === 1, 'match length is correct')
+          ok(records[0].name === 'john', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run(function () {
     comment('find: match (string)')
     return test(function (adapter) {
       return adapter.find(type, null,
