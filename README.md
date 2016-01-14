@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a middleware for building web applications in Node.js and web browsers. It covers the entire [application system](http://systems-analysis.net/architecture/introduction.html), including the data access layer (adapter), business logic layer (transform), and presentation layer (serializer). These layers working together allow for multiple data sources to be exposed via multiple formats through a uniform interface.
+Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -12,14 +12,12 @@ Fortune.js is a middleware for building web applications in Node.js and web brow
 $ npm install fortune --save
 ```
 
-There is roughly 3k lines of code, and its total size including dependencies is about 22kb (min+gz).
-
 
 ## Abstract
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js is data-driven middleware that handles essential features of web applications. It does not do anything by itself directly, but rather it dynamically dispatches `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
+Fortune.js works at a high level of abstraction. It does not do anything by itself directly, but rather it dynamically dispatches `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
 The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 
@@ -28,7 +26,7 @@ The `Serializer` abstraction allows for multiple serialization formats, includin
 
 ## Example
 
-The only necessary input is record type definitions. Record types in Fortune.js are like what `struct` is in C: declarations of complex data types. Let's model a subset of Twitter's functionality:
+The only necessary input is record type definitions. Record types in Fortune.js are the basic means of modelling data. Let's model a subset of Twitter's functionality:
 
 ```js
 // store.js
@@ -81,12 +79,11 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 - Inverse relationships, handled internally when calling `request`.
 - Abstractions for manipulating data (`Adapter`, `Serializer`, `transform`).
 - *Isomorphic*, backed by IndexedDB in web browsers.
-- **No** architectural decisions like *MVC*, et al.
-- **No** coupling with network protocol. Although a `http` listener is included, it's optional to use.
+- **No** architectural decisions such as MVC, et al.
+- **No** coupling with network protocol. Although a `http` listener is included for Node.js, it's optional to use.
 - **No** routing in core, this may be handled by the `Serializer` implementation, or externally, or not at all.
-- **No** built-in templating, just bring your own templating engine if needed.
 
-The intent is to provide common functionality of web applications, without unnecessary concepts or bloat. Extra functionality should be delegated to appropriate tools instead of trying to do everything here.
+The intent is to provide common CRUD functionality, without unnecessary concepts or bloat. Extra functionality should be delegated to appropriate tools instead of trying to do everything here.
 
 
 ## License
