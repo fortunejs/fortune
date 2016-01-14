@@ -99,7 +99,6 @@ header {
   padding-top: calc(var(--line-height) * 2);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 var(--line-height) rgba(0, 0, 0, calc(1 / 10));
 }
 
 header > a {
@@ -125,7 +124,7 @@ header nav {
   position: relative;
   margin-top: calc(var(--line-height) * 3 / 2);
   padding: calc(var(--line-height) * 3 / 4) var(--line-height);
-  background-color: var(--color-background);
+  background-color: rgba(255, 255, 255, calc(1 / 4));
 }
 
 header nav:before,
