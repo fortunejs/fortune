@@ -17,11 +17,11 @@ $ npm install fortune --save
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js works at a high level of abstraction. It does not do anything by itself directly, but rather it dynamically dispatches `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
+Fortune.js deals with providing an interface to a data source. It does so by dynamically dispatching `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
 The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 
-The `Serializer` abstraction allows for multiple serialization formats, including hypermedia media types such as Micro API, standard input formats such as URL encoded and form data, and custom serializers for HTML.
+The `Serializer` abstraction allows for multiple serialization formats, including media types such as [JSON API](http://jsonapi.org) and [Micro API](http://micro-api.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
 
 
 ## Example

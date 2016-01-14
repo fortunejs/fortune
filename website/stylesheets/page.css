@@ -96,7 +96,7 @@ section:after {
 header {
   background-color: var(--color-accent);
   text-align: center;
-  padding-top: calc(var(--line-height) * 7 / 4);
+  padding-top: calc(var(--line-height) * 2);
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 var(--line-height) rgba(0, 0, 0, calc(1 / 10));
@@ -118,11 +118,12 @@ header .emblem {
 header .logo-type {
   display: block;
   height: calc(var(--line-height) * 1);
-  margin: 0 auto calc(var(--line-height) * 5 / 4);
+  margin: 0 auto;
 }
 
 header nav {
   position: relative;
+  margin-top: calc(var(--line-height) * 3 / 2);
   padding: calc(var(--line-height) * 3 / 4) var(--line-height);
   background-color: var(--color-background);
 }
