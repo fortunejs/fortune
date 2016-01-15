@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface.
+Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface. Core features include application-level denormalized inverse relationships, transactions per request, update operators, transformations per record, and more.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
