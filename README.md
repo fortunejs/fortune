@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface. Core features include application-level denormalized inverse relationships, transactions per request, update operators, transformations per record, and more.
+Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface. Core features include application-level denormalized inverse relationships, dereferencing relationships per request, type validation, and a baseline for the semantics of querying and updating records. Optionally, it may support transactions per request, update operators, business logic transformations per record, custom query logic, and more.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -17,7 +17,7 @@ $ npm install fortune --save
 
 >Most web apps at heart are user experience and business logic around a persistent store.
 
-Fortune.js deals with providing an interface to a data source. It does so by dynamically dispatching `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
+Fortune.js provides an interface to a data source. A request to Fortune.js dynamically dispatches `Adapter`, `Serializer`, and `transform` methods based on data passed to the `request` method. Networking wrappers call the `request` method, so it is not coupled with any external protocol.
 
 The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like MongoDB and Postgres, and IndexedDB in the web browser.
 
@@ -76,6 +76,7 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 ## Features and Non-Features
 
 - Entity-relationship modelling, via record type definitions.
+- Type validations, with support for custom types.
 - Inverse relationships, handled internally when calling `request`.
 - Abstractions for manipulating data (`Adapter`, `Serializer`, `transform`).
 - *Isomorphic*, backed by IndexedDB in web browsers.
@@ -83,7 +84,7 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 - **No** coupling with network protocol. Although a `http` listener is included for Node.js, it's optional to use.
 - **No** routing in core, this may be handled by the `Serializer` implementation, or externally, or not at all.
 
-The intent is to provide common CRUD functionality, without unnecessary concepts or bloat. Extra functionality should be delegated to appropriate tools instead of trying to do everything here.
+In general, non-core functionality is delegated externally instead of trying to do everything.
 
 
 ## License
