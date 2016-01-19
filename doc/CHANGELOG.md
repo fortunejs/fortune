@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.10.0 (2016-01-20)
+- Feature: add `exists` object in `find` method in Adapter.
+
+
 ##### 1.9.2 (2016-01-19)
 - Fix: add a check for non-unique push values on link fields.
 - Fix: improve IndexedDB capability check.

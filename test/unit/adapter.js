@@ -55,6 +55,7 @@ var records = [
     isAlive: true,
     junk: { things: [ 'a', 'b', 'c' ] },
     birthday: new Date(),
+    privateKeys: [],
     friends: [ 2 ],
     bestFriend: 2
   }, {
@@ -225,11 +226,62 @@ module.exports = function (adapter, options) {
   })
 
   run(function () {
+    comment('find: match (array containment)')
+    return test(function (adapter) {
+      return adapter.find(type, null, { match: { privateKeys: key1 } })
+      .then(function (records) {
+        ok(records.length === 1, 'match length is correct')
+        ok(records[0][primaryKey] === 2, 'matched correct record')
+      })
+    })
+  })
+
+  run(function () {
     comment('find: match (nothing)')
     return test(function (adapter) {
       return adapter.find(type, null, { match: { name: 'bob', age: 36 } })
       .then(function (records) {
         ok(records.length === 0, 'match length is correct')
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: exists (positive)')
+    return test(function (adapter) {
+      return adapter.find(type, null, { exists: { picture: true } })
+      .then(function (records) {
+        ok(records[0][primaryKey] === 2, 'matched correct record')
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: exists (negative)')
+    return test(function (adapter) {
+      return adapter.find(type, null, { exists: { picture: false } })
+      .then(function (records) {
+        ok(records[0][primaryKey] === 1, 'matched correct record')
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: exists (empty array #1)')
+    return test(function (adapter) {
+      return adapter.find(type, null, { exists: { privateKeys: true } })
+      .then(function (records) {
+        ok(records[0][primaryKey] === 2, 'matched correct record')
+      })
+    })
+  })
+
+  run(function () {
+    comment('find: exists (empty array #2)')
+    return test(function (adapter) {
+      return adapter.find(type, null, { exists: { privateKeys: false } })
+      .then(function (records) {
+        ok(records[0][primaryKey] === 1, 'matched correct record')
       })
     })
   })
