@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface. Core features include application-level denormalized inverse relationships, dereferencing relationships per request, type validation, and a baseline for the semantics of querying and updating records. Optionally, it may support transactions per request, update operators, business logic transformations per record, custom query logic, and more.
+Fortune.js is application middleware for Node.js and web browsers. It exposes a data source via multiple formats through a uniform interface.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -77,8 +77,9 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
 - Entity-relationship modelling, via record type definitions.
 - Type validations, with support for custom types.
-- Inverse relationships, handled internally when calling `request`.
-- Abstractions for manipulating data (`Adapter`, `Serializer`, `transform`).
+- Application-level denormalized inverse relationships, handled internally when calling `request`.
+- Dereferencing relationships per request via `include`.
+- Core-supported extensibility including transactions, update operators, transforms, custom querying.
 - *Isomorphic*, backed by IndexedDB in web browsers.
 - **No** architectural decisions such as MVC, et al.
 - **No** coupling with network protocol. Although a `http` listener is included for Node.js, it's optional to use.
