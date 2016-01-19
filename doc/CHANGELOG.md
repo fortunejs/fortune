@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.9.2 (2016-01-19)
+- Fix: add a check for non-unique push values on link fields.
+- Fix: improve IndexedDB capability check.
+
+
 ##### 1.9.0 (2016-01-10)
 - Feature: specify `range` option in Adapter.
 

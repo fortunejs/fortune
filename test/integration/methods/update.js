@@ -18,6 +18,9 @@ const changeEvent = constants.change
 const updateMethod = constants.update
 const primaryKey = constants.primary
 
+const errors = require('../../../lib/common/errors')
+const ConflictError = errors.ConflictError
+
 
 run(() => {
   comment('update one to one with 2nd degree unset')
@@ -236,6 +239,23 @@ run(() => {
 
 
 run(() => {
+  comment('update many to one (push, conflict)')
+  return updateTest({
+    type: 'user',
+    payload: [
+      {
+        [primaryKey]: 2,
+        push: { ownedPets: 2 }
+      }
+    ],
+    error: error => {
+      ok(error instanceof ConflictError, 'error type is correct')
+    }
+  })
+})
+
+
+run(() => {
   comment('update many to one (push) with 2nd degree')
   return updateTest({
     change: data => {
@@ -431,6 +451,23 @@ run(() => {
 
 
 run(() => {
+  comment('update many to many (push, conflict)')
+  return updateTest({
+    type: 'user',
+    payload: [
+      {
+        [primaryKey]: 1,
+        push: { friends: 3 }
+      }
+    ],
+    error: error => {
+      ok(error instanceof ConflictError, 'error type is correct')
+    }
+  })
+})
+
+
+run(() => {
   comment('update many to many (pull)')
   return updateTest({
     change: data => {
@@ -576,6 +613,8 @@ function updateTest (o) {
   .catch(error => {
     stderr.error(error)
     store.disconnect()
-    fail(error)
+
+    if (o.error) o.error(error)
+    else fail(error)
   })
 }
