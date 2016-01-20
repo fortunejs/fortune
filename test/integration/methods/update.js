@@ -522,6 +522,23 @@ run(() => {
 
 
 run(() => {
+  comment('update many to many (set, conflict)')
+  return updateTest({
+    type: 'user',
+    payload: [
+      {
+        [primaryKey]: 1,
+        replace: { friends: [ 3, 3 ] }
+      }
+    ],
+    error: error => {
+      ok(error instanceof ConflictError, 'error type is correct')
+    }
+  })
+})
+
+
+run(() => {
   comment('update many to many (unset)')
   return updateTest({
     change: data => {

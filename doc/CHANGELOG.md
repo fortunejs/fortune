@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.10.0 (2016-01-20)
+##### 1.10.1 (2016-01-20)
 - Feature: add `exists` object in `find` method in Adapter.
+- Fix: improve non-unique check.
 
 
 ##### 1.9.2 (2016-01-19)

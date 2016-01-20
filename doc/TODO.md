@@ -5,6 +5,7 @@
 
 ### Done
 
+- Check for unique values in array link fields.
 - Implement custom types.
 - Implement memory adapter, move NeDB adapter out of core.
 - Remove Micro API and JSON API serializers from core, move to separate modules.

@@ -19,6 +19,8 @@ const createMethod = constants.create
 const updateMethod = constants.update
 const primaryKey = constants.primary
 
+const errors = require('../../../lib/common/errors')
+const ConflictError = errors.ConflictError
 
 const deadcode = new Buffer('deadc0de', 'hex')
 
@@ -111,7 +113,35 @@ run(() => {
   .then(() => {
     fail('should have failed')
   })
-  .catch(() => {
+  .catch(error => {
     pass('should reject request')
+    ok(error instanceof ConflictError, 'error type is correct')
+  })
+})
+
+
+run(() => {
+  comment('create records with non-unique array relationship should fail')
+
+  let store
+
+  return testInstance()
+
+  .then(instance => {
+    store = instance
+
+    return store.request({
+      type: 'user',
+      method: createMethod,
+      payload: [ { friends: [ 2, 2 ] } ]
+    })
+  })
+
+  .then(() => {
+    fail('should have failed')
+  })
+  .catch(error => {
+    pass('should reject request')
+    ok(error instanceof ConflictError, 'error type is correct')
   })
 })
