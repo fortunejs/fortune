@@ -373,69 +373,63 @@ module.exports = function(options){
             done();
           });
       });
-      it('should be able to filter date range: exclusive', function(done){
+      it('should be able to filter date range: exclusive', function(){
         var query = {
           birthday: {
             lt: '2000-02-02',
             gt: '1990-01-01'
           }
         };
-        adapter.findMany('person', query)
-          .then(function(docs){
-            (docs.length).should.equal(3);
-            done();
-          });
+        return adapter.findMany('person', query).then(function(docs){
+          (docs.length).should.equal(3);
+        });
       });
-      it('should be able to filter date range: inclusive', function(done){
+      it('should be able to filter date range: inclusive', function(){
         var query = {
           birthday: {
             gte: '1995-01-01',
             lte: '2000-01-01'
           }
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             (docs.length).should.equal(3);
-            done();
           });
       });
-      it('should be able to filter number range: exclusive', function(done){
+      it('should be able to filter number range: exclusive', function(){
         var query = {
           appearances: {
             gt: 1934,
             lt: 4000
           }
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             (docs.length).should.equal(1);
-            done();
           });
       });
-      it('should be able to filter number range: inclusive', function(done){
+      it('should be able to filter number range: inclusive', function(){
         var query = {
           appearances: {
             gte: 1934,
             lte: 3457
           }
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             (docs.length).should.equal(2);
-            done();
           });
       });
 
-      it("should be tolerant to $in:undefined queries", function(done){
+      it("should be tolerant to $in:undefined queries", function(){
         var query = { '$in': undefined  };
-
-        adapter.findMany("person", query).then(function(){ done(); });
+        return adapter.findMany("person", query);
       });
 
-      it("should be tolerant to $in:null queries", function(done){
+      it("should be tolerant to $in:null queries", function(){
         var query = { '$in': null  };
 
-        adapter.findMany("person", query).then(function(){ done(); });
+        return adapter.findMany("person", query);
       });
 
       it('should be able to run regex query with default options', function(){
@@ -457,33 +451,31 @@ module.exports = function(options){
           });
         });
       });
-      it('should be possible to specify custom options', function(done){
+      it('should be possible to specify custom options', function(){
         var query = {
           name: {
             regex: 'WALLY',
             options: 'i'
           }
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             (docs.length).should.equal(1);
             (docs[0].name).should.equal('Wally');
-            done();
           });
       });
-      it('should treat empty regex as find all', function(done){
+      it('should treat empty regex as find all', function(){
         var query = {
           email: {
             regex: ''
           }
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             (docs.length).should.equal(4);
-            done();
           });
       });
-      it('should deeply parse nested $and, $or, or, and queries', function(done){
+      it('should deeply parse nested $and, $or, or, and queries', function(){
         var query = {
           $or: [{
             or: [{
@@ -498,14 +490,12 @@ module.exports = function(options){
             }]
           }]
         };
-        adapter.findMany('person', query)
+        return adapter.findMany('person', query)
           .then(function(docs){
             docs.length.should.equal(1);
             docs[0].name.should.equal('Wally');
-            done();
           });
       });
     });
   });
-
 };

@@ -68,7 +68,7 @@ describe('Fortune test runner', function(){
             }
             person.pets = null;
             person.save(function() {
-              res.send(200);
+              res.sendStatus(200);
             });
           });
 

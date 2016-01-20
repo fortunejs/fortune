@@ -19,7 +19,7 @@ var hooks = {};
         if (req.query['fail' + type]) {
           console.log('Failing hook',type);
           _.defer(function() {
-            res.send(321);
+            res.sendStatus(321);
           });
           if (req.query['fail' + type] === 'boolean')
             return false;
@@ -74,6 +74,10 @@ module.exports = function(options, port, ioPort) {
     .afterAllRead(hooks.afterAllRead)
     .afterAllWrite(hooks.afterAllWrite)
 
+    //.customType("address", {
+      
+
+    //})
     .resource('person', {
       name: String,
       official: String,
@@ -195,7 +199,7 @@ module.exports = function(options, port, ioPort) {
 
     .before('person pet', function(req, res){
       if (this.email === 'falsey@bool.com'){
-        res.send(321);
+        res.sendStatus(321);
         return false;
       }
       return this;
