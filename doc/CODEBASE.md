@@ -9,6 +9,8 @@ Written in ECMAScript 5.1 syntax, with some ECMAScript 6 additions.
 - **WeakMap** (ES6): server
 
 
+## Folders
+
 ### Adapter
 
 The Adapter class is an [abstract base class](https://en.wikipedia.org/wiki/Class_%28computer_programming%29#Abstract_and_concrete). does not provide ORM-like capabilities, it is just a means to get records into and out of a data store. The objects it deals with are just plain objects with no methods attached, so it does not follow the active record pattern.
