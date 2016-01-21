@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.10.2 (2016-01-21)
+##### 1.10.3 (2016-01-21)
 - Polish: use `WeakMap` in HTTP implementation.
+- Polish: improve memory filtering.
 
 
 ##### 1.10.1 (2016-01-20)
