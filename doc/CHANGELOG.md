@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.11.0 (2016-01-22)
+- Polish: remove JSON from HTTP listener.
+
+
 ##### 1.10.3 (2016-01-21)
 - Polish: use `WeakMap` in HTTP implementation.
 - Polish: improve memory filtering.
