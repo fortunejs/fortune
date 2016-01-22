@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.11.1 (2016-01-22)
+##### 1.11.2 (2016-01-22)
 - Polish: remove JSON from HTTP listener.
+- Polish: HTTP listener fixes.
 
 
 ##### 1.10.3 (2016-01-21)
