@@ -5,8 +5,8 @@ Written in ECMAScript 5.1 syntax, with some ECMAScript 6 additions.
 
 ## Requirements
 
-- **Promise** (ES6): client, server
-- **WeakMap** (ES6): server
+- **Promise** (ES6): not supported in IE, supported in Edge.
+- **WeakMap** (ES6): supported in IE11+, Edge.
 
 
 ## Folders

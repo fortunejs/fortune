@@ -71,7 +71,7 @@ run(() => {
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
     ok(deepEqual(response.body.map(record => Object.keys(record).length),
-      [ 4, 4, 4, 4 ]), 'response body fields are correct')
+      [ 5, 5, 5, 5 ]), 'response body fields are correct')
   })
 })
 

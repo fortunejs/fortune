@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application middleware for Node.js and web browsers.",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -31,7 +31,7 @@
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",
     "negotiator": "^0.6.0",
-    "tapdance": "^4.0.1"
+    "tapdance": "^4.1.1"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
@@ -50,7 +50,7 @@
     "mustache": "^2.2.1",
     "myth": "^1.5.0",
     "normalize.css": "^3.0.3",
-    "rimraf": "^2.5.0",
+    "rimraf": "^2.5.1",
     "tape-run": "^2.1.2"
   },
   "files": [

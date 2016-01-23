@@ -1,6 +1,14 @@
 # Changelog
 
 
+##### 1.11.3 (2016-01-23)
+- Polish: replace `Object.keys` with `for..in`.
+- Polish: replace `Object.create(null)` with object literal.
+- Polish: replace array length assignment with `push`.
+- Polish: use `WeakMap`.
+- Feature: add `type` field in default JSON serializer.
+
+
 ##### 1.11.2 (2016-01-22)
 - Polish: remove JSON from HTTP listener.
 - Polish: HTTP listener fixes.
