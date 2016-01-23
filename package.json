@@ -20,8 +20,8 @@
     "lint": "eslint lib",
     "postpublish": "npm run deploy",
     "test": "npm run lint && npm run test:server && npm run test:browser",
-    "test:server": "node test | tap-dot",
-    "test:browser": "browserify test/browser.js | tape-run | tap-dot",
+    "test:server": "node test | tf-dot",
+    "test:browser": "browserify test/browser.js | tape-run | tf-dot",
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
@@ -34,6 +34,7 @@
     "tapdance": "^4.0.1"
   },
   "devDependencies": {
+    "@tap-format/dot": "^0.2.0",
     "browserify": "^13.0.0",
     "cssnext": "^1.8.4",
     "docchi": "^0.11.4",
@@ -50,7 +51,6 @@
     "myth": "^1.5.0",
     "normalize.css": "^3.0.3",
     "rimraf": "^2.5.0",
-    "tap-dot": "^1.0.1",
     "tape-run": "^2.1.2"
   },
   "files": [
