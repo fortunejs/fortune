@@ -30,6 +30,7 @@
     "chalk": "^1.1.1",
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",
+    "msgpack-lite": "^0.1.15",
     "negotiator": "^0.6.0",
     "tapdance": "^4.1.1"
   },
