@@ -3,6 +3,7 @@
 var Promise = require('bluebird')
 var tapdance = require('tapdance')
 var ok = tapdance.ok
+var pass = tapdance.pass
 var fail = tapdance.fail
 var comment = tapdance.comment
 var run = tapdance.run
@@ -15,12 +16,14 @@ require('./integration/adapters/memory')
 require('./integration/adapters/indexeddb')
 
 run(function () {
+  var timestamp
   var store = fortune({
     adapter: { type: fortune.adapters.indexedDB }
   })
 
   store.defineType('model', {
-    name: { type: String }
+    name: { type: String },
+    junk: { type: Object }
   })
 
   comment('can run in browser')
@@ -64,7 +67,31 @@ run(function () {
     })
   })
   .then(function (response) {
+    var i, j, k, obj = { junk: {} }
+
     ok(response.payload.length === 4, 'find works')
+
+    for (i = 100; i--;) {
+      obj.junk[i] = {}
+      for (j = 100; j--;) {
+        obj.junk[i][j] = {}
+        for (k = 100; k--;)
+          obj.junk[i][j][k] = Math.random()
+      }
+    }
+
+    comment('giant object')
+    timestamp = Date.now()
+
+    return store.request({
+      type: 'model',
+      method: fortune.methods.create,
+      payload: [ obj ]
+    })
+  })
+  .then(function () {
+    comment('operation took ' + (Date.now() - timestamp) + ' ms')
+    pass('giant object stored')
     return store.disconnect()
   })
   .catch(fail)
