@@ -19,16 +19,23 @@ run(function () {
     adapter: { type: fortune.adapters.indexedDB }
   })
 
-  comment('can run in browser')
-  ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
-
   store.defineType('model', {
     name: { type: String }
   })
 
+  comment('can run in browser')
+  ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
+
   return store.connect()
   .then(function (store) {
     ok(store instanceof fortune, 'instantiation works')
+
+    return store.request({
+      type: 'model',
+      method: fortune.methods.delete
+    })
+  })
+  .then(function () {
     return Promise.all([
       store.request({
         type: 'model',
@@ -48,7 +55,7 @@ run(function () {
       })
     ])
   })
-  .then(() => {
+  .then(function () {
     ok('can handle concurrent requests')
 
     return store.request({
@@ -56,7 +63,7 @@ run(function () {
       ids: [ 'x-1', 'x-2', 'x-3', 'x-4' ]
     })
   })
-  .then(response => {
+  .then(function (response) {
     ok(response.payload.length === 4, 'find works')
     return store.disconnect()
   })

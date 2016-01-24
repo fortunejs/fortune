@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.11.4 (2016-01-24)
+- Polish: use `msgpack` to store data in IndexedDB instead of JSON, which allows use of Transferable & ArrayBuffer.
+
+
 ##### 1.11.3 (2016-01-23)
 - Polish: replace `Object.keys` with `for..in`.
 - Polish: replace `Object.create(null)` with object literal.
