@@ -25,7 +25,7 @@ var primaryKey = keys.primary
 
 var type = 'user'
 
-var recordTypes = {
+var types = {
   user: {
     name: { type: String },
     age: { type: Number },
@@ -572,7 +572,7 @@ function runTest (a, options, fn) {
     keys: keys,
     errors: errors,
     message: message,
-    recordTypes: recordTypes,
+    types: types,
     transforms: {},
     Promise: Promise
   })

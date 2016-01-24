@@ -101,7 +101,7 @@ run(() => {
 
 run(() => {
   comment('ensure record types')
-  const check = recordTypes => () => ensureTypes(recordTypes)
+  const check = types => () => ensureTypes(types)
 
   fail(check({
     post: {
@@ -148,27 +148,27 @@ run(() => {
     }
   }), 'self inverse is valid')
 
-  const recordTypes = {
+  const types = {
     post: {
       comments: { link: 'comment', isArray: true }
     },
     comment: {}
   }
 
-  ensureTypes(recordTypes)
+  ensureTypes(types)
 
   const denormalizedField = '__post_comments_inverse'
 
-  ok(recordTypes.post.comments[inverseKey] === denormalizedField,
+  ok(types.post.comments[inverseKey] === denormalizedField,
     'denormalized inverse field assigned')
 
-  ok(recordTypes.comment[denormalizedField][linkKey] === 'post',
+  ok(types.comment[denormalizedField][linkKey] === 'post',
     'denormalized inverse field link correct')
 
-  ok(recordTypes.comment[denormalizedField][isArrayKey] === true,
+  ok(types.comment[denormalizedField][isArrayKey] === true,
     'denormalized inverse field is array')
 
-  ok(recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
+  ok(types.comment[denormalizedField][denormalizedInverseKey] === true,
     'denormalized inverse field set')
 })
 

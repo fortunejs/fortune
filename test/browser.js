@@ -18,16 +18,22 @@ require('./integration/adapters/indexeddb')
 run(function () {
   var timestamp
   var store = fortune({
-    adapter: { type: fortune.adapters.indexedDB }
-  })
-
-  store.defineType('model', {
-    name: { type: String },
-    junk: { type: Object }
+    adapter: {
+      type: fortune.adapters.indexedDB,
+      options: { name: 'fortune_test' }
+    },
+    types: {
+      model: {
+        name: { type: String },
+        junk: { type: Object }
+      }
+    }
   })
 
   comment('can run in browser')
   ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
+
+  comment(store)
 
   return store.connect()
   .then(function (store) {

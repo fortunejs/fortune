@@ -15,7 +15,7 @@ var map = require('../../../lib/common/array/map')
 var promise = require('../../../lib/common/promise')
 var Promise = promise.Promise
 
-var recordTypes = {
+var types = {
   type: {
     int: { type: Integer }
   }
@@ -25,7 +25,7 @@ var MemoryAdapter = memoryAdapter(Adapter)
 var adapter = new MemoryAdapter({
   keys: keys,
   errors: errors,
-  recordTypes: recordTypes,
+  types: types,
   transforms: {},
   Promise: Promise
 })
