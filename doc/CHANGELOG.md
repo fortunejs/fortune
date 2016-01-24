@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.11.4 (2016-01-24)
+##### 1.11.5 (2016-01-24)
 - Polish: use `msgpack` to store data in IndexedDB instead of JSON, which allows use of Transferable & ArrayBuffer.
+- Polish: improve IndexedDB error handling.
 
 
 ##### 1.11.3 (2016-01-23)
