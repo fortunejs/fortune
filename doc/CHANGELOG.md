@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.12.0 (2016-01-24)
+- Feature: include entire payloads in change event.
+- Fix: update objects should show resulting operations.
+
+
 ##### 1.11.5 (2016-01-24)
 - Polish: use `msgpack` to store data in IndexedDB instead of JSON, which allows use of Transferable & ArrayBuffer.
 - Polish: improve IndexedDB error handling.

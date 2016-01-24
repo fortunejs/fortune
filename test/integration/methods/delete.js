@@ -31,7 +31,8 @@ run(() => {
     store.on(changeEvent, data => {
       ok(find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     })
 

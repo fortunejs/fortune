@@ -46,9 +46,11 @@ run(() => {
     store = instance
 
     store.on(changeEvent, data => {
-      ok(deepEqual(data[createMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[createMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 4 ]), 'change event shows created IDs')
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 3 ]), 'change event shows updated IDs')
     })
 

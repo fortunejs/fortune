@@ -26,7 +26,8 @@ run(() => {
   comment('update one to one with 2nd degree unset')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -56,7 +57,8 @@ run(() => {
   comment('update one to one with former related record')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -86,7 +88,8 @@ run(() => {
   comment('update one to one with same value')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -134,7 +137,8 @@ run(() => {
   comment('update one to one with null value')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -161,9 +165,11 @@ run(() => {
   comment('update one to many (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].animal,
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows related update IDs')
     },
     type: 'animal',
@@ -190,9 +196,11 @@ run(() => {
   comment('update one to many (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].animal,
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows related update IDs')
     },
     type: 'animal',
@@ -216,9 +224,11 @@ run(() => {
   comment('update many to one (push)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal,
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows related update IDs')
     },
     type: 'user',
@@ -259,9 +269,11 @@ run(() => {
   comment('update many to one (push) with 2nd degree')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user,
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal,
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows related update IDs')
     },
     type: 'user',
@@ -285,9 +297,11 @@ run(() => {
   comment('update many to one (pull)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user,
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal,
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows related update IDs')
     },
     type: 'user',
@@ -314,9 +328,11 @@ run(() => {
   comment('update many to one (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -372,9 +388,11 @@ run(() => {
   comment('update many to one (set) #3')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -401,9 +419,11 @@ run(() => {
   comment('update many to one (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -430,7 +450,8 @@ run(() => {
   comment('update many to many (push)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -471,7 +492,8 @@ run(() => {
   comment('update many to many (pull)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -495,7 +517,8 @@ run(() => {
   comment('update many to many (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -542,7 +565,8 @@ run(() => {
   comment('update many to many (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
@@ -572,7 +596,8 @@ run(() => {
   comment('update many to many (denormalized inverse)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user.sort((a, b) => a - b),
+      ok(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
