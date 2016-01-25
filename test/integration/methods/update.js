@@ -20,6 +20,24 @@ const primaryKey = constants.primary
 
 const errors = require('../../../lib/common/errors')
 const ConflictError = errors.ConflictError
+const BadRequestError = errors.BadRequestError
+
+
+run(() => {
+  comment('update invalid ID should fail')
+  return updateTest({
+    type: 'user',
+    payload: [
+      {
+        [primaryKey]: 2,
+        push: { ownedPets: 'xxx' }
+      }
+    ],
+    error: error => {
+      ok(error instanceof BadRequestError, 'error type is correct')
+    }
+  })
+})
 
 
 run(() => {
