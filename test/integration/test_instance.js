@@ -13,7 +13,7 @@ const methods = fortune.methods
 
 module.exports = options => {
   const store = fortune(assign(options || {}, {
-    types: {
+    recordTypes: {
       user: {
         name: { type: String },
         camelCaseField: { type: String },

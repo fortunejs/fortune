@@ -10,27 +10,30 @@ Then create an empty `index.js` file adjacent to the `node_modules` folder, and 
 
 ```js
 const fortune = require('fortune')
-const store = fortune()
+const store = fortune({ recordTypes: { ... } })
 ```
 
-The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument. We don't need to pass any arguments to the constructor for now, the defaults should work.
+The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument.
 
 
 ## Record Types
 
-The only necessary input is record type definitions. Let's start with a basic example:
+The only necessary input is type definitions. Let's start with a basic example:
 
 ```js
-store.defineType('user', {
-  username: { type: String },
-  key: { type: Buffer },
-  salt: { type: Buffer },
-  group: { link: 'group', inverse: 'users', isArray: true }
-})
-
-store.defineType('group', {
-  name: { type: String },
-  users: { link: 'user', inverse: 'group', isArray: true }
+fortune({
+  recordTypes: {
+    user: {
+      username: { type: String },
+      key: { type: Buffer },
+      salt: { type: Buffer },
+      group: { link: 'group', inverse: 'users', isArray: true }
+    },
+    group: {
+      name: { type: String },
+      users: { link: 'user', inverse: 'group', isArray: true }
+    }
+  }
 })
 ```
 
@@ -74,7 +77,7 @@ This is a pretty basic implementation using the `crypto` module provided by Node
 ```js
 const methods = fortune.methods, errors = fortune.errors
 
-store.transformInput('user', (context, record, update) => {
+function input (context, record, update) {
   const request = context.request,
     method = request.method,
     type = request.type,
@@ -115,7 +118,7 @@ store.transformInput('user', (context, record, update) => {
       return update
     })
   })
-})
+}
 ```
 
 Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type, arbitrary fields are not persisted. Updating the password in this example requires a field in the `meta.headers` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
@@ -123,7 +126,7 @@ Input transform functions are run before anything gets persisted, so it is safe 
 It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
 
 ```js
-store.transformOutput('user', (context, record) => {
+function output (context, record) {
   // Hide sensitive fields.
   delete record.salt
   delete record.key

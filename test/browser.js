@@ -22,7 +22,7 @@ run(function () {
       type: fortune.adapters.indexedDB,
       options: { name: 'fortune_test' }
     },
-    types: {
+    recordTypes: {
       model: {
         name: { type: String },
         junk: { type: Object }

@@ -4,7 +4,6 @@
 ##### 2.0.0 (2016-01-25)
 - Breaking change: constructor argument now contains all configuration.
 - Breaking change: removed `defineType`, `transform`, `transformInput`, `transformOutput`, and static `create` methods. Deprecated in favor of new constructor object.
-- Breaking change: `recordTypes` has been renamed to `types`.
 
 
 ##### 1.12.0 (2016-01-24)

@@ -29,37 +29,34 @@ The `Serializer` abstraction allows for multiple serialization formats, includin
 The only necessary input is record type definitions. Record types in Fortune.js are the basic means of modelling data. Let's model a subset of Twitter's functionality:
 
 ```js
-// store.js
 const fortune = require('fortune')
 
-module.exports = fortune()
+const store = fortune({
+  recordTypes: {
+    user: {
+      name: { type: String },
 
-.defineType('user', {
-  name: { type: String },
+      // Following and followers are inversely related (many-to-many).
+      following: { link: 'user', inverse: 'followers', isArray: true },
+      followers: { link: 'user', inverse: 'following', isArray: true },
 
-  // Following and followers are inversely related (many-to-many).
-  following: { link: 'user', inverse: 'followers', isArray: true },
-  followers: { link: 'user', inverse: 'following', isArray: true },
+      // Many-to-one relationship of user posts to post author.
+      posts: { link: 'post', inverse: 'author', isArray: true }
+    },
+    post: {
+      message: { type: String },
 
-  // Many-to-one relationship of user posts to post author.
-  posts: { link: 'post', inverse: 'author', isArray: true }
-})
-
-.defineType('post', {
-  message: { type: String },
-
-  // One-to-many relationship of post author to user posts.
-  author: { link: 'user', inverse: 'posts' }
+      // One-to-many relationship of post author to user posts.
+      author: { link: 'user', inverse: 'posts' }
+    }
+  }
 })
 ```
 
 By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). Then let's add a HTTP server:
 
 ```js
-// server.js
 const http = require('http')
-const fortune = require('fortune')
-const store = require('./store')
 
 // The `fortune.net.http` helper function returns a listener function which
 // does content negotiation, and maps the internal response to a HTTP response.
