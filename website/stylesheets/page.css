@@ -146,18 +146,23 @@ header nav:after {
 
 header nav a {
   color: var(--color-link);
+  white-space: nowrap;
 }
 
 header nav a:after {
   content: '⁄';
-  margin-right: calc(1em * 4 / 3);
-  padding-left: calc(1em * 4 / 3);
+  margin-right: calc(1em * 6 / 5);
+  padding-left: calc(1em * 6 / 5);
   color: var(--color-light);
   font-weight: normal;
 }
 
 header nav a:last-of-type:after {
   display: none;
+}
+
+header nav a span {
+  opacity: calc(1 / 2);
 }
 
 article {
