@@ -34,7 +34,7 @@ const api = [
   { module: 'Fortune', path: 'core.js' },
   { module: 'Adapter', path: 'adapter/index.js' },
   { module: 'Serializer', path: 'serializer/index.js' },
-  { module: 'Net', path: 'net/http.js' }
+  { module: 'Net', path: [ 'net/http.js', 'net/ws.js' ] }
 ]
 
 const renderer = new marked.Renderer()

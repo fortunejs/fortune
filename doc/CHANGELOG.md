@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 2.1.0 (2016-xx-xx)
+- Feature: implemented application-level wire protocol.
+
+
 ##### 2.0.1 (2016-01-25)
 - Polish: improve auto-connection on first request and subsequent requests.
 

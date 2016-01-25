@@ -23,7 +23,7 @@
 .api h6 span:after {
   background-color: rgba(0, 0, 0, calc(1 / 8));
   position: absolute;
-  top: calc(var(--line-height) * 1 / 2);
+  top: 50%;
   left: calc(100% + 1em * 2 / 3);
   width: 1000em;
   height: 1px;

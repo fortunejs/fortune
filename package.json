@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Application middleware for Node.js and web browsers.",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -33,7 +33,11 @@
     "event-lite": "^0.1.0",
     "msgpack-lite": "^0.1.15",
     "negotiator": "^0.6.0",
-    "tapdance": "^4.1.1"
+    "tapdance": "^4.1.1",
+    "ws": "^1.0.1"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^1.2.1"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
