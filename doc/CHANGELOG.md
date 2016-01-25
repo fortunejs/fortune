@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 2.0.1 (2016-01-25)
+- Polish: improve auto-connection on first request and subsequent requests.
+
+
 ##### 2.0.0 (2016-01-25)
 - Breaking change: constructor argument now contains all configuration.
 - Breaking change: removed `defineType`, `transform`, `transformInput`, `transformOutput`, and static `create` methods. Deprecated in favor of new constructor object.
