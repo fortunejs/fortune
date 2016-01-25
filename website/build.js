@@ -25,7 +25,7 @@ const outputPath = path.join(__dirname, '../dist/web')
 const assetPath = path.join(__dirname, 'assets')
 const apiPath = path.join(__dirname, '../lib')
 const templatePath = path.join(__dirname, 'templates')
-const docPath = path.join(__dirname, '../docs')
+const docPath = path.join(__dirname, '../doc')
 const stylesheetPath = path.join(__dirname, 'stylesheets')
 
 const templates = {}
