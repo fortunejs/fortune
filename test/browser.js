@@ -18,15 +18,14 @@ require('./integration/adapters/indexeddb')
 run(function () {
   var timestamp
   var store = fortune({
+    model: {
+      name: { type: String },
+      junk: { type: Object }
+    }
+  }, {
     adapter: {
       type: fortune.adapters.indexedDB,
       options: { name: 'fortune_test' }
-    },
-    recordTypes: {
-      model: {
-        name: { type: String },
-        junk: { type: Object }
-      }
     }
   })
 

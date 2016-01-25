@@ -10,7 +10,7 @@ Then create an empty `index.js` file adjacent to the `node_modules` folder, and 
 
 ```js
 const fortune = require('fortune')
-const store = fortune({ recordTypes: { ... } })
+const store = fortune({ ... })
 ```
 
 The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument.
@@ -22,17 +22,15 @@ The only necessary input is type definitions. Let's start with a basic example:
 
 ```js
 fortune({
-  recordTypes: {
-    user: {
-      username: { type: String },
-      key: { type: Buffer },
-      salt: { type: Buffer },
-      group: { link: 'group', inverse: 'users', isArray: true }
-    },
-    group: {
-      name: { type: String },
-      users: { link: 'user', inverse: 'group', isArray: true }
-    }
+  user: {
+    username: { type: String },
+    key: { type: Buffer },
+    salt: { type: Buffer },
+    group: { link: 'group', inverse: 'users', isArray: true }
+  },
+  group: {
+    name: { type: String },
+    users: { link: 'user', inverse: 'group', isArray: true }
   }
 })
 ```

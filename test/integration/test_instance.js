@@ -12,48 +12,47 @@ const methods = fortune.methods
 
 
 module.exports = options => {
-  const store = fortune(assign(options || {}, {
-    recordTypes: {
-      user: {
-        name: { type: String },
-        camelCaseField: { type: String },
-        birthday: { type: Date },
-        picture: { type: Buffer },
-        createdAt: { type: Date },
-        lastModified: { type: Date },
-        nicknames: { type: String, isArray: true },
+  const store = fortune({
+    user: {
+      name: { type: String },
+      camelCaseField: { type: String },
+      birthday: { type: Date },
+      picture: { type: Buffer },
+      createdAt: { type: Date },
+      lastModified: { type: Date },
+      nicknames: { type: String, isArray: true },
 
-        // Many to many
-        friends: { link: 'user', inverse: 'friends', isArray: true },
+      // Many to many
+      friends: { link: 'user', inverse: 'friends', isArray: true },
 
-        // Many to many, denormalized inverse
-        enemies: { link: 'user', isArray: true },
+      // Many to many, denormalized inverse
+      enemies: { link: 'user', isArray: true },
 
-        // One to one
-        spouse: { link: 'user', inverse: 'spouse' },
+      // One to one
+      spouse: { link: 'user', inverse: 'spouse' },
 
-        // Many to one
-        ownedPets: { link: 'animal', inverse: 'owner', isArray: true }
-      },
-      animal: {
-        name: { type: String },
-
-        // Implementations may have problems with this reserved word.
-        type: { type: String },
-
-        favoriteFood: { type: String },
-
-        birthday: { type: Date },
-        createdAt: { type: Date },
-        lastModified: { type: Date },
-        picture: { type: Buffer },
-        nicknames: { type: String, isArray: true },
-
-        // One to many
-        owner: { link: 'user', inverse: 'ownedPets' }
-      },
-      '☯': {}
+      // Many to one
+      ownedPets: { link: 'animal', inverse: 'owner', isArray: true }
     },
+    animal: {
+      name: { type: String },
+
+      // Implementations may have problems with this reserved word.
+      type: { type: String },
+
+      favoriteFood: { type: String },
+
+      birthday: { type: Date },
+      createdAt: { type: Date },
+      lastModified: { type: Date },
+      picture: { type: Buffer },
+      nicknames: { type: String, isArray: true },
+
+      // One to many
+      owner: { link: 'user', inverse: 'ownedPets' }
+    },
+    '☯': {}
+  }, assign({
     transforms: {
       user: {
         input (context, record, update) {
@@ -102,7 +101,7 @@ module.exports = options => {
         }
       }
     }
-  }))
+  }, options))
 
   store.on(change, data => {
     for (let symbol of Object.getOwnPropertySymbols(data))

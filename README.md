@@ -32,23 +32,21 @@ The only necessary input is record type definitions. Record types in Fortune.js 
 const fortune = require('fortune')
 
 const store = fortune({
-  recordTypes: {
-    user: {
-      name: { type: String },
+  user: {
+    name: { type: String },
 
-      // Following and followers are inversely related (many-to-many).
-      following: { link: 'user', inverse: 'followers', isArray: true },
-      followers: { link: 'user', inverse: 'following', isArray: true },
+    // Following and followers are inversely related (many-to-many).
+    following: { link: 'user', inverse: 'followers', isArray: true },
+    followers: { link: 'user', inverse: 'following', isArray: true },
 
-      // Many-to-one relationship of user posts to post author.
-      posts: { link: 'post', inverse: 'author', isArray: true }
-    },
-    post: {
-      message: { type: String },
+    // Many-to-one relationship of user posts to post author.
+    posts: { link: 'post', inverse: 'author', isArray: true }
+  },
+  post: {
+    message: { type: String },
 
-      // One-to-many relationship of post author to user posts.
-      author: { link: 'user', inverse: 'posts' }
-    }
+    // One-to-many relationship of post author to user posts.
+    author: { link: 'user', inverse: 'posts' }
   }
 })
 ```
