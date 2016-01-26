@@ -80,7 +80,7 @@ module.exports = function(options, port, ioPort) {
       name: 'todb',
       init: function() {
         return function(req, res){
-          return;
+          return this;
         }
       }
     }])
@@ -88,7 +88,7 @@ module.exports = function(options, port, ioPort) {
       name: 'fromdb',
       init: function(){
         return function(req, res){
-          return;
+          return this;
         }
       }
     }])
