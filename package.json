@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Application middleware for Node.js and web browsers.",
+  "description": "Application system for Node.js and web browsers.",
   "version": "2.1.0",
   "license": "MIT",
   "author": {
