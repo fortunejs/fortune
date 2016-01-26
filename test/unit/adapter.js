@@ -1,11 +1,6 @@
 'use strict'
 
 var deepEqual = require('deep-equal')
-var tapdance = require('tapdance')
-var ok = tapdance.ok
-var fail = tapdance.fail
-var comment = tapdance.comment
-var run = tapdance.run
 
 var Adapter = require('../../lib/adapter')
 var errors = require('../../lib/common/errors')
@@ -71,8 +66,11 @@ var records = [
 ]
 
 
-module.exports = function (adapter, options) {
-  function test (fn) { return runTest(adapter, options, fn) }
+module.exports = function (harness, adapter, options) {
+  var ok = harness.ok
+  var fail = harness.fail
+  var comment = harness.comment
+  var run = harness.run
 
   run(function () {
     comment('find: nothing')
@@ -556,50 +554,50 @@ module.exports = function (adapter, options) {
       })
     })
   })
-}
 
+  function test (fn) { return runTest(adapter, fn) }
 
-function runTest (a, options, fn) {
-  var A, adapter
+  function runTest (a, fn) {
+    var A, adapter
 
-  // Check if it's a class or a dependency injection function.
-  try { a = a(Adapter) }
-  catch (error) { if (!(error instanceof TypeError)) throw error }
+    // Check if it's a class or a dependency injection function.
+    try { a = a(Adapter) }
+    catch (error) { if (!(error instanceof TypeError)) throw error }
 
-  A = a
-  adapter = new A({
-    options: options,
-    keys: keys,
-    errors: errors,
-    message: message,
-    recordTypes: recordTypes,
-    transforms: {},
-    Promise: Promise
-  })
+    A = a
+    adapter = new A({
+      options: options,
+      keys: keys,
+      errors: errors,
+      message: message,
+      recordTypes: recordTypes,
+      transforms: {},
+      Promise: Promise
+    })
 
-  return adapter.connect()
-  .then(function () { return adapter.delete(type) })
-  .then(function () { return adapter.create(type, records) })
-  .then(function () { return fn(adapter) })
-  .then(function () {
-    return adapter.delete(type,
-      map(records, function (record) {
-        return record[primaryKey]
-      }))
-  })
-  .then(function () { return adapter.disconnect() })
-  .catch(function (error) {
-    stderr.error(error)
-    adapter.disconnect()
-    fail(error)
-  })
-}
+    return adapter.connect()
+    .then(function () { return adapter.delete(type) })
+    .then(function () { return adapter.create(type, records) })
+    .then(function () { return fn(adapter) })
+    .then(function () {
+      return adapter.delete(type,
+        map(records, function (record) {
+          return record[primaryKey]
+        }))
+    })
+    .then(function () { return adapter.disconnect() })
+    .catch(function (error) {
+      stderr.error(error)
+      adapter.disconnect()
+      fail(error)
+    })
+  }
 
+  function testIds (records, message) {
+    var types = [ 'string', 'number' ]
 
-function testIds (records, message) {
-  var types = [ 'string', 'number' ]
-
-  ok(find(map(records, function (record) {
-    return includes(types, typeof record[primaryKey])
-  }), function (x) { return !x }) === void 0, message)
+    ok(find(map(records, function (record) {
+      return includes(types, typeof record[primaryKey])
+    }), function (x) { return !x }) === void 0, message)
+  }
 }

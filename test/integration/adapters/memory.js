@@ -30,7 +30,7 @@ var adapter = new MemoryAdapter({
   Promise: Promise
 })
 
-testAdapter(memoryAdapter)
+testAdapter(tapdance, memoryAdapter)
 
 run(function () {
   comment('custom types')

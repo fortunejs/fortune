@@ -1,8 +1,9 @@
 'use strict'
 
+var tapdance = require('tapdance')
 var testAdapter = require('../../unit/adapter')
 var webStorageAdapter = require('../../../lib/adapter/adapters/webstorage')
 
-testAdapter(webStorageAdapter, {
+testAdapter(tapdance, webStorageAdapter, {
   prefix: 'fortune_test'
 })
