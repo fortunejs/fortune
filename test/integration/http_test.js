@@ -68,19 +68,16 @@ module.exports = function httpTest (options, path, request, fn, change) {
 
     .then(text => {
       try {
-        if (text.length) {
-          text = JSON.parse(text)
-          stderr.log(text)
-        }
+        if (text.length) text = JSON.parse(text)
+        stderr.log(text)
       }
       catch (error) {
-        stderr.warn(`Failed to parse JSON.`)
-        stderr.log(text)
+        // If it couldn't be parsed as JSON, not a problem.
+        stderr.warn(text)
       }
 
       return fn({
-        status,
-        headers,
+        status, headers,
         body: text
       })
     })
