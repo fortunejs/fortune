@@ -63,7 +63,7 @@ const server = http.createServer(fortune.net.http(store))
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an *ad hoc* JSON-over-HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
+This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), as well as a [wire protocol](http://fortunejs.com/api/#net-ws) based on WebSocket and [MessagePack](http://msgpack.org).
 
 See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
@@ -75,7 +75,7 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 - Application-level denormalized inverse relationships, handled internally when calling `request`.
 - Dereferencing relationships per request via `include`.
 - Core-supported extensibility including transactions, update operators, transforms, custom querying.
-- *Isomorphic*, backed by IndexedDB in web browsers.
+- *Isomorphic*, backed by IndexedDB in web browsers, including a built-in wire protocol for data synchronization.
 - **No** architectural decisions such as MVC, et al.
 - **No** coupling with network protocol. Although a `http` listener is included for Node.js, it's optional to use.
 - **No** routing in core, this may be handled by the `Serializer` implementation, or externally, or not at all.

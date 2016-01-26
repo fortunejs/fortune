@@ -37,6 +37,7 @@ Network helpers may map external input to a request and map the response to an e
 | Implementation   | Description                                              |
 |:-----------------|:---------------------------------------------------------|
 | [HTTP](http://fortunejs.com/api/#net-http) (included) | Implements the `requestListener` function for `http.createServer`, compatible with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
+| [WebSocket](http://fortunejs.com/api/#net-ws) (included) | Implements the Fortune wire protocol, useful for isomorphic applications using Fortune in the browser. |
 
 
 ### Browser
