@@ -28,17 +28,19 @@
   "dependencies": {
     "bluebird": "^3.1.1",
     "busboy": "^0.2.12",
-    "chalk": "^1.1.1",
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",
     "event-lite": "^0.1.0",
     "msgpack-lite": "^0.1.15",
     "negotiator": "^0.6.0",
-    "tapdance": "^4.1.1",
     "ws": "^1.0.1"
   },
   "optionalDependencies": {
     "bufferutil": "^1.2.1"
+  },
+  "peerDependencies": {
+    "chalk": "^1.1.1",
+    "tapdance": "^4.1.1"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
