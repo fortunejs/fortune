@@ -21,6 +21,7 @@ module.exports = options => {
       createdAt: { type: Date },
       lastModified: { type: Date },
       nicknames: { type: String, isArray: true },
+      someDate: { type: Date },
 
       // Many to many
       friends: { link: 'user', inverse: 'friends', isArray: true },
@@ -47,6 +48,7 @@ module.exports = options => {
       lastModified: { type: Date },
       picture: { type: Buffer },
       nicknames: { type: String, isArray: true },
+      someDate: { type: Date },
 
       // One to many
       owner: { link: 'user', inverse: 'ownedPets' }
