@@ -36,7 +36,8 @@ function configureApp(harvesterApp) {
         links: {
             owner: 'person',
             food: 'foobar'
-        }
+        },
+        adopted: Joi.date()
     })
 
     .resource('collar', {

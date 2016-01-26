@@ -286,4 +286,14 @@ describe("filters", function () {
             done();
         });
     });
+    it('should convert a range query with lt= and gt= into a mongo query object', function(done){
+      var testUrl = '/pets?limit=100&adopted=ge=2015-10-08T18:40:28.000Z&adopted=le=2015-10-16T21:40:28.000Z';
+      request(config.baseUrl).get(testUrl).expect(200).end(function (error, res) {
+          should.not.exist(error);
+          var body = JSON.parse(res.text);
+          (body.pets.length).should.equal(2);
+          done();
+      });
+    });
+
 });

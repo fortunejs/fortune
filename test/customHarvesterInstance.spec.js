@@ -30,7 +30,7 @@ describe('Custom harvester demo', function () {
         request(baseUrl).get('/pets').expect('Content-Type', /json/).expect(200).end(function (error, response) {
             should.not.exist(error);
             var body = JSON.parse(response.text);
-            body.pets.length.should.equal(2);
+            body.pets.length.should.equal(3);
             done();
         });
     });
