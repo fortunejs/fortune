@@ -3,7 +3,7 @@
 
 ##### 2.1.0 (2016-xx-xx)
 - Feature: implemented application-level wire protocol.
-- Testing: change function signature for adapter testing, now it requires that the test harness `tapdance` is injected. This removes it as a dependency.
+- Polish: improved documentation.
 
 
 ##### 2.0.1 (2016-01-25)

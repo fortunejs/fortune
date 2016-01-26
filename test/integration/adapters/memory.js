@@ -1,28 +1,30 @@
-var deepEqual = require('deep-equal')
-var tapdance = require('tapdance')
-var ok = tapdance.ok
-var fail = tapdance.fail
-var comment = tapdance.comment
-var run = tapdance.run
+'use strict'
 
-var testAdapter = require('../../unit/adapter')
-var memoryAdapter = require('../../../lib/adapter/adapters/memory')
-var Adapter = require('../../../lib/adapter')
-var keys = require('../../../lib/common/keys')
-var errors = require('../../../lib/common/errors')
-var map = require('../../../lib/common/array/map')
+const deepEqual = require('deep-equal')
+const tapdance = require('tapdance')
+const ok = tapdance.ok
+const fail = tapdance.fail
+const comment = tapdance.comment
+const run = tapdance.run
 
-var promise = require('../../../lib/common/promise')
-var Promise = promise.Promise
+const testAdapter = require('../../unit/adapter')
+const memoryAdapter = require('../../../lib/adapter/adapters/memory')
+const Adapter = require('../../../lib/adapter')
+const keys = require('../../../lib/common/keys')
+const errors = require('../../../lib/common/errors')
+const map = require('../../../lib/common/array/map')
 
-var recordTypes = {
+const promise = require('../../../lib/common/promise')
+const Promise = promise.Promise
+
+const recordTypes = {
   type: {
     int: { type: Integer }
   }
 }
 
-var MemoryAdapter = memoryAdapter(Adapter)
-var adapter = new MemoryAdapter({
+const MemoryAdapter = memoryAdapter(Adapter)
+const adapter = new MemoryAdapter({
   keys: keys,
   errors: errors,
   recordTypes: recordTypes,
@@ -30,7 +32,7 @@ var adapter = new MemoryAdapter({
   Promise: Promise
 })
 
-testAdapter(tapdance, memoryAdapter)
+testAdapter(memoryAdapter)
 
 run(function () {
   comment('custom types')
