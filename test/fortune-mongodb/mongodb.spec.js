@@ -273,8 +273,10 @@ module.exports = function(options){
 
             //hooks add their black magic here.
             //See what you have in fixtures + what beforeWrite hooks assign in addiction
-            var keys = Object.keys(docs[0]).length;
-            (keys).should.equal( expected );
+            var keysLen = _.max(_.map(docs, function(doc) {
+              return Object.keys(docs[0]).length;
+            }));
+            (keysLen).should.equal( expected );
           });
         });
         it('should not affect business id selection', function(){

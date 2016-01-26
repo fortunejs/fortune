@@ -66,18 +66,32 @@ module.exports = function(options, port, ioPort) {
     }
   }]);
 
-
   app.beforeAll(hooks.beforeAll)
     .beforeAllRead(hooks.beforeAllRead)
     .beforeAllWrite(hooks.beforeAllWrite)
     .afterAll(hooks.afterAll)
     .afterAllRead(hooks.afterAllRead)
     .afterAllWrite(hooks.afterAllWrite)
-
-    //.customType("address", {
-      
-
-    //})
+    .customType("location", {
+      lat: Number,
+      lon: Number
+    })
+    .beforeWrite([{
+      name: 'todb',
+      init: function() {
+        return function(req, res){
+          return;
+        }
+      }
+    }])
+    .afterRead([{
+      name: 'fromdb',
+      init: function(){
+        return function(req, res){
+          return;
+        }
+      }
+    }])
     .resource('person', {
       name: String,
       official: String,
@@ -101,6 +115,7 @@ module.exports = function(options, port, ioPort) {
         nestedField1: String,
         nestedField2: Number
       }],
+      location: 'location',
       upsertTest : String,
       _tenantId: String
     }, {
