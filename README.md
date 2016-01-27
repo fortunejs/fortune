@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is an [application system](http://systems-analysis.net/application/definition.html) for Node.js and web browsers. It segregates data access, business logic, and external I/O, providing a baseline for interoperability and allowing each implementation to be swapped interchangeably.
+Fortune.js is a library for managing data in Node.js and web browsers. It segregates data access, business logic, and external I/O, providing a baseline for interoperability and allowing each implementation to be swapped interchangeably.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -15,11 +15,11 @@ $ npm install fortune --save
 
 ## Abstract
 
-Fortune.js provides three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions.
+Fortune.js provides three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions. Making a request to Fortune.js dynamically dispatches these methods based on the request data.
 
 - The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like Postgres and MongoDB, and IndexedDB in the web browser.
-- The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
-- Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
+- *Optional*: The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
+- *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
 
 Included are networking wrappers which call the `request` method, so it is not coupled with any external protocol, and it should be able to work with any transport layer.
 
