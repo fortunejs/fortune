@@ -8,6 +8,6 @@ const port = 8890
 testInstance()
 .then(instance => fortune.net.ws(instance, (state, changes) => {
   if (changes) return changes
-  if (state.kill) process.exit(0)
+  if (state.kill) setTimeout(process.exit, 500)
   return state
 }, { port }))

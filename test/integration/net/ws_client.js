@@ -14,8 +14,7 @@ run(() => {
   const port = 8890
   let store, client
 
-  return new Promise(resolve => setTimeout(resolve, 1000))
-  .then(() => testInstance({ settings: { enforceLinks: false } }))
+  return testInstance({ settings: { enforceLinks: false } })
   .then(instance => {
     store = instance
     client = new WebSocket(`ws://localhost:${port}`)
@@ -34,11 +33,16 @@ run(() => {
   .then(result => {
     ok(result.response.payload.length === 3, 'records fetched')
 
-    store.once('sync', changes => {
-      ok(changes.create.user.length === 1, 'records synced')
-    })
+    return new Promise(resolve => {
+      store.once('sync', changes => {
+        ok(changes.create.user.length === 1, 'records synced')
+        resolve()
+      })
 
-    return fortune.net.request(client, {
-      request: { type: 'user', method: 'create', payload: [ {} ] } })
+      return fortune.net.request(client, {
+        request: { type: 'user', method: 'create', payload: [ {} ] }
+      })
+    })
   })
+  .then(() => fortune.net.request(client, { state: { kill: true } }))
 })
