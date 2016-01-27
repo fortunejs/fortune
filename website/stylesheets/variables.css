@@ -12,22 +12,25 @@
 
   /* fonts */
   --font-body:
-    'Avenir', /* Mac */
-    'DejaVu Sans', /* Linux */
-    'Calibri', /* Windows */
-    sans-serif /* Generic */;
+    /* Mac */
+    'Avenir',
+    /* Windows */
+    'Calibri',
+    /* Linux */
+    'FreeSans',
+    sans-serif;
   --font-mono:
     'Monaco',
     'Consolas',
-    'Andale Mono',
     'Lucida Console',
+    'Liberation Mono',
     monospace;
 
   /* measurements */
-  --max-width: 52em;
-  --size-body: 16px;
+  --max-width: 51em;
+  --size-body: 17px;
   --size-mono: 15px;
-  --line-height: calc(1em * 8 / 5);
+  --line-height: calc(1em * 5 / 3);
   --mono-height: calc(1em * 3 / 2);
   --border-radius: calc(1em / 2);
   --fade-speed: 0.15s;

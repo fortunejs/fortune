@@ -1,30 +1,14 @@
 # Getting Started
 
-The first thing you'll have to do is install [Node.js](https://nodejs.org/) 4.2+ (if you're on Linux, install `nodejs` from your package manager). Then install Fortune from the command-line:
-
-```sh
-$ npm install fortune
-```
-
-Then create an empty `index.js` file adjacent to the `node_modules` folder, and start by importing Fortune and creating an instance:
+The first concern of Fortune.js is data modeling, which is structured as record types. Fields may be either a type or link field. A typed field may belong to some of the JavaScript and Node.js native types: `String`, `Number`, `Boolean`, `Object`, `Array`, or `Buffer`. A link field establishes a reference to an ID belonging to a record, and its type is determined by the Adapter. For example:
 
 ```js
 const fortune = require('fortune')
-const store = fortune({ ... })
-```
 
-The `fortune` function returns a new instance of Fortune, and accepts a configuration object as an argument.
-
-
-## Record Types
-
-The only necessary input is type definitions. Let's start with a basic example:
-
-```js
-fortune({
+const store = fortune({
   user: {
-    username: { type: String },
-    key: { type: Buffer },
+    name: { type: String },
+    password: { type: Buffer },
     salt: { type: Buffer },
     group: { link: 'group', inverse: 'users', isArray: true }
   },
@@ -35,138 +19,40 @@ fortune({
 })
 ```
 
-This defines a `user` record type that has a relationship to the `group` type. By default, relationships are to-one, unless `isArray` is specified. In this example, there is a many-to-many relationship between a user and a group. The `inverse` field specifies a corresponding field on the linked type, so that any update to either field will affect the other.
+This defines a `user` record type that has a link field to the `group` type. By default, link fields are to-one, unless `isArray` is specified. In this example, there is a many-to-many relationship between a user and a group. The `inverse` field specifies a corresponding field on the linked type, so that any update to either field will affect the other (two-way binding). If an inverse is not specified, an internal field will be created automatically.
 
 
-## Transformation
+## Transform Functions
 
-Transformations can be defined per record type. Transform functions accept at least two arguments, the `context` object, the record, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied to all methods.
+Transform functions isolate business logic. An input and output transform function may be defined per record type. Transform functions accept at least two arguments, the `context` object, the record, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied on all methods.
 
-Here are some implementation details for dealing with passwords:
-
-```js
-const crypto = require('crypto')
-
-const iterations = Math.pow(2, 15)
-const keyLength = Math.pow(2, 9)
-const saltLength = Math.pow(2, 6)
-
-function passwordCheck (password, key, salt) {
-  return new Promise((resolve, reject) => crypto.pbkdf2(
-    password, salt, iterations, keyLength, (error, buffer) =>
-      error ? reject(error) : key.equals(buffer) ? resolve() : reject()))
-}
-
-function generateSalt () {
-  return new Promise((resolve, reject) =>
-    crypto.randomBytes(saltLength, (error, buffer) =>
-    error ? reject(error) : resolve(buffer)))
-}
-
-function generateKey (password, salt) {
-  return new Promise((resolve, reject) =>
-    crypto.pbkdf2(password, salt, iterations, keyLength, (error, buffer) =>
-      error ? reject(error) : resolve(buffer)))
-}
-```
-
-This is a pretty basic implementation using the `crypto` module provided by Node.js to check and generate passwords. For the user type, it would be a good idea to store the password as a cryptographically secure key, and to hide sensitive fields when displaying the record.
+The return value of an input transform function determines what gets persisted, and it should be safe to mutate any of its arguments. It may return either the value or a Promise, or throw an error. For example, an input transform function for a record may look like this:
 
 ```js
-const methods = fortune.methods, errors = fortune.errors
-
 function input (context, record, update) {
-  const request = context.request,
-    method = request.method,
-    type = request.type,
-    headers = request.meta.headers
+  // If it's a create request, return the record.
+  if (context.request.method === 'create') return record
 
-  let key = record.key,
-    salt = record.salt,
-    password = record.password
+  // If the update argument exists, it's an update request.
+  if (update) return update
 
-  if (method === methods.create && !password)
-    throw new errors.BadRequestError(`Password must be specified.`)
-
-  return method !== methods.create ? passwordCheck(
-    new Buffer(headers['authorization'] || '', 'base64').toString(),
-    key, salt.toString()) : Promise.resolve()
-
-  .catch(() => {
-    throw new errors.UnauthorizedError(`Incorrect password.`)
-  })
-
-  .then(() => {
-    if (method === methods.delete) return null
-    if (!password) password = update.replace.password
-
-    return generateSalt()
-    .then(buffer => {
-      salt = buffer
-      return generateKey(password, salt.toString())
-    })
-    .then(buffer => {
-      key = buffer
-      if (method === methods.create) {
-        record.key = key
-        record.salt = salt
-        return record
-      }
-      update.replace = { key, salt }
-      return update
-    })
-  })
+  // Otherwise, it's a delete request and the return value doesn't matter.
+  return null
 }
 ```
 
-Input transform functions are run before anything gets persisted, so it is safe to throw errors. They may either synchronously return a value, or return a Promise. Note that the `password` field on the record is not defined in the record type, arbitrary fields are not persisted. Updating the password in this example requires a field in the `meta.headers` object, for example `Authorization: "Zm9vYmFyYmF6cXV4"` where the value is the base64 encoded old password.
-
-It may be required to transform outputs as well. In this example, we don't want expose the salt and the key publicly:
+An output transform function may only return a record or Promise that resolves to a record, or throw an error. It should be safe to mutate any of its arguments.
 
 ```js
 function output (context, record) {
-  // Hide sensitive fields.
-  delete record.salt
-  delete record.key
+  record.accessedAt = new Date()
   return record
 })
 ```
 
-The output transform has the same arguments as the input transform, but is applied on all requests. Some serializers may not show the resolved value of the output transform for certain requests, such as updating and deleting. It must return the record, either synchronously or as a promise.
+Based on whether or not the resolved record is different from what was passed in, serializers may decide not show the resolved record of the output transform for update and delete requests.
 
 
-## Finishing
+## Configuration
 
-To start the application, we need to call the `connect` method.
-
-```js
-const http = require('http')
-
-const listener = fortune.net.http(store)
-const server = http.createServer(listener)
-const port = 1337
-
-store.connect().then(() => {
-  server.listen(port)
-  console.log(`Server is listening on port ${port}...`)
-})
-```
-
-Using Fortune with HTTP is optional, but since the built-in serializers provide HTTP functionality in conjunction with the `fortune.net.http` module, it's easy to get started with it. The `fortune.net.http` module returns a listener function that accepts a `request` and `response` object that is generated by Node.js.
-
-Starting the application:
-
-```sh
-$ node .
-```
-
-
-Making a cURL request to the server:
-
-```sh
-$ curl -X GET -H "Accept: application/json" -v http://localhost:1337
-```
-
-The response should be an enumeration of types. Subsequent requests are templated: `/:type/:ids`. IDs may be comma separated.
-
-It is advisable to use a hypermedia format over the wire, such as [Micro API](http://micro-api.org), there is [a serializer available](https://github.com/fortunejs/fortune-micro-api). Also it would be useful to persist data to disk, consult the [plugins page](http://fortunejs.com/plugins/) for more information.
+Fortune.js comes with defaults to work out of the box, but they are probably not suitable for real world applications. Consult the [plugins page](http://fortunejs.com/plugins/) for more information.

@@ -4,9 +4,6 @@ var chalk = require('chalk')
 var util = require('util')
 var map = require('../lib/common/array/map')
 
-var tapdance = require('tapdance')
-var comment = tapdance.comment
-
 var newLine = '\n'
 
 exports.warn = function (x, y, z) { return helper('yellow', x, y, z) }
@@ -45,6 +42,6 @@ function helper (color, x, y, z) {
   }).join(' ')
 
   map(output.split(newLine), function (line) {
-    return comment(chalk[color](line))
+    return console.log('# ' + chalk[color](line)) // eslint-disable-line
   })
 }

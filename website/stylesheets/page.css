@@ -161,10 +161,6 @@ header nav a:last-of-type:after {
   display: none;
 }
 
-header nav a span {
-  opacity: calc(1 / 2);
-}
-
 article {
   max-width: var(--max-width);
   margin: calc(var(--line-height) * 3) auto;
