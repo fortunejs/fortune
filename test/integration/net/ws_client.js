@@ -4,6 +4,8 @@ const tapdance = require('tapdance')
 const comment = tapdance.comment
 const run = tapdance.run
 const ok = tapdance.ok
+const pass = tapdance.pass
+const fail = tapdance.fail
 const fortune = require('../../../lib')
 const testInstance = require('../test_instance')
 
@@ -33,16 +35,22 @@ run(() => {
   .then(result => {
     ok(result.response.payload.length === 3, 'records fetched')
 
-    return new Promise(resolve => {
-      store.once('sync', changes => {
-        ok(changes.create.user.length === 1, 'records synced')
-        resolve()
-      })
-
-      return fortune.net.request(client, {
+    return Promise.all([
+      new Promise(resolve => {
+        store.once('sync', changes => {
+          ok(changes.create.user.length === 1, 'records synced')
+          return resolve(changes)
+        })
+      }),
+      fortune.net.request(client, {
         request: { type: 'user', method: 'create', payload: [ {} ] }
       })
-    })
+    ])
   })
+  .then(results => {
+    ok(results[1].response.payload.length === 1, 'record created')
+    return fortune.net.request(client, { x: 'y' })
+  })
+  .then(() => fail('should have failed'), () => pass('error occurs'))
   .then(() => fortune.net.request(client, { state: { kill: true } }))
 })

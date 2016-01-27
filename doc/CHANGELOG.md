@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 2.1.1 (2016-01-28)
+- Fix: bug in WebSocket client where listener would not be removed after a request.
+
+
 ##### 2.1.0 (2016-01-27)
 - Feature: implemented application-level wire protocol.
 - Polish: moved `Fortune.change` to `Fortune.events.change`, added events `connect`, `disconnect`, `failure`, and `sync`.
