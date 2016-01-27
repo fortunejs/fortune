@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 2.1.0 (2016-xx-xx)
+##### 2.1.0 (2016-01-27)
 - Feature: implemented application-level wire protocol.
 - Polish: improved documentation.
 
