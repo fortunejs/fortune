@@ -21,7 +21,7 @@ Fortune.js provides three extensible interfaces that work together: `Adapter`, `
 - *Optional*: The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
 - *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
 
-Included are networking wrappers which call the `request` method, so it is not coupled with any external protocol, and it should be able to work with any transport layer.
+Included are networking wrappers which call the `request` method, so it is not coupled with any external protocol, and it should be able to work with any transport layer such as HTTP and WebSocket.
 
 
 ## Example
