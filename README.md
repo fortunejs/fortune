@@ -41,6 +41,42 @@ Fortune implements everything you need to get started with JSON API, with a few 
 
 It does not come with any authentication or authorization, you should implement your own application-specific logic (see [keystore.js](//github.com/daliwali/fortune/blob/master/examples/keystore.js) for an example).
 
+#### Custom Types
+
+Custom type defines its own schema and hooks and might be injected to any resource's schema side by side to standard data types and incorporates its data hooks into the resources' ones.
+Usage example:
+
+```
+   app.customType("date-timezone", {
+     date: String,
+     timeZone: String
+   }).beforeWrite([{
+     name: 'datetz2db',
+     priority: -1,
+     init: function() {
+       return function(req, res) {
+         return DateTz.todb(this)
+       }
+     }
+   }]).afterRead([{
+     name: 'datetz4db',
+     priority: 1000,
+     init: function() {
+       return function(req, res) {
+         return DateTz.fromdb(this);
+       }
+     }
+   }]) 
+
+   app.resource("schedule", {
+   ...
+     arrival: 'date-timezone'
+   ...
+   })
+ ```
+
+ The datetz2db and datetz4db will be automatically attached to the parent resource hook chain.
+
 ## Guide & Documentation
 
 The full guide and API documentation are located at [fortunejs.com](http://fortunejs.com/).

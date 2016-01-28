@@ -13,7 +13,7 @@ exports.peopleResetPassword = {
       res.set('reset-password-resource', this.id);
       res.set('reset-password-nickname', this.nickname);
 
-      res.send(200, 'ok');
+      res.sendStatus(200);
     }
   }
 };

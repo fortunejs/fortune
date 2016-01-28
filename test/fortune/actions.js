@@ -10,13 +10,13 @@ module.exports = function(options){
       ids = options.ids;
     });
     it('should be able to define custom action on resource', function(done){
-      request(baseUrl).post('/people/' + ids.people[0] + '/reset-password')
+      return request(baseUrl).post('/people/' + ids.people[0] + '/reset-password')
         .set('content-type', 'application/json')
         .send(JSON.stringify({}))
         .expect(200)
         .end(function(err, res){
           should.not.exist(err);
-          res.text.should.equal('ok');
+          res.text.should.equal('OK');
           done();
         });
     });
@@ -28,7 +28,7 @@ module.exports = function(options){
         .expect('reset-password', 'new password')
         .end(function(err, res){
           should.not.exist(err);
-          res.text.should.equal('ok');
+          res.text.should.equal('OK');
           done();
         });
     });
@@ -39,7 +39,7 @@ module.exports = function(options){
         .expect(200)
         .end(function(err, res){
           should.not.exist(err);
-          res.text.should.equal('ok');
+          res.text.should.equal('OK');
           res.headers['reset-password-resource'].should.equal(ids.people[0]);
           done();
         });
@@ -51,7 +51,7 @@ module.exports = function(options){
         .expect(200)
         .end(function(err, res){
           should.not.exist(err);
-          res.text.should.equal('ok');
+          res.text.should.equal('OK');
           //Nickname is generated dynamically by before and after hooks
           res.headers['reset-password-nickname'].should.equal('Super Dilbert!');
           done();
@@ -65,7 +65,7 @@ module.exports = function(options){
         .expect('reset-password-conf', 'set from init function')
         .end(function(err, res){
           should.not.exist(err);
-          res.text.should.equal('ok');
+          res.text.should.equal('OK');
           res.headers['reset-password-nickname'].should.equal('Super Dilbert!');
           done();
         });
