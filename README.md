@@ -51,7 +51,19 @@ const store = fortune({
 })
 ```
 
-By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). Then let's add a HTTP server:
+By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). To make a request internally:
+
+```js
+store.request({
+  type: 'user',
+  method: 'create',
+  payload: [ { name: 'John Doe' }, { name: 'Jane Doe' } ]
+})
+```
+
+The first call to `request` will trigger a connection to the data store, and it returns the result as a Promise.
+
+Then let's add a HTTP server:
 
 ```js
 const http = require('http')
@@ -63,7 +75,7 @@ const server = http.createServer(fortune.net.http(store))
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), as well as a [wire protocol](http://fortunejs.com/api/#net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
+This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortunejs.com/api/#net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
 
 See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
