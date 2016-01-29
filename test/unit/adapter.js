@@ -9,7 +9,6 @@ const run = tapdance.run
 
 const Adapter = require('../../lib/adapter')
 const errors = require('../../lib/common/errors')
-const stderr = require('../stderr')
 
 const message = require('../../lib/common/message')
 const promise = require('../../lib/common/promise')
@@ -589,7 +588,6 @@ function runTest (a, options, fn) {
   })
   .then(() => adapter.disconnect())
   .catch((error) => {
-    stderr.error(error)
     adapter.disconnect()
     fail(error)
   })

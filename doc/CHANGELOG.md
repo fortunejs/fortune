@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 2.1.2 (2016-01-29)
+- Polish: make `chalk` optional for testing.
+
+
 ##### 2.1.1 (2016-01-28)
 - Fix: bug in WebSocket client where listener would not be removed after a request.
 
