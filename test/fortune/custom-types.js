@@ -94,17 +94,18 @@ describe("Fortune", function() {
         }).should.be.ok()
       });
 
-      describe.only("linked data", function() {
+      describe("linked data", function() {
         var writewtf, readwtf;
         beforeEach(function() {
           app.customType("wtfmeter", {
-            wtf: Number
+            wtf: Number,
+            ahas: Number
           }).beforeWrite([{
             name: 'writemeter',
             init: function() {
               return function(res, res) {
                 writewtf = this;
-                return { wtf: 4 };
+                return { wtf: 4, ahas: 2 };
               }
             }
           }]).afterRead([{
@@ -134,15 +135,32 @@ describe("Fortune", function() {
           });
 
           var developer = hook.fn.call({ wtfpersecond: { wtf: 3 }}, {}, {})
-          developer.should.eql({ wtfpersecond: { wtf: 4 }})
+          developer.should.eql({ wtfpersecond: { wtf: 4, ahas: 2 }})
         });
       });
     });
 
     describe("Database Schema", function() {
-      it("should be accepted")
-      it("should be optional")
-      it("should be mongoose.Schema.Mixed if not specified")
+      it("should be accepted", function() {
+        app.customType("wtfmeter", {
+          wtf: Number,
+          ahas: Number
+        }, {
+          dbschema: {
+            wtfahas: String
+          }
+        });
+        app._customTypes["wtfmeter"].should.be.ok()
+        app._customTypes["wtfmeter"].dbschema.should.eql({ wtfahas: String });
+      })
+      it("should be optional", function() {
+        app.customType("wtfmeter", {
+          wtf: Number,
+          ahas: Number
+        })
+        app._customTypes["wtfmeter"].should.be.ok();
+      })
+      it("should be mongoose.Schema.Mixed if not specified");
       it("should rise an error if db schema specified and violated");
     });
   })
