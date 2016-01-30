@@ -15,9 +15,9 @@ $ npm install fortune --save
 
 ## Abstract
 
-Fortune.js provides three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions. Making a request to Fortune.js dynamically dispatches these methods based on the request data.
+Fortune.js has a minimal public interface, mostly just the constructor and `request` method. Calling `request` dispatches calls to three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions, based on the request data.
 
-- The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like Postgres and MongoDB, and IndexedDB in the web browser.
+- The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like [Postgres](https://github.com/fortunejs/fortune-postgres) and [MongoDB](https://github.com/fortunejs/fortune-mongodb), and IndexedDB in the web browser.
 - *Optional*: The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
 - *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
 
@@ -26,7 +26,7 @@ Included are networking wrappers which call the `request` method, so it is not c
 
 ## Example
 
-The only necessary input is record type definitions. Here's a model of a subset of Twitter's functionality:
+The only necessary input is record type definitions. Here's a model of a basic micro-blogging service:
 
 ```js
 const fortune = require('fortune')
