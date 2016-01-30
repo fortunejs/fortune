@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 2.1.3 (2016-01-30)
+- Polish: remove internal `defineEnumerable` function in favor of `assign`.
+
+
 ##### 2.1.2 (2016-01-29)
 - Polish: make `chalk` optional for testing.
 
