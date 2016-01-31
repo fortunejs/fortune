@@ -58,7 +58,7 @@ module.exports = function(options){
           .end(done);
       });
       it("should return specific fields for documents", function(done){
-        request(baseUrl).get('/people?fields=name,email,pets')
+        request(baseUrl).get('/people/' + ids.people[0] + '?fields=name,email,pets')
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(error, response){

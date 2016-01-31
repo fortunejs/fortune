@@ -2,15 +2,20 @@ var _ = require("lodash"),
     sinon = require("sinon"),
     should = require("should"),
     fortune = require("../../lib/fortune"),
-    RSVP = require('rsvp');
+    RSVP = require('rsvp'),
+    mongoose = require("mongoose");
 
 describe("Fortune", function() {
   describe("Custom Types", function(){
-    var sandbox, app;
+    var sandbox, app, modelStub;
     beforeEach(function(){
       sandbox = sinon.sandbox.create()
       app = fortune();
-      sandbox.stub(app.adapter, "model").returns(null)
+      sandbox.stub(app.adapter, "awaitConnection").returns(RSVP.resolve());
+      modelStub = sandbox.stub(app.adapter, "model", function(name, schema) {
+        if(!schema) return null;
+        return {};
+      })
     });
     afterEach(function() {
       sandbox.restore();
@@ -242,7 +247,26 @@ describe("Fortune", function() {
         })
         app._customTypes["wtfmeter"].should.be.ok();
       })
-      it("should be mongoose.Schema.Mixed if not specified");
+      it("should be mongoose.Schema.Types.Mixed if not specified", function(done) {
+        app.customType("wtfmeter", {
+          wtf: Number,
+          ahas: Number
+        }, {
+          dbschema: {
+            pooo: String
+          }
+        });
+        app.resource("monkey", {
+          wtf: "wtfmeter"
+        });
+
+        setTimeout(function() {
+          modelStub.getCall(1).should.be.ok()
+          modelStub.getCall(1).args[1].tree.wtf.should.eql(mongoose.Schema.Types.Mixed)
+          done();
+        }, 1000);
+        
+      });
       it("should rise an error if db schema specified and violated");
     });
   })
