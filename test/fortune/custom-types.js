@@ -1,7 +1,8 @@
 var _ = require("lodash"),
     sinon = require("sinon"),
     should = require("should"),
-    fortune = require("../../lib/fortune");
+    fortune = require("../../lib/fortune"),
+    RSVP = require('rsvp');
 
 describe("Fortune", function() {
   describe("Custom Types", function(){
@@ -9,6 +10,7 @@ describe("Fortune", function() {
     beforeEach(function(){
       sandbox = sinon.sandbox.create()
       app = fortune();
+      sandbox.stub(app.adapter, "model").returns(null)
     });
     afterEach(function() {
       sandbox.restore();
@@ -57,7 +59,8 @@ describe("Fortune", function() {
             return function(req, res) { return this; }
           }
         }]);
-      })
+      });
+
       it("should accept a hook for a custom type", function() {
         app._customTypes["distance"].should.be.ok();
       });
@@ -92,6 +95,85 @@ describe("Fortune", function() {
         _.find(hooks._after.read, function(hook) {
           return hook.name == "distance-readmeter";
         }).should.be.ok()
+      });
+
+      it("should not hide any existing hooks", function() {
+        app.customType("wtfmeter", {
+          wtf: Number,
+          ahas: Number
+        }).beforeWrite([{
+          name: "wtfwriter",
+          init: function() {
+            return function(res, res) {
+              return { wtf: 4, ahas: 2 };
+            }
+          }
+        }]).afterRead([{
+          name: "wtfreader",
+          init: function() {
+            return function(req, res) {
+              return this;
+            }
+          }
+        }]);
+
+        app.resource("developer", {
+          wtf: "wtfmeter"
+        }).beforeWrite([{
+          name: "kick",
+          init: function() {
+            return function(req, res) {
+              return this;
+            }
+          }
+        }]);
+        var hooks = app._resources["developer"].hooks;
+        var wtfwriter = _.find(hooks._before.write, function(hook) {
+          return hook.name == "wtf-wtfwriter";
+        });
+        var kick = _.find(hooks._before.write, function(hook) {
+          return hook.name == "kick";
+        });
+
+        wtfwriter.should.be.ok();
+        kick.should.be.ok();
+      });
+
+      it("should inject entire hook set for each field in a resource using the custom type", function() {
+        app.customType("wtfmeter", {
+          wtf: Number,
+          ahas: Number
+        }).beforeWrite([{
+          name: "wtfwriter",
+          init: function() {
+            return function(res, res) {
+              return { wtf: 4, ahas: 2 };
+            }
+          }
+        }]).afterRead([{
+          name: "wtfreader",
+          init: function() {
+            return function(req, res) {
+              return this;
+            }
+          }
+        }]);
+
+        app.resource("developer", {
+          wtfcurrent: "wtfmeter",
+          wtf2end: "wtfmeter"
+        });
+
+        var hooks = app._resources["developer"].hooks;
+        var wtf2end = _.find(hooks._before.write, function(hook) {
+          return hook.name == "wtf2end-wtfwriter";
+        });
+        var wtfcurrent = _.find(hooks._before.write, function(hook) {
+          return hook.name == "wtfcurrent-wtfwriter";
+        });
+
+        wtf2end.should.be.ok()
+        wtfcurrent.should.be.ok()
       });
 
       describe("linked data", function() {
