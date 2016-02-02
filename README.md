@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a library for managing data in Node.js and web browsers. It segregates data access, business logic, and external I/O, providing a baseline for interoperability and allowing each implementation to be swapped interchangeably.
+Fortune.js is a database abstraction layer for Node.js and web browsers. It allows databases to be swapped interchangeably, and to accomplish this, it implements some application-level features. Included are IndexedDB and memory adapters, and there are also adapters for MongoDB, Postgres, and more.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -15,13 +15,7 @@ $ npm install fortune --save
 
 ## Abstract
 
-Fortune.js has a minimal public interface, mostly just the constructor and `request` method. Calling `request` dispatches calls to three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions, based on the request data.
-
-- The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like [Postgres](https://github.com/fortunejs/fortune-postgres) and [MongoDB](https://github.com/fortunejs/fortune-mongodb), and IndexedDB in the web browser.
-- *Optional*: The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
-- *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
-
-Included are networking wrappers which call the `request` method, so it is not coupled with any external protocol, and it should be able to work with any transport layer such as HTTP and WebSocket.
+Fortune.js has a minimal public interface, mostly just the constructor and `request` method. Calling `request` dispatches calls to the `Adapter`, based on the request data. Optionally, transform functions may be defined to isolate business logic, so that it may stay consistent no matter what `Adapter` is used.
 
 
 ## Example
@@ -51,7 +45,7 @@ const store = fortune({
 })
 ```
 
-By default, the data is persisted in memory. There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). To make a request internally:
+To make a request internally using the API:
 
 ```js
 store.request({
@@ -63,21 +57,7 @@ store.request({
 
 The first call to `request` will trigger a connection to the data store, and it returns the result as a Promise.
 
-Then let's add a HTTP server:
-
-```js
-const http = require('http')
-
-// The `fortune.net.http` helper function returns a listener function which
-// does content negotiation, and maps the internal response to a HTTP response.
-const server = http.createServer(fortune.net.http(store))
-
-store.connect().then(() => server.listen(1337))
-```
-
-This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortunejs.com/api/#net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
-
-See the [plugins page](http://fortunejs.com/plugins/) for more details.
+See the [addons page](http://fortunejs.com/addons/) for useful extensions.
 
 
 ## Features and Non-Features
@@ -85,9 +65,8 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 - Type validations, with support for custom types.
 - Application-level denormalized inverse relationships.
 - Dereferencing relationships in a single request.
-- *Isomorphic*, backed by IndexedDB in web browsers, including a built-in wire protocol for data synchronization.
-- **No** active record pattern, just plain data objects.
-- **No** coupling with network protocol.
+- *Isomorphic*, backed by IndexedDB in web browsers.
+- **No** active record pattern, records are just plain objects.
 
 
 ## Requirements

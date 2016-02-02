@@ -1,6 +1,15 @@
 # Changelog
 
 
+##### 3.0.0 (2016-xx-xx)
+- Breaking change: removed `http` and `ws`, these are now in separate packages.
+- Breaking change: removed `Serializer` class. This has mostly moved into `fortune-http`.
+- Breaking change: transform configuration is now an array with indices `0` and `1`, instead of an object with the hashes `input` and `output`.
+- Breaking change: moved `include` response object into its own field.
+- Breaking change: removed passing in a method function.
+- Breaking change: passing in `type` to `request` method is now required.
+
+
 ##### 2.1.3 (2016-01-30)
 - Polish: remove internal `defineEnumerable` function in favor of `assign`.
 
