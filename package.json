@@ -26,10 +26,11 @@
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.1.5",
+    "bluebird": "^3.2.1",
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",
-    "event-lite": "^0.1.0"
+    "event-lite": "^0.1.0",
+    "msgpack-lite": "^0.1.15"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
