@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a database abstraction layer for Node.js and web browsers. It allows databases to be swapped interchangeably, and to accomplish this, it implements some application-level features. Included are IndexedDB and memory adapters, and there are also adapters for MongoDB, Postgres, and more.
+Fortune.js is a database abstraction layer for Node.js and web browsers. It allows databases to be swapped interchangeably, including some application-level features to accomplish this. Included are IndexedDB and memory adapters, and there are also adapters for MongoDB, Postgres, and more.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
