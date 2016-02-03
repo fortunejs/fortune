@@ -1,5 +1,7 @@
 # Addons
 
+There are both internal and external addons: Adapters subclass the internal Adapter class, providing compatibility with other databases. Networking and Serializers are external, and provide a quick and easy way to expose Fortune.js over a network.
+
 
 ### Adapters
 
