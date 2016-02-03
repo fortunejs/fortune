@@ -55,4 +55,4 @@ Based on whether or not the resolved record is different from what was passed in
 
 ## Configuration
 
-Fortune.js comes with defaults to work out of the box, but they are probably not suitable for real world applications. Consult the [plugins page](http://fortunejs.com/plugins/) for more information.
+Fortune.js comes with defaults to work out of the box, and there is more functionality available. Consult the [addons page](http://fortunejs.com/addons/) for more information.

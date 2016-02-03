@@ -32,12 +32,7 @@ const templates = {}
 const docs = {}
 const api = [
   { module: 'Fortune', path: 'core.js' },
-  { module: 'Adapter', path: 'adapter/index.js' },
-  { module: 'Serializer', path: 'serializer/index.js' },
-  {
-    module: 'Net',
-    path: [ 'net/http.js', 'net/ws.js', 'net/request.js', 'net/sync.js' ]
-  }
+  { module: 'Adapter', path: 'adapter/index.js' }
 ]
 
 const renderer = new marked.Renderer()

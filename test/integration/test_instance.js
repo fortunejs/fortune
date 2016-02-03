@@ -56,8 +56,8 @@ module.exports = options => {
     '☯': {}
   }, assign({
     transforms: {
-      user: {
-        input (context, record, update) {
+      user: [
+        (context, record, update) => {
           const method = context.request.method
 
           if (method === methods.create)
@@ -74,13 +74,13 @@ module.exports = options => {
           // For the `delete` method, return value doesn't matter.
           return null
         },
-        output (context, record) {
+        (context, record) => {
           record.timestamp = Date.now()
           return Promise.resolve(record)
         }
-      },
-      animal: {
-        input (context, record, update) {
+      ],
+      animal: [
+        (context, record, update) => {
           const method = context.request.method
 
           if (method === methods.create)
@@ -97,11 +97,11 @@ module.exports = options => {
           // For the `delete` method, return value doesn't matter.
           return null
         },
-        output (context, record) {
+        (context, record) => {
           record.virtualProperty = 123
           return record
         }
-      }
+      ]
     }
   }, options))
 
