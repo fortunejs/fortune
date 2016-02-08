@@ -16,7 +16,7 @@ run(() => {
   const port = 8890
   let store, client
 
-  return testInstance({ settings: { enforceLinks: false } })
+  return testInstance()
   .then(instance => {
     store = instance
     client = new WebSocket(`ws://localhost:${port}`)

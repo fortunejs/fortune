@@ -12,7 +12,7 @@ const jsonSerializer = require('../../../lib/net/http_json_serializer')
 
 
 const test = httpTest.bind(null, {
-  serializers: [ { type: jsonSerializer } ]
+  serializers: [ jsonSerializer ]
 })
 
 

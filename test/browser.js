@@ -23,10 +23,10 @@ run(function () {
       junk: { type: Object }
     }
   }, {
-    adapter: {
-      type: fortune.adapters.indexedDB,
-      options: { name: 'fortune_test' }
-    }
+    adapter: [
+      fortune.adapters.indexedDB,
+      { name: 'fortune_test' }
+    ]
   })
 
   comment('can run in browser')

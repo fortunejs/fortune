@@ -32,11 +32,33 @@ const templates = {}
 const docs = {}
 const api = [
   { module: 'Fortune', path: 'core.js' },
-  { module: 'Adapter', path: 'adapter/index.js' },
-  { module: 'Serializer', path: 'serializer/index.js' },
   {
-    module: 'Net',
-    path: [ 'net/http.js', 'net/ws.js', 'net/request.js', 'net/sync.js' ]
+    module: 'Fortune.Adapter',
+    label: 'Adapter',
+    path: 'adapter/index.js'
+  },
+  {
+    module: 'Fortune.net',
+    label: 'HTTP Server',
+    path: [
+      'net/http_server.js'
+    ]
+  },
+  {
+    module: 'Fortune.net.http.Serializer',
+    label: 'HTTP Serializer',
+    path: [
+      'net/http_serializer.js'
+    ]
+  },
+  {
+    module: 'Fortune.net',
+    label: 'WebSocket',
+    path: [
+      'net/websocket_server.js',
+      'net/websocket_request.js',
+      'net/websocket_sync.js'
+    ]
   }
 ]
 
@@ -73,7 +95,9 @@ function processAPI (ns, obj) {
   }
   else {
     obj.context.anchor = (`${ns}-${name}`).toLowerCase()
-    obj.context.path = `${ns}.<span class="key">${name}</span>`
+    obj.context.path = (type === 'class' ?
+      (ns.split('.').slice(0, -1).join('.') + '.') : (ns + '.')) +
+      `<span class="key">${name}</span>`
   }
 
   if (type === 'class')

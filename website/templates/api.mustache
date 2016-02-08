@@ -1,6 +1,6 @@
 <div class="api">
   {{#.}}
-    <h6>{{module}} <span>({{#path}}<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{.}}"><em>{{.}}</em></a>{{/path}})</span></h6>
+    <h6>{{#label}}{{label}}{{/label}}{{^label}}{{module}}{{/label}} <span>({{#path}}<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{.}}"><em>{{.}}</em></a>{{/path}})</span></h6>
     {{#docs}}
       <h2 id="{{context.anchor}}">
         {{#context.isClass}}
@@ -13,7 +13,12 @@
         <span class="class">new</span> {{context.target}}
         {{/context.isConstructor}}
         {{^context.isConstructor}}
+        {{#context.isClass}}
+        {{module}}
+        {{/context.isClass}}
+        {{^context.isClass}}
         {{{context.path}}}
+        {{/context.isClass}}
         {{/context.isConstructor}}<!--
         -->{{#context.isFunction}}<!--
           -->({{{comment.params}}})<!--

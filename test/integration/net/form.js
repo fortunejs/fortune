@@ -19,9 +19,7 @@ const formData = form.formData
 
 const options = {
   serializers: [
-    { type: json },
-    { type: formUrlEncoded },
-    { type: formData }
+    json, formUrlEncoded, formData
   ]
 }
 
