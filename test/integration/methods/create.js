@@ -62,15 +62,16 @@ run(() => {
   })
 
   .then(response => {
-    ok(deadcode.equals(response.payload[0].picture) &&
+    const results = response.payload.records
+    ok(deadcode.equals(results[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    ok(response.payload[0].createdAt !== null, 'transform applied')
-    ok(response.payload.length === 1, 'record created')
-    ok(response.payload[0][primaryKey] === 4, 'record has correct ID')
-    ok(response.payload[0].birthday instanceof Date,
+    ok(results[0].createdAt !== null, 'transform applied')
+    ok(results.length === 1, 'record created')
+    ok(results[0][primaryKey] === 4, 'record has correct ID')
+    ok(results[0].birthday instanceof Date,
       'field has correct type')
-    ok(response.payload[0].name === 'Slimer McGee',
+    ok(results[0].name === 'Slimer McGee',
       'record has correct field value')
 
     return store.request({
@@ -80,7 +81,7 @@ run(() => {
   })
 
   .then(response => {
-    ok(deepEqual(response.payload.map(record =>
+    ok(deepEqual(response.payload.records.map(record =>
       find(record.friends, id => id === 4)),
       [ 4, 4 ]), 'related records updated')
 

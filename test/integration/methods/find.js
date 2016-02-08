@@ -15,24 +15,13 @@ const primaryKey = constants.primary
 
 
 run(() => {
-  comment('get index')
-  return findTest({
-    response: response => {
-      ok(deepEqual(response.payload.sort(),
-        [ 'animal', 'user', '☯' ]), 'gets the index')
-    }
-  })
-})
-
-
-run(() => {
   comment('get collection')
   return findTest({
     request: {
       type: 'user'
     },
     response: response => {
-      ok(response.payload.length === 3, 'gets all records')
+      ok(response.payload.records.length === 3, 'gets all records')
     }
   })
 })
@@ -46,7 +35,7 @@ run(() => {
       ids: [ 2, 1 ]
     },
     response: response => {
-      ok(deepEqual(response.payload
+      ok(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ]), 'gets records with IDs')
     }
@@ -63,7 +52,7 @@ run(() => {
       include: [ [ 'ownedPets' ] ]
     },
     response: response => {
-      ok(deepEqual(response.payload
+      ok(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ]), 'gets records with IDs')
       ok(deepEqual(response.payload.include.animal

@@ -33,7 +33,7 @@ run(() => {
     return fortune.net.request(client, { request: { type: 'user' } })
   })
   .then(result => {
-    ok(result.response.payload.length === 3, 'records fetched')
+    ok(result.response.payload.records.length === 3, 'records fetched')
 
     return Promise.all([
       new Promise(resolve => {
@@ -48,7 +48,7 @@ run(() => {
     ])
   })
   .then(results => {
-    ok(results[1].response.payload.length === 1, 'record created')
+    ok(results[1].response.payload.records.length === 1, 'record created')
     return fortune.net.request(client, { x: 'y' })
   })
   .then(() => fail('should have failed'), () => pass('error occurs'))

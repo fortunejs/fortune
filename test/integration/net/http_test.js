@@ -3,11 +3,11 @@
 const tapdance = require('tapdance')
 const fail = tapdance.fail
 
-const testInstance = require('./test_instance')
+const testInstance = require('../test_instance')
 const http = require('http')
 const chalk = require('chalk')
-const fortune = require('../../lib')
-const stderr = require('../stderr')
+const fortune = require('../../../lib')
+const stderr = require('../../stderr')
 
 let i = 0
 
@@ -20,7 +20,7 @@ module.exports = function httpTest (options, path, request, fn, change) {
   i++
   if (port >= 65535) i = 0
 
-  return testInstance(options)
+  return testInstance()
 
   .then(instance => {
     store = instance
@@ -28,7 +28,7 @@ module.exports = function httpTest (options, path, request, fn, change) {
     if (typeof change === 'function')
       store.on(fortune.change, data => change(data, fortune.methods))
 
-    const listener = fortune.net.http(store)
+    const listener = fortune.net.http(store, options)
 
     server = http.createServer((request, response) => {
       listener(request, response)
@@ -76,10 +76,7 @@ module.exports = function httpTest (options, path, request, fn, change) {
         stderr.warn(text)
       }
 
-      return fn({
-        status, headers,
-        body: text
-      })
+      return fn({ status, headers, body: text })
     })
   })
 

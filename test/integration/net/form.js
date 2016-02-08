@@ -9,11 +9,11 @@ const ok = tapdance.ok
 const http = require('http')
 const qs = require('querystring')
 const FormData = require('form-data')
-const httpTest = require('../http_test')
+const httpTest = require('./http_test')
 const testInstance = require('../test_instance')
 const fortune = require('../../../lib')
-const json = require('../../../lib/serializer/serializers/json')
-const form = require('../../../lib/serializer/serializers/form')
+const json = require('../../../lib/net/http_json_serializer')
+const form = require('../../../lib/net/http_form_serializer')
 const formUrlEncoded = form.formUrlEncoded
 const formData = form.formData
 
@@ -51,7 +51,7 @@ run(() => {
     ok(response.status === 201, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    ok(deepEqual(response.body.map(record => record.name),
+    ok(deepEqual(response.body.records.map(record => record.name),
       [ 'Ayy lmao' ]), 'response body is correct')
   })
 })
@@ -62,10 +62,10 @@ run(() => {
   return test(`/animal`, {
     method: 'post',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'X-HTTP-Method': 'PATCH'
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: qs.stringify({
+      method: 'patch',
       id: 1,
       name: 'Ayy lmao',
       nicknames: [ 'ayy', 'lmao' ]
@@ -74,7 +74,7 @@ run(() => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    ok(deepEqual(response.body.map(record => record.name),
+    ok(deepEqual(response.body.records.map(record => record.name),
       [ 'Ayy lmao' ]), 'response body is correct')
   })
 })
@@ -112,9 +112,9 @@ run(() => {
   })
   .then(payload => {
     const body = JSON.parse(payload.toString())
-    ok(deepEqual(body.map(record => record.name),
+    ok(deepEqual(body.records.map(record => record.name),
       [ 'Ayy lmao' ]), 'name is correct')
-    ok(deepEqual(body.map(record => record.picture),
+    ok(deepEqual(body.records.map(record => record.picture),
       [ deadbeef.toString('base64') ]), 'picture is correct')
     store.disconnect()
     server.close()
@@ -129,6 +129,7 @@ run(() => {
   let store
   const deadbeef = new Buffer('deadbeef', 'hex')
   const form = new FormData()
+  form.append('method', 'patch')
   form.append('id', 1)
   form.append('name', 'Ayy lmao')
   form.append('picture', deadbeef,
@@ -144,7 +145,6 @@ run(() => {
       host: 'localhost',
       port: 4001,
       path: '/animal',
-      headers: { 'X-HTTP-Method': 'PATCH' }
     }, (error, response) => error ?
       reject(error) : resolve(response))))
   .then(response => {
@@ -160,9 +160,9 @@ run(() => {
   })
   .then(payload => {
     const body = JSON.parse(payload.toString())
-    ok(deepEqual(body.map(record => record.name),
+    ok(deepEqual(body.records.map(record => record.name),
       [ 'Ayy lmao' ]), 'name is correct')
-    ok(deepEqual(body.map(record => record.picture),
+    ok(deepEqual(body.records.map(record => record.picture),
       [ deadbeef.toString('base64') ]), 'picture is correct')
     store.disconnect()
     server.close()

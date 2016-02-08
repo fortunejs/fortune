@@ -5,7 +5,7 @@ const comment = tapdance.comment
 const run = tapdance.run
 const ok = tapdance.ok
 
-const httpTest = require('../http_test')
+const httpTest = require('./http_test')
 
 const test = httpTest.bind(null, void 0)
 

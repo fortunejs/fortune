@@ -44,7 +44,7 @@ run(() => {
   })
 
   .then(response => {
-    ok(response.payload.length === 1, 'records deleted')
+    ok(response.payload.records.length === 1, 'records deleted')
 
     return store.request({
       type: 'user',
@@ -53,7 +53,7 @@ run(() => {
   })
 
   .then(response => {
-    ok(deepEqual(response.payload.map(record =>
+    ok(deepEqual(response.payload.records.map(record =>
       find(record.friends, id => id === 3)),
       [ undefined, undefined ]), 'related records updated')
 

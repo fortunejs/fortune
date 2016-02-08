@@ -74,7 +74,7 @@ run(function () {
   .then(function (response) {
     var i, j, k, obj = { junk: {} }
 
-    ok(response.payload.length === 4, 'find works')
+    ok(response.payload.records.length === 4, 'find works')
 
     for (i = 100; i--;) {
       obj.junk[i] = {}
