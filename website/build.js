@@ -31,10 +31,12 @@ const stylesheetPath = path.join(__dirname, 'stylesheets')
 const templates = {}
 const docs = {}
 const api = [
-  { module: 'Fortune', path: 'core.js' },
   {
-    module: 'Fortune.Adapter',
-    label: 'Adapter',
+    module: 'Fortune',
+    path: 'core.js'
+  },
+  {
+    module: 'Adapter',
     path: 'adapter/index.js'
   },
   {
@@ -45,7 +47,7 @@ const api = [
     ]
   },
   {
-    module: 'Fortune.net.http.Serializer',
+    module: 'HttpSerializer',
     label: 'HTTP Serializer',
     path: [
       'net/http_serializer.js'
