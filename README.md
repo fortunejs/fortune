@@ -13,7 +13,7 @@ $ npm install fortune --save
 ```
 
 
-## Abstract
+## Synopsis
 
 Fortune.js bridges the gap between client-side and server-side JavaScript by sharing most of the same code. The core is a data abstraction layer, which provides querying, persistence, type validation, relationships, and business logic isolation.
 
