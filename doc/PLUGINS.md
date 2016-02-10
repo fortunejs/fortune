@@ -1,6 +1,6 @@
 # Plugins
 
-Fortune.js comes with some defaults to work out of the box. Plugins extend functionality by implementing the Adapter or Serializer class, or integrating Fortune.js with an external protocol.
+Fortune.js comes with some defaults to work out of the box. Plugins extend functionality by implementing the built-in classes, or integrating Fortune.js with an external protocol.
 
 
 ### Adapters
@@ -8,18 +8,17 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 | Adapter          | Description                                              |
 |:-----------------|:---------------------------------------------------------|
 | Memory (included, default) | In-memory adapter, does not persist to disk. |
-| IndexedDB (included) | Persistent data storage adapter that works in modern browsers. |
+| IndexedDB (included, default) | Persistent data storage adapter that works in modern browsers. |
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | NoSQL document data store. |
 | [Postgres](https://github.com/fortunejs/fortune-postgres) | Relational database adapter, translates arguments directly to SQL. |
 | [Redis](https://github.com/thibremy/fortune-redis) | In-memory data structure store. |
 | [NeDB](https://github.com/fortunejs/fortune-nedb) | Embedded document data store with an API that is mostly compatible with MongoDB. |
 
 
-### Serializers
+### HTTP Serializers
 
-| Serializer       | Description                                              |
+| HTTP Serializer  | Description                                              |
 |:-----------------|:---------------------------------------------------------|
-| Default (included, default) | No-op serializer for programmatic use. |
 | JSON (included, default) | A thin mapping of Fortune over HTTP using JSON. |
 | Form (included, default) | Create & update records using browser form input. *Input only*. |
 | [Micro API](https://github.com/fortunejs/fortune-micro-api) [[spec](http://micro-api.org)] | A serialization format for hypermedia APIs. |

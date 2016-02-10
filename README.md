@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a library for managing data in Node.js and web browsers. It provides data querying and manipulation, business logic isolation, and external I/O, ensuring a baseline for interoperability and allowing implementations to be swapped interchangeably.
+Fortune.js is a library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -15,11 +15,9 @@ $ npm install fortune --save
 
 ## Abstract
 
-Fortune.js has a minimal public interface, mostly just the constructor and `request` method. Calling `request` dispatches calls to the `Adapter` and transform functions, based on the request data.
+Fortune.js bridges the gap between client-side and server-side JavaScript by sharing most of the same code. The core is a data abstraction layer, which provides querying, persistence, type validation, relationships, and business logic isolation.
 
-- The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like [Postgres](https://github.com/fortunejs/fortune-postgres) and [MongoDB](https://github.com/fortunejs/fortune-mongodb), and IndexedDB in the web browser.
-- *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter is used.
-- *Optional*: External networking helpers expose Fortune.js over multiple application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and also includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on Websocket and MessagePack.
+Included networking functions provide a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and also includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on Websocket and MessagePack.
 
 
 ## Example
@@ -92,8 +90,8 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
 Fortune.js is written in ECMAScript 5.1 syntax, with some ECMAScript 6 additions.
 
-- **Promise** (ES6): not supported in IE, supported in Edge.
-- **WeakMap** (ES6): supported in IE11+, Edge.
+- **Promise** (ES6): not supported in IE, supported in Edge. Bring your own implementation (optional).
+- **WeakMap** (ES6): supported in IE11+, Edge. Polyfills exist, but they have their shortcomings since it must be implemented natively.
 
 
 ## License
