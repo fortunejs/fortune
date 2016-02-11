@@ -15,9 +15,9 @@ $ npm install fortune --save
 
 ## Synopsis
 
-Fortune.js bridges the gap between client-side and server-side JavaScript by sharing most of the same code. The core is a data abstraction layer, which provides querying, persistence, type validation, relationships, and business logic isolation.
+Fortune.js facilitates sharing data between client and server by sharing most of the same code. The core is a data abstraction layer, which provides querying, persistence, type validation, relationships, and business logic isolation.
 
-Included networking functions provide a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and also includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on Websocket and MessagePack.
+The included networking functions provide a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and also includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on Websocket and MessagePack.
 
 
 ## Example
