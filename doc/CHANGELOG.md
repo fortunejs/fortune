@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 3.0.1 (2016-02-12)
+- Fix: Form serializer should now accept update method properly.
+
+
 ##### 3.0.0 (2016-02-11)
 - Breaking change: `Serializer` is no longer in core, moved to `net.http.Serializer`. The configuration for serializers has also changed to accept arrays.
 - Breaking change: removed function value for `method` in request.

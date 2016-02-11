@@ -63,7 +63,7 @@ run(() => {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: qs.stringify({
-      method: 'patch',
+      method: 'update',
       id: 1,
       name: 'Ayy lmao',
       nicknames: [ 'ayy', 'lmao' ]
@@ -127,7 +127,7 @@ run(() => {
   let store
   const deadbeef = new Buffer('deadbeef', 'hex')
   const form = new FormData()
-  form.append('method', 'patch')
+  form.append('method', 'update')
   form.append('id', 1)
   form.append('name', 'Ayy lmao')
   form.append('picture', deadbeef,
