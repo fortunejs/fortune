@@ -42,6 +42,7 @@ function helper (color, x, y, z) {
   }).join(' ')
 
   map(output.split(newLine), function (line) {
-    return console.log('# ' + chalk[color](line)) // eslint-disable-line
+    if (line.trim())
+      console.log('# ' + chalk[color](line)) // eslint-disable-line
   })
 }

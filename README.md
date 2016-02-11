@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a library for managing data in Node.js and web browsers. It segregates data access, business logic, and external I/O, providing a baseline for interoperability and allowing each implementation to be swapped interchangeably.
+Fortune.js is a library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -13,15 +13,11 @@ $ npm install fortune --save
 ```
 
 
-## Abstract
+## Synopsis
 
-Fortune.js has a minimal public interface, mostly just the constructor and `request` method. Calling `request` dispatches calls to three extensible interfaces that work together: `Adapter`, `Serializer`, and transform functions, based on the request data.
+Fortune.js facilitates sharing data between client and server by sharing most of the same code. The core is a data abstraction layer, which provides querying, persistence, type validation, relationships, and business logic isolation.
 
-- The `Adapter` abstraction allows for multiple persistence back-ends, such as common server-side databases like [Postgres](https://github.com/fortunejs/fortune-postgres) and [MongoDB](https://github.com/fortunejs/fortune-mongodb), and IndexedDB in the web browser.
-- *Optional*: The `Serializer` abstraction allows for multiple I/O formats, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and custom serializers for HTML.
-- *Optional*: Transform functions isolate business logic, so that it may stay consistent no matter what adapter, serializer, or network protocol is used.
-
-Included are networking wrappers which call the `request` method, so it is not coupled with any external protocol, and it should be able to work with any transport layer such as HTTP and WebSocket.
+The included networking functions provide a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), standard input formats such as URL encoded and form data, and also includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on Websocket and MessagePack.
 
 
 ## Example
@@ -75,7 +71,7 @@ const server = http.createServer(fortune.net.http(store))
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortunejs.com/api/#net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
+This yields an *ad hoc* JSON over HTTP API. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
 
 See the [plugins page](http://fortunejs.com/plugins/) for more details.
 
@@ -87,15 +83,15 @@ See the [plugins page](http://fortunejs.com/plugins/) for more details.
 - Dereferencing relationships in a single request.
 - *Isomorphic*, backed by IndexedDB in web browsers, including a built-in wire protocol for data synchronization.
 - **No** active record pattern, just plain data objects.
-- **No** coupling with network protocol.
+- **No** coupling with network protocol, they are treated as external I/O.
 
 
 ## Requirements
 
 Fortune.js is written in ECMAScript 5.1 syntax, with some ECMAScript 6 additions.
 
-- **Promise** (ES6): not supported in IE, supported in Edge.
-- **WeakMap** (ES6): supported in IE11+, Edge.
+- **Promise** (ES6): not supported in IE, supported in Edge. Bring your own implementation (optional).
+- **WeakMap** (ES6): supported in IE11+, Edge. Polyfills exist, but they have their shortcomings since it must be implemented natively.
 
 
 ## License

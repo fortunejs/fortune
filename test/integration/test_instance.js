@@ -11,7 +11,7 @@ const change = fortune.change
 const methods = fortune.methods
 
 
-module.exports = options => {
+module.exports = () => {
   const store = fortune({
     user: {
       name: { type: String },
@@ -54,14 +54,14 @@ module.exports = options => {
       owner: { link: 'user', inverse: 'ownedPets' }
     },
     '☯': {}
-  }, assign({
+  }, {
     transforms: {
-      user: {
-        input (context, record, update) {
+      user: [
+        function input (context, record, update) {
           const method = context.request.method
 
           if (method === methods.create)
-            return Object.assign({}, record, {
+            return assign({}, record, {
               createdAt: new Date()
             })
 
@@ -74,17 +74,17 @@ module.exports = options => {
           // For the `delete` method, return value doesn't matter.
           return null
         },
-        output (context, record) {
+        function output (context, record) {
           record.timestamp = Date.now()
           return Promise.resolve(record)
         }
-      },
-      animal: {
-        input (context, record, update) {
+      ],
+      animal: [
+        function input (context, record, update) {
           const method = context.request.method
 
           if (method === methods.create)
-            return Object.assign({}, record, {
+            return assign({}, record, {
               createdAt: new Date()
             })
 
@@ -97,13 +97,13 @@ module.exports = options => {
           // For the `delete` method, return value doesn't matter.
           return null
         },
-        output (context, record) {
+        function output (context, record) {
           record.virtualProperty = 123
           return record
         }
-      }
+      ]
     }
-  }, options))
+  })
 
   store.on(change, data => {
     stderr.info(chalk.bold('Change event:'), data)

@@ -57,13 +57,13 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         '2nd degree related field unset')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 3,
         'related field set')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 3).spouse === 2,
         'field updated')
     }
@@ -88,13 +88,13 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         'related field unset')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 3,
         'field updated')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 3).spouse === 2,
         'related field set')
     }
@@ -119,10 +119,10 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === 2,
         'related field is same')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 1,
         'field is same')
     }
@@ -168,10 +168,10 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         'related field is updated')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === null,
         'field is updated')
     }
@@ -199,10 +199,10 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets.sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'related field pushed')
     }
@@ -230,7 +230,7 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
     }
@@ -258,7 +258,7 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).owner === 2,
         'related field set')
     }
@@ -303,7 +303,7 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).owner === 1,
         'related field set')
     }
@@ -331,10 +331,10 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).owner === null,
         'related field set')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 3).owner === null,
         'related field set')
     }
@@ -362,13 +362,13 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).ownedPets, [ 1, 2, 3 ]),
         'field set')
     }
@@ -388,13 +388,13 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 1).owner === 3,
         'related field set')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).owner === 3,
         'related field set')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 3).owner === 3,
         'related field set')
     }
@@ -422,10 +422,10 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets, [ 1, 2 ]),
         'field set')
     }
@@ -453,10 +453,10 @@ run(() => {
     ],
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 2).owner === null,
         'related field unset')
-      ok(find(response.payload,
+      ok(find(response.payload.records,
         record => record[primaryKey] === 3).owner === null,
         'related field unset')
     }
@@ -481,7 +481,7 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
         [ 1, 3 ]), 'related ID pushed')
     }
@@ -523,7 +523,7 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends, []),
         'related ID pulled')
     }
@@ -548,13 +548,13 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).friends.sort((a, b) => a - b),
         [ 2, 3 ]), 'field set')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
         [ 1, 3 ]), 'related field pushed')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).friends.sort((a, b) => a - b),
         [ 1, 2 ]), 'field unchanged')
     }
@@ -596,13 +596,13 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).friends, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).friends, []),
         'field set')
     }
@@ -627,16 +627,16 @@ run(() => {
     ],
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).enemies.sort((a, b) => a - b),
         [ 2, 3 ]), 'field set')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1)['__user_enemies_inverse'],
         []), 'denormalized inverse field exists')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2)['__user_enemies_inverse'],
         [ 1 ]), 'related field updated')
-      ok(deepEqual(find(response.payload,
+      ok(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3)['__user_enemies_inverse']
         .sort((a, b) => a - b), [ 1, 2 ]), 'related field updated')
     }

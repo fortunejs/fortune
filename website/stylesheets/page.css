@@ -28,6 +28,14 @@ p, ul, ol, pre, table, blockquote {
   margin: 0 0 var(--line-height);
 }
 
+li p {
+  margin: 0;
+}
+
+li pre {
+  margin: calc(var(--line-height) * 1 / 2) 0;
+}
+
 blockquote {
   color: var(--color-alt);
   border-left: 3px rgba(0, 0, 0, 0.125) solid;

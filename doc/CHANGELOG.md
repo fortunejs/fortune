@@ -1,6 +1,15 @@
 # Changelog
 
 
+##### 3.0.0 (2016-02-xx)
+- Breaking change: `Serializer` is no longer in core, moved to `net.http.Serializer`. The configuration for serializers has also changed to accept arrays.
+- Breaking change: removed function value for `method` in request.
+- Breaking change: adapter is now defined as an array.
+- Breaking change: transform functions are now defined as an array.
+- Feature: `HttpSerializer` class in `http` module.
+- Feature: JSON serializer now accepts range and exists query.
+
+
 ##### 2.1.3 (2016-01-30)
 - Polish: remove internal `defineEnumerable` function in favor of `assign`.
 

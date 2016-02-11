@@ -8,14 +8,13 @@ tapdance.Promise = Promise
 
 // Unit tests.
 require('./unit/record_type')
-require('./unit/serializer')
 
 // Integration tests.
+require('./integration/adapters/memory')
 require('./integration/methods/find')
 require('./integration/methods/create')
 require('./integration/methods/update')
 require('./integration/methods/delete')
-require('./integration/serializers/json')
-require('./integration/serializers/form')
-require('./integration/adapters/memory')
 require('./integration/net/http')
+require('./integration/net/json')
+require('./integration/net/form')
