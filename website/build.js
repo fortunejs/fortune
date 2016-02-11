@@ -4,7 +4,11 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const Docchi = require('docchi')
-const cssnext = require('cssnext')
+
+const postcss = require('postcss')
+const atImport = require('postcss-import')
+const cssnext = require('postcss-cssnext')
+const cssnano = require('cssnano')
 const mustache = require('mustache')
 const marked = require('marked')
 const mkdirp = require('mkdirp')
@@ -241,10 +245,12 @@ for (let file of fs.readdirSync(assetPath))
 
 const cssEntryPoint = path.join(stylesheetPath, 'index.css')
 
-fs.writeFileSync(path.join(outputPath, 'assets/index.css'),
-  cssnext(fs.readFileSync(cssEntryPoint).toString(), {
-    compress: true, from: cssEntryPoint
-  }))
+postcss([ atImport, cssnext, cssnano() ])
+  .process(fs.readFileSync(cssEntryPoint).toString(), {
+    from: cssEntryPoint
+  })
+  .then(result =>
+    fs.writeFileSync(path.join(outputPath, 'assets/index.css'), result.css))
 
 
 // Build the pages

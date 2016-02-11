@@ -1,5 +1,12 @@
 @custom-selector :--header h1, h2, h3, h4, h5, h6;
 
+/*
+Use `border-box` properly:
+https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+*/
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
 body {
   background-color: var(--color-background);
   font-family: var(--font-body);
