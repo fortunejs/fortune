@@ -1,7 +1,8 @@
 # Changelog
 
 
-##### 3.0.2 (2016-02-12)
+##### 3.0.3 (2016-02-12)
+- Fix: Minor fix for empty status code override.
 - Fix: Input error should process correctly.
 - Fix: Form serializer should now accept update method properly.
 
