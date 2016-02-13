@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 3.0.4 (2016-02-13)
+- Fix: do not send anything if changes are empty in the WebSocket server.
+- Polish: avoid decoding WebSocket messages multiple times.
+
+
 ##### 3.0.3 (2016-02-12)
 - Fix: Minor fix for empty status code override.
 - Fix: Input error should process correctly.
