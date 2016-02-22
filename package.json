@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A library for managing data in Node.js and web browsers.",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -67,6 +67,7 @@
   },
   "files": [
     "lib/",
+    "test/",
     "LICENSE"
   ],
   "main": "lib/index.js",
@@ -122,9 +123,7 @@
     "api",
     "application",
     "data",
-    "hypermedia",
     "middleware",
-    "rest",
     "serializer",
     "transform"
   ]

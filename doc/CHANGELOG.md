@@ -1,5 +1,6 @@
-### 3.0.5 (2016-02-22)
+### 3.0.6 (2016-02-22)
 - Polish: fix typo in error message.
+- Polish: fix packaging by including test folder again.
 
 
 ### 3.0.4 (2016-02-13)
