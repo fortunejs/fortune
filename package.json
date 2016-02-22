@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A library for managing data in Node.js and web browsers.",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
