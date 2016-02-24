@@ -32,8 +32,6 @@ run(function () {
   comment('can run in browser')
   ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
 
-  comment(store)
-
   return store.connect()
   .then(function (store) {
     ok(store instanceof fortune, 'instantiation works')
