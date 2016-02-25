@@ -150,9 +150,7 @@ describe('EventSource implementation for resource changes', function () {
         describe('Given a resource x with property y ' +
                  '\nWhen the value of y changes', function () {
             it('Then an SSE is broadcast with event set to x_update, ID set to the oplog timestamp' +
-                 'and data set to an instance of x that only contains the new value for property y', function (done) {
-                var that = this;
-                var counter = 0;
+                 'and data set to an instance of x that contains document id and new value for property y', function (done) {
 
                 var payloads = [
                     {
@@ -167,29 +165,80 @@ describe('EventSource implementation for resource changes', function () {
                         }]
                     }
                 ];
+                $http.post(baseUrl + '/books', {json: payloads[0]}).spread(function(res)
+                {
+                    var counter = 0;
+                    var documentId = res.body.books[0].id;
+                    var expected = {
+                        _id: documentId,
+                        title: payloads[1].books[0].title
+                    };
 
-                var eventSource = ess(baseUrl + '/books/changes/stream', {retry : false})
-                .on('data', function(data) {
-
-                    lastEventId = data.id;
-                    var data = JSON.parse(data.data);
-
-                    //ignore ticker data
-                    if(_.isNumber(data)) {
-                        //post data after we've hooked into change events and receive a ticker
-                        return $http.post(baseUrl + '/books', {json : payloads[0]})
-                        .spread(function(res) {
-                            return $http.put(baseUrl + '/books/' + res.body.books[0].id, {json : payloads[1]});
+                    var eventSource = ess(baseUrl + '/books/changes/stream', {retry: false})
+                        .on('data', function (data)
+                        {
+                            var data = JSON.parse(data.data);
+                            if (counter === 0) {
+                                $http.put(baseUrl + '/books/' + documentId, {json: payloads[1]});
+                            }
+                            if (counter === 1) {
+                                expect(data).to.deep.equal(expected);
+                            }
+                            if (counter === 2) {
+                                done();
+                                eventSource.destroy();
+                            }
+                            counter++;
                         });
-                    }
-
-                    expect(_.omit(data, 'id')).to.deep.equal(payloads[counter].books[0]);
-                    counter ++;
-                    if (counter === 1) {
-                        done();
-                        eventSource.destroy();
-                    }
                 });
+            });
+        });
+
+
+        describe('When I update collection document directly through mongodb adapter', function()
+        {
+            var documentId = '', model;
+
+            before(function(done)
+            {
+                seeder(harvesterApp, baseUrl).seedCustomFixture({
+                    books: [
+                        {
+                            title: 'The Bourne Identity',
+                            author: 'Robert Ludlum'
+                        }
+                    ]
+                }).then(function (result)
+                {
+                    documentId = result[0].books[0];
+                    done();
+                });
+                model = harvesterApp.adapter.model('book');
+            });
+
+            it('Then SSE should broadcast event with data containing properties that has been changed', function(done)
+            {
+                var expected = {
+                    _id: documentId,
+                    title: 'The Bourne Supremacy'
+                };
+                var counter = 0;
+                var eventSource = ess(baseUrl + '/books/changes/stream', {retry: false})
+                    .on('data', function (data)
+                    {
+                        var data = JSON.parse(data.data);
+                        if (0 === counter) {
+                            harvesterApp.adapter.db.collections.books.findOneAndUpdate({'_id': documentId}, {'title': 'The Bourne Supremacy'});
+                        }
+                        if (1 === counter) {
+                            expect(data).to.deep.equal(expected);
+                        }
+                        if (2 === counter) {
+                            done();
+                            eventSource.destroy();
+                        }
+                        counter++;
+                    });
             });
         });
     });
