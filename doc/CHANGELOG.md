@@ -1,3 +1,10 @@
+# Changelog
+
+
+### 3.1.0 (2016-02-27)
+- Feature: implemented LRU cache for memory adapter.
+
+
 ### 3.0.6 (2016-02-22)
 - Polish: fix typo in error message.
 - Polish: fix packaging by including test folder again.
