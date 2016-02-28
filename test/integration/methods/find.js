@@ -63,6 +63,25 @@ run(() => {
 })
 
 
+run(() => {
+  comment('get includes with options')
+  return findTest({
+    request: {
+      type: 'user',
+      ids: [ 1 ],
+      include: [ [ 'spouse', 'enemies', { fields: { name: true } } ] ]
+    },
+    response: response => {
+      ok(response.payload.include.user.length === 1,
+        'number of records found is correct')
+      ok(response.payload.include.user
+        .every(record => Object.keys(record).length === 3),
+        'fields option applied')
+    }
+  })
+})
+
+
 function findTest (o) {
   let store
 
