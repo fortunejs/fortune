@@ -34,6 +34,7 @@ run(() => {
   })
   .then(result => {
     ok(result.response.payload.records.length === 3, 'records fetched')
+    ok(result.response.payload.count === 3, 'valid count')
 
     return Promise.all([
       new Promise(resolve => {
