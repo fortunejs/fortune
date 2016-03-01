@@ -34,7 +34,7 @@ run(() => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    ok(deepEqual(response.body, { records: [] }), 'response body is correct')
+    ok(deepEqual(response.body, { records: [], count: 0 }), 'response body is correct')
   })
 })
 
