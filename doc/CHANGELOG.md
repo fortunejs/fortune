@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.2.1 (2016-03-02)
+- Fix: records count is now its own property in the response object, so that it can be serialized. Thanks [@kketch](https://github.com/kketch).
+
+
 ### 3.2.0 (2016-02-28)
 - Feature: implemented per field include options, to improve granularity of include options.
 - Polish: use `fields` option in `include` function, slightly faster than retrieving an entire record.
