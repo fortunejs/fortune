@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 3.2.2 (2016-03-02)
+- Fix: edge case when multiple initial requests are made. Thanks [@thibremy](https://github.com/thibremy).
+- Polish: show delete count when IDs is unspecified.
+
+
 ### 3.2.1 (2016-03-02)
 - Fix: records count is now its own property in the response object, so that it can be serialized. Thanks [@kketch](https://github.com/kketch).
 
