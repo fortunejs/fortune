@@ -9,7 +9,9 @@
   }
 
   header nav {
-    padding: calc(var(--line-height) * 3 / 4) var(--line-height);
+    margin-top: calc(var(--line-height) * 1);
+    padding: calc(var(--line-height) * 1 / 2) var(--line-height)
+      calc(var(--line-height) * 1 / 2 - 0.25em);
   }
 
   header nav a:after {
@@ -22,11 +24,11 @@
   }
 
   article {
-    margin: calc(var(--line-height) * 3 / 2) auto;
+    margin: calc(var(--line-height) * 1) auto;
   }
 
   :--header {
-    margin-top: calc(var(--line-height) * 5 / 2);
+    margin-top: calc(var(--line-height) * 2);
   }
 
   h1:first-of-type {
@@ -35,11 +37,11 @@
   }
 
   footer {
-    margin: calc(var(--line-height) * 5 / 2) auto;
+    margin: calc(var(--line-height) * 2) auto;
   }
 
   .api > hr {
-    height: calc(var(--line-height) * 3 / 2);
+    height: calc(var(--line-height) * 2 / 3);
   }
 
   #corner {

@@ -66,8 +66,9 @@
 }
 
 .api > hr {
-  height: calc(var(--line-height) * 3);
+  height: calc(var(--line-height) * 5 / 3);
   border: 0;
+  margin: 0;
 }
 
 .api > hr:last-of-type {
