@@ -115,7 +115,7 @@ section:after {
 header {
   background-color: var(--color-accent);
   text-align: center;
-  padding-top: calc(var(--line-height) * 3 / 2);
+  padding-top: calc(var(--line-height) * 2);
   position: relative;
   overflow: hidden;
 }
@@ -142,7 +142,7 @@ header .logo-type {
 header nav {
   position: relative;
   margin-top: calc(var(--line-height) * 5 / 4);
-  padding: calc(var(--line-height) * 3 / 4) var(--line-height);
+  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
   background-color: rgba(255, 255, 255, calc(1 / 4));
 }
 
