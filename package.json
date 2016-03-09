@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A library for managing data in Node.js and web browsers.",
+  "description": "A server and client library for managing data in Node.js and web browsers.",
   "version": "3.2.2",
   "license": "MIT",
   "author": {
@@ -27,7 +27,7 @@
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.3.3",
+    "bluebird": "^3.3.4",
     "busboy": "^0.2.12",
     "deep-equal": "^1.0.1",
     "error-class": "^2.0.0",

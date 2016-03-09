@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
+Fortune.js is a server and client library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -18,7 +18,7 @@ $ npm install fortune --save
 Fortune.js is a data abstraction layer, which provides persistence, querying, type validation, relationships, transactions (optional), and business logic isolation. It comes included with networking functions, specific for client or server use cases. There are a variety of use cases for Fortune.js, for example:
 
 - A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
-- A client-side persistence layer. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
+- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
 - An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
 - Real-time web applications. Fortune.js includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
