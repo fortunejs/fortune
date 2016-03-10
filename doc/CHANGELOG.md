@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.2.3 (2016-03-10)
+- Polish: show record type information in error messages when link fields are set up incorrectly.
+
+
 ### 3.2.2 (2016-03-02)
 - Fix: edge case when multiple initial requests are made. Thanks [@thibremy](https://github.com/thibremy).
 - Polish: show delete count when IDs is unspecified.
