@@ -67,7 +67,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         post: 'post'
                     }
                 })
-                .onChange({insert: reportAbusiveLanguage, update: reportAbusiveLanguage})
+                .onChange({insert: {func:reportAbusiveLanguage}, update: reportAbusiveLanguage})
                 .resource('pet', {
                     body: Joi.string()
                 })
