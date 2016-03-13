@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.2.4 (2016-03-13)
+- Polish: do not call `parsePayload` in HTTP serializer if the request body is empty.
+
+
 ### 3.2.3 (2016-03-10)
 - Polish: show record type information in error messages when link fields are set up incorrectly.
 
