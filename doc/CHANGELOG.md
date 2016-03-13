@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.3.0 (2016-03-14)
+- Feature: the `ws` server now has built-in handling of inter-process communication (IPC).
+
+
 ### 3.2.4 (2016-03-13)
 - Polish: do not call `parsePayload` in HTTP serializer if the request body is empty.
 

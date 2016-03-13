@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A server and client library for managing data in Node.js and web browsers.",
-  "version": "3.2.4",
+  "version": "3.3.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -45,7 +45,7 @@
     "chalk": "^1.1.1",
     "cssnano": "^3.5.2",
     "docchi": "^0.11.4",
-    "eslint": "^2.3.0",
+    "eslint": "^2.4.0",
     "eslint-config-0x8890": "^1.0.2",
     "form-data": "^1.0.0-rc3",
     "highlight.js": "^9.2.0",

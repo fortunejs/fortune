@@ -16,7 +16,8 @@ run(() => {
   const port = 8890
   let store, client
 
-  return testInstance()
+  return new Promise(resolve => setTimeout(resolve, 1 * 1000))
+  .then(() => testInstance())
   .then(instance => {
     store = instance
     client = new WebSocket(`ws://localhost:${port}`)
@@ -44,7 +45,9 @@ run(() => {
         })
       }),
       fortune.net.request(client, {
-        request: { type: 'user', method: 'create', payload: [ {} ] }
+        request: { type: 'user', method: 'create', payload: [ {
+          picture: new Buffer('cafebabe', 'hex')
+        } ] }
       })
     ])
   })
