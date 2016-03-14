@@ -26,5 +26,5 @@ if (cluster.isMaster) {
     if (changes) return changes
     if (state.kill) setTimeout(() => process.send('KILL'), 500)
     return state
-  }, { port }))
+  }, { port, useIPC: true }))
 }

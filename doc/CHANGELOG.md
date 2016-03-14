@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.3.1 (2016-03-14)
+- Polish: the `useIPC` option in the `ws` server is now `false` by default. It must be manually set to `true` to enable this feature.
+
+
 ### 3.3.0 (2016-03-14)
 - Feature: the `ws` server now has built-in handling of inter-process communication (IPC).
 
