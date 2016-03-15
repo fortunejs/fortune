@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.3.2 (2016-03-15)
+- Polish: edge case in HTTP handling when a `Content-Type` header is specified in a request, but there is no payload. It no longer throws an error, instead it effectively ignores the the `Content-Type` header.
+
+
 ### 3.3.1 (2016-03-14)
 - Polish: the `useIPC` option in the `ws` server is now `false` by default. It must be manually set to `true` to enable this feature.
 
