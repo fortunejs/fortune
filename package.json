@@ -37,7 +37,8 @@
     "ws": "^1.0.1"
   },
   "optionalDependencies": {
-    "bufferutil": "^1.2.1"
+    "bufferutil": "^1.2.1",
+    "utf-8-validate": "^1.2.1"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
@@ -59,7 +60,7 @@
     "myth": "^1.5.0",
     "normalize.css": "^3.0.3",
     "postcss": "^5.0.19",
-    "postcss-cssnext": "^2.4.0",
+    "postcss-cssnext": "^2.5.1",
     "postcss-import": "^8.0.2",
     "rimraf": "^2.5.2",
     "tapdance": "^4.1.1",
