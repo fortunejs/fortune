@@ -53,6 +53,19 @@ function output (context, record) {
 
 Based on whether or not the resolved record is different from what was passed in, serializers may decide not show the resolved record of the output transform for update and delete requests.
 
+__Note__: Tranform functions has to be defined in specific order.
+
+```js
+const store = fortune({
+  user: {
+    // User record type definition..
+  }
+}, {
+  transforms: {
+    user: [input, output]
+  }
+});
+```
 
 ## Configuration
 
