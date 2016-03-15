@@ -21,6 +21,7 @@ const store = fortune({
 
 This defines a `user` record type that has a link field to the `group` type. By default, link fields are to-one, unless `isArray` is specified. In this example, there is a many-to-many relationship between a user and a group. The `inverse` field specifies a corresponding field on the linked type, so that any update to either field will affect the other (two-way binding). If an inverse is not specified, an internal field will be created automatically.
 
+__Note__: The primary key that is defined by default in each record type will always be `id`.
 
 ## Transform Functions
 
