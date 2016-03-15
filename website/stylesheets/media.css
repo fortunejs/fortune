@@ -1,4 +1,4 @@
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
   body {
     font-size: calc(var(--size-body) - 2px);
   }
@@ -10,8 +10,7 @@
 
   header nav {
     margin-top: calc(var(--line-height) * 1);
-    padding: calc(var(--line-height) * 1 / 2) var(--line-height)
-      calc(var(--line-height) * 1 / 2 - 0.25em);
+    padding: calc(var(--line-height) * 1 / 2) var(--line-height);
   }
 
   header nav a:after {
@@ -23,17 +22,13 @@
     margin-bottom: calc(var(--line-height) * 1);
   }
 
-  article {
-    margin: calc(var(--line-height) * 1) auto;
-  }
-
-  :--header {
-    margin-top: calc(var(--line-height) * 2);
-  }
-
   h1:first-of-type {
     margin-top: 0;
     padding-top: 0;
+  }
+
+  article {
+    margin: calc(var(--line-height) * 2) auto;
   }
 
   footer {
@@ -52,12 +47,5 @@
 
   #corner span {
     display: none;
-  }
-}
-
-
-@media screen and (max-width: 640px) {
-  body {
-    font-size: calc(var(--size-body) - 3px);
   }
 }
