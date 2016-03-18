@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a server and client library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
+Fortune.js is a library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
@@ -15,7 +15,7 @@ $ npm install fortune --save
 
 ## Synopsis
 
-Fortune.js implements a data abstraction layer, which provides persistence, querying, type validation, relationships, transactions (optional), and business logic isolation. It also includes networking functions, specific for client or server use cases. There are a variety of use cases for Fortune.js, for example:
+Fortune.js implements a data abstraction layer, and also includes networking functions, specific for Node.js and web browsers. There are a variety of use cases for Fortune.js, for example:
 
 - A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
 - A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
@@ -25,7 +25,7 @@ Fortune.js implements a data abstraction layer, which provides persistence, quer
 
 ## Example
 
-The only necessary input is record type definitions. Here's a model of a basic micro-blogging service:
+The only required input is record type definitions. Here's a model of a basic micro-blogging service:
 
 ```js
 const fortune = require('fortune')

@@ -21,9 +21,9 @@ a {
 }
 
 :--header {
-  font-size: calc(1em * 4 / 3);
-  line-height: calc(var(--line-height) * 3 / 4);
-  margin: calc(var(--line-height) * 2 * 3 / 4) 0 calc(var(--line-height) * 3 / 4);
+  font-size: calc(1em * 5 / 4);
+  line-height: calc(var(--line-height) * 4 / 5);
+  margin: calc(var(--line-height) * 2 * 4 / 5) 0 calc(var(--line-height) * 4 / 5);
 }
 
 :--header a.anchor {
@@ -116,7 +116,7 @@ section:after {
 header {
   background-color: var(--color-accent);
   text-align: center;
-  padding-top: calc(var(--line-height) * 3 / 2);
+  padding-top: calc(var(--line-height) * 5 / 3);
   position: relative;
   overflow: hidden;
 }
@@ -142,8 +142,8 @@ header .logo-type {
 
 header nav {
   position: relative;
-  margin-top: calc(var(--line-height) * 1);
-  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
+  margin-top: calc(var(--line-height) * 4 / 3);
+  padding: calc(var(--line-height) * 2 / 3) var(--line-height);
   background-color: rgba(255, 255, 255, calc(1 / 4));
 }
 
@@ -183,7 +183,7 @@ header nav a:last-of-type:after {
 
 article {
   max-width: var(--max-width);
-  margin: calc(var(--line-height) * 5 / 2) auto;
+  margin: calc(var(--line-height) * 3) auto;
   padding: 0 var(--line-height);
   hyphens: auto;
 }

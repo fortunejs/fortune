@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A server and client library for managing data in Node.js and web browsers.",
+  "description": "A library for managing data in Node.js and web browsers.",
   "version": "3.3.2",
   "license": "MIT",
   "author": {
