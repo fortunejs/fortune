@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 3.3.3 (2016-03-19)
+- Polish: ad hoc JSON serializer now accepts singular objects in create/update requests.
+- Polish: HTTP server no longer rejects exceptions that result in non-error status codes.
+
+
 ### 3.3.2 (2016-03-15)
 - Polish: edge case in HTTP handling when a `Content-Type` header is specified in a request, but there is no payload. It no longer throws an error, instead it effectively ignores the the `Content-Type` header.
 
