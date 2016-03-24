@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.3.4 (2016-03-24)
+- Polish: remove dependency on `deep-equal` in favor of faster ad hoc implementation.
+
+
 ### 3.3.3 (2016-03-19)
 - Polish: ad hoc JSON serializer now accepts singular objects in create/update requests.
 - Polish: HTTP server no longer rejects exceptions that result in non-error status codes.
