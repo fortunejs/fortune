@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
@@ -12,6 +11,7 @@ const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
 
 const find = require('../../../lib/common/array/find')
+const deepEqual = require('../../../lib/common/deep_equal')
 
 const constants = require('../../../lib/common/constants')
 const changeEvent = constants.change

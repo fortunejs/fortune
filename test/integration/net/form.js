@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const comment = tapdance.comment
 const run = tapdance.run
@@ -12,6 +11,7 @@ const FormData = require('form-data')
 const httpTest = require('./http_test')
 const testInstance = require('../test_instance')
 const fortune = require('../../../lib')
+const deepEqual = require('../../../lib/common/deep_equal')
 const json = require('../../../lib/net/http_json_serializer')
 const form = require('../../../lib/net/http_form_serializer')
 const formUrlEncoded = form.formUrlEncoded

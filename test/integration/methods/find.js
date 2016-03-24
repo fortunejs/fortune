@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const fail = tapdance.fail
 const comment = tapdance.comment
@@ -9,6 +8,8 @@ const ok = tapdance.ok
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
+
+const deepEqual = require('../../../lib/common/deep_equal')
 
 const constants = require('../../../lib/common/constants')
 const primaryKey = constants.primary

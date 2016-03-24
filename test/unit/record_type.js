@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
@@ -11,6 +10,7 @@ const ok = tapdance.ok
 const ensureTypes = require('../../lib/record_type/ensure_types')
 const validate = require('../../lib/record_type/validate')
 const enforce = require('../../lib/record_type/enforce')
+const deepEqual = require('../../lib/common/deep_equal')
 
 const keys = require('../../lib/common/keys')
 const primaryKey = keys.primary

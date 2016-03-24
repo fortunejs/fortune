@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const ok = tapdance.ok
 const fail = tapdance.fail
@@ -10,6 +9,7 @@ const run = tapdance.run
 const testAdapter = require('../../unit/adapter')
 const memoryAdapter = require('../../../lib/adapter/adapters/memory')
 const Adapter = require('../../../lib/adapter')
+const deepEqual = require('../../../lib/common/deep_equal')
 const keys = require('../../../lib/common/keys')
 const errors = require('../../../lib/common/errors')
 const map = require('../../../lib/common/array/map')

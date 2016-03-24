@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const comment = tapdance.comment
 const run = tapdance.run
@@ -8,6 +7,7 @@ const ok = tapdance.ok
 
 const qs = require('querystring')
 const httpTest = require('./http_test')
+const deepEqual = require('../../../lib/common/deep_equal')
 const jsonSerializer = require('../../../lib/net/http_json_serializer')
 
 

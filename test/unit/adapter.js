@@ -1,6 +1,5 @@
 'use strict'
 
-const deepEqual = require('deep-equal')
 const tapdance = require('tapdance')
 const ok = tapdance.ok
 const fail = tapdance.fail
@@ -14,6 +13,7 @@ const message = require('../../lib/common/message')
 const promise = require('../../lib/common/promise')
 const Promise = promise.Promise
 
+const deepEqual = require('../../lib/common/deep_equal')
 const map = require('../../lib/common/array/map')
 const find = require('../../lib/common/array/find')
 const includes = require('../../lib/common/array/includes')

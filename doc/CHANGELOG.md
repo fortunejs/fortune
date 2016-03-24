@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 3.3.4 (2016-03-24)
+### 3.3.5 (2016-03-24)
 - Polish: remove dependency on `deep-equal` in favor of faster ad hoc implementation.
 
 
