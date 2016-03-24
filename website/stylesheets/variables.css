@@ -30,9 +30,9 @@
     monospace;
 
   /* measurements */
-  --max-width: 45em;
-  --size-body: 17px;
-  --size-mono: calc(1em * 16 / 17);
+  --max-width: 50em;
+  --size-body: 16px;
+  --size-mono: calc(1em * 15 / 16);
   --line-height: calc(1em * 5 / 3);
   --mono-height: calc(1em * 4 / 3);
   --border-radius: calc(1em / 3);
