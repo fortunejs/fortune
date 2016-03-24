@@ -3,23 +3,9 @@
     font-size: calc(var(--size-body) - 2px);
   }
 
-  header {
-    background-color: var(--color-accent);
-    padding-top: calc(var(--line-height) * 3 / 2);
-  }
-
-  header nav {
-    margin-top: calc(var(--line-height) * 1);
-    padding: calc(var(--line-height) * 1 / 2) var(--line-height);
-  }
-
   header nav a:after {
     margin-right: calc(1em * 2 / 3);
     padding-left: calc(1em * 2 / 3);
-  }
-
-  header .logo-type {
-    margin-bottom: calc(var(--line-height) * 1);
   }
 
   h1:first-of-type {
@@ -28,7 +14,7 @@
   }
 
   article {
-    margin: calc(var(--line-height) * 2) auto;
+    margin: calc(var(--line-height) * 3 / 2) auto;
   }
 
   footer {

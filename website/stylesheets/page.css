@@ -21,6 +21,7 @@ a {
 }
 
 :--header {
+  color: var(--color-solid);
   font-size: calc(1em * 5 / 4);
   line-height: calc(var(--line-height) * 4 / 5);
   margin: calc(var(--line-height) * 2 * 4 / 5) 0 calc(var(--line-height) * 4 / 5);
@@ -60,11 +61,13 @@ pre, code {
 }
 
 pre {
-  padding: calc(var(--mono-height) * 2 / 3) calc(var(--mono-height) * 4 / 5);
+  padding: calc(var(--line-height) * 1 / 2) calc(var(--line-height) * 2 / 3);
+  margin: calc(var(--line-height) * 3 / 2) calc(var(--line-height) * -2 / 3);
   background-color: rgba(0, 0, 0, calc(1 / 25));
   border-radius: var(--border-radius);
-  box-shadow: inset 0 1px 0 rgba(0, 0, 0, calc(1 / 16));
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, calc(1 / 16));
   line-height: var(--mono-height);
+  overflow: auto;
 }
 
 pre.install code:before {
@@ -115,10 +118,9 @@ section:after {
 
 header {
   background-color: var(--color-accent);
-  text-align: center;
-  padding-top: calc(var(--line-height) * 5 / 3);
   position: relative;
   overflow: hidden;
+  padding-top: calc(var(--line-height) * 2);
 }
 
 header > a {
@@ -137,14 +139,14 @@ header .emblem {
 header .logo-type {
   display: block;
   height: calc(var(--line-height) * 1);
-  margin: 0 auto;
+  margin: 0 auto calc(var(--line-height) * 3 / 2);
 }
 
 header nav {
   position: relative;
-  margin-top: calc(var(--line-height) * 4 / 3);
-  padding: calc(var(--line-height) * 2 / 3) var(--line-height);
-  background-color: rgba(255, 255, 255, calc(1 / 4));
+  text-align: center;
+  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
+  background-color: color(var(--color-accent) w(+ 15%));
 }
 
 header nav:before,
@@ -156,10 +158,10 @@ header nav:after {
   left: 0;
   height: 1px;
   width: 100%;
-  background-color: rgba(0, 0, 0, calc(1 / 8));
+  background-color: color(var(--color-accent) b(+ 10%));
 }
 
-header nav:after {
+header nav:before {
   top: auto;
   bottom: 0;
 }
@@ -173,7 +175,7 @@ header nav a:after {
   content: '⁄';
   margin-right: calc(1em * 5 / 6);
   padding-left: calc(1em * 5 / 6);
-  color: var(--color-light);
+  color: color(var(--color-accent) b(+ 25%));
   font-weight: normal;
 }
 
@@ -183,7 +185,7 @@ header nav a:last-of-type:after {
 
 article {
   max-width: var(--max-width);
-  margin: calc(var(--line-height) * 3) auto;
+  margin: calc(var(--line-height) * 5 / 2) auto;
   padding: 0 var(--line-height);
   hyphens: auto;
 }

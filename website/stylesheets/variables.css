@@ -2,9 +2,10 @@
 
   /* colors */
   --color-background: #FFF;
-  --color-body: rgba(0, 0, 0, 0.75);
-  --color-alt: rgba(0, 0, 0, 0.5);
-  --color-light: rgba(0, 0, 0, 0.25);
+  --color-solid: #000;
+  --color-body: rgba(0, 0, 0, 0.6666);
+  --color-alt: rgba(0, 0, 0, 0.4444);
+  --color-light: rgba(0, 0, 0, 0.2222);
   --color-accent: #FE7;
   --color-link: #36967B;
   --color-literal: #8B599E;
@@ -12,6 +13,7 @@
 
   /* fonts */
   --font-body:
+    'Roboto',
     /* Mac */
     'Avenir',
     /* Windows */
@@ -20,6 +22,7 @@
     'FreeSans',
     sans-serif;
   --font-mono:
+    'Fira Mono',
     'Monaco',
     'Consolas',
     'Lucida Console',
@@ -27,11 +30,11 @@
     monospace;
 
   /* measurements */
-  --max-width: 48em;
-  --size-body: 16px;
-  --size-mono: calc(1em * 15 / 16);
-  --line-height: calc(1em * 13 / 8);
-  --mono-height: calc(1em * 3 / 2);
-  --border-radius: calc(1em / 2);
+  --max-width: 45em;
+  --size-body: 17px;
+  --size-mono: calc(1em * 16 / 17);
+  --line-height: calc(1em * 5 / 3);
+  --mono-height: calc(1em * 4 / 3);
+  --border-radius: calc(1em / 3);
 
 }
