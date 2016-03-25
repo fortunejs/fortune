@@ -1,0 +1,30 @@
+/* reset */
+* { margin: 0; padding: 0; border: none; box-sizing: border-box; }
+
+/* page */
+html, body { height: 100% }
+body { font-size: 16px; font-family: 'Avenir', 'Calibri', 'FreeSans', sans-serif; line-height: 1.5; background: #ddd; color: #444; }
+a { color: inherit; text-decoration: inherit; }
+h1, h2, h3, h4, h5, h6 { font-size: 1.25em; color: #000; font-family: 'Garamond', 'Times New Roman', Times, serif; font-weight: normal; font-style: italic; }
+
+/* index */
+.index { width: 100%; height: 100%; display: table; text-align: center; }
+.index-cell { display: table-cell; vertical-align: middle; padding: 1.5em; }
+.index h4, .index ul { max-width: 25em; margin: 0 auto; }
+.index ul { list-style-type: none; padding: 1.5em 3em; background: #fff; border-radius: 0.25em; border-bottom: 2px #ccc solid; text-align: left; margin-bottom: 4.5em; }
+.index h4 { max-width: 15em; margin-bottom: 2.25em; position: relative; color: #888; }
+.index h4:before { position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: #bbb; content: ' '; display: block; z-index: -1; }
+.index h4 span { background: #ddd; padding: 0 0.75em; }
+.index li { margin: 0 auto; position: relative; }
+.index a { font-weight: bold; display: block; position: relative; padding: 0.75em 0; padding-right: 1.5em; font-size: 1.25em; transition: color 0.2s ease; text-transform: capitalize; }
+.index a:hover { color: #31BAE8; }
+.index a:after { content: '→'; position: absolute; right: 0; color: #31BAE8; font-weight: normal; }
+.index a:before { position: absolute; content: ' '; top: 0; left: 0; width: 100%; height: 1px; background: #ddd; display: block; }
+.index li:first-of-type a:before { display: none; }
+
+/* index error */
+.index h1 { font-size: 2em; margin-bottom: 0.75em; }
+.index p { color: #888; margin-bottom: 4.5em; }
+
+@media (max-width: 800px) { body { font-size: 14px; } }
+@media (max-width: 640px) { body { font-size: 12px; } }

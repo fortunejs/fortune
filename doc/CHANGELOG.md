@@ -1,6 +1,12 @@
 # Changelog
 
 
+### 3.4.0 (2016-03-26)
+- Feature: new internal HTTP helper function `initializeContext`, useful for unifying HTTP parsing. It is also now the default behavior of `processRequest`.
+- Feature: new internal HTTP helper function `encodeRoute`, to format links for use with `initializeContext`.
+- Feature: default HTML serializer.
+
+
 ### 3.3.5 (2016-03-24)
 - Polish: remove dependency on `deep-equal` in favor of faster ad hoc implementation.
 
