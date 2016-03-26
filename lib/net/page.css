@@ -30,26 +30,41 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 main { min-height: 100%; position: relative; padding-bottom: 1.5em; }
 main > header { color: #888; padding: 0.75em 1.5em; background: #fff; border-bottom: 1px #ccc solid; }
 main > header a { color: #31BAE8; }
-main > header a.type { text-transform: capitalize; }
 
 /* group */
 .group { padding: 1.5em 1.5em 0; }
 .group h4 { padding-bottom: 0.6em; border-bottom: 1px #ccc solid; color: #888; }
 .group .type { text-transform: capitalize; color: #000; }
 .group .box { border: 1px #ccc solid; border-radius: 0.25em; margin-top: 1.5em; overflow: auto; }
-.group .row { white-space: nowrap; color: #aaa; background: #F0F7FA; }
-.group .row:first-of-type, .group .row:first-of-type .column { background: #fff !important; }
-.group .row:first-of-type { font-weight: bold; color: inherit; }
-.group .row:first-of-type .column { border-right: 1px #eee solid; border-bottom: 1px #ccc solid; }
-.group .row:last-of-type .column { border-bottom: none; }
-.group .row.empty, .group .column { padding: 0.75em 1em; }
-.group .row:nth-of-type(2n), .group .row:nth-of-type(2n) .column { background: #F0F7FA; }
-.group .row:nth-of-type(2n + 1), .group .row:nth-of-type(2n + 1) .column { background: #EAF3F6; }
-.group .column { display: inline-block; width: 16em; border-right: 1px #DAE6EB solid; border-bottom: 1px #DAE6EB solid; text-overflow: ellipsis; overflow: hidden; margin-bottom: -0.4em; }
-.group .row:after { clear: both; display: block; content: ' '; }
-.group .empty { font-style: italic; }
+.group table { border-spacing: 0; min-width: 100%; }
+.group tr:first-of-type th { background: #fff !important; }
+.group tr:first-of-type { font-weight: bold; color: inherit; }
+.group tr:first-of-type th:last-of-type { font-style: italic; }
+.group td:last-of-type, .group th:last-of-type { text-align: center; }
+.group tr:last-of-type td { border-bottom: none; }
+.group tr:nth-of-type(2n) td { background: #F0F7FA; }
+.group tr:nth-of-type(2n + 1) td { background: #EAF3F6; }
+.group td, .group th { color: #bbb; padding: 1.5em; border-right: 1px #DAE6EB solid; border-bottom: 1px #DAE6EB solid; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 20em; }
+.group th { color: inherit; border-right: 1px #eee solid; border-bottom: 1px #ccc solid; text-align: left; }
+.group td.empty { font-style: italic; padding: 3em 1.5em; }
+.group span.empty { pointer-events: none; }
 .group .value { color: #444; }
 .group a, .group a .value { color: #31BAE8; }
+.group a:hover { text-decoration: underline; }
 
+/* button */
+.button { display: inline-block; font-weight: bold; padding: 0.375em 0.75em; margin: -0.375em 0; background: #31BAE8; color: rgba(255, 255, 255, 0.8); border-radius: 0.25em; cursor: pointer; box-shadow: inset 0 -2px rgba(0, 0, 0, 0.2); transition: opacity 0.2s ease; }
+.button:hover, .button:active { opacity: 0.8; color: #fff; }
+.button:active { box-shadow: none; }
+.button.red { background: #D9603F; }
+.button .icon { position: relative; top: -0.025em; font-size: 1.25em; line-height: 1.2; margin-right: 0.25em; font-weight: normal; color: #fff; }
+
+/* misc */
+::-moz-selection { color: #fff; background: #31BAE8; }
+::selection { color: #fff; background: #31BAE8; }
+.button, .group span.empty { -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+.hidden { display: none; }
+
+/* responsive */
 @media (max-width: 800px) { body { font-size: 14px; } }
 @media (max-width: 640px) { body { font-size: 12px; } }
