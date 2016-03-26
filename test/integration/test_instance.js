@@ -41,7 +41,7 @@ module.exports = () => {
       // Implementations may have problems with this reserved word.
       type: { type: String },
 
-      favoriteFood: { type: String },
+      isNeutered: { type: Boolean },
 
       birthday: { type: Date },
       createdAt: { type: Date },

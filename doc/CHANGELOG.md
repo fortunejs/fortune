@@ -6,6 +6,10 @@
 - Feature: new internal HTTP helper function `encodeRoute`, to format links for use with `initializeContext`.
 - Feature: default HTML serializer, accessible at `net.http.HtmlSerializer`.
 - Feature: the `parsePayload` method also receives the internal `request` and `response` objects from Node.js.
+- Fix: type casting error which could cause form serializer to crash.
+- Fix: existence check in deep equal function.
+- Polish: the `compression` flag has been renamed to `useCompression`.
+- Polish: the form serializer now ignores empty values in arrays, so sparse arrays are not possible.
 
 
 ### 3.3.5 (2016-03-24)
