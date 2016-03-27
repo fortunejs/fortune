@@ -33,18 +33,21 @@ exports.animal = [
     id: 1,
     name: 'Fido',
     birthday: new Date(Date.UTC(2012, 12, 25)),
+    isNeutered: true,
     owner: 1
   },
   {
     id: 2,
     name: 'Cuddles',
     birthday: new Date(Date.UTC(2014, 3, 1)),
+    isNeutered: false,
     owner: 2
   },
   {
     id: 3,
     name: 'Sniffles',
     birthday: new Date(Date.UTC(2013, 5, 22)),
+    isNeutered: true,
     owner: 2
   },
   {

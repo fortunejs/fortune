@@ -13,7 +13,7 @@ const test = httpTest.bind(null, void 0)
 run(() => {
   comment('content negotiation')
   return test('/', {
-    headers: { 'Accept': 'text/html' }
+    headers: { 'Accept': 'application/octet-stream' }
   }, response => {
     ok(response.status === 406, 'status is correct')
   })

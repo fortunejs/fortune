@@ -65,7 +65,7 @@ run(() => {
 run(() => {
   comment('get records with fields')
   return test(`/animal?${qs.stringify({
-    fields: 'name,owner'
+    fields: [ 'name', 'owner' ]
   })}`, null, response => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
@@ -80,7 +80,7 @@ run(() => {
 run(() => {
   comment('get records with match')
   return test(`/animal?${qs.stringify({
-    'match[name]': 'Fido'
+    'match.name': 'Fido'
   })}`, null, response => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
@@ -93,7 +93,7 @@ run(() => {
 run(() => {
   comment('get records with match by link')
   return test(`/animal?${qs.stringify({
-    'match[owner]': 1
+    'match.owner': 1
   })}`, null, response => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
@@ -106,7 +106,7 @@ run(() => {
 run(() => {
   comment('get records with include')
   return test(`/animal/1?${qs.stringify({
-    'include': 'owner,owner.spouse'
+    'include': [ 'owner', 'owner.spouse' ]
   })}`, null, response => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
