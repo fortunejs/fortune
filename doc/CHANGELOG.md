@@ -1,6 +1,12 @@
 # Changelog
 
 
+### 3.4.3 (2016-03-28)
+- Feature: try to parse options in include.
+- Fix: escape JSON output in HTML serializer.
+- Polish: improve matching and pagination UI in HTML serializer.
+
+
 ### 3.4.2 (2016-03-27)
 - Polish: do not respond to `OPTIONS` if route looks incorrect.
 - Polish: expose `castToNumber` function in HTTP serializer.

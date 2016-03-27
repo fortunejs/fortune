@@ -19,7 +19,8 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 
 | HTTP Serializer  | Description                                              |
 |:-----------------|:---------------------------------------------------------|
-| JSON (included, default) | A thin mapping of Fortune over HTTP using JSON. |
+| JSON (included, default) | A thin mapping of Fortune.js over HTTP using JSON. |
+| HTML (included, default) | A simple user interface for Fortune.js, exposing most of its capabilities. |
 | Form (included, default) | Create & update records using browser form input. *Input only*. |
 | [Micro API](https://github.com/fortunejs/fortune-micro-api) [[spec](http://micro-api.org)] | A serialization format for hypermedia APIs. |
 | [JSON API](https://github.com/fortunejs/fortune-json-api) [[spec](http://jsonapi.org)] | JSON API 1.0 compatible, useful for clients such as [Ember Data](https://github.com/emberjs/data). |

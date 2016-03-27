@@ -38,9 +38,10 @@ aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -
 
 /* sidebar */
 .sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: rgb(19, 43, 51); transition: right 0.2s ease; z-index: 99; }
-.sidebar h4 { padding: 0.3em 0.6em; margin: 0.6em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; }
+.sidebar h2 { padding: 0.3em 0.6em; margin: 0.6em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; }
+.sidebar h3 { font-family: inherit; font-size: 1em; font-style: normal; font-weight: bold; margin-top: 0.625em; color: rgba(255, 255, 255, 0.75); }
 .sidebar .input-group { margin: 0.625em 0 1.5em; }
-.sidebar input { background: none; color: #fff; height: 2.5em; display: block; width: 100%; border-bottom: 1px rgba(255, 255, 255, 0.25) solid; }
+.sidebar input { background: none; color: rgba(255, 255, 255, 0.75); height: 2.5em; display: block; width: 100%; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; }
 .sidebar .button { display: block; margin: 1.5em 0; text-align: center; }
 
 #sidebar-toggle:checked ~ aside { right: calc(100% - 16em); }
@@ -58,6 +59,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 /* group */
 .group { padding: 1.5em 1.5em 0; }
 .group h4 { padding-bottom: 0.6em; border-bottom: 1px #ccc solid; color: #888; }
+.group h4 span { margin-right: 0.25em; }
 .group .type { text-transform: capitalize; color: #000; }
 .group .box { border: 1px #ccc solid; border-radius: 0.25em; margin-top: 1.5em; overflow: auto; }
 .group table { border-spacing: 0; min-width: 100%; }
