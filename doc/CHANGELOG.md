@@ -10,6 +10,7 @@
 - Fix: existence check in deep equal function.
 - Polish: the `compression` flag has been renamed to `useCompression`.
 - Polish: the form serializer now ignores empty values in arrays, so sparse arrays are not possible.
+- Polish: revise default sorting behavior in memory adapter - null values are always last.
 
 
 ### 3.3.5 (2016-03-24)

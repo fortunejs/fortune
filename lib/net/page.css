@@ -6,7 +6,8 @@ html, body { height: 100% }
 body, input { font-size: 16px; font-family: 'Avenir', 'Calibri', 'FreeSans', sans-serif; }
 body { line-height: 1.5; background: #eee; color: #444; }
 a { color: inherit; text-decoration: inherit; }
-h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-family: 'Garamond', 'Times New Roman', Times, serif; font-weight: normal; font-style: italic; }
+h1, h2, h3, h4, h5, h6, aside > label { font-family: 'Garamond', 'Times New Roman', Times, serif; }
+h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-weight: normal; font-style: italic; }
 
 /* index */
 .index { width: 100%; height: 100%; display: table; text-align: center; }
@@ -27,8 +28,29 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 .index h1 { font-size: 2em; margin-bottom: 0.6em; }
 .index p { color: #888; margin-bottom: 4.5em; }
 
+/* sidebar */
+aside { position: fixed; top: 0; right: calc(100% - 1.5em); height: 100%; z-index: 100; transition: right 0.2s ease; }
+aside > label { position: absolute; top: 0; right: 0; background: #829FA8; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
+aside > label:after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: #718F99; }
+aside > label > span:first-of-type { font-size: 2em; line-height: 1.875; text-align: center; width: 100%; display: block; margin-top: -0.08em; padding-bottom: 0.08em; padding-right: 0.06em; border-bottom: 1px #718F99 solid; background: #91B2BD; color: rgba(255, 255, 255, 1); }
+aside > label strong:last-of-type { display: none; }
+aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -1.25em; transform: rotate(-90deg); transform-origin: 0 0; white-space: nowrap; font-style: italic; }
+
+/* sidebar */
+.sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: rgb(19, 43, 51); transition: right 0.2s ease; z-index: 99; }
+.sidebar h4 { padding: 0.3em 0.6em; margin: 0.6em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; }
+.sidebar .input-group { margin: 0.625em 0 1.5em; }
+.sidebar input { background: none; color: #fff; height: 2.5em; display: block; width: 100%; border-bottom: 1px rgba(255, 255, 255, 0.25) solid; }
+.sidebar .button { display: block; margin: 1.5em 0; text-align: center; }
+
+#sidebar-toggle:checked ~ aside { right: calc(100% - 16em); }
+#sidebar-toggle:checked ~ .sidebar { right: calc(100% - 14.5em); }
+#sidebar-toggle:checked ~ aside > label strong:last-of-type { display: inline; }
+#sidebar-toggle:checked ~ aside > label strong:first-of-type { display: none; }
+#sidebar-toggle:checked ~ main { padding-left: 16em; }
+
 /* collection */
-main { min-height: 100%; position: relative; padding-bottom: 1.5em; }
+main { min-height: 100%; position: relative; left: 0; padding-bottom: 1.5em; padding-left: 1.5em; transition: padding-left 0.2s ease, left 0.2s ease; }
 main > header { color: #888; padding: 1.125em 1.5em; background: #fff; border-bottom: 1px #ccc solid; }
 main > header a { color: #31BAE8; }
 main > header > .button { float: right; margin-left: 1.5em; }
@@ -53,7 +75,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .group .value { color: #444; }
 .group form { display: inline; margin-right: 0.75em; }
 .group form:last-of-type { margin-right: 0; }
-.group label, .group time { color: #666; }
+.group label, .group time { color: #888; }
 .group .boolean { margin-right: 0.5em; pointer-events: none; font-weight: bold; }
 .group .boolean.true { color: #61B840; }
 .group .boolean.false { color: #D9603F; }
@@ -72,7 +94,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .button .icon { font-size: 1.25em; line-height: 1.2; margin-right: 0.25em; }
 
 /* modal */
-.modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 43, 51, 0.92); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.4s ease; overflow: auto; line-height: 100%; }
+.modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 43, 51, 0.92); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.3s ease; overflow: auto; line-height: 100%; z-index: 200; }
 .modal .container { display: inline-block; max-width: 38em; width: 100%; vertical-align: middle; padding: 6em 1.5em; }
 .modal:before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
 .modal h2 { color: #fff; padding: 0.6em 1.2em; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; margin-bottom: 0.6em; display: inline-block; }
@@ -84,7 +106,6 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .modal .close:active { transform: scale(0.9); }
 main > header input:checked + .modal, .group input:checked + .modal { opacity: 1; pointer-events: inherit; transform: scale(1); }
 
-
 /* misc */
 ::-moz-selection { color: #fff; background: #31BAE8; }
 ::selection { color: #fff; background: #31BAE8; }
@@ -92,9 +113,19 @@ main > header input:checked + .modal, .group input:checked + .modal { opacity: 1
 ::-moz-placeholder { color: #fff; opacity: 0.25; }
 :-ms-input-placeholder { color: #fff; opacity: 0.25; }
 :-moz-placeholder { color: #fff; opacity: 0.25; }
-.button, .group span.empty, .group .boolean, .modal .close { -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+.button, .group span.empty, .group .boolean, .modal .close, aside > label > span { -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 .hidden { display: none !important; }
 
 /* responsive */
-@media (max-width: 800px) { body, input { font-size: 14px; } }
-@media (max-width: 640px) { body, input { font-size: 12px; } }
+@media (max-width: 800px) {
+body, input { font-size: 14px; }
+}
+
+@media (max-width: 640px) {
+html, body { overflow-x: hidden; }
+body, input { font-size: 12px; }
+#sidebar-toggle:checked ~ aside { right: 0; }
+#sidebar-toggle:checked ~ main { padding-left: 1.5em; left: 100%; }
+.sidebar { width: calc(100% - 1.5em); }
+#sidebar-toggle:checked ~ .sidebar { right: calc(1.5em); }
+}
