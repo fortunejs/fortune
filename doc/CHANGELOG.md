@@ -1,7 +1,11 @@
 # Changelog
 
 
-### 3.4.0 (2016-03-26)
+### 3.4.1 (2016-03-27)
+- Polish: expose `castToNumber` function in HTTP serializer.
+
+
+### 3.4.0 (2016-03-27)
 - Feature: new internal HTTP helper function `initializeContext`, useful for unifying HTTP parsing. It is also now the default behavior of `processRequest`.
 - Feature: new internal HTTP helper function `encodeRoute`, to format links for use with `initializeContext`.
 - Feature: default HTML serializer, accessible at `net.http.HtmlSerializer`.
