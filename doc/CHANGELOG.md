@@ -1,7 +1,8 @@
 # Changelog
 
 
-### 3.4.1 (2016-03-27)
+### 3.4.2 (2016-03-27)
+- Polish: do not respond to `OPTIONS` if route looks incorrect.
 - Polish: expose `castToNumber` function in HTTP serializer.
 
 
