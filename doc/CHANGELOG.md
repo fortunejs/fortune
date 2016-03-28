@@ -1,9 +1,11 @@
 # Changelog
 
 
-### 3.4.3 (2016-03-28)
+### 3.4.4 (2016-03-28)
 - Feature: try to parse options in include.
 - Fix: escape JSON output in HTML serializer.
+- Fix: show correct fields when using fields option in HTML serializer.
+- Fix: `include` should always work, even when the fields are excluded using `fields`.
 - Polish: improve matching and pagination UI in HTML serializer.
 
 

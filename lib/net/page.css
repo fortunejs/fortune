@@ -65,14 +65,14 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .group table { border-spacing: 0; min-width: 100%; }
 .group tr:first-of-type th { background: #fff !important; }
 .group tr:first-of-type { font-weight: bold; color: inherit; }
-.group tr:first-of-type th:last-of-type { font-style: italic; }
-.group td:last-of-type, .group th:last-of-type { text-align: center; }
+.group tr:first-of-type th:last-of-type { color: #888; font-weight: normal; }
+.group td:last-of-type, .group th:last-of-type { text-align: right; }
 .group tr:last-of-type td { border-bottom: none; }
 .group tr:nth-of-type(2n) td { background: #F0F7FA; }
 .group tr:nth-of-type(2n + 1) td { background: #EAF3F6; }
 .group td, .group th { color: #bbb; padding: 1.125em 1.5em; border-right: 1px #DAE6EB solid; border-bottom: 1px #DAE6EB solid; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 20em; }
 .group th { color: inherit; border-right: 1px #eee solid; border-bottom: 1px #ccc solid; text-align: left; }
-.group td.empty { font-style: italic; padding: 3em 1.5em; }
+.group td.empty { font-style: italic; padding: 3em 1.5em; text-align: center; }
 .group span.empty { pointer-events: none; }
 .group .value { color: #444; }
 .group form { display: inline; margin-right: 0.75em; }
@@ -103,7 +103,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .modal label { text-align: left; display: block; color: rgba(255, 255, 255, 0.75); font-weight: bold; padding: 1.5em 0 0.75em; }
 .modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; }
 .modal input { display: block; width: 100%; background: none; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; color: rgba(255, 255, 255, 0.75); height: 3em; }
-.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 0.8; background: #D9603F; cursor: pointer; border-radius: 0.5em; padding: 0; font-weight: normal; text-align: center; transition: transform 0.1s ease; }
+.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 0.8; background: #D9603F; cursor: pointer; border-radius: 0.5em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
 .modal .close:hover, .modal .close:active { transform: scale(1.1); }
 .modal .close:active { transform: scale(0.9); }
 main > header input:checked + .modal, .group input:checked + .modal { opacity: 1; pointer-events: inherit; transform: scale(1); }
