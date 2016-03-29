@@ -103,7 +103,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .modal label { text-align: left; display: block; color: rgba(255, 255, 255, 0.75); font-weight: bold; padding: 1.5em 0 0.75em; }
 .modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; }
 .modal input { display: block; width: 100%; background: none; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; color: rgba(255, 255, 255, 0.75); height: 3em; }
-.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 0.8; background: #D9603F; cursor: pointer; border-radius: 0.5em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
+.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 0.8; background: #D9603F; cursor: pointer; border-radius: 0.1em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
 .modal .close:hover, .modal .close:active { transform: scale(1.1); }
 .modal .close:active { transform: scale(0.9); }
 main > header input:checked + .modal, .group input:checked + .modal { opacity: 1; pointer-events: inherit; transform: scale(1); }
