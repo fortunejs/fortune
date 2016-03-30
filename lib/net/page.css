@@ -28,7 +28,7 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 .index h1 { font-size: 2em; margin-bottom: 0.6em; }
 .index p { color: #888; margin-bottom: 4.5em; }
 
-/* sidebar */
+/* sidebar label */
 aside { position: fixed; top: 0; right: calc(100% - 1.5em); height: 100%; z-index: 100; transition: right 0.2s ease; }
 aside > label { position: absolute; top: 0; right: 0; background: #829FA8; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
 aside > label:after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: #718F99; }
@@ -38,7 +38,7 @@ aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -
 
 /* sidebar */
 .sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: rgb(19, 43, 51); transition: right 0.2s ease; z-index: 99; }
-.sidebar h2 { padding: 0.3em 0.6em; margin: 0.6em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; }
+.sidebar h2 { padding: 0.5em 0.75em; margin: 0.75em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; font-family: inherit; font-style: inherit; font-size: 1em; font-weight: bold; }
 .sidebar h3 { font-family: inherit; font-size: 1em; font-style: normal; font-weight: bold; margin-top: 0.625em; color: rgba(255, 255, 255, 0.75); }
 .sidebar .input-group { margin: 0.625em 0 1.5em; }
 .sidebar input { background: none; color: rgba(255, 255, 255, 0.75); height: 2.5em; display: block; width: 100%; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; }
@@ -103,7 +103,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .modal label { text-align: left; display: block; color: rgba(255, 255, 255, 0.75); font-weight: bold; padding: 1.5em 0 0.75em; }
 .modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; }
 .modal input { display: block; width: 100%; background: none; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; color: rgba(255, 255, 255, 0.75); height: 3em; }
-.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 0.8; background: #D9603F; cursor: pointer; border-radius: 0.1em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
+.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 1; background: #D9603F; cursor: pointer; border-radius: 0.1em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
 .modal .close:hover, .modal .close:active { transform: scale(1.1); }
 .modal .close:active { transform: scale(0.9); }
 main > header input:checked + .modal, .group input:checked + .modal { opacity: 1; pointer-events: inherit; transform: scale(1); }
