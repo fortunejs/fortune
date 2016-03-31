@@ -15,13 +15,11 @@ module.exports = () => {
   const store = fortune({
     user: {
       name: { type: String },
-      camelCaseField: { type: String },
       birthday: { type: Date },
       picture: { type: Buffer },
       createdAt: { type: Date },
-      lastModified: { type: Date },
+      lastModifiedAt: { type: Date },
       nicknames: { type: String, isArray: true },
-      someDate: { type: Date },
 
       // Many to many
       friends: { link: 'user', inverse: 'friends', isArray: true },
@@ -45,10 +43,9 @@ module.exports = () => {
 
       birthday: { type: Date },
       createdAt: { type: Date },
-      lastModified: { type: Date },
-      picture: { type: Buffer },
+      lastModifiedAt: { type: Date },
       nicknames: { type: String, isArray: true },
-      someDate: { type: Date },
+      picture: { type: Buffer },
 
       // One to many
       owner: { link: 'user', inverse: 'ownedPets' }
@@ -67,7 +64,7 @@ module.exports = () => {
 
           if (method === methods.update) {
             if (!('replace' in update)) update.replace = {}
-            update.replace.lastModified = new Date()
+            update.replace.lastModifiedAt = new Date()
             return update
           }
 
@@ -90,7 +87,7 @@ module.exports = () => {
 
           if (method === methods.update) {
             if (!('replace' in update)) update.replace = {}
-            update.replace.lastModified = new Date()
+            update.replace.lastModifiedAt = new Date()
             return update
           }
 

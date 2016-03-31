@@ -80,12 +80,12 @@ run(() => {
 run(() => {
   comment('get records with match')
   return test(`/animal?${qs.stringify({
-    'match.name': 'Fido'
+    'match.name': 'Babby'
   })}`, null, response => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    ok(response.body.records[0].name === 'Fido', 'match is correct')
+    ok(response.body.records[0].name === 'Babby', 'match is correct')
   })
 })
 
@@ -98,7 +98,7 @@ run(() => {
     ok(response.status === 200, 'status is correct')
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
-    ok(response.body.records[0].name === 'Fido', 'match is correct')
+    ok(response.body.records[0].name === 'Babby', 'match is correct')
   })
 })
 
@@ -129,7 +129,7 @@ run(() => {
     ok(~response.headers['content-type'].indexOf('application/json'),
       'content type is correct')
     ok(deepEqual(response.body.records.map(record => record.name),
-      [ 'Fido', 'Sniffles' ]), 'response body is correct')
+      [ 'Babby', 'Kantorin' ]), 'response body is correct')
   })
 })
 

@@ -1,6 +1,12 @@
 # Changelog
 
 
+### 3.4.5 (2016-03-31)
+- Polish: improve unicode icons in HTML serializer.
+- Polish: use appropriate error message in form serializer.
+- Polish: update test fixture data.
+
+
 ### 3.4.4 (2016-03-28)
 - Feature: try to parse options in include.
 - Fix: escape JSON output in HTML serializer.

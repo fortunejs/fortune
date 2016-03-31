@@ -2,7 +2,9 @@ exports.user = [
   {
     id: 1,
     name: 'John Doe',
-    camelCaseField: 'Something with a camel case field.',
+    picture: new Buffer('deadbeef', 'hex'),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1992, 11, 7)),
     spouse: 2,
     ownedPets: [ 1 ],
@@ -11,6 +13,9 @@ exports.user = [
   {
     id: 2,
     name: 'Jane Doe',
+    picture: new Buffer('cafebabe', 'hex'),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1997, 6, 30)),
     spouse: 1,
     ownedPets: [ 2, 3 ],
@@ -20,7 +25,11 @@ exports.user = [
   {
     id: 3,
     name: 'Microsoft Bob',
+    picture: new Buffer('babecafe', 'hex'),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1995, 3, 10)),
+    nicknames: [ 'Idiot', 'Genius' ],
     friends: [ 1, 2 ],
 
     // Hidden denormalized field.
@@ -31,29 +40,42 @@ exports.user = [
 exports.animal = [
   {
     id: 1,
-    name: 'Fido',
+    name: 'Babby',
+    type: 'Hamster',
+    nicknames: [ 'Coroham', 'Coron' ],
     birthday: new Date(Date.UTC(2012, 12, 25)),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     isNeutered: true,
     owner: 1
   },
   {
     id: 2,
-    name: 'Cuddles',
+    name: 'Babbette',
+    type: 'Hamster',
     birthday: new Date(Date.UTC(2014, 3, 1)),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     isNeutered: false,
     owner: 2
   },
   {
     id: 3,
-    name: 'Sniffles',
+    name: 'Lappy',
+    type: 'Bunny',
     birthday: new Date(Date.UTC(2013, 5, 22)),
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     isNeutered: true,
     owner: 2
   },
   {
     id: '/wtf',
-    name: 'WTF',
+    name: 'Kantorin',
+    type: 'Bunny',
     birthday: new Date(Date.UTC(2020, 4, 20)),
-    type: 'Foobar'
+    createdAt: new Date(Date.UTC(2016, 3, 29)),
+    lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
+    isNeutered: false
   }
 ]

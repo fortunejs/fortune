@@ -93,7 +93,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .button.blue:hover, .button.blue:active { background: #31BAE8; }
 .button.red { border-color: #D9603F; color: #D9603F; }
 .button.red:hover, .button.red:active { background: #D9603F; }
-.button .icon { font-size: 1.25em; line-height: 1.2; margin-right: 0.25em; }
+.button .icon { margin-right: 0.375em; }
 
 /* modal */
 .modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 43, 51, 0.92); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.3s ease; overflow: auto; line-height: 100%; z-index: 200; }
@@ -101,9 +101,9 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .modal:before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
 .modal h2 { color: #fff; padding: 0.6em 1.2em; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; margin-bottom: 0.6em; display: inline-block; }
 .modal label { text-align: left; display: block; color: rgba(255, 255, 255, 0.75); font-weight: bold; padding: 1.5em 0 0.75em; }
-.modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; }
+.modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; font-weight: inherit; }
 .modal input { display: block; width: 100%; background: none; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; color: rgba(255, 255, 255, 0.75); height: 3em; }
-.modal .close { position: absolute; top: 0.5em; right: 0.5em; color: #fff; font-size: 3em; width: 1em; height: 1em; line-height: 1; background: #D9603F; cursor: pointer; border-radius: 0.1em; padding: 0; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
+.modal .close { position: absolute; top: 0.75em; right: 0.75em; color: #fff; font-size: 2em; width: 1.5em; height: 1.5em; line-height: 1; background: #D9603F; cursor: pointer; border-radius: 0.1em; padding: 0.25em; font-weight: normal; text-align: center; vertical-align: middle; transition: transform 0.1s ease; }
 .modal .close:hover, .modal .close:active { transform: scale(1.1); }
 .modal .close:active { transform: scale(0.9); }
 main > header input:checked + .modal, .group input:checked + .modal { opacity: 1; pointer-events: inherit; transform: scale(1); }
