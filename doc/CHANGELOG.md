@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.5.1 (2016-04-07)
+- Fix: swap implementation of CRC32 to `fast-crc32c`, to prevent install errors.
+
+
 ### 3.5.0 (2016-04-07)
 - Feature: HTTP implementation now includes default ETag implementation using [hardware-accelerated CRC32](https://github.com/Voxer/sse4_crc32) on SSE4.2-capable processors.
 - Polish: prefer forward iteration within codebase.
