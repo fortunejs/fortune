@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A library for managing data in Node.js and web browsers.",
-  "version": "3.4.5",
+  "version": "3.5.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -33,6 +33,7 @@
     "event-lite": "^0.1.1",
     "msgpack-lite": "^0.1.17",
     "negotiator": "^0.6.0",
+    "sse4_crc32": "^4.1.1",
     "ws": "^1.0.1"
   },
   "optionalDependencies": {
