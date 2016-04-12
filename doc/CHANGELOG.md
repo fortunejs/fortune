@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.5.2 (2016-04-12)
+- Fix: regression in WebSocket server in which an undeclared function is called.
+
+
 ### 3.5.1 (2016-04-07)
 - Fix: swap implementation of CRC32 to `fast-crc32c`, to prevent install errors.
 
