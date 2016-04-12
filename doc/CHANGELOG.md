@@ -1,8 +1,9 @@
 # Changelog
 
 
-### 3.5.2 (2016-04-12)
-- Fix: regression in WebSocket server in which an undeclared function is called.
+### 3.5.3 (2016-04-12)
+- Fix: regression in WebSocket server in which an undeclared function is called. Thanks [@kketch](https://github.com/kketch).
+- Fix: remove listener on process when a WebSocket connection is closed. Thanks [@kketch](https://github.com/kketch).
 
 
 ### 3.5.1 (2016-04-07)
