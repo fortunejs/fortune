@@ -180,6 +180,30 @@ run(() => {
 
 
 run(() => {
+  comment('update one to many (no inverse updates)')
+  return updateTest({
+    change: data => {
+      ok(data[updateMethod].animal[0].replace.owner === 1,
+        'change event is empty')
+    },
+    type: 'animal',
+    payload: [
+      {
+        [primaryKey]: 1,
+        replace: { owner: 1 }
+      }
+    ],
+    relatedType: 'user',
+    related: response => {
+      ok(deepEqual(find(response.payload.records,
+        record => record[primaryKey] === 1).ownedPets, [ 1 ]),
+        'related field is correct')
+    }
+  })
+})
+
+
+run(() => {
   comment('update one to many (set)')
   return updateTest({
     change: data => {

@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.5.4 (2016-04-13)
+- Fix: edge case in update in which a one-to-many relationship update would cause duplicate values in the many side, if the one-sided value didn't change.
+
+
 ### 3.5.3 (2016-04-12)
 - Fix: regression in WebSocket server in which an undeclared function is called. Thanks [@kketch](https://github.com/kketch).
 - Fix: remove listener on process when a WebSocket connection is closed. Thanks [@kketch](https://github.com/kketch).
