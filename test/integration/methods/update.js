@@ -108,7 +108,7 @@ run(() => {
     change: data => {
       ok(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
-        [ 1, 2 ]), 'change event shows updated IDs')
+        [ 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
     payload: [
