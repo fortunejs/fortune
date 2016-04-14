@@ -115,8 +115,8 @@ module.exports = (adapter, options) => {
           'buffer type is correct')
         ok(deadbeef.equals(records[0].picture),
           'buffer value is correct')
-        ok(deepEqual(records[0].privateKeys, [ key1, key2 ]),
-          'array of buffers is correct')
+        ok(deepEqual(records[0].privateKeys.map(x => x.toString('hex')),
+          [ 'cafe', 'babe' ]), 'array of buffers is correct')
       })
     })
   })

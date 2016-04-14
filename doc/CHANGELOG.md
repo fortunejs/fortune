@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.5.5 (2016-04-14)
+- Fix: revise test case in adapter.
+
+
 ### 3.5.4 (2016-04-13)
 - Fix: edge case in update in which a one-to-many relationship update would cause duplicate values in the many side, if the one-sided value didn't change.
 
