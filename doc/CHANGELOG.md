@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.5.6 (2016-04-20)
+- Fix: small fix in HTTP context initializer which caused an incorrect Allow header to be shown for the index.
+
+
 ### 3.5.5 (2016-04-14)
 - Fix: revise test case in adapter.
 
