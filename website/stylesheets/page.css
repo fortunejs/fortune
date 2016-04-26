@@ -146,11 +146,10 @@ header nav {
   position: relative;
   text-align: center;
   padding: calc(var(--line-height) * 1 / 2) var(--line-height);
-  background-color: color(var(--color-accent) w(+ 15%));
+  background-color: color(var(--color-accent) w(+ 12%));
 }
 
-header nav:before,
-header nav:after {
+header nav:before {
   display: block;
   content: ' ';
   position: absolute;
@@ -158,12 +157,7 @@ header nav:after {
   left: 0;
   height: 1px;
   width: 100%;
-  background-color: color(var(--color-accent) b(+ 10%));
-}
-
-header nav:before {
-  top: auto;
-  bottom: 0;
+  background-color: color(var(--color-accent) b(+ 6%));
 }
 
 header nav a {

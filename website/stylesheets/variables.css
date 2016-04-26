@@ -12,22 +12,8 @@
   --color-attribute: #B55E3E;
 
   /* fonts */
-  --font-body:
-    'Roboto',
-    /* Mac */
-    'Avenir',
-    /* Windows */
-    'Calibri',
-    /* Linux */
-    'FreeSans',
-    sans-serif;
-  --font-mono:
-    'Fira Mono',
-    'Monaco',
-    'Consolas',
-    'Lucida Console',
-    'Liberation Mono',
-    monospace;
+  --font-body: sans-serif;
+  --font-mono: monospace;
 
   /* measurements */
   --max-width: 50em;

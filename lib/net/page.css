@@ -30,15 +30,15 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 
 /* sidebar label */
 aside { position: fixed; top: 0; right: calc(100% - 1.5em); height: 100%; z-index: 100; transition: right 0.2s ease; }
-aside > label { position: absolute; top: 0; right: 0; background: #829FA8; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
-aside > label:after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: #718F99; }
-aside > label > span:first-of-type { font-size: 2em; line-height: 1.875; text-align: center; width: 100%; display: block; margin-top: -0.08em; padding-bottom: 0.08em; padding-right: 0.06em; border-bottom: 1px #718F99 solid; background: #91B2BD; color: rgba(255, 255, 255, 1); }
+aside > label { position: absolute; top: 0; right: 0; background: #222; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
+aside > label:after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: #444; }
+aside > label > span:first-of-type { font-size: 2em; line-height: 1.875; text-align: center; width: 100%; display: block; margin-top: -0.08em; padding-bottom: 0.08em; padding-right: 0.06em; border-bottom: 1px #444 solid; background: #393939; color: rgba(255, 255, 255, 1); }
 aside > label strong:last-of-type { display: none; }
 aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -1.25em; transform: rotate(-90deg); transform-origin: 0 0; white-space: nowrap; font-style: italic; }
 
 /* sidebar */
-.sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: rgb(19, 43, 51); transition: right 0.2s ease; z-index: 99; }
-.sidebar h2 { padding: 0.5em 0.75em; margin: 0.75em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; text-align: center; font-family: inherit; font-style: inherit; font-size: 1em; font-weight: bold; }
+.sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: #2c2c2c; transition: right 0.2s ease; z-index: 99; }
+.sidebar h2 { padding: 0.5em 0.75em; margin: 0.75em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.075); border-radius: 0.25em; text-align: center; font-family: inherit; font-style: inherit; font-size: 1em; font-weight: bold; }
 .sidebar h3 { font-family: inherit; font-size: 1em; font-style: normal; font-weight: bold; margin-top: 0.625em; color: rgba(255, 255, 255, 0.75); }
 .sidebar .input-group { margin: 0.625em 0 1.5em; }
 .sidebar input { background: none; color: rgba(255, 255, 255, 0.75); height: 2.5em; display: block; width: 100%; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; }
@@ -49,10 +49,11 @@ aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -
 #sidebar-toggle:checked ~ aside > label strong:last-of-type { display: inline; }
 #sidebar-toggle:checked ~ aside > label strong:first-of-type { display: none; }
 #sidebar-toggle:checked ~ main { padding-left: 16em; }
+#sidebar-toggle:checked ~ main > header { left: 16em; width: calc(100% - 16em); }
 
 /* collection */
-main { min-height: 100%; position: relative; left: 0; padding-bottom: 1.5em; padding-left: 1.5em; transition: padding-left 0.2s ease, left 0.2s ease; }
-main > header { color: #888; padding: 1.125em 1.5em; background: #fff; border-bottom: 1px #ccc solid; }
+main { min-height: 100%; position: relative; left: 0; padding-top: 3.75em; padding-bottom: 1.5em; padding-left: 1.5em; transition: padding-left 0.2s ease, left 0.2s ease; }
+main > header { color: #888; padding: 1.125em 1.5em; background: #fff; border-bottom: 1px #ccc solid; position: fixed; top: 0; left: 1.5em; width: calc(100% - 1.5em); transition: left 0.2s ease, width 0.2s ease; }
 main > header a { color: #31BAE8; }
 main > header > .button { float: right; margin-left: 1.5em; }
 
@@ -68,27 +69,23 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .group tr:first-of-type th:last-of-type { color: #888; font-weight: normal; }
 .group td:last-of-type, .group th:last-of-type { text-align: right; }
 .group tr:last-of-type td { border-bottom: none; }
-.group tr:nth-of-type(2n) td { background: #F0F7FA; }
-.group tr:nth-of-type(2n + 1) td { background: #EAF3F6; }
-.group td, .group th { color: #bbb; padding: 1.125em 1.5em; border-right: 1px #DAE6EB solid; border-bottom: 1px #DAE6EB solid; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 20em; }
-.group th { color: inherit; border-right: 1px #eee solid; border-bottom: 1px #ccc solid; text-align: left; }
+.group tr:nth-of-type(2n) td { background: #f2f2f2; }
+.group tr:nth-of-type(2n + 1) td { background: #eee; }
+.group td, .group th { color: #bbb; padding: 1.125em 1.5em; border-right: 1px #ddd solid; border-bottom: 1px #ddd solid; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 20em; }
+.group th { color: inherit; border-right: 1px #ddd solid; border-bottom: 1px #ccc solid; text-align: left; }
 .group td.empty { font-style: italic; padding: 3em 1.5em; text-align: center; }
 .group span.empty { pointer-events: none; }
 .group .value { color: #444; }
 .group form { display: inline; margin-right: 0.75em; }
 .group form:last-of-type { margin-right: 0; }
 .group label, .group time { color: #888; }
-.group .boolean { margin-right: 0.5em; pointer-events: none; font-weight: bold; }
-.group .boolean.true { color: #61B840; }
-.group .boolean.false { color: #D9603F; }
+.group .boolean { margin-right: 0.5em; pointer-events: none; font-weight: bold; color: #888; }
 .group a, .group a .value { color: #31BAE8; }
 .group a:hover { text-decoration: underline; }
 
 /* button */
 .button { display: inline-block; padding: calc(0.375em - 1px) 0.75em; margin: -0.375em 0; border: 1px #666 solid; color: #666; border-radius: 0.25em; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; }
 .button:hover, .button:active { background: #666; color: #fff !important; }
-.button.green { border-color: #61B840; color: #61B840; }
-.button.green:hover, .button.green:active { background: #61B840; }
 .button.blue { border-color: #31BAE8; color: #31BAE8; }
 .button.blue:hover, .button.blue:active { background: #31BAE8; }
 .button.red { border-color: #D9603F; color: #D9603F; }
@@ -96,7 +93,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 .button .icon { margin-right: 0.375em; }
 
 /* modal */
-.modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 43, 51, 0.92); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.3s ease; overflow: auto; line-height: 100%; z-index: 200; }
+.modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.3s ease; overflow: auto; line-height: 100%; z-index: 200; }
 .modal .container { display: inline-block; max-width: 38em; width: 100%; vertical-align: middle; padding: 6em 1.5em; }
 .modal:before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
 .modal h2 { color: #fff; padding: 0.6em 1.2em; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; margin-bottom: 0.6em; display: inline-block; }
@@ -128,6 +125,7 @@ html, body { overflow-x: hidden; }
 body, input { font-size: 12px; }
 #sidebar-toggle:checked ~ aside { right: 0; }
 #sidebar-toggle:checked ~ main { padding-left: 1.5em; left: 100%; }
+#sidebar-toggle:checked ~ main > header { left: 1.5em; width: calc(100% - 1.5em); }
 .sidebar { width: calc(100% - 1.5em); }
 #sidebar-toggle:checked ~ .sidebar { right: calc(1.5em); }
 }
