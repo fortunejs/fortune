@@ -19,7 +19,8 @@ const Promise = promise.Promise
 
 const recordTypes = {
   type: {
-    int: { type: Integer }
+    int: { type: Integer },
+    foo: { type: Number, isArray: true }
   }
 }
 
@@ -33,6 +34,30 @@ const adapter = new MemoryAdapter({
 })
 
 testAdapter(memoryAdapter)
+
+run(function () {
+  comment('missing fields')
+  return adapter.connect()
+  .then(() => {
+    adapter.db['type'] = {
+      a: { id: 'a', int: 1 }
+    }
+    return adapter.update('type', [ {
+      id: 'a', push: { foo: 1 }
+    } ])
+  })
+  .then(count => {
+    ok(count === 1, 'count is correct')
+    return adapter.find('type')
+  })
+  .then(records => {
+    ok(deepEqual(records[0].foo, [ 1 ]), 'pushed value')
+  })
+  .catch(error => {
+    throw error
+  })
+})
+
 
 run(function () {
   comment('custom types')
