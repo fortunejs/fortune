@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 3.5.7 (2016-05-04)
+- Polish: check for existence of link field on include.
+- Polish: update CSS for HTML serializer.
+
+
 ### 3.5.6 (2016-04-20)
 - Fix: small fix in HTTP context initializer which caused an incorrect Allow header to be shown for the index.
 
