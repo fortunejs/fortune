@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a library for managing data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
+Fortune.js is a library for managing structured data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
 [View the website](http://fortunejs.com) for documentation. Get it from `npm`:
 
