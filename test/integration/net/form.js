@@ -37,6 +37,25 @@ run(() => {
 
 
 run(() => {
+  comment('find records using urlencoded data')
+  return test(`/animal`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: qs.stringify({
+      method: 'find',
+      'match.name': 'Babby'
+    })
+  }, response => {
+    ok(response.status === 200, 'status is correct')
+    ok(~response.headers['content-type'].indexOf('application/json'),
+      'content type is correct')
+    ok(deepEqual(response.body.records.map(record => record.name),
+      [ 'Babby' ]), 'response body is correct')
+  })
+})
+
+
+run(() => {
   comment('create records using urlencoded data')
   return test(`/animal`, {
     method: 'post',

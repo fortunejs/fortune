@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 3.7.0 (2016-05-13)
+- Feature: added method `find` to form serializer, useful for long queries.
+- Polish: query syntax must now include `.` as a delimiter, i.e. `match.name`.
+
+
 ### 3.6.0 (2016-05-12)
 - Feature: added `merge` function to `fortune.net.sync`, which allows the client to reject remote changes.
 
