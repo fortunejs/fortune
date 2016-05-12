@@ -4,8 +4,8 @@
 ### 4.0.0 (2016-05-13)
 - Breaking change: changed signature of `fortune.net.request`, options object format now matches that of `fortune.request`.
 - Feature: added method `find` to form serializer, useful for long queries.
-- Polish: query syntax must now include `.` as a delimiter, i.e. `match.name`.
 - Feature: added `merge` function to `fortune.net.sync`, which allows the client to reject remote changes.
+- Polish: query syntax must now include "`.`" as a delimiter, i.e. `match.name`.
 
 
 ### 3.5.7 (2016-05-04)
