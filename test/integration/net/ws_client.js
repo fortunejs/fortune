@@ -28,10 +28,10 @@ run(() => {
       client.addEventListener('error', reject)
     })
   })
-  .then(() => fortune.net.request(client, { state: { foo: 'bar' } }))
+  .then(() => fortune.net.request(client, null, { foo: 'bar' }))
   .then(result => {
     ok(result.state.foo === 'bar', 'connection state is set')
-    return fortune.net.request(client, { request: { type: 'user' } })
+    return fortune.net.request(client, { type: 'user' })
   })
   .then(result => {
     ok(result.response.payload.records.length === 3, 'records fetched')
@@ -45,16 +45,16 @@ run(() => {
         })
       }),
       fortune.net.request(client, {
-        request: { type: 'user', method: 'create', payload: [ {
+        type: 'user', method: 'create', payload: [ {
           picture: new Buffer('cafebabe', 'hex')
-        } ] }
+        } ]
       })
     ])
   })
   .then(results => {
     ok(results[1].response.payload.records.length === 1, 'record created')
-    return fortune.net.request(client, { x: 'y' })
+    return fortune.net.request(client)
   })
   .then(() => fail('should have failed'), () => pass('error occurs'))
-  .then(() => fortune.net.request(client, { state: { kill: true } }))
+  .then(() => fortune.net.request(client, null, { kill: true }))
 })
