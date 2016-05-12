@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 3.6.0 (2016-05-12)
+- Feature: added `merge` function to `fortune.net.sync`, which allows the client to reject remote changes.
+
+
 ### 3.5.7 (2016-05-04)
 - Polish: check for existence of link field on include.
 - Polish: update CSS for HTML serializer.

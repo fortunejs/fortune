@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A library for managing structured data in Node.js and web browsers.",
-  "version": "3.5.7",
+  "version": "3.6.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -33,7 +33,7 @@
     "event-lite": "^0.1.1",
     "fast-crc32c": "^1.0.2",
     "msgpack-lite": "^0.1.20",
-    "negotiator": "^0.6.0",
+    "negotiator": "^0.6.1",
     "ws": "^1.1.0"
   },
   "optionalDependencies": {
@@ -42,15 +42,15 @@
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
-    "browserify": "^13.0.0",
+    "browserify": "^13.0.1",
     "chalk": "^1.1.3",
     "cssnano": "^3.5.2",
     "docchi": "^0.12.0",
-    "eslint": "^2.8.0",
+    "eslint": "^2.9.0",
     "eslint-config-0x8890": "^1.0.2",
     "form-data": "^1.0.0-rc4",
     "highlight.js": "^9.3.0",
-    "html-minifier": "^2.1.0",
+    "html-minifier": "^2.1.2",
     "http-server": "^0.9.0",
     "inflection": "^1.10.0",
     "istanbul": "^0.4.3",
@@ -58,9 +58,9 @@
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "normalize.css": "^4.1.1",
-    "postcss": "^5.0.19",
+    "postcss": "^5.0.21",
     "postcss-cssnext": "^2.5.2",
-    "postcss-import": "^8.1.0",
+    "postcss-import": "^8.1.2",
     "rimraf": "^2.5.2",
     "tapdance": "^4.1.1",
     "tape-run": "^2.1.3"
