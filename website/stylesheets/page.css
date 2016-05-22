@@ -120,7 +120,7 @@ header {
   background-color: var(--color-accent);
   position: relative;
   overflow: hidden;
-  padding-top: calc(var(--line-height) * 7 / 3);
+  padding-top: calc(var(--line-height) * 5 / 2);
 }
 
 header > a {

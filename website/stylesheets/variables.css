@@ -12,11 +12,11 @@
   --color-attribute: #B55E3E;
 
   /* fonts */
-  --font-body: sans-serif;
+  --font-body: Helvetica, Arial, sans-serif;
   --font-mono: monospace;
 
   /* measurements */
-  --max-width: 51em;
+  --max-width: 49em;
   --size-body: 17px;
   --size-mono: calc(1em * 16 / 17);
   --line-height: calc(1em * 5 / 3);
