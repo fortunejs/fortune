@@ -63,7 +63,7 @@
     "postcss-import": "^8.1.2",
     "rimraf": "^2.5.2",
     "tapdance": "^4.1.1",
-    "tape-run": "^2.1.3"
+    "tape-run": "^2.1.4"
   },
   "files": [
     "lib/",
