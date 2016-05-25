@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 4.0.1 (2016-05-25)
+### 4.0.2 (2016-05-25)
 - Fix: consider `prefix` option when parsing a HTTP request in the default serializers.
 
 
