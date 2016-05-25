@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.0.1 (2016-05-25)
+- Fix: consider `prefix` option when parsing a HTTP request in the default serializers.
+
+
 ### 4.0.0 (2016-05-13)
 - Breaking change: changed signature of `fortune.net.request`, options object format now matches that of `fortune.request`.
 - Feature: added method `find` to form serializer, useful for long queries.
