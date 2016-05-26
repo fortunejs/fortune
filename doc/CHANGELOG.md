@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.0.3 (2016-05-26)
+- Fix: IndexedDB ID handling, broken delete call if IDs are specified.
+
+
 ### 4.0.2 (2016-05-25)
 - Fix: consider `prefix` option when parsing a HTTP request in the default serializers.
 
