@@ -84,6 +84,23 @@ run(function () {
 })
 
 
+run(function () {
+  comment('record type mutation')
+  return adapter.connect()
+  .then(() => {
+    recordTypes.type.bar = { type: Number, isArray: true }
+    return adapter.create('type', [ { int: 0 } ])
+  })
+  .then(records => {
+    ok(records.length === 1, 'records created')
+    ok(Array.isArray(records[0].bar), 'new field present')
+  })
+  .catch(error => {
+    throw error
+  })
+})
+
+
 function Integer (x) { return (x | 0) === x }
 
 Integer.compare = function (a, b) { return a - b }
