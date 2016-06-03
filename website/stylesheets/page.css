@@ -120,7 +120,7 @@ header {
   background-color: var(--color-accent);
   position: relative;
   overflow: hidden;
-  padding-top: calc(var(--line-height) * 7 / 4);
+  padding-top: calc(var(--line-height) * 9 / 4);
 }
 
 header > a {
@@ -145,7 +145,7 @@ header .logo-type {
 header nav {
   position: relative;
   text-align: center;
-  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
+  padding: calc(var(--line-height) * 3 / 4) var(--line-height);
   background-color: color(var(--color-accent) w(+ 12%));
 }
 
@@ -167,8 +167,8 @@ header nav a {
 
 header nav a:after {
   content: '⁄';
-  margin-right: calc(1em * 5 / 6);
-  padding-left: calc(1em * 5 / 6);
+  margin-right: calc(1em * 1);
+  padding-left: calc(1em * 1);
   color: color(var(--color-accent) b(+ 25%));
   font-weight: normal;
 }
