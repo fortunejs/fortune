@@ -120,7 +120,7 @@ header {
   background-color: var(--color-accent);
   position: relative;
   overflow: hidden;
-  padding-top: calc(var(--line-height) * 5 / 2);
+  padding-top: calc(var(--line-height) * 7 / 4);
 }
 
 header > a {
@@ -139,13 +139,13 @@ header .emblem {
 header .logo-type {
   display: block;
   height: calc(var(--line-height) * 1);
-  margin: 0 auto calc(var(--line-height) * 3 / 2);
+  margin: 0 auto calc(var(--line-height) * 5 / 4);
 }
 
 header nav {
   position: relative;
   text-align: center;
-  padding: calc(var(--line-height) * 2 / 3) var(--line-height);
+  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
   background-color: color(var(--color-accent) w(+ 12%));
 }
 
