@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.0.4 (2016-06-04)
+- Polish: rename ESLint configuration.
+
+
 ### 4.0.3 (2016-05-26)
 - Fix: IndexedDB ID handling, broken delete call if IDs are specified.
 
