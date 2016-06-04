@@ -75,7 +75,7 @@
   "main": "lib/index.js",
   "browser": "lib/browser.js",
   "eslintConfig": {
-    "extends": "eslint-config-boss/es5"
+    "extends": "boss/es5"
   },
   "engines": {
     "node": ">=4.2.0"
