@@ -15,14 +15,14 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 .index h4, .index ul { max-width: 25em; margin: 0 auto; }
 .index ul { list-style-type: none; padding: 1.5em 3em; background: #fff; border-radius: 0.25em; border-bottom: 2px #ccc solid; text-align: left; margin-bottom: 4.5em; }
 .index h4 { max-width: 15em; margin-bottom: 2em; position: relative; color: #888; }
-.index h4:before { position: absolute; top: 52%; left: 0; width: 100%; height: 1px; background: #ccc; content: ' '; display: block; z-index: -1; }
+.index h4::before { position: absolute; top: 52%; left: 0; width: 100%; height: 2px; background: #ddd; content: ' '; display: block; z-index: -1; }
 .index h4 span { background: #eee; padding: 0 0.75em; }
 .index li { margin: 0 auto; position: relative; }
 .index a { font-weight: bold; display: block; position: relative; padding: 0.875em 0; padding-right: 1.5em; font-size: 1.25em; transition: color 0.2s ease; text-transform: capitalize; }
 .index a:hover { color: #31BAE8; }
-.index a:after { content: '→'; position: absolute; right: 0; color: #31BAE8; font-weight: normal; }
-.index a:before { position: absolute; content: ' '; top: 0; left: 0; width: 100%; height: 1px; background: #ddd; display: block; }
-.index li:first-of-type a:before { display: none; }
+.index a::after { content: '→'; position: absolute; right: 0; color: #31BAE8; font-weight: normal; }
+.index a::before { position: absolute; content: ' '; top: 0; left: 0; width: 100%; height: 1px; background: #ddd; display: block; }
+.index li:first-of-type a::before { display: none; }
 
 /* index error */
 .index h1 { font-size: 2em; margin-bottom: 0.6em; }
@@ -30,14 +30,14 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; color: #000; font-
 
 /* sidebar label */
 aside { position: fixed; top: 0; right: calc(100% - 1.5em); height: 100%; z-index: 100; transition: right 0.2s ease; }
-aside > label { position: absolute; top: 0; right: 0; background: #222; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
-aside > label:after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: #444; }
-aside > label > span:first-of-type { font-size: 2em; line-height: 1.875; text-align: center; width: 100%; display: block; margin-top: -0.08em; padding-bottom: 0.08em; padding-right: 0.06em; border-bottom: 1px #444 solid; background: #393939; color: rgba(255, 255, 255, 1); }
+aside > label { position: absolute; top: 0; right: 0; background: #294047; width: 1.5em; height: 100%; color: rgba(255, 255, 255, 0.5); cursor: pointer; }
+aside > label::after { position: absolute; left: -1px; top: 0; width: 1px; height: 100%; content: ' '; display: block; background: rgba(255, 255, 255, 0.05); }
+aside > label > span:first-of-type { font-size: 2em; line-height: 1.875; text-align: center; width: 100%; display: block; margin-top: -0.08em; padding-bottom: 0.08em; padding-right: 0.06em; border-bottom: 1px rgba(255, 255, 255, 0.15) solid; background: rgba(0, 0, 0, 0.25); color: rgba(255, 255, 255, 1); }
 aside > label strong:last-of-type { display: none; }
 aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -1.25em; transform: rotate(-90deg); transform-origin: 0 0; white-space: nowrap; font-style: italic; }
 
 /* sidebar */
-.sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: #2c2c2c; transition: right 0.2s ease; z-index: 99; }
+.sidebar { position: fixed; top: 0; right: 100%; width: 14.5em; height: 100%; overflow: auto; padding: 0 1.5em; background: #334C54; transition: right 0.2s ease; z-index: 99; }
 .sidebar h2 { padding: 0.5em 0.75em; margin: 0.75em 0; color: #fff; border-bottom: 1px transparent solid; background: rgba(255, 255, 255, 0.075); border-radius: 0.25em; text-align: center; font-family: inherit; font-style: inherit; font-size: 1em; font-weight: bold; }
 .sidebar h3 { font-family: inherit; font-size: 1em; font-style: normal; font-weight: bold; margin-top: 0.625em; color: rgba(255, 255, 255, 0.75); }
 .sidebar .input-group { margin: 0.625em 0 1.5em; }
@@ -53,13 +53,13 @@ aside > label > span:last-of-type { position: absolute; left: -0.15em; bottom: -
 
 /* collection */
 main { min-height: 100%; position: relative; left: 0; padding-top: 3.75em; padding-bottom: 1.5em; padding-left: 1.5em; transition: padding-left 0.2s ease, left 0.2s ease; }
-main > header { color: #888; padding: 1.125em 1.5em; background: #fff; border-bottom: 1px #ccc solid; position: fixed; top: 0; left: 1.5em; width: calc(100% - 1.5em); transition: left 0.2s ease, width 0.2s ease; }
+main > header { color: #888; padding: 1.125em 1.5em; background: #fff; border-bottom: 1px #ccc solid; position: fixed; z-index: 200; top: 0; left: 1.5em; width: calc(100% - 1.5em); transition: left 0.2s ease, width 0.2s ease; }
 main > header a { color: #31BAE8; }
 main > header > .button { float: right; margin-left: 1.5em; }
 
 /* group */
 .group { padding: 1.5em 1.5em 0; }
-.group h4 { padding-bottom: 0.6em; border-bottom: 1px #ccc solid; color: #888; }
+.group h4 { padding-bottom: 0.6em; border-bottom: 2px #ddd solid; color: #888; }
 .group h4 span { margin-right: 0.25em; }
 .group .type { text-transform: capitalize; color: #000; }
 .group .box { border: 1px #ccc solid; border-radius: 0.25em; margin-top: 1.5em; overflow: auto; }
@@ -95,7 +95,7 @@ main > header > .button { float: right; margin-left: 1.5em; }
 /* modal */
 .modal { text-align: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); pointer-events: none; opacity: 0; transform: scale(1.25); transition: opacity 0.2s ease, transform 0.3s ease; overflow: auto; line-height: 100%; z-index: 200; }
 .modal .container { display: inline-block; max-width: 38em; width: 100%; vertical-align: middle; padding: 6em 1.5em; }
-.modal:before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
+.modal::before { content: ''; display: inline-block; vertical-align: middle; height: 100%; }
 .modal h2 { color: #fff; padding: 0.6em 1.2em; background: rgba(255, 255, 255, 0.1); border-radius: 0.25em; margin-bottom: 0.6em; display: inline-block; }
 .modal label { text-align: left; display: block; color: rgba(255, 255, 255, 0.75); font-weight: bold; padding: 1.5em 0 0.75em; }
 .modal label.button { padding: calc(0.75em - 1px) 1.5em; margin: 3em 0 0; text-align: center; width: auto; display: inline-block; font-weight: inherit; }
