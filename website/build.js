@@ -23,7 +23,7 @@ const minify = minifier.minify
 const pkg = require('../package.json')
 const start = Date.now()
 const year = new Date().getFullYear()
-const CNAME = 'fortunejs.com'
+const CNAME = 'fortune.js.org'
 
 const outputPath = path.join(__dirname, '../dist/web')
 const assetPath = path.join(__dirname, 'assets')
