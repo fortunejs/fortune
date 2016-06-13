@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.0.5 (2016-06-13)
+- Fix: improve IndexedDB detection.
+
+
 ### 4.0.4 (2016-06-04)
 - Polish: rename ESLint configuration.
 
