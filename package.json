@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "A library for managing structured data in Node.js and web browsers.",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -17,8 +17,8 @@
     "coverage": "istanbul cover test",
     "deploy": "npm run build && ./website/deploy.sh",
     "build": "node website/build && npm run build:browser && npm run build:minified",
-    "build:browser": "(node lib/header; browserify lib/global.js) > dist/web/assets/fortune.js",
-    "build:minified": "(node lib/header; cat dist/web/assets/fortune.js | uglifyjs -cm) > dist/web/assets/fortune.min.js",
+    "build:browser": "(node lib/header; browserify lib/global.js) > dist/web/fortune.js",
+    "build:minified": "(node lib/header; cat dist/web/fortune.js | uglifyjs -cm) > dist/web/fortune.min.js",
     "lint": "eslint lib",
     "postpublish": "npm run deploy && npm run tag",
     "tag": "git tag `npm v fortune version` && git push origin --tags",

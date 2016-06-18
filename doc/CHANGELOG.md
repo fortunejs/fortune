@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 4.0.7 (2016-06-18)
+- Fix: missing error in IndexedDB check.
+- Polish: move location of browser build on website.
+
+
 ### 4.0.6 (2016-06-18)
 - Fix: improve handling of IndexedDB fallback, to run when connection is atttempted.
 
