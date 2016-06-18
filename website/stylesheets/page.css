@@ -24,7 +24,7 @@ a {
   color: var(--color-solid);
   font-size: calc(1em * 5 / 4);
   line-height: calc(var(--line-height) * 4 / 5);
-  margin: calc(var(--line-height) * 2 * 4 / 5) 0 calc(var(--line-height) * 4 / 5);
+  margin: calc(var(--line-height) * 3 * (4 / 5)) 0 calc(var(--line-height) * (4 / 5));
 }
 
 :--header a.anchor {
@@ -179,7 +179,7 @@ header nav a:last-of-type:after {
 
 article {
   max-width: var(--max-width);
-  margin: calc(var(--line-height) * 5 / 2) auto;
+  margin: calc(var(--line-height) * 3) auto;
   padding: 0 var(--line-height);
   hyphens: auto;
 }

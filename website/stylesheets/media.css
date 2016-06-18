@@ -3,6 +3,14 @@
     font-size: calc(var(--size-body) - 2px);
   }
 
+  :--header {
+    margin: calc(var(--line-height) * (3 / 2) * (4 / 5)) 0 calc(var(--line-height) * (4 / 5));
+  }
+
+  header nav {
+    padding: calc(var(--line-height) * 1 / 2) var(--line-height);
+  }
+
   header nav a:after {
     margin-right: calc(1em * 2 / 3);
     padding-left: calc(1em * 2 / 3);
