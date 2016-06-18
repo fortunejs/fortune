@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.0.6 (2016-06-18)
+- Fix: improve handling of IndexedDB fallback, to run when connection is atttempted.
+
+
 ### 4.0.5 (2016-06-13)
 - Fix: improve IndexedDB detection.
 
