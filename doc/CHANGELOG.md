@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.0 (2016-06-19)
+- Feature: render documentation in HTML serializer, using RDFa.
+
+
 ### 4.0.7 (2016-06-18)
 - Fix: missing error in IndexedDB check.
 - Polish: move location of browser build on website.
