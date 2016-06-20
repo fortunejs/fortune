@@ -145,7 +145,7 @@ header .logo-type {
 header nav {
   position: relative;
   text-align: center;
-  padding: calc(var(--line-height) * 3 / 4) var(--line-height);
+  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
   background-color: color(var(--color-accent) w(+ 12%));
 }
 
