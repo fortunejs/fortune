@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.1 (2016-06-20)
+- Fix: various incorrect RDFa attributes, fixed with the help of a RDFa distiller.
+
+
 ### 4.1.0 (2016-06-19)
 - Feature: render documentation in HTML serializer, using RDFa.
 
