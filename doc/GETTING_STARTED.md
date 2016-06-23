@@ -69,4 +69,4 @@ const store = fortune({
 
 ## Configuration
 
-Fortune.js comes with defaults to work out of the box, but they are probably not suitable for real world applications. Consult the [plugins page](http://fortunejs.com/plugins/) for more information.
+Fortune.js comes with defaults to work out of the box, but they are probably not suitable for real world applications. Consult the [plugins page](http://fortune.js.org/plugins/) for more information.

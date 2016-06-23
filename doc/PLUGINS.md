@@ -30,5 +30,5 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 
 | Implementation   | Description                                              |
 |:-----------------|:---------------------------------------------------------|
-| [HTTP](http://fortunejs.com/api/#net-http) (included) | Implements the `requestListener` function for `http.createServer`, composable with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
-| [WebSocket](http://fortunejs.com/api/#net-ws) (included) | Implements the Fortune wire protocol, useful for isomorphic applications using Fortune in the browser. |
+| [HTTP](http://fortune.js.org/api/#net-http) (included) | Implements the `requestListener` function for `http.createServer`, composable with [Connect](https://github.com/senchalabs/connect), [Express](http://expressjs.com/), and similar frameworks. |
+| [WebSocket](http://fortune.js.org/api/#net-ws) (included) | Implements the Fortune wire protocol, useful for isomorphic applications using Fortune in the browser. |

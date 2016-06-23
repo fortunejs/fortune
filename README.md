@@ -1,4 +1,4 @@
-# [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortunejs.com)
+# [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortune.js.org)
 
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/master.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
 [![Dependency Status](https://david-dm.org/fortunejs/fortune.svg?style=flat-square)](https://david-dm.org/fortunejs/fortune)
@@ -7,7 +7,7 @@
 
 Fortune.js is a library for managing structured data in Node.js and web browsers. It consists of a data abstraction layer and networking functions.
 
-[View the website](http://fortunejs.com) for documentation. Get it from `npm`:
+[View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
 ```sh
 $ npm install fortune --save
@@ -21,7 +21,7 @@ Fortune.js implements a data abstraction layer, and also includes networking fun
 - A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
 - A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
 - An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
-- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on WebSocket and MessagePack.
+- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
 
 ## Example
@@ -75,9 +75,9 @@ const server = http.createServer(fortune.net.http(store))
 store.connect().then(() => server.listen(1337))
 ```
 
-This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortunejs.com/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
+This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api), which also accept HTTP parameters. In addition, Fortune.js implements a [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org).
 
-See the [plugins page](http://fortunejs.com/plugins/) for more details.
+See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
 
 ## Features and Non-Features
