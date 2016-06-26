@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 4.1.2 (2016-06-26)
+### 4.1.3 (2016-06-26)
 - Fix: small modification to error checking in HTTP server which would incorrectly handle empty payloads.
 
 
