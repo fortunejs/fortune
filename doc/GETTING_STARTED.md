@@ -52,7 +52,7 @@ function output (context, record) {
 }
 ```
 
-Based on whether or not the resolved record is different from what was passed in, serializers may decide not show the resolved record of the output transform for update and delete requests.
+Based on whether or not the resolved record is different from what was passed in, serializers may decide not to show the resolved record of the output transform for update and delete requests.
 
 **Note**: Tranform functions must be defined in a specific order: input first, output last.
 
