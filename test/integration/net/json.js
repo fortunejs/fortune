@@ -181,3 +181,13 @@ run(() => {
     ok(response.status === 204, 'status is correct')
   })
 })
+
+
+run(() => {
+  comment('respond to options: index')
+  return test('/', { method: 'options' }, response => {
+    ok(response.status === 204, 'status is correct')
+    ok(response.headers['allow'] === 'GET',
+      'allow header is correct')
+  })
+})

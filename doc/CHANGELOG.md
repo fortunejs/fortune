@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.5 (2016-06-26)
+- Polish: avoid throwing a non-error internally.
+
+
 ### 4.1.4 (2016-06-26)
 - Fix: small modification to error checking in HTTP server which would incorrectly handle empty payloads.
 
