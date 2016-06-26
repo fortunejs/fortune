@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.2 (2016-06-26)
+- Fix: small modification to error checking in HTTP server which would incorrectly handle empty payloads.
+
+
 ### 4.1.1 (2016-06-20)
 - Fix: various incorrect RDFa attributes, fixed with the help of a RDFa distiller.
 
