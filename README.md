@@ -84,9 +84,7 @@ The return value of an input transform function determines what gets persisted, 
 
 ```js
 function input (context, record, update) {
-  var method = context.request.method
-
-  switch (method) {
+  switch (context.request.method) {
     // If it's a create request, return the record.
     case 'create': return record
 
