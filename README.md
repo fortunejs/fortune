@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a reusable interface for structured data in Node.js and web browsers. It implements a data abstraction layer and networking.
+Fortune.js is a reusable interface for structured data in Node.js and web browsers. It implements a data abstraction layer and networking, which is useful for exposing a database with application logic.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
@@ -16,7 +16,7 @@ $ npm install fortune --save
 
 ## Usage
 
-The minimal input required is record type definitions. Here's a model of a basic micro-blogging service:
+The only input required is record type definitions. These definitions may have `link`s, or relationships between them, for which Fortune.js does inverse updates and maintains referential integrity. Here's a model of a basic micro-blogging service:
 
 ```js
 const fortune = require('fortune')
@@ -57,7 +57,7 @@ store.request({
 
 The first call to `request` will trigger a connection to the data store, and it returns the result as a Promise. See the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
 
-**Node.js only**: Fortune.js implements HTTP functionality for convenience, as a simple request listener which may be composed within larger applications.
+**Node.js only**: Fortune.js implements HTTP functionality for convenience, as a plain request listener which may be composed within larger applications.
 
 ```js
 const http = require('http')
@@ -71,14 +71,14 @@ store.connect().then(() => server.listen(1337))
 
 This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
-Fortune.js implements a [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for real-time applications.
+Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for real-time applications.
 
 See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
 
 ## Transform Functions
 
-Transform functions isolate business logic, and are what makes the interface reusable across different protocols. An input and output transform function may be defined per record type. Transform functions accept at least two arguments, the `context` object, the `record`, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied on all methods.
+Transform functions isolate business logic, and are part of what makes the interface reusable across different protocols. An input and output transform function may be defined per record type. Transform functions accept at least two arguments, the `context` object, the `record`, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied on all methods.
 
 The return value of an input transform function determines what gets persisted, and it is safe to mutate any of its arguments. It may return either the value or a Promise, or throw an error. The returned or resolved value must be the record if it's a create request, the update if it's an update request, or anything (or simply `null`) if it's a delete request. For example, an input transform function for a record may look like this:
 
@@ -135,7 +135,7 @@ const store = fortune({
 
 - Type validations, plus support for custom types.
 - Application-level denormalized inverse relationships.
-- Dereferencing relationships in a single logical request.
+- Dereferencing relationships in a single request.
 - Transaction support for databases that support transactions, such as Postgres.
 - IndexedDB functionality in web browsers.
 - Built-in wire protocol for data synchronization between server and client.
