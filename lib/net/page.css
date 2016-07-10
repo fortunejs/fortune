@@ -30,12 +30,13 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; font-weight: norma
 
 /* definitions */
 .definition label { font-weight: bold; }
-.definition .type { color: #888; margin-left: 0.25em; }
+.definition .type { color: #888; margin-left: 0.5em; }
 .definition .type span { text-transform: capitalize; }
 .definition .type span:first-of-type::after { content: '\a0\2192\a0'; }
 .definition .type::before { content: '('; }
 .definition .type::after { content: ')'; }
 .definition > div { padding: 1.5em 0; border-top: 1px #ddd solid; }
+.definition > div > div:nth-of-type(2) { margin: 1.5em 0; }
 .definition p { margin-bottom: 1.5em; }
 
 /* error */
