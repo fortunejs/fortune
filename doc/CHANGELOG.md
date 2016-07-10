@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.8 (2016-07-10)
+- Polish: CSS tweaks for HTML serializer.
+
+
 ### 4.1.7 (2016-07-10)
 - Fix: RDF fixes in HTML index, particularly domain and range mapping.
 

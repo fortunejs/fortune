@@ -1,4 +1,4 @@
-/* reset */
+ /* reset */
 * { margin: 0; padding: 0; border: none; box-sizing: border-box; }
 
 /* page */
@@ -10,10 +10,10 @@ h1, h2, h3, h4, h5, h6, aside > label { font-family: 'Garamond', 'Times New Roma
 h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; font-weight: normal; font-style: italic; }
 
 /* index */
-.index .container { padding: 1.5em; background: #fff; border-bottom: 1px #ccc solid; }
-.index .container > div { max-width: 40em; margin: 0 auto; }
-.index .container > div > h1:first-of-type { font-family: inherit; font-style: inherit; font-weight: bold; font-size: 1em; margin: 1.5em 0; }
-.index .description { font-weight: normal; margin: 3em 0; }
+.index header { padding: 3em 0; background: #fff; border-bottom: 1px #ccc solid; margin-bottom: 3em; }
+.index header > div { max-width: 46em; margin: 0 auto; padding: 0 1.5em; }
+.index header > div > h1:first-of-type { font-family: inherit; font-style: inherit; font-weight: bold; font-size: 2em; margin-bottom: 0.75em; line-height: inherit; }
+.index .description { font-weight: normal; margin: 3em 0 1.5em; }
 .index .description > * { margin-bottom: 1.5em; }
 .index .description > *:last-child { margin-bottom: 0; }
 
@@ -24,19 +24,18 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; font-weight: norma
 .types-list li a:hover { border-color: #31BAE8; }
 .types-list .comment { display: none; }
 
+/* property list */
+.property-header, .property-list { max-width: 46em; margin: 1.5em auto; padding: 0 1.5em; }
+.property-list { margin-bottom: 4.5em; }
+
 /* definitions */
-.definition { padding: 0 1.5em; min-width: 60em; }
-.definition:last-of-type { margin-bottom: 1.5em; }
-.definition:after { content: ' '; display: block; clear: both; }
-.definition.header { color: #888; margin-top: 1.5em; }
-.definition.header > div { border-top: 0; }
 .definition label { font-weight: bold; }
 .definition .type { color: #888; margin-left: 0.25em; }
 .definition .type span { text-transform: capitalize; }
 .definition .type span:first-of-type::after { content: '\a0\2192\a0'; }
 .definition .type::before { content: '('; }
 .definition .type::after { content: ')'; }
-.definition > div { max-width: 40em; margin: 0 auto; padding: 1.5em 0; border-top: 1px #ddd solid; }
+.definition > div { padding: 1.5em 0; border-top: 1px #ddd solid; }
 .definition p { margin-bottom: 1.5em; }
 
 /* error */
@@ -146,4 +145,5 @@ body, input { font-size: 12px; }
 #sidebar-toggle:checked ~ main > header { left: 1.5em; width: calc(100% - 1.5em); }
 .sidebar { width: calc(100% - 1.5em); }
 #sidebar-toggle:checked ~ .sidebar { right: calc(1.5em); }
+.index header { padding: 1.5em 0; }
 }
