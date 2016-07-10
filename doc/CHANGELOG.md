@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.1.7 (2016-07-10)
+- Fix: RDF fixes in HTML index, particularly domain and range mapping.
+
+
 ### 4.1.5 (2016-06-26)
 - Polish: avoid throwing a non-error internally.
 
