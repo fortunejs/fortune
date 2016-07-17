@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "A library for managing structured data in Node.js and web browsers.",
+  "description": "An interface for structured data in Node.js and web browsers.",
   "version": "4.1.9",
   "license": "MIT",
   "author": {

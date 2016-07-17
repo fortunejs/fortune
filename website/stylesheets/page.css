@@ -8,7 +8,7 @@ html { box-sizing: border-box; }
 *, *:before, *:after { box-sizing: inherit; }
 
 body {
-  background-color: var(--color-background);
+  background-color: rgba(0, 0, 0, calc(1 / 25));
   font-family: var(--font-body);
   font-size: var(--size-body);
   color: var(--color-body);
@@ -24,7 +24,8 @@ a {
   color: var(--color-solid);
   font-size: calc(1em * 5 / 4);
   line-height: calc(var(--line-height) * 4 / 5);
-  margin: calc(var(--line-height) * 3 * (4 / 5)) 0 calc(var(--line-height) * (4 / 5));
+  margin: calc(var(--line-height) * (5 / 2) * (4 / 5)) 0
+    calc(var(--line-height) * (1 / 2) * (4 / 5));
 }
 
 :--header a.anchor {
@@ -34,7 +35,7 @@ a {
 }
 
 p, ul, ol, pre, table, blockquote {
-  margin: 0 0 var(--line-height);
+  margin: 0 0 calc(var(--line-height) * 1 / 2);
 }
 
 ul, ol {
@@ -62,10 +63,10 @@ pre, code {
 
 pre {
   padding: calc(var(--line-height) * 1 / 2) calc(var(--line-height) * 2 / 3);
-  margin: calc(var(--line-height) * 3 / 2) calc(var(--line-height) * -2 / 3);
+  margin: calc(var(--line-height) * 3 / 2) 0;
   background-color: rgba(0, 0, 0, calc(1 / 25));
   border-radius: var(--border-radius);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, calc(1 / 16));
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, calc(1 / 12));
   line-height: var(--mono-height);
   overflow: auto;
 }
@@ -120,44 +121,35 @@ header {
   background-color: var(--color-accent);
   position: relative;
   overflow: hidden;
-  padding-top: calc(var(--line-height) * 9 / 4);
+  padding-top: calc(var(--line-height) * 5 / 2);
 }
 
-header > a {
-  display: block;
+header > div,
+header nav > div {
+  max-width: var(--max-width);
+  padding: 0 calc(var(--line-height) * 2);
   margin: 0 auto;
-  width: 12em;
-}
-
-header .emblem {
-  display: block;
-  height: calc(var(--line-height) * 7 / 2);
-  margin: 0 auto;
-  padding-bottom: calc(var(--line-height) * 1 / 2);
 }
 
 header .logo-type {
   display: block;
-  height: calc(var(--line-height) * 1);
-  margin: 0 auto calc(var(--line-height) * 5 / 4);
+  height: calc(var(--line-height) * 2);
+  margin: 0 auto calc(var(--line-height) * 2);
 }
 
 header nav {
+  clear: both;
   position: relative;
   text-align: center;
-  padding: calc(var(--line-height) * 1 / 2) var(--line-height);
-  background-color: color(var(--color-accent) w(+ 12%));
 }
 
-header nav:before {
-  display: block;
-  content: ' ';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 1px;
-  width: 100%;
-  background-color: color(var(--color-accent) b(+ 6%));
+header nav > div {
+  padding-top: calc(var(--line-height) * 3 / 4);
+  padding-bottom: calc(var(--line-height) * 3 / 4);
+  background-color: color(var(--color-accent) w(+ 16%));
+  border: 1px color(var(--color-accent) b(+ 6%)) solid;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  border-bottom: 0;
 }
 
 header nav a {
@@ -167,8 +159,8 @@ header nav a {
 
 header nav a:after {
   content: '⁄';
-  margin-right: calc(1em * 1);
-  padding-left: calc(1em * 1);
+  margin-right: calc(1em * 5 / 6);
+  padding-left: calc(1em * 5 / 6);
   color: color(var(--color-accent) b(+ 25%));
   font-weight: normal;
 }
@@ -178,10 +170,18 @@ header nav a:last-of-type:after {
 }
 
 article {
+  background-color: var(--color-background);
   max-width: var(--max-width);
-  margin: calc(var(--line-height) * 3) auto;
-  padding: 0 var(--line-height);
+  margin: 0 auto;
+  padding: calc(var(--line-height) * 5 / 2) calc(var(--line-height) * 2);
   hyphens: auto;
+  border: 1px rgba(0, 0, 0, calc(1 / 12)) solid;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  border-top: 0;
+}
+
+article > h1:first-of-type {
+  margin-top: 0;
 }
 
 article a {
@@ -209,8 +209,8 @@ footer p:last-of-type {
 
 #corner {
   position: absolute;
-  top: 2.6em;
-  right: -4em;
+  top: 2.2em;
+  right: -4.4em;
   transform: rotate(45deg);
   transform-origin: center;
   width: 15em;
