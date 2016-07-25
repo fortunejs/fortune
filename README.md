@@ -14,6 +14,14 @@ $ npm install fortune --save
 ```
 
 
+## Use Cases
+
+- A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
+- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
+- An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
+- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
+
+
 ## Usage
 
 The only input required is record type definitions. These definitions may have `link`s, or relationships between them, for which Fortune.js does inverse updates and maintains referential integrity. Here's a model of a basic micro-blogging service:
@@ -119,14 +127,6 @@ const store = fortune({
   }
 })
 ```
-
-
-## Use Cases
-
-- A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
-- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
-- An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
-- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
 
 ## Features and Non-Features
