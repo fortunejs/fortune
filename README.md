@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is an interface for structured data in Node.js and web browsers. It implements a data abstraction layer and networking, which is useful for exposing a database with application logic.
+Fortune.js is an interface for structured data in Node.js and web browsers. It implements a data abstraction layer and networking, which is useful for exposing a database with application logic. It includes IndexedDB and memory adapters, HTTP (JSON & HTML serializers) and a WebSocket wire protocol out of the box.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 

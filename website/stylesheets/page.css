@@ -22,10 +22,12 @@ a {
 
 :--header {
   color: var(--color-solid);
-  font-size: calc(1em * 5 / 4);
-  line-height: calc(var(--line-height) * 4 / 5);
-  margin: calc(var(--line-height) * (5 / 2) * (4 / 5)) 0
-    calc(var(--line-height) * (1 / 2) * (4 / 5));
+  font-weight: inherit;
+  font-family: var(--font-alt);
+  font-size: calc(1em * 4 / 3);
+  line-height: calc(var(--line-height) * 3 / 4);
+  margin: calc(var(--line-height) * (5 / 2) * (3 / 4)) 0
+    calc(var(--line-height) * (1 / 2) * (3 / 4));
 }
 
 :--header a.anchor {

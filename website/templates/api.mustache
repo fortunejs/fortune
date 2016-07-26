@@ -12,14 +12,14 @@
         {{#context.isConstructor}}
         <span class="class">new</span> {{context.target}}
         {{/context.isConstructor}}
-        {{^context.isConstructor}}
-        {{#context.isClass}}
-        {{module}}
-        {{/context.isClass}}
-        {{^context.isClass}}
-        {{{context.path}}}
-        {{/context.isClass}}
-        {{/context.isConstructor}}<!--
+        {{^context.isConstructor}}<!--
+        -->{{#context.isClass}}<!--
+        -->{{module}}<!--
+        -->{{/context.isClass}}<!--
+        -->{{^context.isClass}}<!--
+        -->{{{context.path}}}<!--
+        -->{{/context.isClass}}<!--
+        -->{{/context.isConstructor}}<!--
         -->{{#context.isFunction}}<!--
           -->({{{comment.params}}})<!--
         -->{{/context.isFunction}}<!--
