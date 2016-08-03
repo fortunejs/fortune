@@ -42,4 +42,15 @@ exports.genericAction = {
       res.send(200, 'ok');
     };
   }
-}
+};
+
+exports.echo = {
+  name: 'echo',
+  method: 'GET',
+  init: function(){
+    return function(){
+      return this;
+    };
+  }
+};
+>>>>>>> fv-stable

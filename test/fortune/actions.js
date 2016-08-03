@@ -102,6 +102,17 @@ module.exports = function(options){
           body.people.length.should.equal(1);
           done();
         })
+    });
+    it('should be able to run GET requests in actions', function(done){
+      request(baseUrl).get('/people/' + ids.people[0] + '/echo')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.length.should.equal(1);
+          body.people[0].id.should.equal(ids.people[0]);
+          done();
+        });
     })
   });
 };
