@@ -9,7 +9,7 @@ module.exports = function(options){
       baseUrl = options.baseUrl;
       ids = options.ids;
     });
-    it('should be able to define custom action on resource', function(done){
+    it('should be able to define custom action on resource', function(){
       return request(baseUrl).post('/people/' + ids.people[0] + '/reset-password')
         .set('content-type', 'application/json')
         .send(JSON.stringify({}))
@@ -17,7 +17,6 @@ module.exports = function(options){
         .end(function(err, res){
           should.not.exist(err);
           res.text.should.equal('OK');
-          done();
         });
     });
     it('should run custom action when receives action url request matching specified method', function(done){

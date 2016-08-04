@@ -71,6 +71,7 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
+            console.log(body);
             body.people[0].links.addresses.length.should.equal(2);
             done();
           });

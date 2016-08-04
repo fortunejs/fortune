@@ -30,12 +30,11 @@ module.exports = function(options){
       });
     });
 
-    it("gets a single resource", function(done){
-      app.direct.get("people", {params: { id:ids.people[0] }}).then(function(res){
+    it("gets a single resource", function() {
+      return app.direct.get("people", {params: { id:ids.people[0] }}).then(function(res){
         res.body.people.length.should.be.equal(1);
         res.body.people[0].id.should.equal(ids.people[0]);
-        done();
-      }).catch(function(err){ console.trace(err); });;
+      });
     });
 
     it("gets a number of resources by ids", function(done){
@@ -75,10 +74,10 @@ module.exports = function(options){
       });
     });
 
-    it("replaces a resource", function(done){
+    it("replaces a resource", function(){
       var resource, id;
 
-      app.direct.get("people",{params: {id:id = ids.people[0]}}).then(function(res){
+      return app.direct.get("people",{params: {id:id = ids.people[0]}}).then(function(res){
         resource = res.body.people[0];
         resource.birthday = null;
         resource.email = "abc@xyz.com";
@@ -90,8 +89,7 @@ module.exports = function(options){
         return app.direct.get("people", {params: {id: resource.email}});
       }).then(function(res){
         res.body.people[0].id.should.be.equal(resource.email);
-        done();
-      }).catch(function(err){ console.trace(err.stack || err); });
+      });
     });
 
     it("udpate can add a record to an array", function(done){
