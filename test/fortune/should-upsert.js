@@ -26,9 +26,8 @@ module.exports = function(options){
               }
             ]
           }))
-          //.expect(201)
+          .expect(201)
           .end(function(err){
-            console.log("HERE");
             should.not.exist(err);
             resolve();
           });
