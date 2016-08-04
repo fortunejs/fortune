@@ -196,7 +196,7 @@ module.exports = function(options){
             done();
           });
       });
-      it.skip("should return correct error if date is not recognized inside of complex filter with $gte, $lte", function(done) {
+      it("should return correct error if date is not recognized inside of complex filter with $gte, $lte", function(done) {
         request(baseUrl).get('/people?filter[birthday][gte]=time of big bang')
           .expect(400)
           .end(function(err, res){
