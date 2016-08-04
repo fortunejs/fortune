@@ -39,7 +39,7 @@ module.exports = function(options){
           });
         });
       });
-      it("should upsert where the appropriate upsert keys are specified", function(done) {
+      it("should upsert where the appropriate upsert keys are specified", function() {
         var doc = {
           id: '123456789012345678901234',
           upsertTest : "foo"
@@ -56,17 +56,16 @@ module.exports = function(options){
           return response = origUpsert.apply(this, arguments);
         };
 
-        adapter.create("person", doc).then(function() {
+        return adapter.create("person", doc).then(function() {
           should.exist(response);
           (response.status).should.equal(true);
           (response.opts.upsert).should.equal(true);
 
-          model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
+          return model.findOne({email: '123456789012345678901234'}).exec(function(err, doc){
             should.not.exist(err);
             should.exist(doc);
 
             adapter._shouldUpsert = origUpsert;
-            done();
           });
         });
       });

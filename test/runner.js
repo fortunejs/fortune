@@ -36,9 +36,9 @@ describe('Fortune test runner', function(){
     var app = options.app;
     options.app.adapter.awaitConnection().then(function(){
       return new RSVP.Promise(function(resolve){
-        app.adapter.mongoose.connections[1].db.collectionNames(function(err, collections){
+        app.adapter.mongoose.connections[1].db.listCollections().toArray(function(err, collections){
+          if(err) throw err;
           resolve(_.compact(_.map(collections, function(collection){
-
             var name = collection.name.split(".")[0];
             if(name && name !== "system"){
               return new RSVP.Promise(function(resolve){

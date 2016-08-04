@@ -9,7 +9,7 @@ module.exports = function(options){
       baseUrl = options.baseUrl;
       ids = options.ids;
     });
-    it('should be able to define custom action on resource', function(done){
+    it('should be able to define custom action on resource', function(){
       return request(baseUrl).post('/people/' + ids.people[0] + '/reset-password')
         .set('content-type', 'application/json')
         .send(JSON.stringify({}))
@@ -17,7 +17,6 @@ module.exports = function(options){
         .end(function(err, res){
           should.not.exist(err);
           res.text.should.equal('OK');
-          done();
         });
     });
     it('should run custom action when receives action url request matching specified method', function(done){
@@ -102,6 +101,17 @@ module.exports = function(options){
           body.people.length.should.equal(1);
           done();
         })
+    });
+    it('should be able to run GET requests in actions', function(done){
+      request(baseUrl).get('/people/' + ids.people[0] + '/echo')
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          var body = JSON.parse(res.text);
+          body.people.length.should.equal(1);
+          body.people[0].id.should.equal(ids.people[0]);
+          done();
+        });
     })
   });
 };

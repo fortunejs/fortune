@@ -281,7 +281,6 @@ module.exports = function(options){
         function verify(model, ids, link){
           return adapter.findMany(model, ids).then(function(found){
             found.forEach(function(f){
-              console.log(link, f);
               should.exist(f.links[link]);
             });
             return true;

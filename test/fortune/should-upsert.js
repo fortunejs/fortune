@@ -44,15 +44,14 @@ module.exports = function(options){
       });
     }
 
-    it('should not create duplicate user with matching upsert key', function(done){
-      createDuplicate().then(function(){
+    it('should not create duplicate user with matching upsert key', function() {
+      return createDuplicate().then(function(){
           return createDuplicate();
         }).then(function(){
           return countDupes();
         }).then(function(count){
           count.should.equal(1);
-          done();
-        })
+        });
     });
     it('should not create duplicate user with matching upsert key if creates are running in parallel', function(done){
       RSVP.all([
