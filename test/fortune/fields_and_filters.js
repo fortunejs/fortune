@@ -159,7 +159,7 @@ module.exports = function(options){
             done();
           });
       });
-      it.skip("should return correct error if date is not recognized", function(done) {
+      it("should return correct error if date is not recognized", function(done) {
         request(baseUrl).get('/people?filter[birthday]=time of big bang')
           .expect(400)
           .end(function(err, res){

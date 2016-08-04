@@ -71,7 +71,6 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var body = JSON.parse(res.text);
-            console.log(body);
             body.people[0].links.addresses.length.should.equal(2);
             done();
           });
@@ -282,7 +281,6 @@ module.exports = function(options){
         function verify(model, ids, link){
           return adapter.findMany(model, ids).then(function(found){
             found.forEach(function(f){
-              console.log(link, f);
               should.exist(f.links[link]);
             });
             return true;

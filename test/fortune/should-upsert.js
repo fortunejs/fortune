@@ -13,7 +13,7 @@ module.exports = function(options){
 
     function createDuplicate(){
       return new RSVP.Promise(function(resolve){
-        request("http://127.0.0.1:8891").post('/people')
+        request(baseUrl).post('/people')
           .set('content-type', 'application/json')
           .send(JSON.stringify({
             people: [

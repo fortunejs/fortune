@@ -1,5 +1,6 @@
 var fortune = require('../lib/fortune'),
     express = require("express");
+    console.log(object);
 
 /**
 * Example application.
