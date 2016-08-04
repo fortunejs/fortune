@@ -4,8 +4,7 @@ var _ = require("lodash"),
     fortune = require("../../lib/fortune"),
     RSVP = require('rsvp'),
     mongoose = require("mongoose"),
-    when = require("when");;
-    var DatabaseCleaner = require('database-cleaner');
+    when = require("when");
 
 describe("Fortune", function() {
   describe("Custom Types", function() {
