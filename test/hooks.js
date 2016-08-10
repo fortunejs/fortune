@@ -214,4 +214,19 @@ describe('hooks', function(){
       });
     });
   });
+  describe("merge", function() {
+    it.only("should merge hooks tree", function() {
+      var hookSet = [
+        {"_before":{"write":[{"name":"hook1"}, {"name":"hook2"}, {"name":"hook3"}],
+                    "read":[]},
+          "_after":{"read":[{"name":"hook4"}], "write":[{"name":"hook5"}]}},
+        { "_before": { "write": [{ "name": "hook6" }],
+                      "read": [{ "name": "hook7" }] },
+          "_after": { "read": [], "write": [] }}
+      ]
+
+      hooks.merge(hookSet).should.eql({"_after":{"read":[{"name":"hook4"}], "write":[{"name":"hook5"}]},
+        "_before":{"read":[{"name":"hook7"}],"write":[{"name":"hook1"}, {"name":"hook2"}, {"name":"hook3"}, {"name":"hook6"}]}});
+    });
+  });
 });
