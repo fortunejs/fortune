@@ -215,14 +215,11 @@ describe('hooks', function(){
     });
   });
   describe("merge", function() {
-    it.only("should merge hooks tree", function() {
+    it("should merge hooks tree with absent leafs", function() {
       var hookSet = [
-        {"_before":{"write":[{"name":"hook1"}, {"name":"hook2"}, {"name":"hook3"}],
-                    "read":[]},
+        {"_before":{"write":[{"name":"hook1"}, {"name":"hook2"}, {"name":"hook3"}]},
           "_after":{"read":[{"name":"hook4"}], "write":[{"name":"hook5"}]}},
-        { "_before": { "write": [{ "name": "hook6" }],
-                      "read": [{ "name": "hook7" }] },
-          "_after": { "read": [], "write": [] }}
+        { "_before": { "write": [{ "name": "hook6" }], "read": [{ "name": "hook7" }] }}
       ]
 
       hooks.merge(hookSet).should.eql({"_after":{"read":[{"name":"hook4"}], "write":[{"name":"hook5"}]},
