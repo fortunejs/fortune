@@ -195,7 +195,7 @@ describe("Fortune", function() {
               init: function() {
                 return function(res, res) {
                   writewtf = this;
-                  return { wtf: 4, ahas: 2 };
+                  return RSVP.resolve({ wtf: 4, ahas: 2 });
                 }
               }
             }]).afterRead([{
@@ -203,7 +203,8 @@ describe("Fortune", function() {
               init: function() {
                 return function(req, res) {
                   readwtf = this;
-                  return this;
+                  readwtf.ahas = readwtf.ahas + 1;
+                  return RSVP.resolve(readwtf);
                 }
               }
             }]);
@@ -216,16 +217,18 @@ describe("Fortune", function() {
             var hook = _.find(app._resources["developer"].hooks._before.write, function(hook) {
               return hook && hook.name == "wtfpersecond-writemeter";
             });
-            hook.fn.call({ wtfpersecond: 3 }, {}, {})
-            writewtf.should.eql(3);
+            hook.fn.call({ wtfpersecond: 3 }, {}, {}).then(function() {
+              writewtf.should.eql(3);
+            });
           });
           it("should set the linked data inside the resource to whatever custom data hooks return", function() {
             var hook = _.find(app._resources["developer"].hooks._before.write, function(hook) {
               return hook && hook.name == "wtfpersecond-writemeter";
             });
 
-            var developer = hook.fn.call({ wtfpersecond: { wtf: 3 }}, {}, {})
-            developer.should.eql({ wtfpersecond: { wtf: 4, ahas: 2 }})
+            hook.fn.call({ wtfpersecond: { wtf: 3 }}, {}, {}).then(function(developer) {
+              developer.should.eql({ wtfpersecond: { wtf: 4, ahas: 2 }})
+            })
           });
         });
       });
