@@ -154,11 +154,16 @@ header nav a {
   display: inline-block;
 }
 
+header nav a span {
+  text-decoration: underline;
+}
+
 header nav a:after {
   content: '⁄';
-  margin-right: calc(1em * 5 / 6);
-  padding-left: calc(1em * 5 / 6);
+  margin-right: calc(1em * 2 / 3);
+  padding-left: calc(1em * 2 / 3);
   color: color(var(--color-accent) b(+ 25%));
+  text-decoration: none;
   font-weight: normal;
 }
 
