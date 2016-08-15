@@ -8,7 +8,7 @@ html { box-sizing: border-box; }
 *, *:before, *:after { box-sizing: inherit; }
 
 body {
-  background-color: rgba(0, 0, 0, calc(1 / 25));
+  background-color: #fff;
   font-family: var(--font-body);
   font-size: var(--size-body);
   color: var(--color-body);
@@ -123,7 +123,7 @@ header {
   background-color: var(--color-accent);
   position: relative;
   overflow: hidden;
-  padding-top: calc(var(--line-height) * 5 / 2);
+  padding-top: calc(var(--line-height) * 2);
 }
 
 header > div,
@@ -135,23 +135,18 @@ header nav > div {
 
 header .logo-type {
   display: block;
-  height: calc(var(--line-height) * 2);
-  margin: 0 auto calc(var(--line-height) * 2);
+  height: calc(var(--line-height) * 5 / 3);
+  margin: 0 auto calc(var(--line-height) * 5 / 3);
 }
 
 header nav {
   clear: both;
   position: relative;
   text-align: center;
-}
-
-header nav > div {
-  padding-top: calc(var(--line-height) * 3 / 4);
-  padding-bottom: calc(var(--line-height) * 3 / 4);
+  padding-top: calc(var(--line-height) * 2 / 3);
+  padding-bottom: calc(var(--line-height) * 2 / 3);
   background-color: color(var(--color-accent) w(+ 16%));
-  border: 1px color(var(--color-accent) b(+ 6%)) solid;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-  border-bottom: 0;
+  border-top: 1px color(var(--color-accent) b(+ 6%)) solid;
 }
 
 header nav a {
@@ -177,9 +172,6 @@ article {
   margin: 0 auto;
   padding: calc(var(--line-height) * 5 / 2) calc(var(--line-height) * 2);
   hyphens: auto;
-  border: 1px rgba(0, 0, 0, calc(1 / 12)) solid;
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-  border-top: 0;
 }
 
 article > h1:first-of-type {
@@ -195,7 +187,7 @@ footer {
   text-align: center;
   max-width: var(--max-width);
   position: relative;
-  margin: calc(var(--line-height) * 3) auto;
+  margin: calc(var(--line-height) * 1) auto calc(var(--line-height) * 3);
   color: var(--color-alt);
 }
 

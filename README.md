@@ -5,21 +5,13 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is an interface for structured data in Node.js and web browsers. It implements a data abstraction layer and networking, which is useful for exposing a database with application logic. It includes IndexedDB and memory adapters, HTTP (JSON & HTML serializers) and a WebSocket wire protocol out of the box.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for Node.js and web browsers. It includes IndexedDB and memory adapters, HTTP (JSON & HTML serializers) and a WebSocket wire protocol out of the box.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
 ```sh
 $ npm install fortune --save
 ```
-
-
-## Use Cases
-
-- A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
-- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
-- An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
-- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
 
 ## Usage
@@ -127,6 +119,14 @@ const store = fortune({
   }
 })
 ```
+
+
+## Use Cases
+
+- A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
+- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
+- An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
+- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
 
 ## Features and Non-Features

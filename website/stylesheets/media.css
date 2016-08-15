@@ -18,7 +18,7 @@
   }
 
   footer {
-    margin: calc(var(--line-height) * 2) auto;
+    margin: calc(var(--line-height) * 1) auto calc(var(--line-height) * 2);
   }
 
   .api > hr {

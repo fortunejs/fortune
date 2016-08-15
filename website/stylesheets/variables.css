@@ -12,12 +12,12 @@
   --color-attribute: #B55E3E;
 
   /* fonts */
-  --font-body: Helvetica, Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-alt: Georgia, serif;
   --font-mono: monospace;
 
   /* measurements */
-  --max-width: 54em;
+  --max-width: 56em;
   --size-body: 16px;
   --size-mono: calc(1em * 15 / 16);
   --line-height: calc(1em * 5 / 3);

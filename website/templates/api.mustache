@@ -10,9 +10,9 @@
         <span class="class">static</span>
         {{/context.static}}
         {{#context.isConstructor}}
-        <span class="class">new</span> {{context.target}}
-        {{/context.isConstructor}}
-        {{^context.isConstructor}}<!--
+        <span class="class">new</span> {{context.target}}<!--
+        -->{{/context.isConstructor}}<!--
+        -->{{^context.isConstructor}}<!--
         -->{{#context.isClass}}<!--
         -->{{module}}<!--
         -->{{/context.isClass}}<!--
