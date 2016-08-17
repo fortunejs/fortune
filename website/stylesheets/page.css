@@ -135,16 +135,15 @@ header nav > div {
 
 header .logo-type {
   display: block;
-  height: calc(var(--line-height) * 5 / 3);
-  margin: 0 auto calc(var(--line-height) * 5 / 3);
+  height: calc(var(--line-height) * 7 / 4);
+  margin: 0 auto calc(var(--line-height) * 7 / 4);
 }
 
 header nav {
   clear: both;
   position: relative;
   text-align: center;
-  padding-top: calc(var(--line-height) * 2 / 3);
-  padding-bottom: calc(var(--line-height) * 2 / 3);
+  padding: calc(var(--line-height) * 3 / 4) 0;
   background-color: color(var(--color-accent) w(+ 16%));
   border-top: 1px color(var(--color-accent) b(+ 6%)) solid;
 }
