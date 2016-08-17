@@ -257,19 +257,43 @@ describe("Fortune", function() {
     });
 
     describe("Test Drive", function() {
-      var app;
+      var app, toDbFormatter, fromDbFormatter;
       before(function() {
+        toDbFormatter = sinon.spy(function(){
+          return this;
+        });
+
+        fromDbFormatter = sinon.spy(function(){
+          return RSVP.resolve(this);
+        });
+
         app = fortune({ adapter: "mongodb" });
         app.customType("money", {
           amount: Number,
           currency: String
-        });
+        }).beforeWrite([{
+          name: 'cast-to-db',
+          init: function(){
+            return toDbFormatter;
+          }
+        }]).afterRW([{
+          name: 'card-from-db',
+          init: function(){
+            return fromDbFormatter;
+          }
+        }]);
+
         app.resource("flight", {
-          price: 'money'
+          price: 'money',
+          airport: String
         }, {
           hooks: {}
         });
         return when().delay(1000); // awaitConnection
+      });
+      afterEach(function(){
+        toDbFormatter.reset();
+        fromDbFormatter.reset();
       });
 
       it("should use provided schema underground", function() {
@@ -282,6 +306,23 @@ describe("Fortune", function() {
         return app.direct.create("flights", { body: { flights: [{ price: { amount: "1000.0000", currency: "GBP" }}]}}).then(function(result) {
           result.body.flights[0].price.amount.should.eql(1000);
           result.body.flights[0].price.currency.should.eql("GBP")
+        });
+      });
+      it("should support formatters returning promises", function(){
+        return app.direct.create("flights", { body: { flights: [{ price: { amount: "1000.0000", currency: "GBP" }}]}}).then(function(result) {
+          fromDbFormatter.callCount.should.equal(1);
+          fromDbFormatter.calledOn({price: {amount: 1000, currency: "GBP"}}).should.be.ok;
+        });
+      });
+      it("should support formatters returning plain results", function(){
+        return app.direct.create("flights", { body: { flights: [{ price: { amount: "1000.0000", currency: "GBP" }}]}}).then(function(result) {
+          toDbFormatter.callCount.should.equal(1);
+          toDbFormatter.calledOn({price: {amount: "1000.0000", currency: "GBP"}}).should.be.ok;
+        });
+      });
+      it("should not run custom-type formatter if type path does not exist in the body", function(){
+        return app.direct.create("flights", {body: {flights: [{airport: 'STN'}]}}).then(function(){
+          toDbFormatter.callCount.should.equal(0);
         });
       });
     });
