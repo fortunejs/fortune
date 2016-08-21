@@ -1,49 +1,14 @@
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 960px) {
   body {
     font-size: calc(var(--size-body) - 2px);
   }
-
-  :--header {
-    margin: calc(var(--line-height) * (3 / 2) * (4 / 5)) 0 calc(var(--line-height) * (4 / 5));
-  }
-
-  header nav a:after {
-    margin-right: calc(1em * 2 / 3);
-    padding-left: calc(1em * 2 / 3);
-  }
-
-  h1:first-of-type {
-    margin-top: 0;
-    padding-top: 0;
-  }
-
-  footer {
-    margin: calc(var(--line-height) * 1) auto calc(var(--line-height) * 2);
-  }
-
-  .api > hr {
-    height: calc(var(--line-height) * 2 / 3);
-  }
-
-  #corner {
-    top: 1.2em;
-    right: -2.5em;
-    width: 9em;
-  }
-
-  #corner span {
-    display: none;
-  }
 }
 
-@media screen and (max-width: 640px) {
-  header > div,
-  header nav > div {
-    padding-left: calc(var(--line-height) * 1);
-    padding-right: calc(var(--line-height) * 1);
+@media screen and (max-width: 800px) {
+  header {
+    width: auto;
   }
-
-  article {
-    padding: calc(var(--line-height) * 3 / 2) calc(var(--line-height) * 1);
+  header, nav > div {
+    position: absolute;
   }
 }

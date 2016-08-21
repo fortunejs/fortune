@@ -208,6 +208,7 @@ for (let file of fs.readdirSync(docPath)) {
     root: '../',
     title: inflection.titleize(basename),
     year, api,
+    version: pkg.version,
     content: marked(
       fs.readFileSync(path.join(docPath, file)).toString(), markedOptions)
   }
@@ -223,9 +224,10 @@ docs.readme = {
   root: './',
   title: 'Fortune.js',
   year, api,
+  version: pkg.version,
   description: pkg.description,
   keywords: pkg.keywords.join(','),
-  content: mustache.render(templates.home, { version: pkg.version }) +
+  content: mustache.render(templates.home) +
     marked(example, markedOptions)
 }
 
@@ -265,6 +267,7 @@ fs.writeFileSync(path.join(outputPath, 'api/index.html'), minify(
     root: '../',
     title: 'API Reference',
     year, api,
+    version: pkg.version,
     content: mustache.render(templates.api, api)
   }, templates), minifyOptions))
 

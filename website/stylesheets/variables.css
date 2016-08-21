@@ -2,11 +2,13 @@
 
   /* colors */
   --color-background: #FFF;
-  --color-solid: #000;
-  --color-body: rgba(0, 0, 0, 0.6666);
-  --color-alt: rgba(0, 0, 0, 0.4444);
-  --color-light: rgba(0, 0, 0, 0.2222);
-  --color-accent: #FE7;
+  --color-menu: rgb(240, 245, 243);
+  --color-pre: rgba(240, 245, 243, 0.4);
+  --color-body: #444;
+  --color-alt: #888;
+  --color-light: #BBB;
+  --color-accent: rgb(255, 238, 119);
+  --color-highlight: #ED7041;
   --color-link: #36967B;
   --color-literal: #8B599E;
   --color-attribute: #B55E3E;
@@ -17,7 +19,9 @@
   --font-mono: monospace;
 
   /* measurements */
-  --max-width: 56em;
+  --max-width: 72em;
+  --min-width: 800px;
+  --menu-width: 16em;
   --size-body: 16px;
   --size-mono: calc(1em * 15 / 16);
   --line-height: calc(1em * 5 / 3);

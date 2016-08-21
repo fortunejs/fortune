@@ -1,0 +1,41 @@
+article > h1.intro {
+  color: var(--color-literal);
+}
+
+article > h1.intro::before {
+  background: var(--color-literal);
+  opacity: 0.24;
+}
+
+p.intro {
+  color: var(--color-literal);
+  font-size: 2em;
+  line-height: var(--line-height);
+  padding: calc(var(--line-height) * 1 / 2) 0 calc(var(--line-height) * 1 / 2);
+  margin: 0;
+}
+
+p.intro a {
+  color: inherit;
+  text-decoration: none;
+  font-style: italic;
+}
+
+pre.install {
+  color: var(--color-literal);
+  display: inline-block;
+  margin: 0;
+  background: none;
+  border: 1px var(--color-literal) solid;
+  border-radius: var(--border-radius);
+  padding: calc(var(--line-height) * 1 / 2 - 1px) calc(var(--line-height) * 2 / 3);
+}
+
+pre.install a {
+  color: inherit;
+  text-decoration: none;
+}
+
+pre.install code::before {
+  content: '$ ';
+}

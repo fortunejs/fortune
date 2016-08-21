@@ -9,27 +9,49 @@ https://github.com/fortunejs/fortune/tree/master/website
 <title>{{title}}</title>
 {{#description}}<meta name="description" content="{{description}}">{{/description}}
 {{#keywords}}<meta name="keywords" content="{{keywords}}">{{/keywords}}
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="{{{root}}}assets/piggu.png">
 <link rel="stylesheet" href="{{{root}}}assets/index.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
 <header>
-  <a href="https://github.com/fortunejs/fortune" id="corner"><span>Fork on </span> GitHub</a>
   <div>
     <a href="{{{root}}}"><img src="{{{root}}}assets/fortune_logo.svg" alt="Fortune.js" class="logo-type"></a>
+    <a href="https://github.com/fortunejs/fortune" class="corner">GitHub<span> Repository</span></a>
   </div>
+</header>
+<main>
+  <article>
+    {{{content}}}
+    <footer>
+      &copy; {{year}} &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a>
+    </footer>
+  </article>
   <nav>
     <div>
-      <a href="{{{root}}}"><span>Readme</span></a><!--
-      --><a href="{{{root}}}api/"><span>API Reference</span></a><!--
-      --><a href="{{{root}}}plugins/"><span>Plugins</span></a><!--
-      --><a href="{{{root}}}changelog/"><span>Changelog</span></a>
+      <h4>Docs <span class="version">(v{{version}})</span></h4>
+      <ul>
+        <li><a href="{{{root}}}"><span>Readme</span></a></li>
+        <li><a href="{{{root}}}api/"><span>API Reference</span></a></li>
+        <li><a href="{{{root}}}plugins/"><span>Plugins</span></a></li>
+        <li><a href="{{{root}}}changelog/"><span>Changelog</span></a></li>
+      </ul>
+      {{#api}}
+        <h4>{{#label}}{{label}}{{/label}}{{^label}}{{module}}{{/label}}</h4>
+        <ul>
+          {{#docs}}
+            <li><a href="{{{root}}}api/#{{context.anchor}}"><span>
+              {{context.name}}
+            </span></a></li>
+          {{/docs}}
+        </ul>
+      {{/api}}
+      <hr>
     </div>
   </nav>
-</header>
-<article>
-  {{{content}}}
-</article>
-<footer>
-  <p>&copy; {{year}} &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a></p>
-  <p>福</p>
-</footer>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+<script>
+void function () {
+  var sidebar = document.querySelector('nav > div')
+  Ps.initialize(sidebar)
+}()
+</script>

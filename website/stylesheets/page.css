@@ -5,10 +5,10 @@ Use `border-box` properly:
 https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
 */
 html { box-sizing: border-box; }
-*, *:before, *:after { box-sizing: inherit; }
+*, *::before, *::after { box-sizing: inherit; }
 
 body {
-  background-color: #fff;
+  background-color: var(--color-menu);
   font-family: var(--font-body);
   font-size: var(--size-body);
   color: var(--color-body);
@@ -21,13 +21,12 @@ a {
 }
 
 :--header {
-  color: var(--color-solid);
   font-weight: inherit;
   font-family: var(--font-alt);
-  font-size: calc(1em * 4 / 3);
-  line-height: calc(var(--line-height) * 3 / 4);
-  margin: calc(var(--line-height) * (5 / 2) * (3 / 4)) 0
-    calc(var(--line-height) * (1 / 2) * (3 / 4));
+  font-size: calc(1em * 7 / 5);
+  line-height: calc(var(--line-height) * 5 / 7);
+  padding-top: calc(var(--line-height) * 2 * (5 / 7));
+  margin: calc(var(--line-height) * 1 * (5 / 7)) 0;
 }
 
 :--header a.anchor {
@@ -37,7 +36,7 @@ a {
 }
 
 p, ul, ol, pre, table, blockquote {
-  margin: 0 0 calc(var(--line-height) * 1 / 2);
+  margin: 0 0 calc(var(--line-height) * 1);
 }
 
 ul, ol {
@@ -64,25 +63,20 @@ pre, code {
 }
 
 pre {
-  padding: calc(var(--line-height) * 1 / 2) calc(var(--line-height) * 2 / 3);
+  padding: calc(var(--line-height) * 1 / 2 - 1px);
   margin: calc(var(--line-height) * 3 / 2) 0;
-  background-color: rgba(0, 0, 0, calc(1 / 25));
+  background: var(--color-pre);
+  border: 1px rgba(0, 0, 0, 0.06) solid;
   border-radius: var(--border-radius);
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, calc(1 / 12));
   line-height: var(--mono-height);
   overflow: auto;
-}
-
-pre.install code:before {
-  content: '$ ';
-  color: var(--color-light);
 }
 
 table {
   border-spacing: 0;
   border-collapse: collapse;
   position: relative;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, calc(1 / 16)) inset;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06) inset;
   width: 100%;
 }
 
@@ -95,7 +89,7 @@ table td, table th {
 table th {
   hyphens: none;
   white-space: nowrap;
-  background-color: rgba(0, 0, 0, calc(1 / 32));
+  background-color: var(--color-pre);
 }
 
 tbody code {
@@ -104,78 +98,78 @@ tbody code {
 }
 
 tbody tr:nth-of-type(2n) {
-  background-color: rgba(0, 0, 0, calc(1 / 32));
-}
-
-section {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  position: relative;
-}
-
-section:after {
-  content: ' ';
-  display: block;
-  clear: both;
+  background-color: var(--color-pre);
 }
 
 header {
   background-color: var(--color-accent);
-  position: relative;
-  overflow: hidden;
-  padding-top: calc(var(--line-height) * 2);
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px rgba(0, 0, 0, 0.08) solid;
 }
 
-header > div,
-header nav > div {
+header > div {
+  min-width: var(--min-width);
   max-width: var(--max-width);
-  padding: 0 calc(var(--line-height) * 2);
   margin: 0 auto;
+}
+
+header > div::after {
+  display: block;
+  content: ' ';
+  clear: both;
 }
 
 header .logo-type {
   display: block;
-  height: calc(var(--line-height) * 7 / 4);
-  margin: 0 auto calc(var(--line-height) * 7 / 4);
+  height: calc(var(--line-height) * 4 / 3);
+  margin: calc(var(--line-height) * 1 / 3) 0;
+  padding: 0 1em 0 calc(var(--line-height) * 3 / 2);
+  float: left;
 }
 
-header nav {
-  clear: both;
-  position: relative;
-  text-align: center;
-  padding: calc(var(--line-height) * 3 / 4) 0;
-  background-color: color(var(--color-accent) w(+ 16%));
-  border-top: 1px color(var(--color-accent) b(+ 6%)) solid;
-}
-
-header nav a {
+header .corner {
+  display: block;
+  width: var(--menu-width);
+  float: right;
+  padding: calc(var(--line-height) * 1 / 2) calc(var(--line-height) * 3 / 2);
+  border: 1px rgba(0, 0, 0, 0.08) solid;
+  border-top: 0;
+  border-bottom: 0;
   color: var(--color-link);
-  display: inline-block;
 }
 
-header nav a span {
-  text-decoration: underline;
+header .corner::after {
+  content: '\272a';
+  float: right;
 }
 
-header nav a:after {
-  content: '⁄';
-  margin-right: calc(1em * 2 / 3);
-  padding-left: calc(1em * 2 / 3);
-  color: color(var(--color-accent) b(+ 25%));
-  text-decoration: none;
-  font-weight: normal;
-}
-
-header nav a:last-of-type:after {
-  display: none;
+main {
+  position: relative;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 article {
-  background-color: var(--color-background);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: calc(var(--line-height) * 5 / 2) calc(var(--line-height) * 2);
+  background: var(--color-background);
+  max-width: calc(100% - var(--menu-width));
+  padding: calc(var(--line-height) * 2) calc(var(--line-height) * 3) 0 calc(var(--line-height) * 3 / 2);
   hyphens: auto;
+}
+
+article::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 500em;
+  height: 100%;
+  background: var(--color-background);
 }
 
 article > h1:first-of-type {
@@ -187,34 +181,95 @@ article a {
   text-decoration: underline;
 }
 
-footer {
-  text-align: center;
-  max-width: var(--max-width);
-  position: relative;
-  margin: calc(var(--line-height) * 1) auto calc(var(--line-height) * 3);
-  color: var(--color-alt);
+nav {
+  float: right;
+  width: var(--menu-width);
 }
 
-footer p {
+nav > div {
+  position: fixed;
+  background: var(--color-menu);
+  top: calc(var(--line-height) * 2);
+  width: var(--menu-width);
+  height: calc(100% - var(--line-height) * 2);
+  border: 1px rgba(0, 0, 0, 0.06) solid;
+  border-top: 0;
+  border-bottom: 0;
+  padding: 0 calc(var(--line-height) * 3 / 2);
+  overflow: auto;
+}
+
+nav hr {
+  height: calc(var(--line-height) * 2);
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+nav ul {
   margin: 0;
 }
 
-footer p:last-of-type {
-  color: rgba(0, 0, 0, calc(1 / 8));
-  margin-top: calc(var(--line-height) * 1 / 2);
-  font-size: 2em;
+nav h4 {
+  color: var(--color-alt);
 }
 
-#corner {
-  position: absolute;
-  top: 2.2em;
-  right: -4.4em;
-  transform: rotate(45deg);
-  transform-origin: center;
-  width: 15em;
-  line-height: calc(var(--line-height) * 4 / 3);
-  text-align: center;
+nav .version {
+  text-transform: none;
+  font-weight: normal;
+}
+
+nav h4,
+.api h6,
+article > h1:first-of-type {
+  position: relative;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: calc(1em * 7 / 8);
+  line-height: calc(var(--line-height));
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: calc(var(--line-height) * 2 * 8 / 7);
+  padding-bottom: calc(var(--line-height) * 1 / 2 * 8 / 7);
+  margin-bottom: calc(var(--line-height) * 1 / 2 * 8 / 7);
+}
+
+nav h4::before,
+.api h6::before,
+article > h1:first-of-type::before {
+  content: ' ';
   display: block;
-  background-color: #fca889;
-  color: #fff;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav li {
+  color: var(--color-link);
+}
+
+nav li::after {
+  content: '\2013';
+  float: right;
+  color: var(--color-light);
+}
+
+footer {
+  margin: calc(var(--line-height) * 5) 0 0;
+  padding: 0 0 calc(var(--line-height) * 1);
+  color: var(--color-alt);
+}
+
+footer a {
+  color: inherit;
 }
