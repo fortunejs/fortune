@@ -195,6 +195,7 @@ nav > div {
   border: 1px rgba(0, 0, 0, 0.06) solid;
   border-top: 0;
   border-bottom: 0;
+  border-left: 1px transparent solid;
   padding: 0 calc(var(--line-height) * 3 / 2);
   overflow: auto;
 }
