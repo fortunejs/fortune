@@ -20,6 +20,7 @@ const includes = require('../../lib/common/array/includes')
 const filter = require('../../lib/common/array/filter')
 
 const keys = require('../../lib/common/keys')
+const denormalizedInverseKey = keys.denormalizedInverse
 const primaryKey = keys.primary
 
 const type = 'user'
@@ -37,7 +38,7 @@ const recordTypes = {
     friends: { link: 'user', isArray: true, inverse: 'friends' },
     nemesis: { link: 'user', inverse: '__user_nemesis_inverse' },
     '__user_nemesis_inverse': { link: 'user', isArray: true,
-      inverse: 'nemesis', '__denormalizedInverse': true },
+      inverse: 'nemesis', [denormalizedInverseKey]: true },
     bestFriend: { link: 'user', inverse: 'bestFriend' }
   }
 }
@@ -572,7 +573,6 @@ function runTest (a, options, fn) {
     errors: errors,
     message: message,
     recordTypes: recordTypes,
-    transforms: {},
     Promise: Promise
   })
 

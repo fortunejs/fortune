@@ -251,6 +251,15 @@ article > h1:first-of-type::before {
   background: rgba(0, 0, 0, 0.12);
 }
 
+article > h1:first-of-type {
+  margin-bottom: calc(var(--line-height) * 3 / 2 * 8 / 7);
+}
+
+article > h1:first-of-type + h2,
+article > h1:first-of-type + h3 {
+  margin-top: calc(var(--line-height) * -3 * (5 / 7));
+}
+
 nav ul {
   list-style-type: none;
   padding: 0;

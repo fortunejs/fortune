@@ -16,7 +16,7 @@ $ npm install fortune --save
 
 ## Usage
 
-The only input required is record type definitions. These definitions may have `link`s, or relationships between them, for which Fortune.js does inverse updates and maintains referential integrity. Here's a model of a basic micro-blogging service:
+To get started, only record type definitions need to be passed in. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
 
 ```js
 const fortune = require('fortune')
@@ -41,7 +41,7 @@ const store = fortune({
 })
 ```
 
-The primary key `id` is reserved, no need to specify this. Links are `id`s that are maintained internally at the application-level by Fortune.js, and are always denormalized. What this means is that changes in a record will affect the links in related records.
+Note that the primary key `id` is reserved, so there is no need to specify this. Links are `id`s that are maintained internally at the application-level by Fortune.js, and are always denormalized so that every link has a back-link. What this also means is that changes in a record will affect the links in related records.
 
 By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
 
@@ -57,7 +57,7 @@ store.request({
 
 The first call to `request` will trigger a connection to the data store, and it returns the result as a Promise. See the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
 
-**Node.js only**: Fortune.js implements HTTP functionality for convenience, as a plain request listener which may be composed within larger applications.
+**Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
 
 ```js
 const http = require('http')
@@ -76,11 +76,11 @@ Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune
 See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
 
-## Transform Functions
+## Input and Output Hooks
 
-Transform functions isolate business logic, and are part of what makes the interface reusable across different protocols. An input and output transform function may be defined per record type. Transform functions accept at least two arguments, the `context` object, the `record`, and optionally the `update` object for an `update` request. The method of an input transform may be any method except `find`, and an output transform may be applied on all methods.
+I/O hooks isolate business logic, and are part of what makes the interface reusable across different protocols. An input and output hook function may be defined per record type. Hook functions accept at least two arguments, the `context` object, the `record`, and optionally the `update` object for an `update` request. The method of an input hook may be any method except `find`, and an output hook may be applied on all methods.
 
-The return value of an input transform function determines what gets persisted, and it is safe to mutate any of its arguments. It may return either the value or a Promise, or throw an error. The returned or resolved value must be the record if it's a create request, the update if it's an update request, or anything (or simply `null`) if it's a delete request. For example, an input transform function for a record may look like this:
+An input hook function may optionally return or resolve a value to determine what gets persisted, and it is safe to mutate any of its arguments. The returned or resolved value must be the record if it's a create request, the update if it's an update request, or anything (or simply `null`) if it's a delete request. For example, an input hook function for a record may look like this:
 
 ```js
 function input (context, record, update) {
@@ -97,7 +97,7 @@ function input (context, record, update) {
 }
 ```
 
-An output transform function may only return a record or Promise that resolves to a record, or throw an error. It is safe to mutate any of its arguments.
+An output hook function may optionally return or resolve a record, and it is safe to mutate any of its arguments.
 
 ```js
 function output (context, record) {
@@ -106,15 +106,15 @@ function output (context, record) {
 }
 ```
 
-Based on whether or not the resolved record is different from what was passed in, serializers may decide not to show the resolved record of the output transform for update and delete requests.
+Based on whether or not the resolved record is different from what was passed in, serializers may decide not to show the resolved record of the output hook for update and delete requests.
 
-**Note**: Tranform functions must be defined in a specific order: input first, output last.
+**Note**: Hook functions must be defined in a specific order: input first, output last.
 
 ```js
 const store = fortune({
   user: { ... }
 }, {
-  transforms: {
+  hooks: {
     user: [ input, output ]
   }
 })

@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 4.1.10 (2016-08-22)
+- Polish: rename "transforms" to "hooks". Documentation has been adjusted accordingly.
+- Feature: hook functions do not need to return or resolve a value, it is now optional.
+
+
 ### 4.1.9 (2016-07-10)
 - Polish: CSS tweaks for HTML serializer.
 
