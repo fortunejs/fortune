@@ -29,7 +29,6 @@ const adapter = new MemoryAdapter({
   keys: keys,
   errors: errors,
   recordTypes: recordTypes,
-  transforms: {},
   Promise: Promise
 })
 

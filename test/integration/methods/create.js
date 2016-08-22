@@ -66,7 +66,7 @@ run(() => {
     ok(deadcode.equals(results[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    ok(results[0].createdAt !== null, 'transform applied')
+    ok(results[0].createdAt !== null, 'input hook applied')
     ok(results.length === 1, 'record created')
     ok(results[0][primaryKey] === 4, 'record has correct ID')
     ok(results[0].birthday instanceof Date,

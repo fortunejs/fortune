@@ -102,6 +102,7 @@ An output hook function may optionally return or resolve a record, and it is saf
 ```js
 function output (context, record) {
   record.accessedAt = new Date()
+  return record
 }
 ```
 

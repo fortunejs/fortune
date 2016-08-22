@@ -52,24 +52,19 @@ module.exports = () => {
     },
     '☯': {}
   }, {
-    transforms: {
+    hooks: {
       user: [
         function input (context, record, update) {
-          const method = context.request.method
+          switch (context.request.method) {
+            case methods.create:
+              record.createdAt = new Date()
+              return record
 
-          if (method === methods.create)
-            return assign({}, record, {
-              createdAt: new Date()
-            })
-
-          if (method === methods.update) {
-            if (!('replace' in update)) update.replace = {}
-            update.replace.lastModifiedAt = new Date()
-            return update
+            case methods.update:
+              if (!('replace' in update)) update.replace = {}
+              update.replace.lastModifiedAt = new Date()
+              return update
           }
-
-          // For the `delete` method, return value doesn't matter.
-          return null
         },
         function output (context, record) {
           record.timestamp = Date.now()
@@ -78,21 +73,17 @@ module.exports = () => {
       ],
       animal: [
         function input (context, record, update) {
-          const method = context.request.method
+          switch (context.request.method) {
+            case methods.create:
+              return assign({}, record, {
+                createdAt: new Date()
+              })
 
-          if (method === methods.create)
-            return assign({}, record, {
-              createdAt: new Date()
-            })
-
-          if (method === methods.update) {
-            if (!('replace' in update)) update.replace = {}
-            update.replace.lastModifiedAt = new Date()
-            return update
+            case methods.update:
+              if (!('replace' in update)) update.replace = {}
+              update.replace.lastModifiedAt = new Date()
+              return update
           }
-
-          // For the `delete` method, return value doesn't matter.
-          return null
         },
         function output (context, record) {
           record.virtualProperty = 123
