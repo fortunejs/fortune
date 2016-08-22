@@ -24,7 +24,7 @@ p.intro a {
 pre.install {
   color: var(--color-literal);
   display: inline-block;
-  margin: 0;
+  margin: 0 0 calc(var(--line-height) * 1);
   background: none;
   border: 1px var(--color-literal) solid;
   border-radius: var(--border-radius);

@@ -25,8 +25,9 @@ a {
   font-family: var(--font-alt);
   font-size: calc(1em * 7 / 5);
   line-height: calc(var(--line-height) * 5 / 7);
-  padding-top: calc(var(--line-height) * 2 * (5 / 7));
-  margin: calc(var(--line-height) * 1 * (5 / 7)) 0;
+  padding-top: calc(var(--line-height) * 4 * (5 / 7));
+  margin-top: calc(var(--line-height) * -2 * (5 / 7));
+  margin-bottom: calc(var(--line-height) * 1 * (5 / 7));
 }
 
 :--header a.anchor {
