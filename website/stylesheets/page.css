@@ -259,10 +259,10 @@ nav li {
   color: var(--color-link);
 }
 
-nav li::after {
+nav li::before {
   content: '\2013';
-  float: right;
   color: var(--color-light);
+  margin-right: 0.5em;
 }
 
 footer {
