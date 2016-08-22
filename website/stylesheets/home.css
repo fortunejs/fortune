@@ -11,7 +11,7 @@ p.intro {
   color: var(--color-literal);
   font-size: 2em;
   line-height: var(--line-height);
-  padding: calc(var(--line-height) * 1 / 2) 0 calc(var(--line-height) * 1 / 2);
+  padding-bottom: calc(var(--line-height) * 1 / 2);
   margin: 0;
 }
 
