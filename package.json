@@ -82,12 +82,15 @@
     "node": ">=4"
   },
   "keywords": [
+    "database",
     "adapter",
-    "api",
-    "application",
     "data",
-    "middleware",
+    "hook",
     "serializer",
-    "transform"
+    "net",
+    "http",
+    "websocket",
+    "indexeddb",
+    "memory"
   ]
 }
