@@ -173,6 +173,5 @@ run(() => {
 })
 
 
-function Integer (x) {
-  return (x | 0) === x
-}
+function Integer (x) { return (x | 0) === x }
+Integer.prototype = Object.create(Number.prototype)

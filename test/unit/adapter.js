@@ -25,10 +25,13 @@ const primaryKey = keys.primary
 
 const type = 'user'
 
+function Integer (x) { return (x | 0) === x }
+Integer.prototype = Object.create(Number.prototype)
+
 const recordTypes = {
   user: {
     name: { type: String },
-    age: { type: Number },
+    age: { type: Integer },
     isAlive: { type: Boolean },
     birthday: { type: Date },
     junk: { type: Object },

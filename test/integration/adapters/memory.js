@@ -52,9 +52,6 @@ run(function () {
   .then(records => {
     ok(deepEqual(records[0].foo, [ 1 ]), 'pushed value')
   })
-  .catch(error => {
-    throw error
-  })
 })
 
 
@@ -72,13 +69,10 @@ run(function () {
     ok(deepEqual([ 2, 1 ], map(records, function (record) {
       return record.int
     })), 'compare function is applied')
-    return adapter.find('type', null, { match: { int: -1 } })
+    return adapter.find('type', null, { match: { int: 1 } })
   })
   .then(records => {
-    ok(records.length, 'equal function is applied')
-  })
-  .catch(error => {
-    throw error
+    ok(records.length === 1, 'compare function is applied for exact match')
   })
 })
 
@@ -94,15 +88,9 @@ run(function () {
     ok(records.length === 1, 'records created')
     ok(Array.isArray(records[0].bar), 'new field present')
   })
-  .catch(error => {
-    throw error
-  })
 })
 
 
 function Integer (x) { return (x | 0) === x }
-
+Integer.prototype = Object.create(Number.prototype)
 Integer.compare = function (a, b) { return a - b }
-
-// For the sake of testing, this is intentionally wrong.
-Integer.equal = function (a, b) { return a === -b }

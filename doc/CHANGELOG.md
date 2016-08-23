@@ -1,5 +1,10 @@
 # Changelog
 
+### 4.1.11 (2016-08-23)
+- Fix: custom type matching in built-in adapters.
+- Polish: custom types must inherit from a valid native type.
+- Polish: removed `equal` method check in custom type so that it is no longer used.
+
 
 ### 4.1.10 (2016-08-22)
 - Polish: rename "transforms" to "hooks". Documentation has been adjusted accordingly.
