@@ -23,20 +23,20 @@ const fortune = require('fortune')
 
 const store = fortune({
   user: {
-    name: { type: String },
+    name: String,
 
     // Following and followers are inversely related (many-to-many).
-    following: { link: 'user', inverse: 'followers', isArray: true },
-    followers: { link: 'user', inverse: 'following', isArray: true },
+    following: [ Array('user'), 'followers' ],
+    followers: [ Array('user'), 'following' ],
 
     // Many-to-one relationship of user posts to post author.
-    posts: { link: 'post', inverse: 'author', isArray: true }
+    posts: [ Array('post'), 'author' ]
   },
   post: {
-    message: { type: String },
+    message: String,
 
     // One-to-many relationship of post author to user posts.
-    author: { link: 'user', inverse: 'posts' }
+    author: [ 'user', 'posts' ]
   }
 })
 ```
@@ -45,17 +45,20 @@ Note that the primary key `id` is reserved, so there is no need to specify this.
 
 By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
 
-To make a request internally:
+Fortune has 4 main methods: `find`, `create`, `update`, & `delete`. The method signatures are as follows:
 
 ```js
-store.request({
-  type: 'user',
-  method: 'create',
-  payload: [ { name: 'John Doe' }, { name: 'Jane Doe' } ]
-})
+// The first argument `type` is always required. The optional `include`
+// argument is used for finding related records in the same request and is
+// documented in the `request` method, and the optional `meta` is specific to
+// the adapter.
+store.find(type, ids, options, include, meta)
+store.create(type, records, include, meta) // Records required.
+store.update(type, updates, include, meta) // Updates required.
+store.delete(type, ids, include, meta)
 ```
 
-The first call to `request` will trigger a connection to the data store, and it returns the result as a Promise. See the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
+The first method call to interact with the database will trigger a connection to the data store, and it returns the result as a Promise. The specific methods wrap around the more general `request` method, see the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
 
 **Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
 

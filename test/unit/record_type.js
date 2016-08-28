@@ -1,5 +1,6 @@
 'use strict'
 
+const assert = require('assert')
 const tapdance = require('tapdance')
 const pass = tapdance.pass
 const fail = tapdance.fail
@@ -22,6 +23,15 @@ const denormalizedInverseKey = keys.denormalizedInverse
 
 const recordType = 'person'
 const fields = {
+  // Shorthand definitions.
+  s1: String,
+  s2: Array(String),
+  s3: [ 'person', 's4' ],
+  s4: [ Array('person'), 's3' ],
+  s5: 'person',
+  s6: Array('person'),
+
+  // Standard definitions.
   name: { type: String },
   birthdate: { type: Date, junk: 'asdf' },
   mugshot: { type: Buffer },
@@ -35,6 +45,7 @@ const fields = {
 
 const testFields = fields => () => validate(fields)
 const testField = field => () => validate({ [field]: fields[field] })
+const getField = field => testField(field)()[field]
 
 
 run(() => {
@@ -43,6 +54,27 @@ run(() => {
   // Test for valid fields.
   const valid = 'valid field is valid'
 
+  // Shorthand.
+  pass(() => assert.deepEqual(getField('s1'), {
+    type: String
+  }), valid)
+  pass(() => assert.deepEqual(getField('s2'), {
+    type: String, isArray: true
+  }), valid)
+  pass(() => assert.deepEqual(getField('s3'), {
+    link: 'person', inverse: 's4'
+  }), valid)
+  pass(() => assert.deepEqual(getField('s4'), {
+    link: 'person', inverse: 's3', isArray: true
+  }), valid)
+  pass(() => assert.deepEqual(getField('s5'), {
+    link: 'person'
+  }), valid)
+  pass(() => assert.deepEqual(getField('s6'), {
+    link: 'person', isArray: true
+  }), valid)
+
+  // Standard.
   pass(testField('name'), valid)
   pass(testField('birthdate'), valid)
   pass(testField('mugshot'), valid)
@@ -54,7 +86,7 @@ run(() => {
   // Test for invalid fields.
   const invalid = 'invalid field throws error'
 
-  fail(testFields({ badType: 'asdf' }), invalid)
+  fail(testFields({ badType: true }), invalid)
   fail(testFields({ nested: { thing: { type: String } } }), invalid)
   fail(testFields({
     typeAndLink: { type: String, link: 'y', inverse: 'friends' }

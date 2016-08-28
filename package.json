@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for Node.js and web browsers.",
-  "version": "4.1.11",
+  "version": "4.2.0",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",

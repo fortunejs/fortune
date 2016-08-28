@@ -1,5 +1,12 @@
 # Changelog
 
+
+### 4.2.0 (2016-08-28)
+- Feature: shorthand record type definitions.
+- Feature: new instance methods for requests `find`, `create`, `update`, & `delete` that take positional parameters.
+- Feature: new method `fortune.net.client` which returns an object with most of the Fortune instance methods.
+
+
 ### 4.1.11 (2016-08-23)
 - Fix: custom type matching in built-in adapters.
 - Polish: custom types must inherit from a valid native type.
