@@ -62,6 +62,7 @@ const api = [
     label: 'WebSocket',
     path: [
       'net/websocket_server.js',
+      'net/websocket_client.js',
       'net/websocket_request.js',
       'net/websocket_sync.js'
     ]
@@ -147,21 +148,23 @@ function processAPI (ns, obj) {
       const isArray = tag.type.expression &&
         (tag.type.expression.expression || tag.type.expression)
         .name === 'Array'
-      const isUnion = tag.type.expression &&
-        tag.type.expression.type === 'UnionType'
+      const isUnion = tag.type.type === 'UnionType' ||
+        (tag.type.expression && tag.type.expression.type === 'UnionType')
       const isRest = tag.type.expression &&
         tag.type.expression.type === 'RestType'
 
       if (isOptional)
         type = tag.type.expression.name
 
-      if (isArray)
+      if (isArray) {
         type = 'Array of ' + inflection.pluralize(
-          (tag.type.expression.applications || tag.type.applications)
+          (tag.type.expression.applications || tag.type.applications ||
+            [ { type: 'AllLiteral' } ])
           .map(getName).map(inflection.pluralize.bind(inflection)).join(', '))
+      }
 
       if (isUnion)
-        type = 'Either ' + tag.type.expression.elements
+        type = 'Either ' + (tag.type.elements || tag.type.expression.elements)
           .map(getName).join(', or ')
 
       if (isRest) {

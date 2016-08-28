@@ -18,9 +18,7 @@ const primaryKey = constants.primary
 run(() => {
   comment('get collection')
   return findTest({
-    request: {
-      type: 'user'
-    },
+    request: [ 'user' ],
     response: response => {
       ok(response.payload.records.length === 3, 'gets all records')
     }
@@ -31,10 +29,7 @@ run(() => {
 run(() => {
   comment('get IDs')
   return findTest({
-    request: {
-      type: 'user',
-      ids: [ 2, 1 ]
-    },
+    request: [ 'user', [ 2, 1 ] ],
     response: response => {
       ok(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
@@ -47,11 +42,7 @@ run(() => {
 run(() => {
   comment('get includes')
   return findTest({
-    request: {
-      type: 'user',
-      ids: [ 1, 2 ],
-      include: [ [ 'ownedPets' ] ]
-    },
+    request: [ 'user', [ 1, 2 ], null, [ [ 'ownedPets' ] ] ],
     response: response => {
       ok(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
@@ -67,11 +58,8 @@ run(() => {
 run(() => {
   comment('get includes with options')
   return findTest({
-    request: {
-      type: 'user',
-      ids: [ 1 ],
-      include: [ [ 'spouse', 'enemies', { fields: { name: true } } ] ]
-    },
+    request: [ 'user', 1, null,
+      [ [ 'spouse', 'enemies', { fields: { name: true } } ] ] ],
     response: response => {
       ok(response.payload.include.user.length === 1,
         'number of records found is correct')
@@ -91,7 +79,7 @@ function findTest (o) {
   .then(instance => {
     store = instance
 
-    return store.request(o.request)
+    return store.find.apply(store, o.request)
   })
 
   .then(response => {

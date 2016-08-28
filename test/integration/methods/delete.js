@@ -36,20 +36,13 @@ run(() => {
         [ 1, 2 ]), 'change event shows updated IDs')
     })
 
-    return store.request({
-      type: 'user',
-      method: deleteMethod,
-      ids: [ 3 ]
-    })
+    return store.delete('user', 3)
   })
 
   .then(response => {
     ok(response.payload.records.length === 1, 'records deleted')
 
-    return store.request({
-      type: 'user',
-      ids: [ 1, 2 ]
-    })
+    return store.find('user', [ 1, 2 ])
   })
 
   .then(response => {

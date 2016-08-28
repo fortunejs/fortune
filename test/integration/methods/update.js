@@ -27,12 +27,10 @@ run(() => {
   comment('update invalid ID should fail')
   return updateTest({
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        push: { ownedPets: 'xxx' }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      push: { ownedPets: 'xxx' }
+    },
     error: error => {
       ok(error instanceof BadRequestError, 'error type is correct')
     }
@@ -49,12 +47,10 @@ run(() => {
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 3,
-        replace: { spouse: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 3,
+      replace: { spouse: 2 }
+    },
     relatedType: 'user',
     related: response => {
       ok(find(response.payload.records,
@@ -80,12 +76,10 @@ run(() => {
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        replace: { spouse: 3 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      replace: { spouse: 3 }
+    },
     relatedType: 'user',
     related: response => {
       ok(find(response.payload.records,
@@ -111,12 +105,10 @@ run(() => {
         [ 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        replace: { spouse: 1 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      replace: { spouse: 1 }
+    },
     relatedType: 'user',
     related: response => {
       ok(find(response.payload.records,
@@ -134,14 +126,11 @@ run(() => {
   comment('update one to one with multiple same value should fail')
 
   return testInstance()
-  .then(store => store.request({
-    method: updateMethod,
-    type: 'user',
-    payload: [
+  .then(store => store.update('user', [
       { [primaryKey]: 2, replace: { spouse: 1 } },
       { [primaryKey]: 3, replace: { spouse: 1 } }
     ]
-  }))
+  ))
   .then(() => {
     fail('should have failed')
   })
@@ -160,12 +149,10 @@ run(() => {
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        replace: { spouse: null }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      replace: { spouse: null }
+    },
     relatedType: 'user',
     related: response => {
       ok(find(response.payload.records,
@@ -187,12 +174,10 @@ run(() => {
         'change event is empty')
     },
     type: 'animal',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { owner: 1 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { owner: 1 }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -215,12 +200,10 @@ run(() => {
         [ 1, 2 ]), 'change event shows related update IDs')
     },
     type: 'animal',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { owner: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { owner: 2 }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -246,12 +229,10 @@ run(() => {
         [ 1 ]), 'change event shows related update IDs')
     },
     type: 'animal',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { owner: null }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { owner: null }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -274,12 +255,10 @@ run(() => {
         [ 1 ]), 'change event shows related update IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        push: { ownedPets: 1 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      push: { ownedPets: 1 }
+    },
     relatedType: 'animal',
     related: response => {
       ok(find(response.payload.records,
@@ -294,12 +273,10 @@ run(() => {
   comment('update many to one (push, conflict)')
   return updateTest({
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        push: { ownedPets: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      push: { ownedPets: 2 }
+    },
     error: error => {
       ok(error instanceof ConflictError, 'error type is correct')
     }
@@ -319,12 +296,10 @@ run(() => {
         [ 2 ]), 'change event shows related update IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        push: { ownedPets: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      push: { ownedPets: 2 }
+    },
     relatedType: 'animal',
     related: response => {
       ok(find(response.payload.records,
@@ -347,12 +322,10 @@ run(() => {
         [ 2, 3 ]), 'change event shows related update IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        pull: { ownedPets: [ 2, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      pull: { ownedPets: [ 2, 3 ] }
+    },
     relatedType: 'animal',
     related: response => {
       ok(find(response.payload.records,
@@ -378,12 +351,10 @@ run(() => {
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 3,
-        replace: { ownedPets: [ 1, 2, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 3,
+      replace: { ownedPets: [ 1, 2, 3 ] }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -404,12 +375,10 @@ run(() => {
   comment('update many to one (set) #2')
   return updateTest({
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 3,
-        replace: { ownedPets: [ 1, 2, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 3,
+      replace: { ownedPets: [ 1, 2, 3 ] }
+    },
     relatedType: 'animal',
     related: response => {
       ok(find(response.payload.records,
@@ -438,12 +407,10 @@ run(() => {
         [ 1, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        replace: { ownedPets: [ 1, 2 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      replace: { ownedPets: [ 1, 2 ] }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -469,12 +436,10 @@ run(() => {
         [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 2,
-        replace: { ownedPets: [] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 2,
+      replace: { ownedPets: [] }
+    },
     relatedType: 'animal',
     related: response => {
       ok(find(response.payload.records,
@@ -497,12 +462,10 @@ run(() => {
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        push: { friends: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      push: { friends: 2 }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -517,12 +480,10 @@ run(() => {
   comment('update many to many (push, conflict)')
   return updateTest({
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        push: { friends: 3 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      push: { friends: 3 }
+    },
     error: error => {
       ok(error instanceof ConflictError, 'error type is correct')
     }
@@ -539,12 +500,10 @@ run(() => {
         [ 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 3,
-        pull: { friends: 2 }
-      }
-    ],
+    payload: {
+      [primaryKey]: 3,
+      pull: { friends: 2 }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -564,12 +523,10 @@ run(() => {
         [ 1, 2 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { friends: [ 2, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { friends: [ 2, 3 ] }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -590,12 +547,10 @@ run(() => {
   comment('update many to many (set, conflict)')
   return updateTest({
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { friends: [ 3, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { friends: [ 3, 3 ] }
+    },
     error: error => {
       ok(error instanceof ConflictError, 'error type is correct')
     }
@@ -612,12 +567,10 @@ run(() => {
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 3,
-        replace: { friends: [] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 3,
+      replace: { friends: [] }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -643,12 +596,10 @@ run(() => {
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
     type: 'user',
-    payload: [
-      {
-        [primaryKey]: 1,
-        replace: { enemies: [ 2, 3 ] }
-      }
-    ],
+    payload: {
+      [primaryKey]: 1,
+      replace: { enemies: [ 2, 3 ] }
+    },
     relatedType: 'user',
     related: response => {
       ok(deepEqual(find(response.payload.records,
@@ -679,16 +630,10 @@ function updateTest (o) {
     if (o.change)
       store.on(changeEvent, data => o.change(data))
 
-    return store.request({
-      method: updateMethod,
-      type: o.type,
-      payload: o.payload
-    })
+    return store.update(o.type, o.payload)
   })
 
-  .then(() => store.request({
-    type: o.relatedType
-  }))
+  .then(() => store.find(o.relatedType))
 
   .then(response => o.related(response))
 

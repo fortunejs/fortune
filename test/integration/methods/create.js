@@ -54,11 +54,7 @@ run(() => {
         [ 1, 3 ]), 'change event shows updated IDs')
     })
 
-    return store.request({
-      type: 'user',
-      method: createMethod,
-      payload: records
-    })
+    return store.create('user', records)
   })
 
   .then(response => {
@@ -74,10 +70,7 @@ run(() => {
     ok(results[0].name === 'Slimer McGee',
       'record has correct field value')
 
-    return store.request({
-      type: 'user',
-      ids: [ 1, 3 ]
-    })
+    return store.find('user', [ 1, 3 ])
   })
 
   .then(response => {
@@ -106,11 +99,7 @@ run(() => {
   .then(instance => {
     store = instance
 
-    return store.request({
-      type: 'user',
-      method: createMethod,
-      payload: [ { spouse: 2 }, { spouse: 2 } ]
-    })
+    return store.create('user', [ { spouse: 2 }, { spouse: 2 } ])
   })
 
   .then(() => {
@@ -133,11 +122,7 @@ run(() => {
   .then(instance => {
     store = instance
 
-    return store.request({
-      type: 'user',
-      method: createMethod,
-      payload: [ { friends: [ 2, 2 ] } ]
-    })
+    return store.create('user', { friends: [ 2, 2 ] })
   })
 
   .then(() => {

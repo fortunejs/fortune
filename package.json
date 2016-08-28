@@ -29,7 +29,7 @@
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.4.1",
+    "bluebird": "^3.4.3",
     "busboy": "^0.2.13",
     "error-class": "^2.0.1",
     "event-lite": "^0.1.1",
@@ -48,9 +48,9 @@
     "chalk": "^1.1.3",
     "cssnano": "^3.7.4",
     "docchi": "^0.12.1",
-    "eslint": "^3.3.1",
+    "eslint": "^3.4.0",
     "eslint-config-boss": "^1.0.4",
-    "form-data": "^1.0.0-rc4",
+    "form-data": "^1.0.1",
     "highlight.js": "^9.6.0",
     "html-minifier": "^3.0.2",
     "http-server": "^0.9.0",

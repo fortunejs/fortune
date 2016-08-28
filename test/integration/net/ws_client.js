@@ -14,24 +14,29 @@ run(() => {
   comment('fortune wire protocol')
 
   const port = 8890
-  let store, client
+  let store, client, remote
 
   return new Promise(resolve => setTimeout(resolve, 1 * 1000))
   .then(() => testInstance())
   .then(instance => {
     store = instance
     client = new WebSocket(`ws://localhost:${port}`)
+    remote = fortune.net.client(client)
     fortune.net.sync(client, store)
 
-    return new Promise((resolve, reject) => {
-      client.addEventListener('open', resolve)
-      client.addEventListener('error', reject)
-    })
+    try {
+      fortune.net.request(client)
+      fail('should have failed')
+    }
+    catch (error) {
+      pass('options or state required')
+    }
+
+    return remote.state({ foo: 'bar' })
   })
-  .then(() => fortune.net.request(client, null, { foo: 'bar' }))
   .then(result => {
     ok(result.state.foo === 'bar', 'connection state is set')
-    return fortune.net.request(client, { type: 'user' })
+    return remote.find('user')
   })
   .then(result => {
     ok(result.response.payload.records.length === 3, 'records fetched')
@@ -44,17 +49,20 @@ run(() => {
           return resolve(changes)
         })
       }),
-      fortune.net.request(client, {
-        type: 'user', method: 'create', payload: [ {
-          picture: new Buffer('cafebabe', 'hex')
-        } ]
+      remote.create('user', {
+        picture: new Buffer('cafebabe', 'hex')
       })
     ])
   })
   .then(results => {
     ok(results[1].response.payload.records.length === 1, 'record created')
-    return fortune.net.request(client)
   })
-  .then(() => fail('should have failed'), () => pass('error occurs'))
-  .then(() => fortune.net.request(client, null, { kill: true }))
+  .then(kill, error => {
+    kill()
+    throw error
+  })
+
+  function kill () {
+    return remote.state({ kill: true })
+  }
 })

@@ -5,6 +5,7 @@
 - Feature: shorthand record type definitions.
 - Feature: new instance methods for requests `find`, `create`, `update`, & `delete` that take positional parameters.
 - Feature: new method `fortune.net.client` which returns an object with most of the Fortune instance methods.
+- Feature: `fortune.net.request` now automatically waits until the connection is open.
 
 
 ### 4.1.11 (2016-08-23)
