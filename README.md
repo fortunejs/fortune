@@ -74,7 +74,7 @@ store.connect().then(() => server.listen(1337))
 
 This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
-Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for real-time applications.
+Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications.
 
 See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
@@ -130,16 +130,16 @@ const store = fortune({
 - A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
 - A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
 - An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
-- Real-time web applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
+- Soft real-time applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
 
 
 ## Features and Non-Features
 
 - Application-level relationships: inverse updates and referential integrity.
 - Transaction support for databases that support transactions, such as Postgres.
-- Dereferencing relationships in a single request.
+- Dereferencing relationships in a single request via `include`.
 - Type validations, plus support for custom types.
-- IndexedDB functionality in web browsers, with memory fallback.
+- IndexedDB adapter for web browsers, with memory fallback.
 - Soft real-time wire protocol for data synchronization between server and client.
 - **No** ORM or active record pattern, just plain data objects.
 - **No** coupling with network protocol, handle requests from anywhere.
