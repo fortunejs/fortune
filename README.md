@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for Node.js and web browsers. It includes adapters for IndexedDB and memory, as well as a HTTP listener (JSON & HTML) and a WebSocket wire protocol out of the box.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for Node.js and web browsers. It supports IndexedDB and memory out of the box, and includes networking functionality for HTTP (JSON & HTML serializers built-in) and a WebSocket wire protocol.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
@@ -16,10 +16,10 @@ $ npm install fortune --save
 
 ## Usage
 
-To get started, only record type definitions need to be passed in. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
+To get started, only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
 
 ```js
-const fortune = require('fortune')
+const fortune = require('fortune') // Works in browsers, too!
 
 const store = fortune({
   user: {
@@ -111,13 +111,14 @@ function output (context, record) {
 
 Based on whether or not the resolved record is different from what was passed in, serializers may decide not to show the resolved record of the output hook for update and delete requests.
 
-**Note**: Hook functions must be defined in a specific order: input first, output last.
+Hooks for a record type may be defined as follows:
 
 ```js
 const store = fortune({
   user: { ... }
 }, {
   hooks: {
+    // Hook functions must be defined in order: input first, output last.
     user: [ input, output ]
   }
 })
@@ -134,19 +135,19 @@ const store = fortune({
 
 ## Features and Non-Features
 
-- Type validations, plus support for custom types.
-- Application-level denormalized inverse relationships.
-- Dereferencing relationships in a single request.
+- Application-level relationships: inverse updates and referential integrity.
 - Transaction support for databases that support transactions, such as Postgres.
-- IndexedDB functionality in web browsers.
-- Built-in wire protocol for data synchronization between server and client.
-- **No** active record pattern, just plain data objects.
-- **No** coupling with network protocol, they are treated as external interfaces.
+- Dereferencing relationships in a single request.
+- Type validations, plus support for custom types.
+- IndexedDB functionality in web browsers, with memory fallback.
+- Soft real-time wire protocol for data synchronization between server and client.
+- **No** ORM or active record pattern, just plain data objects.
+- **No** coupling with network protocol, handle requests from anywhere.
 
 
 ## Requirements
 
-Fortune.js is written in ECMAScript 5.1 syntax, with some ECMAScript 6 additions.
+Fortune.js is written in ECMAScript 5.1, with some ECMAScript 6 additions:
 
 - **Promise** (ES6): not supported in IE, supported in Edge. Bring your own implementation (optional).
 - **WeakMap** (ES6): supported in IE11+, Edge. Polyfills exist, but they have their shortcomings since it must be implemented natively.
