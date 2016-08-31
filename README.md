@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven web applications. It runs in Node.js and web browsers, with support for IndexedDB in browsers and memory out of the box. It also includes networking functionality for HTTP (JSON & HTML serializers built-in) and a WebSocket wire protocol.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications, with networking out of the box. It runs in Node.js and web browsers, with adapters for IndexedDB in browsers and memory included. It also includes a HTTP listener (JSON & HTML serializers built-in) and a WebSocket wire protocol.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 

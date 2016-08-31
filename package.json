@@ -1,6 +1,6 @@
 {
   "name": "fortune",
-  "description": "Database abstraction layer for data-driven web applications.",
+  "description": "Database abstraction layer for data-driven applications.",
   "version": "4.2.0",
   "license": "MIT",
   "author": {
