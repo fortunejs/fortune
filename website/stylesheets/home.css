@@ -9,9 +9,9 @@ article > h1.intro::before {
 
 p.intro {
   color: var(--color-literal);
-  font-size: calc(1em * 2);
-  line-height: var(--line-height);
-  padding-bottom: calc(var(--line-height) * 1 / 2);
+  font-size: calc(1em * 9 / 5);
+  line-height: calc(var(--line-height) / ((9 / 5) / 2));
+  padding-bottom: calc(var(--line-height) * (1 / 2) / ((9 / 5) / 2));
   margin: 0;
 }
 

@@ -29,7 +29,7 @@
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.4.3",
+    "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "error-class": "^2.0.1",
     "event-lite": "^0.1.1",
@@ -61,7 +61,7 @@
     "mustache": "^2.2.1",
     "normalize.css": "^4.2.0",
     "postcss": "^5.1.2",
-    "postcss-cssnext": "^2.7.0",
+    "postcss-cssnext": "^2.8.0",
     "postcss-import": "^8.1.2",
     "rimraf": "^2.5.4",
     "tapdance": "^4.1.2",
