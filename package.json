@@ -25,7 +25,7 @@
     "test": "npm run lint && npm run test:server && npm run test:browser && npm run test:websocket",
     "test:server": "node test | tf-dot",
     "test:browser": "browserify test/browser.js | tape-run | tf-dot",
-    "test:websocket": "node test/integration/net/ws_server.js & browserify test/integration/net/ws_client.js | tape-run",
+    "test:websocket": "node test/integration/net/ws_server.js & browserify test/integration/net/ws_client.js | tape-run | tf-dot",
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {

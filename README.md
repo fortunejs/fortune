@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications, with networking out of the box. It runs in Node.js and web browsers, with adapters for IndexedDB in browsers and memory included. It also includes a HTTP listener (JSON & HTML serializers built-in) and a WebSocket wire protocol.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications, with networking out of the box. It presents a common API for Node.js and web browsers, which is backed by IndexedDB in browsers and memory by default, with other options available via *adapters*. It also includes a HTTP listener with pluggable serializers, and a wire protocol for soft real-time using WebSocket.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
@@ -19,7 +19,7 @@ $ npm install fortune --save
 To get started, only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
 
 ```js
-const fortune = require('fortune') // Works in browsers, too!
+const fortune = require('fortune') // Works in web browsers, too.
 
 const store = fortune({
   user: {
@@ -43,7 +43,7 @@ const store = fortune({
 
 Note that the primary key `id` is reserved, so there is no need to specify this. Links are `id`s that are maintained internally at the application-level by Fortune.js, and are always denormalized so that every link has a back-link. What this also means is that changes in a record will affect the links in related records.
 
-By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb).
+By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
 Fortune has 4 main methods: `find`, `create`, `update`, & `delete`. The method signatures are as follows:
 
@@ -60,6 +60,9 @@ store.delete(type, ids, include, meta)
 
 The first method call to interact with the database will trigger a connection to the data store, and it returns the result as a Promise. The specific methods wrap around the more general `request` method, see the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
 
+
+## Networking
+
 **Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
 
 ```js
@@ -74,9 +77,7 @@ store.connect().then(() => server.listen(1337))
 
 This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
-Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications.
-
-See the [plugins page](http://fortune.js.org/plugins/) for more details.
+Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications. A [server](http://fortune.js.org/api/#fortune.net-ws) and [client](http://fortune.js.org/api/#fortune.net-client) implementation is included.
 
 
 ## Input and Output Hooks
