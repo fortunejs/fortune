@@ -17,6 +17,7 @@ const form = require('../../../lib/net/http_form_serializer')
 const formUrlEncoded = form.formUrlEncoded
 const formData = form.formData
 
+const buffer = Buffer.from || Buffer
 const options = {
   serializers: [
     json, formUrlEncoded, formData
@@ -102,7 +103,7 @@ run(() => {
 
   let server
   let store
-  const deadbeef = new Buffer('deadbeef', 'hex')
+  const deadbeef = buffer('deadbeef', 'hex')
   const form = new FormData()
   form.append('name', 'Ayy lmao')
   form.append('picture', deadbeef,
@@ -144,7 +145,7 @@ run(() => {
 
   let server
   let store
-  const deadbeef = new Buffer('deadbeef', 'hex')
+  const deadbeef = buffer('deadbeef', 'hex')
   const form = new FormData()
   form.append('method', 'update')
   form.append('id', 1)

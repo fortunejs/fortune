@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.2 (2016-09-12)
+- Polish: prefer `Buffer.from` instead of the deprecated `new Buffer`.
+
+
 ### 4.2.1 (2016-09-12)
 - Polish: exchange WebSocket server implementation from `ws` to `uws`, for performance gains.
 

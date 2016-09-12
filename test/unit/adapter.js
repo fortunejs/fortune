@@ -46,9 +46,10 @@ const recordTypes = {
   }
 }
 
-const deadbeef = new Buffer('deadbeef', 'hex')
-const key1 = new Buffer('cafe', 'hex')
-const key2 = new Buffer('babe', 'hex')
+const buffer = Buffer.from || Buffer
+const deadbeef = buffer('deadbeef', 'hex')
+const key1 = buffer('cafe', 'hex')
+const key2 = buffer('babe', 'hex')
 
 const records = [
   {

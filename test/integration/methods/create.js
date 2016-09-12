@@ -22,7 +22,8 @@ const primaryKey = constants.primary
 const errors = require('../../../lib/common/errors')
 const ConflictError = errors.ConflictError
 
-const deadcode = new Buffer('deadc0de', 'hex')
+const buffer = Buffer.from || Buffer
+const deadcode = buffer('deadc0de', 'hex')
 
 const records = [
   {

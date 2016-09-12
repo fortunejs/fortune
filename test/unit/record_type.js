@@ -20,7 +20,7 @@ const isArrayKey = keys.isArray
 const inverseKey = keys.inverse
 const denormalizedInverseKey = keys.denormalizedInverse
 
-
+const alloc = Buffer.alloc || Buffer
 const recordType = 'person'
 const fields = {
   // Shorthand definitions.
@@ -113,7 +113,7 @@ run(() => {
   fail(testRecord({ birthdate: {} }), bad)
   pass(testRecord({ birthdate: new Date() }), good)
   fail(testRecord({ mugshot: {} }), bad)
-  pass(testRecord({ mugshot: new Buffer(1) }), good)
+  pass(testRecord({ mugshot: alloc(1) }), good)
   fail(testRecord({ luckyNumbers: 1 }), bad)
   pass(testRecord({ luckyNumbers: [ 1 ] }), good)
   pass(testRecord({ integer: 1 }), good)

@@ -1,8 +1,12 @@
+'use strict'
+
+const buffer = Buffer.from || Buffer
+
 exports.user = [
   {
     id: 1,
     name: 'John Doe',
-    picture: new Buffer('deadbeef', 'hex'),
+    picture: buffer('deadbeef', 'hex'),
     createdAt: new Date(Date.UTC(2016, 3, 29)),
     lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1992, 11, 7)),
@@ -13,7 +17,7 @@ exports.user = [
   {
     id: 2,
     name: 'Jane Doe',
-    picture: new Buffer('cafebabe', 'hex'),
+    picture: buffer('cafebabe', 'hex'),
     createdAt: new Date(Date.UTC(2016, 3, 29)),
     lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1997, 6, 30)),
@@ -25,7 +29,7 @@ exports.user = [
   {
     id: 3,
     name: 'Microsoft Bob',
-    picture: new Buffer('babecafe', 'hex'),
+    picture: buffer('babecafe', 'hex'),
     createdAt: new Date(Date.UTC(2016, 3, 29)),
     lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1995, 3, 10)),

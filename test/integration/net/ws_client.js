@@ -8,6 +8,7 @@ const pass = tapdance.pass
 const fail = tapdance.fail
 const fortune = require('../../../lib')
 const testInstance = require('../test_instance')
+const buffer = Buffer.from || Buffer
 
 
 run(() => {
@@ -50,7 +51,7 @@ run(() => {
         })
       }),
       remote.create('user', {
-        picture: new Buffer('cafebabe', 'hex')
+        picture: buffer('cafebabe', 'hex')
       })
     ])
   })
