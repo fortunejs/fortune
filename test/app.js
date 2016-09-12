@@ -83,6 +83,11 @@ function configureApp(harvesterApp) {
     })
     .readOnly()
 
+    .resource('restrict', {
+        name: Joi.string().description('name')
+    })
+    .restricted()
+
     .resource('immutable', {
         name: Joi.string().description('name')
     })
