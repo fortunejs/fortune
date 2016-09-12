@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -25,22 +25,18 @@
     "test": "npm run lint && npm run test:server && npm run test:browser && npm run test:websocket",
     "test:server": "node test | tf-dot",
     "test:browser": "browserify test/browser.js | tape-run | tf-dot",
-    "test:websocket": "node test/integration/net/ws_server.js & browserify test/integration/net/ws_client.js | tape-run | tf-dot",
+    "test:websocket": "node test/integration/net/ws_server.js & browserify test/integration/net/ws_client.js | tape-run",
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.4.3",
+    "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "error-class": "^2.0.1",
     "event-lite": "^0.1.1",
     "fast-crc32c": "^1.0.4",
     "msgpack-lite": "^0.1.20",
     "negotiator": "^0.6.1",
-    "ws": "^1.1.1"
-  },
-  "optionalDependencies": {
-    "bufferutil": "^1.2.1",
-    "utf-8-validate": "^1.2.1"
+    "uws": "^0.9.0"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
@@ -48,7 +44,7 @@
     "chalk": "^1.1.3",
     "cssnano": "^3.7.4",
     "docchi": "^0.12.1",
-    "eslint": "^3.4.0",
+    "eslint": "^3.5.0",
     "eslint-config-boss": "^1.0.4",
     "form-data": "^1.0.1",
     "highlight.js": "^9.6.0",
@@ -60,8 +56,8 @@
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "normalize.css": "^4.2.0",
-    "postcss": "^5.1.2",
-    "postcss-cssnext": "^2.7.0",
+    "postcss": "^5.2.0",
+    "postcss-cssnext": "^2.8.0",
     "postcss-import": "^8.1.2",
     "rimraf": "^2.5.4",
     "tapdance": "^4.1.2",

@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.1 (2016-09-12)
+- Polish: exchange WebSocket server implementation from `ws` to `uws`, for performance gains.
+
+
 ### 4.2.0 (2016-08-28)
 - Feature: shorthand record type definitions.
 - Feature: new instance methods for requests `find`, `create`, `update`, & `delete` that take positional parameters.
