@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.3 (2016-09-13)
+- Polish: do not sort object fields by default, it just doesn't make sense.
+
+
 ### 4.2.2 (2016-09-12)
 - Polish: prefer `Buffer.from` instead of the deprecated `new Buffer`.
 
