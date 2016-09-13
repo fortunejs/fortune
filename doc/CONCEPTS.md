@@ -5,7 +5,7 @@ Fortune.js is a library that provides a common interface for disparate kinds of 
 
 ## Records and Record Types
 
-A record in Fortune.js is a plain JavaScript object with a restriction: it must follow the definition of a record type. A record type is a set of user-defined fields which must be strongly typed, like a [`struct`](https://en.wikipedia.org/wiki/Struct_(C_programming_language)) in C. This means that records are data, and do not contain methods beyond the standard Object prototype. This is done intentionally to avoid the [quagmire of object-relational mapping, or ORM](https://blog.codinghorror.com/object-relational-mapping-is-the-vietnam-of-computer-science/).
+A [record](https://en.wikipedia.org/wiki/Struct) in Fortune.js is a plain JavaScript object with a restriction: it must follow the definition of a record type. A record type is a set of user-defined fields which must be strongly typed, like a `struct` in C. This means that records are data, and do not contain methods beyond the standard Object prototype. This is done intentionally to avoid the [quagmire of object-relational mapping, or ORM](https://blog.codinghorror.com/object-relational-mapping-is-the-vietnam-of-computer-science/).
 
 Fortune.js implements type validations for built-in JavaScript types and Buffers. Custom types may be defined on top of the built-in types, that provide additional guarantees. Strict typing is necessary in relational databases, but real world applications using non-relational databases typically follow an ad hoc schema. Fortune.js makes it so that strict typing is required.
 
