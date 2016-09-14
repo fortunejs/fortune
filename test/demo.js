@@ -23,6 +23,14 @@ instance().then(store => {
   store.on(fortune.events.change, data => console.log(chalk.cyan(
     `${chalk.bold('Change')}: ${util.inspect(data, { depth: null })}`)))
 
-  const server = http.createServer(fortune.net.http(store))
-  server.listen(port, () => console.log(chalk.blue(`Listening on port ${port}...`)))
+  const server = http.createServer(fortune.net.http(store, {
+    serializers: [
+      [ fortune.net.http.HtmlSerializer ],
+      [ fortune.net.http.FormDataSerializer ],
+      [ fortune.net.http.FormUrlEncodedSerializer ],
+      [ fortune.net.http.JsonSerializer ]
+    ]
+  }))
+  server.listen(port, () =>
+    console.log(chalk.blue(`Listening on port ${port}...`)))
 })

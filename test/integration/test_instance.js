@@ -11,7 +11,7 @@ const change = fortune.change
 const methods = fortune.methods
 
 
-module.exports = () => {
+module.exports = adapter => {
   const store = fortune({
     user: {
       name: { type: String },
@@ -51,7 +51,7 @@ module.exports = () => {
       owner: { link: 'user', inverse: 'ownedPets' }
     },
     '☯': {}
-  }, {
+  }, assign({
     hooks: {
       user: [
         function input (context, record, update) {
@@ -91,7 +91,7 @@ module.exports = () => {
         }
       ]
     }
-  })
+  }, adapter ? { adapter } : null))
 
   store.on(change, data => {
     stderr.info(chalk.bold('Change event:'), data)
