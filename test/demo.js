@@ -9,14 +9,16 @@ const fortune = require('../lib')
 const port = 1337
 
 instance().then(store => {
+  /* eslint-disable max-len */
   store.options.settings.name = 'Foobar'
-  store.options.settings.description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eleifend tempor vulputate. Etiam rhoncus vulputate leo nec accumsan. Etiam eleifend ultrices faucibus. Vestibulum quis sem neque.`
+  store.options.settings.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eleifend tempor vulputate. Etiam rhoncus vulputate leo nec accumsan. Etiam eleifend ultrices faucibus. Vestibulum quis sem neque.'
   store.options.documentation = {
     user: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     name: {
       en: 'Vestibulum vitae velit id tellus vehicula dictum nec at ante. Sed pulvinar eros quis volutpat volutpat. Integer a pulvinar tellus, ut vehicula diam.'
     }
   }
+  /* eslint-enable max-len */
 
   store.on(fortune.events.change, data => console.log(chalk.cyan(
     `${chalk.bold('Change')}: ${util.inspect(data, { depth: null })}`)))
