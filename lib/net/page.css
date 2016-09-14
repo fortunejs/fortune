@@ -3,7 +3,7 @@
 
 /* page */
 html, body { height: 100% }
-body, input { font-size: 16px; font-family: 'Avenir', 'Calibri', 'FreeSans', sans-serif; }
+body, input { font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 body { line-height: 1.5; background: #eee; color: #444; }
 a { color: inherit; text-decoration: inherit; }
 h1, h2, h3, h4, h5, h6, aside > label { font-family: 'Garamond', 'Times New Roman', Times, serif; }
@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; font-weight: norma
 
 /* index */
 .index header { padding: 3em 0; background: #fff; border-bottom: 1px #ccc solid; margin-bottom: 3em; }
-.index header > div { max-width: 46em; margin: 0 auto; padding: 0 1.5em; }
+.index header > div, .property-header, .property-list { max-width: 52em; margin: 0 auto; padding: 0 1.5em; }
 .index header > div > h1:first-of-type { font-family: inherit; font-style: inherit; font-weight: bold; font-size: 2em; margin-bottom: 0.75em; line-height: inherit; }
 .index .description { font-weight: normal; margin: 3em 0 1.5em; }
 .index .description > * { margin-bottom: 1.5em; }
@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 { font-size: 1.25em; line-height: 1.2; font-weight: norma
 .types-list .comment { display: none; }
 
 /* property list */
-.property-header, .property-list { max-width: 46em; margin: 1.5em auto; padding: 0 1.5em; }
+.property-header, .property-list { margin: 1.5em auto; }
 .property-list { margin-bottom: 4.5em; }
 
 /* definitions */
