@@ -82,7 +82,7 @@ renderer.heading = (text, level) => {
 }
 
 const markedOptions = {
-  renderer, highlight: code => hjs.highlightAuto(code).value
+  renderer, highlight: (code, lang) => hjs.highlight(lang, code).value
 }
 
 const minifyOptions = { collapseWhitespace: true }

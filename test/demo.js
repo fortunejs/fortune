@@ -25,10 +25,9 @@ instance().then(store => {
 
   const server = http.createServer(fortune.net.http(store, {
     serializers: [
-      [ fortune.net.http.HtmlSerializer ],
-      [ fortune.net.http.FormDataSerializer ],
-      [ fortune.net.http.FormUrlEncodedSerializer ],
-      [ fortune.net.http.JsonSerializer ]
+      fortune.net.http.HtmlSerializer,
+      fortune.net.http.FormDataSerializer,
+      fortune.net.http.FormUrlEncodedSerializer
     ]
   }))
   server.listen(port, () =>
