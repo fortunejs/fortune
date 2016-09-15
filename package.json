@@ -1,7 +1,7 @@
 {
   "name": "harvesterjs",
   "description": "a library which makes it easy to construct a JSON-API compliant REST API (http://jsonapi.org/) with Nodejs and Mongodb",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "license": "MIT",
   "author": {
     "name": "Kristof Sajdak",
