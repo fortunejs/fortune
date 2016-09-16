@@ -13,6 +13,7 @@ module.exports = (function () {
         {
             "id": "600274a7-3862-45d7-8fca-e558cea1cf6d",
             "name": "Catbert",
+            "nickname": "Pocahontas",
             "appearances": 205
         }
     ];

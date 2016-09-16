@@ -11,6 +11,7 @@ var config = require('./config.js');
 function configureApp(harvesterApp) {
     harvesterApp.resource('person', {
         name: Joi.string().required().description('name'),
+        nickname: Joi.string().description('nickname'),
         appearances: Joi.number().required().description('appearances'),
         links: {
             pets: ['pet'],
