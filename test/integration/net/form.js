@@ -109,7 +109,7 @@ run(() => {
   form.append('picture', deadbeef,
     { filename: 'deadbeef.dump' })
 
-  return testInstance(options)
+  return testInstance()
   .then(s => {
     store = s
     server = http.createServer(fortune.net.http(store)).listen(4000)
@@ -153,7 +153,7 @@ run(() => {
   form.append('picture', deadbeef,
     { filename: 'deadbeef.dump' })
 
-  return testInstance(options)
+  return testInstance()
   .then(s => {
     store = s
     server = http.createServer(fortune.net.http(store)).listen(4001)
