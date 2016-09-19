@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "4.2.3",
+  "version": "4.2.4",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -29,7 +29,6 @@
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "error-class": "^2.0.1",
     "event-lite": "^0.1.1",

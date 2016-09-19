@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.4 (2016-09-19)
+- Polish: drop Bluebird as default Promise implementation, defer to built-in Promise or use user-supplied Promise.
+
+
 ### 4.2.3 (2016-09-13)
 - Polish: do not sort object fields by default, it just doesn't make sense.
 
