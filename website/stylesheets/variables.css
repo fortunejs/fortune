@@ -19,9 +19,9 @@
   --font-mono: monospace;
 
   /* measurements */
-  --max-width: 72em;
+  --max-width: 70em;
   --min-width: 800px;
-  --menu-width: 16em;
+  --menu-width: 15em;
   --size-body: 16px;
   --size-mono: calc(1em * 15 / 16);
   --line-height: calc(1em * 5 / 3);
