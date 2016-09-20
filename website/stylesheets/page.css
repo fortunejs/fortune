@@ -104,7 +104,7 @@ tbody tr:nth-of-type(2n) {
 
 header {
   background-color: var(--color-accent);
-  position: fixed;
+  position: absolute;
   z-index: 100;
   top: 0;
   left: 0;
