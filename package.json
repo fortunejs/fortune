@@ -74,15 +74,13 @@
     "extends": "boss/es5"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=4.5"
   },
   "keywords": [
     "database",
     "adapter",
     "data",
-    "hook",
     "serializer",
-    "net",
     "http",
     "websocket",
     "indexeddb",
