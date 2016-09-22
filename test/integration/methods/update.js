@@ -21,6 +21,22 @@ const primaryKey = constants.primary
 const errors = require('../../../lib/common/errors')
 const ConflictError = errors.ConflictError
 const BadRequestError = errors.BadRequestError
+const NotFoundError = errors.NotFoundError
+
+
+run(() => {
+  comment('update missing record should fail')
+  return updateTest({
+    type: 'user',
+    payload: {
+      [primaryKey]: 'xxx',
+      replace: { spouse: 1 }
+    },
+    error: error => {
+      ok(error instanceof NotFoundError, 'error type is correct')
+    }
+  })
+})
 
 
 run(() => {
@@ -633,11 +649,15 @@ function updateTest (o) {
     return store.update(o.type, o.payload)
   })
 
-  .then(() => store.find(o.relatedType))
+  .then(x => o.relatedType ? store.find(o.relatedType) : null)
 
-  .then(response => o.related(response))
+  .then(response => response ? o.related(response) : null)
 
-  .then(() => store.disconnect())
+  .then(() => {
+    if (o.error) throw new Error('Test should have failed.')
+
+    return store.disconnect()
+  })
 
   .catch(error => {
     stderr.error(error)

@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.5 (2016-09-22)
+- Fix: update IDs for which records could not be found should throw an error.
+
+
 ### 4.2.4 (2016-09-19)
 - Polish: drop Bluebird as default Promise implementation, defer to built-in Promise or use user-supplied Promise.
 
