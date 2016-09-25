@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.6 (2016-09-25)
+- Fix: delete records via request without IDs should not be allowed, but is allowed by directly calling the adapter. This prevents potentially unsafe operation if a delete request is issued without IDs which bypassed the input hook.
+
+
 ### 4.2.5 (2016-09-22)
 - Fix: update IDs for which records could not be found should throw an error.
 

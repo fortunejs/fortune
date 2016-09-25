@@ -33,10 +33,7 @@ run(function () {
   .then(function (store) {
     ok(store instanceof fortune, 'instantiation works')
 
-    return store.request({
-      type: 'model',
-      method: fortune.methods.delete
-    })
+    return store.adapter.delete('model')
   })
   .then(function () {
     return Promise.all([
