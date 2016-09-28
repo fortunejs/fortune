@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.7 (2016-09-28)
+- Refactor: extract `instantiateSerializer` function, expose as part of HTTP listener implementation.
+
+
 ### 4.2.6 (2016-09-25)
 - Fix: delete records via request without IDs should not be allowed, but is allowed by directly calling the adapter. This prevents potentially unsafe operation if a delete request is issued without IDs which bypassed the input hook.
 
