@@ -269,12 +269,6 @@ nav li {
   color: var(--color-link);
 }
 
-nav li::before {
-  content: '\2013';
-  color: var(--color-light);
-  margin-right: 0.5em;
-}
-
 footer {
   margin: calc(var(--line-height) * 5) 0 0;
   padding: 0 0 calc(var(--line-height) * 1);
