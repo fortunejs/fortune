@@ -22,7 +22,6 @@ a {
 
 :--header {
   font-weight: inherit;
-  font-family: var(--font-alt);
   font-size: calc(1em * 7 / 5);
   line-height: calc(var(--line-height) * 5 / 7);
   padding-top: calc(var(--line-height) * 4 * (5 / 7));
@@ -146,6 +145,7 @@ header .corner {
 header .corner::after {
   content: '\272a';
   float: right;
+  opacity: calc(1 / 2);
 }
 
 main {
@@ -158,7 +158,7 @@ main {
 article {
   background: var(--color-background);
   max-width: calc(100% - var(--menu-width));
-  padding: calc(var(--line-height) * 2) calc(var(--line-height) * 3) 0 calc(var(--line-height) * 3 / 2);
+  padding: calc(var(--line-height) * 2) calc(var(--line-height) * 7 / 2) 0 calc(var(--line-height) * 3 / 2);
   hyphens: auto;
 }
 
@@ -267,6 +267,16 @@ nav ul {
 
 nav li {
   color: var(--color-link);
+}
+
+nav li:last-of-type {
+  padding: 0;
+}
+
+nav li::before {
+  content: '\2013';
+  color: var(--color-alt);
+  margin-right: calc(1em / 3);
 }
 
 footer {
