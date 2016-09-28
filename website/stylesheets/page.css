@@ -188,7 +188,7 @@ nav {
 }
 
 nav > div {
-  position: /*fixed*/absolute;
+  position: fixed;
   background: var(--color-menu);
   top: calc(var(--line-height) * 2);
   width: var(--menu-width);
