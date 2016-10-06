@@ -45,17 +45,20 @@ Note that the primary key `id` is reserved, so there is no need to specify this.
 
 By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as [MongoDB](https://github.com/fortunejs/fortune-mongodb), [Postgres](https://github.com/fortunejs/fortune-postgres), and [NeDB](https://github.com/fortunejs/fortune-nedb). See the [plugins page](http://fortune.js.org/plugins/) for more details.
 
-Fortune has 4 main methods: `find`, `create`, `update`, & `delete`. The method signatures are as follows:
+Fortune has 4 main methods: `find`, `create`, `update`, & `delete`, which correspond to [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete). The method signatures are as follows:
 
 ```js
 // The first argument `type` is always required. The optional `include`
 // argument is used for finding related records in the same request and is
 // documented in the `request` method, and the optional `meta` is specific to
-// the adapter.
+// the adapter. All methods return promises.
 store.find(type, ids, options, include, meta)
 store.create(type, records, include, meta) // Records required.
 store.update(type, updates, include, meta) // Updates required.
 store.delete(type, ids, include, meta)
+
+// For example...
+store.find('user', 123).then(results => { ... })
 ```
 
 The first method call to interact with the database will trigger a connection to the data store, and it returns the result as a Promise. The specific methods wrap around the more general `request` method, see the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
@@ -66,6 +69,8 @@ The first method call to interact with the database will trigger a connection to
 **Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
 
 ```js
+// Bring your own HTTP! This makes it easier to add SSL and allows the user to
+// choose between different HTTP implementations, such as HTTP/2.
 const http = require('http')
 
 // The `fortune.net.http` helper function returns a listener function which
