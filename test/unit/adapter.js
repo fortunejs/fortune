@@ -82,7 +82,7 @@ module.exports = (adapter, options) => {
     comment('find: nothing')
     return test(adapter => {
       return adapter.find(type, [])
-      .then((records) => {
+      .then(records => {
         ok(records.count === 0, 'count is correct')
       })
     })
@@ -92,7 +92,7 @@ module.exports = (adapter, options) => {
     comment('find: id, type checking #1')
     return test(adapter => {
       return adapter.find(type, [ 1 ])
-      .then((records) => {
+      .then(records => {
         ok(records.count === 1, 'count is correct')
         ok(records[0][primaryKey] === 1, 'id is correct')
         ok(records[0].birthday instanceof Date,
@@ -113,7 +113,7 @@ module.exports = (adapter, options) => {
     comment('find: id, type checking #2')
     return test(adapter => {
       return adapter.find(type, [ 2 ])
-      .then((records) => {
+      .then(records => {
         ok(records.count === 1, 'count is correct')
         ok(records[0][primaryKey] === 2, 'id is correct')
         ok(Buffer.isBuffer(records[0].picture),
@@ -130,7 +130,7 @@ module.exports = (adapter, options) => {
     comment('find: collection')
     return test(adapter => {
       return adapter.find(type)
-      .then((records) => {
+      .then(records => {
         ok(records.count === 2, 'count is correct')
         testIds(records, 'id type is correct')
       })
@@ -144,7 +144,7 @@ module.exports = (adapter, options) => {
         adapter.find(type, null, { range: { age: [ 36, 38 ] } }),
         adapter.find(type, null, { range: { age: [ null, 36 ] } })
       ])
-      .then((results) => {
+      .then(results => {
         results.forEach((records) => {
           ok(records.length === 1, 'match length is correct')
           ok(records[0].name === 'john', 'matched correct record')
@@ -160,7 +160,7 @@ module.exports = (adapter, options) => {
         adapter.find(type, null, { range: { name: [ 'j', null ] } }),
         adapter.find(type, null, { range: { name: [ 'i', 'k' ] } })
       ])
-      .then((results) => {
+      .then(results => {
         results.forEach((records) => {
           ok(records.length === 1, 'match length is correct')
           ok(records[0].name === 'john', 'matched correct record')
@@ -178,7 +178,7 @@ module.exports = (adapter, options) => {
         adapter.find(type, null, { range: {
           birthday: [ new Date(Date.now() - 10 * 1000), new Date() ] } })
       ])
-      .then((results) => {
+      .then(results => {
         results.forEach((records) => {
           ok(records.length === 1, 'match length is correct')
           ok(records[0].name === 'bob', 'matched correct record')
@@ -196,7 +196,7 @@ module.exports = (adapter, options) => {
         adapter.find(type, null, { range: {
           privateKeys: [ 1, null ] } })
       ])
-      .then((results) => {
+      .then(results => {
         results.forEach((records) => {
           ok(records.length === 1, 'match length is correct')
           ok(records[0].name === 'john', 'matched correct record')
@@ -210,7 +210,7 @@ module.exports = (adapter, options) => {
     return test(adapter => {
       return adapter.find(type, null,
         { match: { name: [ 'john', 'xyz' ], age: 36 } })
-      .then((records) => {
+      .then(records => {
         ok(records.length === 1, 'match length is correct')
         ok(records[0].name === 'john', 'matched correct record')
       })
@@ -221,7 +221,7 @@ module.exports = (adapter, options) => {
     comment('find: match (buffer)')
     return test(adapter => {
       return adapter.find(type, null, { match: { picture: deadbeef } })
-      .then((records) => {
+      .then(records => {
         ok(records.length === 1, 'match length is correct')
         ok(records[0].picture.equals(deadbeef),
           'matched correct record')
@@ -233,7 +233,7 @@ module.exports = (adapter, options) => {
     comment('find: match (array containment)')
     return test(adapter => {
       return adapter.find(type, null, { match: { privateKeys: key1 } })
-      .then((records) => {
+      .then(records => {
         ok(records.length === 1, 'match length is correct')
         ok(records[0][primaryKey] === 2, 'matched correct record')
       })
@@ -244,7 +244,7 @@ module.exports = (adapter, options) => {
     comment('find: match (nothing)')
     return test(adapter => {
       return adapter.find(type, null, { match: { name: 'bob', age: 36 } })
-      .then((records) => {
+      .then(records => {
         ok(records.length === 0, 'match length is correct')
       })
     })
@@ -254,7 +254,7 @@ module.exports = (adapter, options) => {
     comment('find: exists (positive)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { picture: true } })
-      .then((records) => {
+      .then(records => {
         ok(records[0][primaryKey] === 2, 'matched correct record')
       })
     })
@@ -264,7 +264,7 @@ module.exports = (adapter, options) => {
     comment('find: exists (negative)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { picture: false } })
-      .then((records) => {
+      .then(records => {
         ok(records[0][primaryKey] === 1, 'matched correct record')
       })
     })
@@ -274,7 +274,7 @@ module.exports = (adapter, options) => {
     comment('find: exists (empty array #1)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { privateKeys: true } })
-      .then((records) => {
+      .then(records => {
         ok(records[0][primaryKey] === 2, 'matched correct record')
       })
     })
@@ -284,7 +284,7 @@ module.exports = (adapter, options) => {
     comment('find: exists (empty array #2)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { privateKeys: false } })
-      .then((records) => {
+      .then(records => {
         ok(records[0][primaryKey] === 1, 'matched correct record')
       })
     })
@@ -294,7 +294,7 @@ module.exports = (adapter, options) => {
     comment('find: sort ascending')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: true } })
-      .then((records) => {
+      .then(records => {
         ok(deepEqual(map(records, (record) => { return record.age }),
           [ 36, 42 ]), 'ascending sort order correct')
       })
@@ -305,7 +305,7 @@ module.exports = (adapter, options) => {
     comment('find: sort descending')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: false } })
-      .then((records) => {
+      .then(records => {
         ok(deepEqual(map(records, (record) => { return record.age }),
           [ 42, 36 ]), 'descending sort order correct')
       })
@@ -316,7 +316,7 @@ module.exports = (adapter, options) => {
     comment('find: sort combination')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: true, name: true } })
-      .then((records) => {
+      .then(records => {
         ok(deepEqual(map(records, (record) => { return record.age }),
           [ 36, 42 ]), 'sort order is correct')
       })
@@ -328,7 +328,7 @@ module.exports = (adapter, options) => {
     return test(adapter => {
       return adapter.find(type, null,
         { offset: 1, limit: 1, sort: { name: true } })
-      .then((records) => {
+      .then(records => {
         ok(records[0].name === 'john', 'record is correct')
         ok(records.length === 1, 'offset length is correct')
       })
@@ -340,7 +340,7 @@ module.exports = (adapter, options) => {
     return test(adapter => {
       return adapter.find(type, null,
         { fields: { name: true, isAlive: true } })
-      .then((records) => {
+      .then(records => {
         ok(!find(records, (record) => {
           return Object.keys(record).length !== 3
         }), 'fields length is correct')
@@ -353,7 +353,7 @@ module.exports = (adapter, options) => {
     return test(adapter => {
       return adapter.find(type, null,
         { fields: { name: false, isAlive: false } })
-      .then((records) => {
+      .then(records => {
         ok(!find(records, (record) => {
           return Object.keys(record).length !== 10
         }), 'fields length is correct')
@@ -365,7 +365,7 @@ module.exports = (adapter, options) => {
     comment('create: no-op')
     return test(adapter => {
       return adapter.create(type, [])
-      .then((records) => {
+      .then(records => {
         ok(deepEqual(records, []), 'response is correct')
       })
     })
@@ -381,7 +381,7 @@ module.exports = (adapter, options) => {
         picture: deadbeef,
         birthday: date
       } ])
-      .then((records) => {
+      .then(records => {
         ok(deadbeef.equals(records[0].picture),
           'buffer type is correct')
         ok(
@@ -398,7 +398,7 @@ module.exports = (adapter, options) => {
       .then(() => {
         fail('duplicate id creation should have failed')
       })
-      .catch((error) => {
+      .catch(error => {
         ok(error instanceof errors.ConflictError,
           'error type is correct')
       })
@@ -413,7 +413,7 @@ module.exports = (adapter, options) => {
       return adapter.create(type, [ {
         name: 'joe'
       } ])
-      .then((records) => {
+      .then(records => {
         id = records[0][primaryKey]
         testIds(records, 'id type is correct')
 
@@ -424,7 +424,7 @@ module.exports = (adapter, options) => {
 
         return adapter.find(type, [ id ])
       })
-      .then((records) => {
+      .then(records => {
         ok(records.length === 1, 'match length is correct')
         ok(records[0][primaryKey] === id, 'id is matching')
         testIds(records, 'id type is correct')
@@ -436,7 +436,7 @@ module.exports = (adapter, options) => {
     comment('update: no-op')
     return test(adapter => {
       return adapter.update(type, [])
-      .then((number) => {
+      .then(number => {
         ok(number === 0, 'number is correct')
       })
     })
@@ -449,7 +449,7 @@ module.exports = (adapter, options) => {
         id: 3,
         replace: { foo: 'bar' }
       } ])
-      .then((number) => {
+      .then(number => {
         ok(number === 0, 'number is correct')
       })
     })
@@ -462,11 +462,11 @@ module.exports = (adapter, options) => {
         { id: 1, replace: { name: 'billy' } },
         { id: 2, replace: { name: 'billy', nicknames: [ 'pepe' ] } }
       ])
-      .then((number) => {
+      .then(number => {
         ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then((records) => {
+      .then(records => {
         ok(deepEqual(find(records, (record) => {
           return record[primaryKey] === 2
         }).nicknames, [ 'pepe' ]), 'array updated')
@@ -484,11 +484,11 @@ module.exports = (adapter, options) => {
         { id: 1, replace: { name: null } },
         { id: 2, replace: { name: null } }
       ])
-      .then((number) => {
+      .then(number => {
         ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then((records) => {
+      .then(records => {
         ok(filter(records, (record) => {
           return record.name !== null
         }).length === 0, 'field updated on unset')
@@ -503,11 +503,11 @@ module.exports = (adapter, options) => {
         { id: 1, push: { friends: 5 } },
         { id: 2, push: { friends: [ 5 ] } }
       ])
-      .then((number) => {
+      .then(number => {
         ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then((records) => {
+      .then(records => {
         ok(filter(records, (record) => {
           return includes(record.friends, 5)
         }).length === records.length, 'value pushed')
@@ -522,11 +522,11 @@ module.exports = (adapter, options) => {
         { id: 1, pull: { friends: 2 } },
         { id: 2, pull: { friends: [ 1 ] } }
       ])
-      .then((number) => {
+      .then(number => {
         ok(number === 2, 'number updated correct')
         return adapter.find(type)
       })
-      .then((records) => {
+      .then(records => {
         ok(filter(records, (record) => {
           return record.friends.length
         }).length === 0, 'value pulled')
@@ -538,7 +538,7 @@ module.exports = (adapter, options) => {
     comment('delete: no-op')
     return test(adapter => {
       return adapter.delete(type, [])
-      .then((number) => {
+      .then(number => {
         ok(number === 0, 'number is correct')
       })
     })
@@ -548,11 +548,11 @@ module.exports = (adapter, options) => {
     comment('delete')
     return test(adapter => {
       return adapter.delete(type, [ 1, 3 ])
-      .then((number) => {
+      .then(number => {
         ok(number === 1, 'number deleted correct')
         return adapter.find(type, [ 1, 2 ])
       })
-      .then((records) => {
+      .then(records => {
         ok(records.count === 1, 'count correct')
         ok(deepEqual(map(records, (record) => {
           return record[primaryKey]
@@ -591,7 +591,7 @@ function runTest (a, options, fn) {
       }))
   })
   .then(() => adapter.disconnect())
-  .catch((error) => {
+  .catch(error => {
     adapter.disconnect()
     fail(error)
   })

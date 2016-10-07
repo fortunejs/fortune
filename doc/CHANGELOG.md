@@ -1,6 +1,12 @@
 # Changelog
 
 
+### 4.2.9 (2016-10-07)
+- Fix: disable LRU for IndexedDB, which allows as many records to be persisted as possible.
+- Fix: attempt IndexedDB transaction before committing to memory.
+- Polish: use `hasOwnProperty` where appropriate.
+
+
 ### 4.2.8 (2016-10-07)
 - Remove optional feature: rudimentary IPC functionality in WebSocket server, it was not very useful and can be done without having a dedicated option for it.
 

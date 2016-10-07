@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "4.2.8",
+  "version": "4.2.9",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
