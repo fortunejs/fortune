@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 4.2.8 (2016-10-07)
+- Remove optional feature: rudimentary IPC functionality in WebSocket server, it was not very useful and can be done without having a dedicated option for it.
+
+
 ### 4.2.7 (2016-09-28)
 - Refactor: extract `instantiateSerializer` function, expose as part of HTTP listener implementation.
 
