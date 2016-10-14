@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var should = require('should');
 var request = require('supertest');
 var Promise = require('bluebird');
@@ -19,6 +20,26 @@ describe("filters", function () {
             should.not.exist(error);
             var body = JSON.parse(response.text);
             body.people.length.should.equal(1);
+            done();
+        });
+    });
+    it("should allow top-level resource filtering based on empty property", function (done) {
+        request(config.baseUrl).get('/people?nickname=,').expect('Content-Type', /json/).expect(200).end(function (error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.people.length.should.equal(2);
+            body.people.forEach(function (person) {
+                person.should.not.have.property('nickname');
+            });
+            done();
+        });
+    });
+    it("should allow top-level resource filtering based on empty property", function (done) {
+        request(config.baseUrl).get('/people?nickname=Pocahontas,').expect('Content-Type', /json/).expect(200).end(function (error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            body.people.length.should.equal(3);
+            _.map(body.people, 'nickname').sort().should.eql(['Pocahontas', undefined, undefined]);
             done();
         });
     });
