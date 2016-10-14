@@ -1,15 +1,12 @@
-var inflect = require('i')();
-var should = require('should');
 var _ = require('lodash');
-var request = require('supertest');
 var Promise = require('bluebird');
 var BSON = require('mongodb').BSONPure;
 var mongojs = require('mongojs');
+var sinon = require('sinon');
 
 //require('longjohn');
 
 var harvesterPort = 8007;
-var baseUrl = 'http://localhost:' + harvesterPort;
 var reportAPI_baseUri = 'http://localhost:9988';
 
 var nock = require('nock');
@@ -42,12 +39,15 @@ var createReportResponseDfd;
 describe('onChange callback, event capture and at-least-once delivery semantics', function () {
 
     var harvesterApp;
+    var petOnInsertHandler;
 
     describe('Given a post on a very controversial topic, ' +
         'and a new comment is posted or updated with content which contains profanity, ' +
         'the comment is reported as abusive to another API. ', function () {
 
         before(function (done) {
+
+            petOnInsertHandler = sinon.stub().returnsArg(0);
 
             var that = this;
             that.timeout(100000);
@@ -67,13 +67,21 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                         post: 'post'
                     }
                 })
-                .onChange({insert: {func:reportAbusiveLanguage}, update: reportAbusiveLanguage})
+                .onChange({insert: {func: reportAbusiveLanguage}, update: reportAbusiveLanguage})
+                .resource('petshop', {
+                    name: Joi.string()
+                })
                 .resource('pet', {
                     body: Joi.string()
                 })
                 .onChange({
-                    insert: function () {
-                    }, asyncInMemory: true
+                    insert: petOnInsertHandler
+                })
+                .resource('frog', {
+                    body: Joi.string()
+                })
+                .onChange({
+                    insert: petOnInsertHandler, asyncInMemory: true
                 });
 
             that.chaiExpress = chai.request(harvesterApp.router);
@@ -126,7 +134,7 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                     that.eventsReader = new EventsReader();
                 })
                 .then(function () {
-                    return removeModelsData(harvesterApp, ['checkpoint', 'post', 'comment'])
+                    return removeModelsData(harvesterApp, ['checkpoint', 'post', 'comment', 'pet', 'petshop', 'frog']);
                 })
                 .then(function () {
                     return initFromLastCheckpoint(harvesterApp, oplogDb);
@@ -232,7 +240,6 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             });
         });
 
-
         describe('When that abuse report API resource responds with a 201 created', function () {
             it('Then the event is considered as handled and should complete successfully with an updated checkpoint', function (done) {
                 test.call(this, done, function () {
@@ -246,7 +253,6 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 });
             });
         });
-
 
         describe('When that abuse report API resource responds the first time with a 500', function () {
             it('Then the event is retried and should complete successfully if the abuse report API responds with a 201 this time', function (done) {
@@ -263,6 +269,52 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
             });
         });
 
+        describe('When pet is inserted', function () {
+            it('should trigger pet onInsert handler', function (done) {
+                var that = this;
+                this.checkpointCreated.then(function () {
+                    setTimeout(that.eventsReader.tail.bind(that.eventsReader), 500);
+                });
+                petOnInsertHandler.reset();
+                this.chaiExpress.post('/pets')
+                    .send({
+                        pets: [{
+                            body: 'Dogbert'
+                        }]
+                    }).then(function (res) {
+                    expect(res).to.have.status(201);
+                    return Promise.delay(1000).then(function () {
+                        sinon.assert.calledOnce(petOnInsertHandler);
+                        done();
+                    });
+                }).catch(done);
+            });
+        });
+
+        describe('When petshop is inserted', function () {
+            it('should NOT trigger pet onInsert handler', function (done) {
+                var that = this;
+                this.checkpointCreated.then(function () {
+                    setTimeout(that.eventsReader.tail.bind(that.eventsReader), 500);
+                });
+                petOnInsertHandler.reset();
+                this.chaiExpress.post('/petshops')
+                    .send({
+                        petshops: [{
+                            name: 'Petoroso'
+                        }]
+                    })
+                    .then(function (res) {
+                        expect(res).to.have.status(201);
+                        return Promise.delay(1000).then(function () {
+                            sinon.assert.notCalled(petOnInsertHandler);
+                            done();
+                        });
+                    })
+                    .catch(done);
+            });
+        });
+
         // not a very meaningful test but will have to do for now
         describe('When a post is added 10000 times', function () {
             it('should process very fast', function (done) {
@@ -276,9 +328,9 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
                 var range = _.range(10000);
                 var postPromises = Promise.resolve(range)
                     .map(function (i) {
-                        return that.chaiExpress.post('/pets')
+                        return that.chaiExpress.post('/frogs')
                             .send({
-                                pets: [{
+                                frogs: [{
                                     body: i + " test"
                                 }]
                             })
@@ -296,7 +348,6 @@ describe('onChange callback, event capture and at-least-once delivery semantics'
 
             });
         });
-
 
     });
 
