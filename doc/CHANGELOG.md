@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 4.2.10 (2016-10-17)
+- Polish: try to compress Buffer-typed payloads by default.
+- Fix: typo in HTML serializer.
+
+
 ### 4.2.9 (2016-10-07)
 - Fix: disable LRU for IndexedDB, which allows as many records to be persisted as possible.
 - Fix: attempt IndexedDB transaction before committing to memory.
