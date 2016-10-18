@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications, with networking out of the box. It presents a common API for Node.js and web browsers, which is backed by IndexedDB in browsers and memory by default, with other options available via *adapters*. It also includes a HTTP listener with pluggable *serializers*, and a wire protocol for soft real-time using WebSocket.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications in Node.js and web browsers. It makes some assumptions about the data model and how it is accessed, upon which it adds useful features such as relationships, inverse updates, referential integrity, I/O hooks and more.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
@@ -64,27 +64,6 @@ store.find('user', 123).then(results => { ... })
 The first method call to interact with the database will trigger a connection to the data store, and it returns the result as a Promise. The specific methods wrap around the more general `request` method, see the [API documentation for `request`](http://fortune.js.org/api/#fortune-request).
 
 
-## Networking
-
-**Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
-
-```js
-// Bring your own HTTP! This makes it easier to add SSL and allows the user to
-// choose between different HTTP implementations, such as HTTP/2.
-const http = require('http')
-
-// The `fortune.net.http` helper function returns a listener function which
-// does content negotiation, and maps the internal response to a HTTP response.
-const server = http.createServer(fortune.net.http(store))
-
-store.connect().then(() => server.listen(1337))
-```
-
-This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
-
-Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications. A [server](http://fortune.js.org/api/#fortune.net-ws) and [client](http://fortune.js.org/api/#fortune.net-client) implementation is included.
-
-
 ## Input and Output Hooks
 
 I/O hooks isolate business logic, and are part of what makes the interface reusable across different protocols. An input and output hook function may be defined per record type. Hook functions accept at least two arguments, the `context` object, the `record`, and optionally the `update` object for an `update` request. The method of an input hook may be any method except `find`, and an output hook may be applied on all methods.
@@ -131,6 +110,27 @@ const store = fortune({
 ```
 
 
+## Networking
+
+**Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
+
+```js
+// Bring your own HTTP! This makes it easier to add SSL and allows the user to
+// choose between different HTTP implementations, such as HTTP/2.
+const http = require('http')
+
+// The `fortune.net.http` helper function returns a listener function which
+// does content negotiation, and maps the internal response to a HTTP response.
+const server = http.createServer(fortune.net.http(store))
+
+store.connect().then(() => server.listen(1337))
+```
+
+This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
+
+Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications. A [server](http://fortune.js.org/api/#fortune.net-ws) and [client](http://fortune.js.org/api/#fortune.net-client) implementation is included.
+
+
 ## Use Cases
 
 - A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
@@ -155,8 +155,8 @@ const store = fortune({
 
 Fortune.js is written in ECMAScript 5.1, with some ECMAScript 6 additions:
 
-- **Promise** (ES6): not supported in IE, supported in Edge. Bring your own implementation (optional).
-- **WeakMap** (ES6): supported in IE11+, Edge. Polyfills exist, but they have their shortcomings since it must be implemented natively.
+- **Promise** (ES6): most of its public API returns Promises.
+- **WeakMap** (ES6): used in its internal implementation.
 
 
 ## License
