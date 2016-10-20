@@ -3,10 +3,6 @@
   "description": "Database abstraction layer for data-driven applications.",
   "version": "4.2.10",
   "license": "MIT",
-  "author": {
-    "email": "0x8890@airmail.cc",
-    "url": "http://0x8890.com"
-  },
   "homepage": "http://fortune.js.org",
   "repository": {
     "type": "git",
@@ -55,7 +51,7 @@
     "mkdirp": "^0.5.1",
     "mustache": "^2.2.1",
     "normalize.css": "^5.0.0",
-    "postcss": "^5.2.4",
+    "postcss": "^5.2.5",
     "postcss-cssnext": "^2.8.0",
     "postcss-import": "^8.1.2",
     "rimraf": "^2.5.4",
