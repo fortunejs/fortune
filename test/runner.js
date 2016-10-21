@@ -5,7 +5,7 @@ var RSVP = require('rsvp');
 var request = require('supertest');
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
-
+process.env.DISASTER_RECOVERY_COUNT_ENABLED = true;
 var port = 8891;
 var ioPort = 8892;
 var baseUrl = 'http://localhost:' + port;
