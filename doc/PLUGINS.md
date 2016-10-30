@@ -7,7 +7,7 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 
 | Adapter          | Description                                              |
 |:-----------------|:---------------------------------------------------------|
-| Memory (included, default) | In-memory adapter, does not persist to disk. |
+| Memory (included) | In-memory adapter, does not persist to disk. |
 | [IndexedDB](https://github.com/fortunejs/fortune-indexeddb) | Persistent data storage adapter that works in modern browsers, falls back to memory if not available. |
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | NoSQL document data store. |
 | [Postgres](https://github.com/fortunejs/fortune-postgres) | Relational database adapter, translates arguments directly to SQL. |
@@ -24,6 +24,8 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 
 
 ### HTTP Serializers
+
+This section is only relevant to the `fortune-http` module.
 
 | HTTP Serializer  | Description                                              |
 |:-----------------|:---------------------------------------------------------|

@@ -32,7 +32,7 @@
     "browserify": "^13.1.1",
     "chalk": "^1.1.3",
     "cssnano": "^3.8.0",
-    "docchi": "^0.12.1",
+    "doc-tree": "^0.12.2",
     "eslint": "^3.9.0",
     "eslint-config-boss": "^1.0.5",
     "highlight.js": "^9.7.0",

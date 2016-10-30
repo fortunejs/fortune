@@ -3,7 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const Docchi = require('docchi')
+const DocTree = require('doc-tree')
 
 const postcss = require('postcss')
 const atImport = require('postcss-import')
@@ -187,7 +187,7 @@ function processAPI (ns, obj) {
 const render = description => marked(description, markedOptions)
 const outputDoc = doc => {
   const buffer = fs.readFileSync(path.join(apiPath, doc))
-  const output = Docchi.parse(buffer).output({ render })
+  const output = DocTree.parse(buffer).output({ render })
   return output
 }
 
