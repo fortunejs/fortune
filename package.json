@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "4.2.10",
+  "version": "5.0.0",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -18,30 +18,23 @@
     "lint": "eslint lib",
     "postpublish": "npm run deploy && npm run tag",
     "tag": "git tag `npm v fortune version` && git push origin --tags",
-    "test": "npm run lint && npm run test:server && npm run test:browser && npm run test:websocket",
+    "test": "npm run lint && npm run test:server && npm run test:browser",
     "test:server": "node test | tf-dot",
     "test:browser": "browserify test/browser.js | tape-run | tf-dot",
-    "test:websocket": "node test/integration/net/ws_server.js & browserify test/integration/net/ws_client.js | tape-run | tf-dot",
     "test:website": "npm run build && http-server dist/web"
   },
   "dependencies": {
-    "busboy": "^0.2.13",
     "error-class": "^2.0.1",
-    "event-lite": "^0.1.1",
-    "fast-crc32c": "^1.0.4",
-    "msgpack-lite": "^0.1.26",
-    "negotiator": "^0.6.1",
-    "uws": "^0.10.11"
+    "event-lite": "^0.1.1"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
-    "browserify": "^13.1.0",
+    "browserify": "^13.1.1",
     "chalk": "^1.1.3",
-    "cssnano": "^3.7.7",
+    "cssnano": "^3.8.0",
     "docchi": "^0.12.1",
-    "eslint": "^3.8.1",
-    "eslint-config-boss": "^1.0.4",
-    "form-data": "^2.1.1",
+    "eslint": "^3.9.0",
+    "eslint-config-boss": "^1.0.5",
     "highlight.js": "^9.7.0",
     "html-minifier": "^3.1.0",
     "http-server": "^0.9.0",
@@ -55,22 +48,21 @@
     "postcss-cssnext": "^2.8.0",
     "postcss-import": "^8.1.2",
     "rimraf": "^2.5.4",
-    "tapdance": "^4.1.2",
+    "tapdance": "^5.0.2",
     "tape-run": "^2.1.4",
-    "uglify-js": "^2.7.3"
+    "uglify-js": "^2.7.4"
   },
   "files": [
     "lib/",
     "test/",
     "LICENSE"
   ],
-  "main": "lib/index.js",
-  "browser": "lib/browser.js",
+  "main": "lib/core.js",
   "eslintConfig": {
     "extends": "boss/es5"
   },
   "engines": {
-    "node": ">=4.5"
+    "node": ">=4.6"
   },
   "keywords": [
     "database",

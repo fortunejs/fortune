@@ -1,11 +1,6 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const pass = tapdance.pass
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
-const ok = tapdance.ok
+const run = require('tapdance')
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -24,7 +19,7 @@ const BadRequestError = errors.BadRequestError
 const NotFoundError = errors.NotFoundError
 
 
-run(() => {
+run((assert, comment) => {
   comment('update missing record should fail')
   return updateTest({
     type: 'user',
@@ -33,13 +28,13 @@ run(() => {
       replace: { spouse: 1 }
     },
     error: error => {
-      ok(error instanceof NotFoundError, 'error type is correct')
+      assert(error instanceof NotFoundError, 'error type is correct')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update invalid ID should fail')
   return updateTest({
     type: 'user',
@@ -48,17 +43,17 @@ run(() => {
       push: { ownedPets: 'xxx' }
     },
     error: error => {
-      ok(error instanceof BadRequestError, 'error type is correct')
+      assert(error instanceof BadRequestError, 'error type is correct')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to one with 2nd degree unset')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
@@ -69,13 +64,13 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         '2nd degree related field unset')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 3,
         'related field set')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 3).spouse === 2,
         'field updated')
     }
@@ -83,11 +78,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to one with former related record')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
@@ -98,13 +93,13 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         'related field unset')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 3,
         'field updated')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 3).spouse === 2,
         'related field set')
     }
@@ -112,11 +107,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to one with same value')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows updated IDs')
     },
@@ -127,10 +122,10 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === 2,
         'related field is same')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === 1,
         'field is same')
     }
@@ -138,7 +133,7 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to one with multiple same value should fail')
 
   return testInstance()
@@ -148,19 +143,19 @@ run(() => {
     ]
   ))
   .then(() => {
-    fail('should have failed')
+    assert(false, 'should have failed')
   })
   .catch(() => {
-    pass('multiple same values failed')
+    assert(true, 'multiple same values failed')
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to one with null value')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
@@ -171,10 +166,10 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).spouse === null,
         'related field is updated')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).spouse === null,
         'field is updated')
     }
@@ -182,11 +177,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to many (no inverse updates)')
   return updateTest({
     change: data => {
-      ok(data[updateMethod].animal[0].replace.owner === 1,
+      assert(data[updateMethod].animal[0].replace.owner === 1,
         'change event is empty')
     },
     type: 'animal',
@@ -196,7 +191,7 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, [ 1 ]),
         'related field is correct')
     }
@@ -204,14 +199,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to many (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows related update IDs')
     },
@@ -222,10 +217,10 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets.sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'related field pushed')
     }
@@ -233,14 +228,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update one to many (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows related update IDs')
     },
@@ -251,7 +246,7 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
     }
@@ -259,14 +254,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (push)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 1 ]), 'change event shows related update IDs')
     },
@@ -277,7 +272,7 @@ run(() => {
     },
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).owner === 2,
         'related field set')
     }
@@ -285,7 +280,7 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (push, conflict)')
   return updateTest({
     type: 'user',
@@ -294,20 +289,20 @@ run(() => {
       push: { ownedPets: 2 }
     },
     error: error => {
-      ok(error instanceof ConflictError, 'error type is correct')
+      assert(error instanceof ConflictError, 'error type is correct')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (push) with 2nd degree')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows related update IDs')
     },
@@ -318,7 +313,7 @@ run(() => {
     },
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).owner === 1,
         'related field set')
     }
@@ -326,14 +321,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (pull)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows related update IDs')
     },
@@ -344,10 +339,10 @@ run(() => {
     },
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).owner === null,
         'related field set')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 3).owner === null,
         'related field set')
     }
@@ -355,14 +350,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
@@ -373,13 +368,13 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).ownedPets, [ 1, 2, 3 ]),
         'field set')
     }
@@ -387,7 +382,7 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (set) #2')
   return updateTest({
     type: 'user',
@@ -397,13 +392,13 @@ run(() => {
     },
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 1).owner === 3,
         'related field set')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).owner === 3,
         'related field set')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 3).owner === 3,
         'related field set')
     }
@@ -411,14 +406,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (set) #3')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 3 ]), 'change event shows updated IDs')
     },
@@ -429,10 +424,10 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).ownedPets, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).ownedPets, [ 1, 2 ]),
         'field set')
     }
@@ -440,14 +435,14 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to one (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 2 ]), 'change event shows updated IDs')
-      ok(deepEqual(data[updateMethod].animal
+      assert(deepEqual(data[updateMethod].animal
         .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows updated IDs')
     },
@@ -458,10 +453,10 @@ run(() => {
     },
     relatedType: 'animal',
     related: response => {
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 2).owner === null,
         'related field unset')
-      ok(find(response.payload.records,
+      assert(find(response.payload.records,
         record => record[primaryKey] === 3).owner === null,
         'related field unset')
     }
@@ -469,11 +464,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (push)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
@@ -484,7 +479,7 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
         [ 1, 3 ]), 'related ID pushed')
     }
@@ -492,7 +487,7 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (push, conflict)')
   return updateTest({
     type: 'user',
@@ -501,17 +496,17 @@ run(() => {
       push: { friends: 3 }
     },
     error: error => {
-      ok(error instanceof ConflictError, 'error type is correct')
+      assert(error instanceof ConflictError, 'error type is correct')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (pull)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 2, 3 ]), 'change event shows updated IDs')
     },
@@ -522,7 +517,7 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends, []),
         'related ID pulled')
     }
@@ -530,11 +525,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (set)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     },
@@ -545,13 +540,13 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).friends.sort((a, b) => a - b),
         [ 2, 3 ]), 'field set')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends.sort((a, b) => a - b),
         [ 1, 3 ]), 'related field pushed')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).friends.sort((a, b) => a - b),
         [ 1, 2 ]), 'field unchanged')
     }
@@ -559,7 +554,7 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (set, conflict)')
   return updateTest({
     type: 'user',
@@ -568,17 +563,17 @@ run(() => {
       replace: { friends: [ 3, 3 ] }
     },
     error: error => {
-      ok(error instanceof ConflictError, 'error type is correct')
+      assert(error instanceof ConflictError, 'error type is correct')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (unset)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
@@ -589,13 +584,13 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).friends, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2).friends, []),
         'related field pulled')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3).friends, []),
         'field set')
     }
@@ -603,11 +598,11 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('update many to many (denormalized inverse)')
   return updateTest({
     change: data => {
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'change event shows updated IDs')
     },
@@ -618,16 +613,16 @@ run(() => {
     },
     relatedType: 'user',
     related: response => {
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1).enemies.sort((a, b) => a - b),
         [ 2, 3 ]), 'field set')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 1)['__user_enemies_inverse'],
         []), 'denormalized inverse field exists')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 2)['__user_enemies_inverse'],
         [ 1 ]), 'related field updated')
-      ok(deepEqual(find(response.payload.records,
+      assert(deepEqual(find(response.payload.records,
         record => record[primaryKey] === 3)['__user_enemies_inverse']
         .sort((a, b) => a - b), [ 1, 2 ]), 'related field updated')
     }
@@ -664,6 +659,6 @@ function updateTest (o) {
     store.disconnect()
 
     if (o.error) o.error(error)
-    else fail(error)
+    else throw error
   })
 }

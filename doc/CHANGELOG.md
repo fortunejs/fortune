@@ -1,6 +1,15 @@
 # Changelog
 
 
+### 5.0.0 (2016-10-30)
+- **Breaking change**: extracted IndexedDB, HTTP, and WebSocket implementations into separate modules: `fortune-indexeddb`, `fortune-http`, `fortune-ws`.
+  - The `fortune.net` namespace is removed. For example, use `require('fortune-http')` instead of `fortune.net.http`.
+  - The IndexedDB adapter must be specified manually via `require('fortune-indexeddb')`, it is no longer default for the browser.
+- Remove feature: it is no longer possible to *ponyfill* `Promise` by assigning to the main export.
+- Feature: expose `common` on Fortune instance.
+- Refactor: removed `index.js` and `browser.js`. Now `core.js` is the main export, which makes it less brittle by relying on the same export for Node.js and web browsers.
+
+
 ### 4.2.10 (2016-10-17)
 - Polish: try to compress Buffer-typed payloads by default.
 - Fix: typo in HTML serializer.
@@ -112,7 +121,7 @@
 
 
 ### 4.0.0 (2016-05-13)
-- Breaking change: changed signature of `fortune.net.request`, options object format now matches that of `fortune.request`.
+- **Breaking change**: changed signature of `fortune.net.request`, options object format now matches that of `fortune.request`.
 - Feature: added method `find` to form serializer, useful for long queries.
 - Feature: added `merge` function to `fortune.net.sync`, which allows the client to reject remote changes.
 - Polish: query syntax must now include "`.`" as a delimiter, i.e. `match.name`.
@@ -246,10 +255,10 @@
 
 
 ### 3.0.0 (2016-02-11)
-- Breaking change: `Serializer` is no longer in core, moved to `net.http.Serializer`. The configuration for serializers has also changed to accept arrays.
-- Breaking change: removed function value for `method` in request.
-- Breaking change: adapter is now defined as an array.
-- Breaking change: transform functions are now defined as an array.
+- **Breaking change**: `Serializer` is no longer in core, moved to `net.http.Serializer`. The configuration for serializers has also changed to accept arrays.
+- **Breaking change**: removed function value for `method` in request.
+- **Breaking change**: adapter is now defined as an array.
+- **Breaking change**: transform functions are now defined as an array.
 - Feature: `HttpSerializer` class in `http` module.
 - Feature: JSON serializer now accepts range and exists query.
 
@@ -277,8 +286,8 @@
 
 
 ### 2.0.0 (2016-01-25)
-- Breaking change: constructor argument now contains all configuration.
-- Breaking change: removed `defineType`, `transform`, `transformInput`, `transformOutput`, and static `create` methods. Deprecated in favor of new constructor object.
+- **Breaking change**: constructor argument now contains all configuration.
+- **Breaking change**: removed `defineType`, `transform`, `transformInput`, `transformOutput`, and static `create` methods. Deprecated in favor of new constructor object.
 
 
 ### 1.12.0 (2016-01-24)
@@ -373,7 +382,7 @@
 
 
 ### 1.4.24 (2015-12-02)
-- Polish: avoid unnecessary cloning, may be breaking change but unlikely.
+- Polish: avoid unnecessary cloning, may be **Breaking change** but unlikely.
 - Polish: add runtime check for the primary key on update objects.
 
 
@@ -546,12 +555,12 @@
 
 ### 1.0.0-rc.14 (2015-08-15)
 - Implemented memory adapter, which replaces NeDB as the default adapter.
-- Breaking change: removed NeDB adapter, now belongs to a separate module: `fortune-nedb`.
-- Breaking change: browser build now defaults to memory adapter.
+- **Breaking change**: removed NeDB adapter, now belongs to a separate module: `fortune-nedb`.
+- **Breaking change**: browser build now defaults to memory adapter.
 
 
 ### 1.0.0-rc.13 (2015-08-15)
-- Breaking change: remove Micro API and JSON API serializers from this package, they are now external modules: `fortune-micro-api` and `fortune-json-api`.
+- **Breaking change**: remove Micro API and JSON API serializers from this package, they are now external modules: `fortune-micro-api` and `fortune-json-api`.
 
 
 ### 1.0.0-rc.12 (2015-08-15)
@@ -581,8 +590,8 @@
 
 
 ### 1.0.0-rc.2 (2015-08-03)
-- Breaking change: `transformInput` may accept 3 arguments for an `update` method, the last argument being the update itself, mutating the record has no effect.
-- Breaking change: all integrity checking is done after input transform.
+- **Breaking change**: `transformInput` may accept 3 arguments for an `update` method, the last argument being the update itself, mutating the record has no effect.
+- **Breaking change**: all integrity checking is done after input transform.
 - Fix: asynchronous input transform for `delete` method.
 
 
@@ -608,7 +617,7 @@
 ### 1.0.0-beta.38 (2015-07-26)
 - Cast type of query string `match` in serializers.
 - Fix handling of Date and Buffer types in serializers.
-- Breaking change: simplified signature of WebSocket function.
+- **Breaking change**: simplified signature of WebSocket function.
 
 
 ### 1.0.0-beta.34 (2015-07-24)

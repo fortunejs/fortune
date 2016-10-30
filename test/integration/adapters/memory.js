@@ -1,43 +1,35 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const ok = tapdance.ok
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
+var run = require('tapdance')
 
-const testAdapter = require('../../unit/adapter')
-const memoryAdapter = require('../../../lib/adapter/adapters/memory')
-const Adapter = require('../../../lib/adapter')
-const deepEqual = require('../../../lib/common/deep_equal')
-const keys = require('../../../lib/common/keys')
-const errors = require('../../../lib/common/errors')
-const map = require('../../../lib/common/array/map')
+var testAdapter = require('../../unit/adapter')
+var memoryAdapter = require('../../../lib/adapter/adapters/memory')
+var Adapter = require('../../../lib/adapter')
+var deepEqual = require('../../../lib/common/deep_equal')
+var keys = require('../../../lib/common/keys')
+var errors = require('../../../lib/common/errors')
+var map = require('../../../lib/common/array/map')
 
-const promise = require('../../../lib/common/promise')
-const Promise = promise.Promise
-
-const recordTypes = {
+var recordTypes = {
   type: {
     int: { type: Integer },
     foo: { type: Number, isArray: true }
   }
 }
 
-const MemoryAdapter = memoryAdapter(Adapter)
-const adapter = new MemoryAdapter({
+var MemoryAdapter = memoryAdapter(Adapter)
+var adapter = new MemoryAdapter({
   keys: keys,
   errors: errors,
-  recordTypes: recordTypes,
-  Promise: Promise
+  recordTypes: recordTypes
 })
 
 testAdapter(memoryAdapter)
 
-run(function () {
+run(function (assert, comment) {
   comment('missing fields')
   return adapter.connect()
-  .then(() => {
+  .then(function () {
     adapter.db['type'] = {
       a: { id: 'a', int: 1 }
     }
@@ -45,48 +37,48 @@ run(function () {
       id: 'a', push: { foo: 1 }
     } ])
   })
-  .then(count => {
-    ok(count === 1, 'count is correct')
+  .then(function (count) {
+    assert(count === 1, 'count is correct')
     return adapter.find('type')
   })
-  .then(records => {
-    ok(deepEqual(records[0].foo, [ 1 ]), 'pushed value')
+  .then(function (records) {
+    assert(deepEqual(records[0].foo, [ 1 ]), 'pushed value')
   })
 })
 
 
-run(function () {
+run(function (assert, comment) {
   comment('custom types')
   return adapter.connect()
-  .then(() => adapter.create('type', [
+  .then(function () { return adapter.create('type', [
     { int: 1 }, { int: 2 }
-  ]))
-  .then(records => {
-    ok(records.length === 2, 'records created')
+  ]) })
+  .then(function (records) {
+    assert(records.length === 2, 'records created')
     return adapter.find('type', null, { sort: { int: false } })
   })
-  .then(records => {
-    ok(deepEqual([ 2, 1 ], map(records, function (record) {
+  .then(function (records) {
+    assert(deepEqual([ 2, 1 ], map(records, function (record) {
       return record.int
     })), 'compare function is applied')
     return adapter.find('type', null, { match: { int: 1 } })
   })
-  .then(records => {
-    ok(records.length === 1, 'compare function is applied for exact match')
+  .then(function (records) {
+    assert(records.length === 1, 'compare function is applied for exact match')
   })
 })
 
 
-run(function () {
+run(function (assert, comment) {
   comment('record type mutation')
   return adapter.connect()
-  .then(() => {
+  .then(function () {
     recordTypes.type.bar = { type: Number, isArray: true }
     return adapter.create('type', [ { int: 0 } ])
   })
-  .then(records => {
-    ok(records.length === 1, 'records created')
-    ok(Array.isArray(records[0].bar), 'new field present')
+  .then(function (records) {
+    assert(records.length === 1, 'records created')
+    assert(Array.isArray(records[0].bar), 'new field present')
   })
 })
 
