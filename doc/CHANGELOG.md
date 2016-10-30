@@ -6,7 +6,7 @@
   - The `fortune.net` namespace is removed. For example, use `require('fortune-http')` instead of `fortune.net.http`.
   - The IndexedDB adapter must be specified manually via `require('fortune-indexeddb')`, it is no longer default for the browser.
 - Remove feature: it is no longer possible to *ponyfill* `Promise` by assigning to the main export.
-- Feature: expose `common` on Fortune instance.
+- Feature: expose `common` on Fortune instance, and inject into the Adapter instance.
 - Feature: expose `defaultAdapter` on Adapter class.
 - Refactor: removed `index.js` and `browser.js`. Now `core.js` is the main export, which makes it less brittle by relying on the same export for Node.js and web browsers.
 
