@@ -35,6 +35,8 @@
     "doc-tree": "^0.12.2",
     "eslint": "^3.9.0",
     "eslint-config-boss": "^1.0.5",
+    "fortune-http": "*",
+    "fortune-ws": "*",
     "highlight.js": "^9.7.0",
     "html-minifier": "^3.1.0",
     "http-server": "^0.9.0",

@@ -1,6 +1,14 @@
 <div class="api">
   {{#.}}
-    <h6>{{#label}}{{label}}{{/label}}{{^label}}{{module}}{{/label}} <span>({{#path}}<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{.}}"><em>{{.}}</em></a>{{/path}})</span></h6>
+    <h6>
+      {{#label}}{{label}}{{/label}}{{^label}}{{module}}{{/label}}
+      {{#pkg}}
+        <span>(<a href="https://github.com/fortunejs/{{.}}"><em>{{.}}</em></a>)</span>
+      {{/pkg}}
+      {{^pkg}}
+        <span>({{#path}}<a href="https://github.com/fortunejs/fortune/blob/master/lib/{{.}}"><em>{{.}}</em></a>{{/path}})</span>
+      {{/pkg}}
+    </h6>
     {{#docs}}
       <h2 id="{{context.anchor}}">
         {{#context.isClass}}

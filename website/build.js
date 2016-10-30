@@ -37,34 +37,32 @@ const docs = {}
 const api = [
   {
     module: 'Fortune',
-    path: 'core.js'
+    path: 'index.js'
   },
   {
     module: 'Adapter',
     path: 'adapter/index.js'
   },
   {
-    module: 'Fortune.net',
+    module: 'FortuneHTTP',
     label: 'HTTP Server',
-    path: [
-      'net/http_server.js'
-    ]
+    pkg: 'fortune-http',
+    path: '../node_modules/fortune-http/lib/index.js'
   },
   {
     module: 'HttpSerializer',
     label: 'HTTP Serializer',
-    path: [
-      'net/http_serializer.js'
-    ]
+    pkg: 'fortune-http',
+    path: '../node_modules/fortune-http/lib/serializer.js'
   },
   {
-    module: 'Fortune.net',
+    module: 'FortuneWS',
     label: 'WebSocket',
+    pkg: 'fortune-ws',
     path: [
-      'net/websocket_server.js',
-      'net/websocket_client.js',
-      'net/websocket_request.js',
-      'net/websocket_sync.js'
+      '../node_modules/fortune-ws/lib/index.js',
+      '../node_modules/fortune-ws/lib/request.js',
+      '../node_modules/fortune-ws/lib/sync.js'
     ]
   }
 ]
