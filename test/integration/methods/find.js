@@ -1,10 +1,6 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
-const ok = tapdance.ok
+const run = require('tapdance')
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -15,23 +11,23 @@ const constants = require('../../../lib/common/constants')
 const primaryKey = constants.primary
 
 
-run(() => {
+run((assert, comment) => {
   comment('get collection')
   return findTest({
     request: [ 'user' ],
     response: response => {
-      ok(response.payload.records.length === 3, 'gets all records')
+      assert(response.payload.records.length === 3, 'gets all records')
     }
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('get IDs')
   return findTest({
     request: [ 'user', [ 2, 1 ] ],
     response: response => {
-      ok(deepEqual(response.payload.records
+      assert(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ]), 'gets records with IDs')
     }
@@ -39,15 +35,15 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('get includes')
   return findTest({
     request: [ 'user', [ 1, 2 ], null, [ [ 'ownedPets' ] ] ],
     response: response => {
-      ok(deepEqual(response.payload.records
+      assert(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2 ]), 'gets records with IDs')
-      ok(deepEqual(response.payload.include.animal
+      assert(deepEqual(response.payload.include.animal
         .map(record => record[primaryKey]).sort((a, b) => a - b),
         [ 1, 2, 3 ]), 'gets included records')
     }
@@ -55,15 +51,15 @@ run(() => {
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('get includes with options')
   return findTest({
     request: [ 'user', 1, null,
       [ [ 'spouse', 'enemies', { fields: { name: true } } ] ] ],
     response: response => {
-      ok(response.payload.include.user.length === 1,
+      assert(response.payload.include.user.length === 1,
         'number of records found is correct')
-      ok(response.payload.include.user
+      assert(response.payload.include.user
         .every(record => Object.keys(record).length === 3),
         'fields option applied')
     }
@@ -91,6 +87,6 @@ function findTest (o) {
   .catch(error => {
     stderr.error(error)
     store.disconnect()
-    fail(error)
+    throw error
   })
 }

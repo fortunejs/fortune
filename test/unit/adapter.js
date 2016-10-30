@@ -1,18 +1,12 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const ok = tapdance.ok
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
+const run = require('tapdance')
 
 const Adapter = require('../../lib/adapter')
+const AdapterSingleton = require('../../lib/adapter/singleton')
+const common = require('../../lib/common')
 const errors = require('../../lib/common/errors')
-
 const message = require('../../lib/common/message')
-const promise = require('../../lib/common/promise')
-const Promise = promise.Promise
-
 const deepEqual = require('../../lib/common/deep_equal')
 const map = require('../../lib/common/array/map')
 const find = require('../../lib/common/array/find')
@@ -78,66 +72,66 @@ const records = [
 module.exports = (adapter, options) => {
   const test = fn => runTest(adapter, options, fn)
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: nothing')
     return test(adapter => {
       return adapter.find(type, [])
       .then(records => {
-        ok(records.count === 0, 'count is correct')
+        assert(records.count === 0, 'count is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: id, type checking #1')
     return test(adapter => {
       return adapter.find(type, [ 1 ])
       .then(records => {
-        ok(records.count === 1, 'count is correct')
-        ok(records[0][primaryKey] === 1, 'id is correct')
-        ok(records[0].birthday instanceof Date,
+        assert(records.count === 1, 'count is correct')
+        assert(records[0][primaryKey] === 1, 'id is correct')
+        assert(records[0].birthday instanceof Date,
           'date type is correct')
-        ok(typeof records[0].isAlive === 'boolean',
+        assert(typeof records[0].isAlive === 'boolean',
           'boolean type is correct')
-        ok(typeof records[0].age === 'number',
+        assert(typeof records[0].age === 'number',
           'number type is correct')
-        ok(deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] }),
+        assert(deepEqual(records[0].junk, { things: [ 'a', 'b', 'c' ] }),
           'object value is correct')
-        ok(!includes(Object.keys(records[0],
+        assert(!includes(Object.keys(records[0],
           '__user_nemesis_inverse')), 'denormalized fields not enumerable')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: id, type checking #2')
     return test(adapter => {
       return adapter.find(type, [ 2 ])
       .then(records => {
-        ok(records.count === 1, 'count is correct')
-        ok(records[0][primaryKey] === 2, 'id is correct')
-        ok(Buffer.isBuffer(records[0].picture),
+        assert(records.count === 1, 'count is correct')
+        assert(records[0][primaryKey] === 2, 'id is correct')
+        assert(Buffer.isBuffer(records[0].picture),
           'buffer type is correct')
-        ok(deadbeef.equals(records[0].picture),
+        assert(deadbeef.equals(records[0].picture),
           'buffer value is correct')
-        ok(deepEqual(records[0].privateKeys.map(x => x.toString('hex')),
+        assert(deepEqual(records[0].privateKeys.map(x => x.toString('hex')),
           [ 'cafe', 'babe' ]), 'array of buffers is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: collection')
     return test(adapter => {
       return adapter.find(type)
       .then(records => {
-        ok(records.count === 2, 'count is correct')
-        testIds(records, 'id type is correct')
+        assert(records.count === 2, 'count is correct')
+        testIds(assert, records, 'id type is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: range (number)')
     return test(adapter => {
       return Promise.all([
@@ -146,14 +140,14 @@ module.exports = (adapter, options) => {
       ])
       .then(results => {
         results.forEach((records) => {
-          ok(records.length === 1, 'match length is correct')
-          ok(records[0].name === 'john', 'matched correct record')
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'john', 'matched correct record')
         })
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: range (string)')
     return test(adapter => {
       return Promise.all([
@@ -162,14 +156,14 @@ module.exports = (adapter, options) => {
       ])
       .then(results => {
         results.forEach((records) => {
-          ok(records.length === 1, 'match length is correct')
-          ok(records[0].name === 'john', 'matched correct record')
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'john', 'matched correct record')
         })
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: range (date)')
     return test(adapter => {
       return Promise.all([
@@ -180,14 +174,14 @@ module.exports = (adapter, options) => {
       ])
       .then(results => {
         results.forEach((records) => {
-          ok(records.length === 1, 'match length is correct')
-          ok(records[0].name === 'bob', 'matched correct record')
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'bob', 'matched correct record')
         })
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: range (array)')
     return test(adapter => {
       return Promise.all([
@@ -198,180 +192,180 @@ module.exports = (adapter, options) => {
       ])
       .then(results => {
         results.forEach((records) => {
-          ok(records.length === 1, 'match length is correct')
-          ok(records[0].name === 'john', 'matched correct record')
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'john', 'matched correct record')
         })
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: match (string)')
     return test(adapter => {
       return adapter.find(type, null,
         { match: { name: [ 'john', 'xyz' ], age: 36 } })
       .then(records => {
-        ok(records.length === 1, 'match length is correct')
-        ok(records[0].name === 'john', 'matched correct record')
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0].name === 'john', 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: match (buffer)')
     return test(adapter => {
       return adapter.find(type, null, { match: { picture: deadbeef } })
       .then(records => {
-        ok(records.length === 1, 'match length is correct')
-        ok(records[0].picture.equals(deadbeef),
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0].picture.equals(deadbeef),
           'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: match (array containment)')
     return test(adapter => {
       return adapter.find(type, null, { match: { privateKeys: key1 } })
       .then(records => {
-        ok(records.length === 1, 'match length is correct')
-        ok(records[0][primaryKey] === 2, 'matched correct record')
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0][primaryKey] === 2, 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: match (nothing)')
     return test(adapter => {
       return adapter.find(type, null, { match: { name: 'bob', age: 36 } })
       .then(records => {
-        ok(records.length === 0, 'match length is correct')
+        assert(records.length === 0, 'match length is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: exists (positive)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { picture: true } })
       .then(records => {
-        ok(records[0][primaryKey] === 2, 'matched correct record')
+        assert(records[0][primaryKey] === 2, 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: exists (negative)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { picture: false } })
       .then(records => {
-        ok(records[0][primaryKey] === 1, 'matched correct record')
+        assert(records[0][primaryKey] === 1, 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: exists (empty array #1)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { privateKeys: true } })
       .then(records => {
-        ok(records[0][primaryKey] === 2, 'matched correct record')
+        assert(records[0][primaryKey] === 2, 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: exists (empty array #2)')
     return test(adapter => {
       return adapter.find(type, null, { exists: { privateKeys: false } })
       .then(records => {
-        ok(records[0][primaryKey] === 1, 'matched correct record')
+        assert(records[0][primaryKey] === 1, 'matched correct record')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: sort ascending')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: true } })
       .then(records => {
-        ok(deepEqual(map(records, (record) => { return record.age }),
+        assert(deepEqual(map(records, (record) => { return record.age }),
           [ 36, 42 ]), 'ascending sort order correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: sort descending')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: false } })
       .then(records => {
-        ok(deepEqual(map(records, (record) => { return record.age }),
+        assert(deepEqual(map(records, (record) => { return record.age }),
           [ 42, 36 ]), 'descending sort order correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: sort combination')
     return test(adapter => {
       return adapter.find(type, null, { sort: { age: true, name: true } })
       .then(records => {
-        ok(deepEqual(map(records, (record) => { return record.age }),
+        assert(deepEqual(map(records, (record) => { return record.age }),
           [ 36, 42 ]), 'sort order is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: offset + limit')
     return test(adapter => {
       return adapter.find(type, null,
         { offset: 1, limit: 1, sort: { name: true } })
       .then(records => {
-        ok(records[0].name === 'john', 'record is correct')
-        ok(records.length === 1, 'offset length is correct')
+        assert(records[0].name === 'john', 'record is correct')
+        assert(records.length === 1, 'offset length is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: fields #1')
     return test(adapter => {
       return adapter.find(type, null,
         { fields: { name: true, isAlive: true } })
       .then(records => {
-        ok(!find(records, (record) => {
+        assert(!find(records, (record) => {
           return Object.keys(record).length !== 3
         }), 'fields length is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('find: fields #2')
     return test(adapter => {
       return adapter.find(type, null,
         { fields: { name: false, isAlive: false } })
       .then(records => {
-        ok(!find(records, (record) => {
+        assert(!find(records, (record) => {
           return Object.keys(record).length !== 10
         }), 'fields length is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('create: no-op')
     return test(adapter => {
       return adapter.create(type, [])
       .then(records => {
-        ok(deepEqual(records, []), 'response is correct')
+        assert(deepEqual(records, []), 'response is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('create: type check')
     return test(adapter => {
       const date = new Date()
@@ -382,30 +376,30 @@ module.exports = (adapter, options) => {
         birthday: date
       } ])
       .then(records => {
-        ok(deadbeef.equals(records[0].picture),
+        assert(deadbeef.equals(records[0].picture),
           'buffer type is correct')
-        ok(
+        assert(
           Math.abs(records[0].birthday.getTime() - date.getTime()) < 1000,
           'date value is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('create: duplicate id creation should fail')
     return test(adapter => {
       return adapter.create(type, [ { id: 1 } ])
       .then(() => {
-        fail('duplicate id creation should have failed')
+        assert(false, 'duplicate id creation should have failed')
       })
       .catch(error => {
-        ok(error instanceof errors.ConflictError,
+        assert(error instanceof errors.ConflictError,
           'error type is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('create: id generation and lookup')
     return test(adapter => {
       let id
@@ -415,34 +409,34 @@ module.exports = (adapter, options) => {
       } ])
       .then(records => {
         id = records[0][primaryKey]
-        testIds(records, 'id type is correct')
+        testIds(assert, records, 'id type is correct')
 
-        ok(records[0].picture === null,
+        assert(records[0].picture === null,
           'missing singular value is null')
-        ok(deepEqual(records[0].nicknames, []),
+        assert(deepEqual(records[0].nicknames, []),
           'missing array value is empty array')
 
         return adapter.find(type, [ id ])
       })
       .then(records => {
-        ok(records.length === 1, 'match length is correct')
-        ok(records[0][primaryKey] === id, 'id is matching')
-        testIds(records, 'id type is correct')
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0][primaryKey] === id, 'id is matching')
+        testIds(assert, records, 'id type is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: no-op')
     return test(adapter => {
       return adapter.update(type, [])
       .then(number => {
-        ok(number === 0, 'number is correct')
+        assert(number === 0, 'number is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: not found')
     return test(adapter => {
       return adapter.update(type, [ {
@@ -450,12 +444,12 @@ module.exports = (adapter, options) => {
         replace: { foo: 'bar' }
       } ])
       .then(number => {
-        ok(number === 0, 'number is correct')
+        assert(number === 0, 'number is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: replace')
     return test(adapter => {
       return adapter.update(type, [
@@ -463,21 +457,21 @@ module.exports = (adapter, options) => {
         { id: 2, replace: { name: 'billy', nicknames: [ 'pepe' ] } }
       ])
       .then(number => {
-        ok(number === 2, 'number updated correct')
+        assert(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(records => {
-        ok(deepEqual(find(records, (record) => {
+        assert(deepEqual(find(records, (record) => {
           return record[primaryKey] === 2
         }).nicknames, [ 'pepe' ]), 'array updated')
-        ok(filter(records, (record) => {
+        assert(filter(records, (record) => {
           return record.name !== 'billy'
         }).length === 0, 'field updated on set')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: unset')
     return test(adapter => {
       return adapter.update(type, [
@@ -485,18 +479,18 @@ module.exports = (adapter, options) => {
         { id: 2, replace: { name: null } }
       ])
       .then(number => {
-        ok(number === 2, 'number updated correct')
+        assert(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(records => {
-        ok(filter(records, (record) => {
+        assert(filter(records, (record) => {
           return record.name !== null
         }).length === 0, 'field updated on unset')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: push')
     return test(adapter => {
       return adapter.update(type, [
@@ -504,18 +498,18 @@ module.exports = (adapter, options) => {
         { id: 2, push: { friends: [ 5 ] } }
       ])
       .then(number => {
-        ok(number === 2, 'number updated correct')
+        assert(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(records => {
-        ok(filter(records, (record) => {
+        assert(filter(records, (record) => {
           return includes(record.friends, 5)
         }).length === records.length, 'value pushed')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('update: pull')
     return test(adapter => {
       return adapter.update(type, [
@@ -523,38 +517,38 @@ module.exports = (adapter, options) => {
         { id: 2, pull: { friends: [ 1 ] } }
       ])
       .then(number => {
-        ok(number === 2, 'number updated correct')
+        assert(number === 2, 'number updated correct')
         return adapter.find(type)
       })
       .then(records => {
-        ok(filter(records, (record) => {
+        assert(filter(records, (record) => {
           return record.friends.length
         }).length === 0, 'value pulled')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('delete: no-op')
     return test(adapter => {
       return adapter.delete(type, [])
       .then(number => {
-        ok(number === 0, 'number is correct')
+        assert(number === 0, 'number is correct')
       })
     })
   })
 
-  run(() => {
+  run((assert, comment) => {
     comment('delete')
     return test(adapter => {
       return adapter.delete(type, [ 1, 3 ])
       .then(number => {
-        ok(number === 1, 'number deleted correct')
+        assert(number === 1, 'number deleted correct')
         return adapter.find(type, [ 1, 2 ])
       })
       .then(records => {
-        ok(records.count === 1, 'count correct')
-        ok(deepEqual(map(records, (record) => {
+        assert(records.count === 1, 'count correct')
+        assert(deepEqual(map(records, (record) => {
           return record[primaryKey]
         }), [ 2 ]), 'record deleted')
       })
@@ -563,22 +557,16 @@ module.exports = (adapter, options) => {
 }
 
 
-function runTest (a, options, fn) {
-  let A, adapter
+function runTest (adapterFn, options, fn) {
+  let adapter
 
-  // Check if it's a class or a dependency injection function.
-  try { a = a(Adapter) }
-  catch (error) { if (!(error instanceof TypeError)) throw error }
-
-  A = a
-  adapter = new A({
-    options: options,
-    keys: keys,
-    errors: errors,
-    message: message,
-    recordTypes: recordTypes,
-    Promise: Promise
-  })
+  try {
+    adapter = new AdapterSingleton({
+      recordTypes,
+      adapter: [ adapterFn, options ]
+    })
+  }
+  catch (error) { return Promise.reject(error) }
 
   return adapter.connect()
   .then(() => adapter.delete(type))
@@ -593,15 +581,15 @@ function runTest (a, options, fn) {
   .then(() => adapter.disconnect())
   .catch(error => {
     adapter.disconnect()
-    fail(error)
+    throw error
   })
 }
 
 
-function testIds (records, message) {
+function testIds (assert, records, message) {
   const types = [ 'string', 'number' ]
 
-  ok(find(map(records, (record) => {
+  assert(find(map(records, (record) => {
     return includes(types, typeof record[primaryKey])
   }), (x) => { return !x }) === void 0, message)
 }

@@ -1,12 +1,6 @@
 'use strict'
 
-const assert = require('assert')
-const tapdance = require('tapdance')
-const pass = tapdance.pass
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
-const ok = tapdance.ok
+const run = require('tapdance')
 
 const ensureTypes = require('../../lib/record_type/ensure_types')
 const validate = require('../../lib/record_type/validate')
@@ -43,111 +37,134 @@ const fields = {
 }
 
 
-const testFields = fields => () => validate(fields)
-const testField = field => () => validate({ [field]: fields[field] })
-const getField = field => testField(field)()[field]
+function testFields (fields) {
+  try { return validate(fields) }
+  catch (error) { return false }
+}
 
+function testField (field) {
+  try { return validate({ [field]: fields[field] }) }
+  catch (error) { return false }
+}
 
-run(() => {
+function getField (field) {
+  return testField(field)[field]
+}
+
+run((assert, comment) => {
   comment('validate field definition')
 
   // Test for valid fields.
   const valid = 'valid field is valid'
 
   // Shorthand.
-  pass(() => assert.deepEqual(getField('s1'), {
+  assert(deepEqual(getField('s1'), {
     type: String
   }), valid)
-  pass(() => assert.deepEqual(getField('s2'), {
+  assert(deepEqual(getField('s2'), {
     type: String, isArray: true
   }), valid)
-  pass(() => assert.deepEqual(getField('s3'), {
+  assert(deepEqual(getField('s3'), {
     link: 'person', inverse: 's4'
   }), valid)
-  pass(() => assert.deepEqual(getField('s4'), {
+  assert(deepEqual(getField('s4'), {
     link: 'person', inverse: 's3', isArray: true
   }), valid)
-  pass(() => assert.deepEqual(getField('s5'), {
+  assert(deepEqual(getField('s5'), {
     link: 'person'
   }), valid)
-  pass(() => assert.deepEqual(getField('s6'), {
+  assert(deepEqual(getField('s6'), {
     link: 'person', isArray: true
   }), valid)
 
   // Standard.
-  pass(testField('name'), valid)
-  pass(testField('birthdate'), valid)
-  pass(testField('mugshot'), valid)
-  pass(testField('luckyNumbers'), valid)
-  pass(testField('friends'), valid)
-  pass(testField('toys'), valid)
-  pass(testField('integer'), valid)
+  assert(testField('name'), valid)
+  assert(testField('birthdate'), valid)
+  assert(testField('mugshot'), valid)
+  assert(testField('luckyNumbers'), valid)
+  assert(testField('friends'), valid)
+  assert(testField('toys'), valid)
+  assert(testField('integer'), valid)
 
   // Test for invalid fields.
   const invalid = 'invalid field throws error'
 
-  fail(testFields({ badType: true }), invalid)
-  fail(testFields({ nested: { thing: { type: String } } }), invalid)
-  fail(testFields({
+  assert(!testFields({ badType: true }), invalid)
+  assert(!testFields({ nested: { thing: { type: String } } }), invalid)
+  assert(!testFields({
     typeAndLink: { type: String, link: 'y', inverse: 'friends' }
   }), invalid)
-  fail(testFields({ nonexistent: NaN }), invalid)
-  fail(testFields({ nullEdgeCase: null }), invalid)
-  fail(testFields({ fake: { type: 'x' } }), invalid)
+  assert(!testFields({ nonexistent: NaN }), invalid)
+  assert(!testFields({ nullEdgeCase: null }), invalid)
+  assert(!testFields({ fake: { type: 'x' } }), invalid)
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('enforce field definition')
 
-  const testRecord = record => () => enforce(recordType, record, fields)
+  function testRecord (record) {
+    try {
+      enforce(recordType, record, fields)
+      return true
+    }
+    catch (error) { return false }
+  }
+
   const bad = 'bad type is bad'
   const good = 'good type is good'
 
-  fail(testRecord({ [primaryKey]: 1, spouse: 1 }), bad)
-  fail(testRecord({ spouse: [ 2 ] }), bad)
-  fail(testRecord({ friends: 2 }), bad)
-  fail(testRecord({ [primaryKey]: 1, friends: [ 1 ] }), bad)
-  fail(testRecord({ name: {} }), bad)
-  pass(testRecord({ name: '' }), good)
-  fail(testRecord({ birthdate: {} }), bad)
-  pass(testRecord({ birthdate: new Date() }), good)
-  fail(testRecord({ mugshot: {} }), bad)
-  pass(testRecord({ mugshot: alloc(1) }), good)
-  fail(testRecord({ luckyNumbers: 1 }), bad)
-  pass(testRecord({ luckyNumbers: [ 1 ] }), good)
-  pass(testRecord({ integer: 1 }), good)
-  fail(testRecord({ integer: 1.1 }), bad)
-  fail(testRecord({
+  assert(!testRecord({ [primaryKey]: 1, spouse: 1 }), bad)
+  assert(!testRecord({ spouse: [ 2 ] }), bad)
+  assert(!testRecord({ friends: 2 }), bad)
+  assert(!testRecord({ [primaryKey]: 1, friends: [ 1 ] }), bad)
+  assert(!testRecord({ name: {} }), bad)
+  assert(testRecord({ name: '' }), good)
+  assert(!testRecord({ birthdate: {} }), bad)
+  assert(testRecord({ birthdate: new Date() }), good)
+  assert(!testRecord({ mugshot: {} }), bad)
+  assert(testRecord({ mugshot: alloc(1) }), good)
+  assert(!testRecord({ luckyNumbers: 1 }), bad)
+  assert(testRecord({ luckyNumbers: [ 1 ] }), good)
+  assert(testRecord({ integer: 1 }), good)
+  assert(!testRecord({ integer: 1.1 }), bad)
+  assert(!testRecord({
     [primaryKey]: 1,
     friends: [ 0, 1, 2 ] }
   ), 'record cannot link to itself')
-  ok(deepEqual(enforce(recordType,
+  assert(deepEqual(enforce(recordType,
     { friends: [ 'a', 'b', 'c', 1, 2, 3 ] }, fields).friends,
     [ 'a', 'b', 'c', 1, 2, 3 ]), 'links are untouched')
-  ok(
+  assert(
     enforce(recordType, { random: 'abc' }, fields).random === void 0,
     'arbitrary fields are dropped')
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('ensure record types')
-  const check = recordTypes => () => ensureTypes(recordTypes)
 
-  fail(check({
+  function check (recordTypes) {
+    try {
+      ensureTypes(recordTypes)
+      return true
+    }
+    catch (error) { return false }
+  }
+
+  assert(!check({
     post: {
       comments: { link: 'comment', isArray: true }
     }
   }), 'record type must exist')
 
-  fail(check({
+  assert(!check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     }
   }), 'inverse must exist')
 
-  fail(check({
+  assert(!check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     },
@@ -156,7 +173,7 @@ run(() => {
     }
   }), 'inverse is incorrect')
 
-  fail(check({
+  assert(!check({
     post: {
       comments: { link: 'comment', inverse: 'post' }
     },
@@ -165,7 +182,7 @@ run(() => {
     }
   }), 'inverse link is incorrect')
 
-  pass(check({
+  assert(check({
     post: {
       comments: { link: 'comment', isArray: true, inverse: 'post' }
     },
@@ -174,7 +191,7 @@ run(() => {
     }
   }), 'valid linking')
 
-  pass(check({
+  assert(check({
     user: {
       friends: { link: 'user', isArray: true, inverse: 'friends' }
     }
@@ -191,16 +208,17 @@ run(() => {
 
   const denormalizedField = '__post_comments_inverse'
 
-  ok(recordTypes.post.comments[inverseKey] === denormalizedField,
+  assert(recordTypes.post.comments[inverseKey] === denormalizedField,
     'denormalized inverse field assigned')
 
-  ok(recordTypes.comment[denormalizedField][linkKey] === 'post',
+  assert(recordTypes.comment[denormalizedField][linkKey] === 'post',
     'denormalized inverse field link correct')
 
-  ok(recordTypes.comment[denormalizedField][isArrayKey] === true,
+  assert(recordTypes.comment[denormalizedField][isArrayKey] === true,
     'denormalized inverse field is array')
 
-  ok(recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
+  assert(
+    recordTypes.comment[denormalizedField][denormalizedInverseKey] === true,
     'denormalized inverse field set')
 })
 

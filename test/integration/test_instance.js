@@ -1,13 +1,13 @@
 'use strict'
 
 const chalk = require('chalk')
-const fortune = require('../../lib')
+const fortune = require('../../lib/core')
 const assign = require('../../lib/common/assign')
 const stderr = require('../stderr')
 const fixtures = require('../fixtures')
 
 const inParens = /\(([^\)]+)\)/
-const change = fortune.change
+const change = fortune.events.change
 const methods = fortune.methods
 
 

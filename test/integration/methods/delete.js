@@ -1,10 +1,6 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
-const ok = tapdance.ok
+const run = require('tapdance')
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -18,7 +14,7 @@ const deleteMethod = constants.delete
 const updateMethod = constants.update
 
 
-run(() => {
+run((assert, comment) => {
   comment('delete record')
 
   let store
@@ -29,9 +25,9 @@ run(() => {
     store = instance
 
     store.on(changeEvent, data => {
-      ok(find(data[deleteMethod].user, id => id === 3),
+      assert(find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 2 ]), 'change event shows updated IDs')
     })
@@ -40,13 +36,13 @@ run(() => {
   })
 
   .then(response => {
-    ok(response.payload.records.length === 1, 'records deleted')
+    assert(response.payload.records.length === 1, 'records deleted')
 
     return store.find('user', [ 1, 2 ])
   })
 
   .then(response => {
-    ok(deepEqual(response.payload.records.map(record =>
+    assert(deepEqual(response.payload.records.map(record =>
       find(record.friends, id => id === 3)),
       [ undefined, undefined ]), 'related records updated')
 
@@ -56,6 +52,6 @@ run(() => {
   .catch(error => {
     stderr.error(error)
     store.disconnect()
-    fail(error)
+    throw error
   })
 })

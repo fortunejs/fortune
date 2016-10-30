@@ -1,11 +1,6 @@
 'use strict'
 
-const tapdance = require('tapdance')
-const pass = tapdance.pass
-const fail = tapdance.fail
-const comment = tapdance.comment
-const run = tapdance.run
-const ok = tapdance.ok
+const run = require('tapdance')
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -36,7 +31,7 @@ const records = [
 ]
 
 
-run(() => {
+run((assert, comment) => {
   comment('create record')
 
   let store
@@ -47,10 +42,10 @@ run(() => {
     store = instance
 
     store.on(changeEvent, data => {
-      ok(deepEqual(data[createMethod].user
+      assert(deepEqual(data[createMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 4 ]), 'change event shows created IDs')
-      ok(deepEqual(data[updateMethod].user
+      assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
         [ 1, 3 ]), 'change event shows updated IDs')
     })
@@ -60,22 +55,22 @@ run(() => {
 
   .then(response => {
     const results = response.payload.records
-    ok(deadcode.equals(results[0].picture) &&
+    assert(deadcode.equals(results[0].picture) &&
       deadcode.equals(records[0].picture),
       'input object not mutated')
-    ok(results[0].createdAt !== null, 'input hook applied')
-    ok(results.length === 1, 'record created')
-    ok(results[0][primaryKey] === 4, 'record has correct ID')
-    ok(results[0].birthday instanceof Date,
+    assert(results[0].createdAt !== null, 'input hook applied')
+    assert(results.length === 1, 'record created')
+    assert(results[0][primaryKey] === 4, 'record has correct ID')
+    assert(results[0].birthday instanceof Date,
       'field has correct type')
-    ok(results[0].name === 'Slimer McGee',
+    assert(results[0].name === 'Slimer McGee',
       'record has correct field value')
 
     return store.find('user', [ 1, 3 ])
   })
 
   .then(response => {
-    ok(deepEqual(response.payload.records.map(record =>
+    assert(deepEqual(response.payload.records.map(record =>
       find(record.friends, id => id === 4)),
       [ 4, 4 ]), 'related records updated')
 
@@ -85,12 +80,12 @@ run(() => {
   .catch(error => {
     stderr.error(error)
     store.disconnect()
-    fail(error)
+    throw error
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('create records with same to-one relationship should fail')
 
   let store
@@ -104,16 +99,16 @@ run(() => {
   })
 
   .then(() => {
-    fail('should have failed')
+    assert(false, 'should have failed')
   })
   .catch(error => {
-    pass('should reject request')
-    ok(error instanceof ConflictError, 'error type is correct')
+    assert(true, 'should reject request')
+    assert(error instanceof ConflictError, 'error type is correct')
   })
 })
 
 
-run(() => {
+run((assert, comment) => {
   comment('create records with non-unique array relationship should fail')
 
   let store
@@ -127,10 +122,10 @@ run(() => {
   })
 
   .then(() => {
-    fail('should have failed')
+    assert(false, 'should have failed')
   })
   .catch(error => {
-    pass('should reject request')
-    ok(error instanceof ConflictError, 'error type is correct')
+    assert(true, 'should reject request')
+    assert(error instanceof ConflictError, 'error type is correct')
   })
 })

@@ -5,13 +5,15 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications in Node.js and web browsers. It makes some assumptions about the data model and how it is accessed, upon which it adds useful features such as relationships, inverse updates, referential integrity, I/O hooks and more.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications in Node.js and web browsers. It implements features such as relationships, inverse updates, referential integrity, which are built upon assumptions in the data model.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
 ```sh
 $ npm install fortune --save
 ```
+
+*This is the core module. Additional features such as networking (HTTP, WebSocket), database adapters, serialization formats are listed in the [plugins page](http://fortune.js.org/plugins).*
 
 
 ## Usage
@@ -112,31 +114,24 @@ const store = fortune({
 
 ## Networking
 
-**Node.js only**: Fortune.js implements HTTP server functionality for convenience, as a plain request listener which may be composed within larger applications:
+There is a HTTP listener implementation, which returns a Node.js request listener that may be composed within larger applications. It maps Fortune requests and responses to the HTTP protocol automatically:
 
 ```js
 // Bring your own HTTP! This makes it easier to add SSL and allows the user to
 // choose between different HTTP implementations, such as HTTP/2.
 const http = require('http')
+const createListener = require('fortune-http')
 
 // The `fortune.net.http` helper function returns a listener function which
 // does content negotiation, and maps the internal response to a HTTP response.
-const server = http.createServer(fortune.net.http(store))
+const server = http.createServer(createListener(store))
 
 store.connect().then(() => server.listen(1337))
 ```
 
 This yields an *ad hoc* JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for [Micro API](https://github.com/fortunejs/fortune-micro-api) (JSON-LD) and [JSON API](https://github.com/fortunejs/fortune-json-api).
 
-Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications. A [server](http://fortune.js.org/api/#fortune.net-ws) and [client](http://fortune.js.org/api/#fortune.net-client) implementation is included.
-
-
-## Use Cases
-
-- A server-side implementation of a web service over HTTP. The included HTTP implementation provides a basis for implementing application-level protocols, including media types such as HTML (included), [Micro API](http://micro-api.org) and [JSON API](http://jsonapi.org), and covers standard input formats such as URL encoded and form data.
-- A persistence layer in web browsers. Under the hood, it uses IndexedDB, Web Worker, and MessagePack to achieve high performance for persisting structured data.
-- An abstraction layer for working with multiple databases. Write the same logic which will work across multiple adapters.
-- Soft real-time applications. Fortune.js includes its own [wire protocol](http://fortune.js.org/api/#fortune.net-ws) based on WebSocket and MessagePack.
+Fortune.js implements its own [wire protocol](https://github.com/fortunejs/fortune-ws) based on [WebSocket](https://developer.mozilla.org/docs/Web/API/WebSockets_API) and [MessagePack](http://msgpack.org), which is useful for soft real-time applications.
 
 
 ## Features and Non-Features
@@ -145,8 +140,6 @@ Fortune.js implements its own [wire protocol](http://fortune.js.org/api/#fortune
 - Transaction support for databases that support transactions, such as Postgres.
 - Dereferencing relationships in a single request via `include`.
 - Type validations, plus support for custom types.
-- IndexedDB adapter for web browsers, with memory fallback.
-- Soft real-time wire protocol for data synchronization between server and client.
 - **No** ORM or active record pattern, just plain data objects.
 - **No** coupling with network protocol, handle requests from anywhere.
 

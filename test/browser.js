@@ -1,37 +1,26 @@
 'use strict'
 
-var tapdance = require('tapdance')
-var ok = tapdance.ok
-var pass = tapdance.pass
-var fail = tapdance.fail
-var comment = tapdance.comment
-var run = tapdance.run
+var run = require('tapdance')
 
-var fortune = require('../lib/browser')
+var fortune = require('../lib/core')
+var createMethod = fortune.methods.create
 
 require('./integration/adapters/memory')
-require('./integration/adapters/indexeddb')
 
-run(function () {
+run(function (assert, comment) {
   var timestamp
   var store = fortune({
     model: {
       name: { type: String },
       junk: { type: Object }
     }
-  }, {
-    adapter: [
-      fortune.adapters.indexedDB,
-      { name: 'fortune_test' }
-    ]
   })
 
   comment('can run in browser')
-  ok(fortune.adapters.indexedDB, 'indexeddb adapter exists')
 
   return store.connect()
   .then(function (store) {
-    ok(store instanceof fortune, 'instantiation works')
+    assert(store instanceof fortune, 'instantiation works')
 
     return store.adapter.delete('model')
   })
@@ -39,7 +28,7 @@ run(function () {
     return Promise.all([
       store.request({
         type: 'model',
-        method: fortune.methods.create,
+        method: createMethod,
         payload: [
           { id: 'x-1', name: 'foo' },
           { id: 'x-2', name: 'bar' }
@@ -47,7 +36,7 @@ run(function () {
       }),
       store.request({
         type: 'model',
-        method: fortune.methods.create,
+        method: createMethod,
         payload: [
           { id: 'x-3', name: 'baz' },
           { id: 'x-4', name: 'qux' }
@@ -56,7 +45,7 @@ run(function () {
     ])
   })
   .then(function () {
-    ok('can handle concurrent requests')
+    assert(true, 'can handle concurrent requests')
 
     return store.request({
       type: 'model',
@@ -66,7 +55,7 @@ run(function () {
   .then(function (response) {
     var i, j, k, obj = { junk: {} }
 
-    ok(response.payload.records.length === 4, 'find works')
+    assert(response.payload.records.length === 4, 'find works')
 
     for (i = 100; i--;) {
       obj.junk[i] = {}
@@ -82,14 +71,13 @@ run(function () {
 
     return store.request({
       type: 'model',
-      method: fortune.methods.create,
+      method: createMethod,
       payload: [ obj ]
     })
   })
   .then(function () {
     comment('operation took ' + (Date.now() - timestamp) + ' ms')
-    pass('giant object stored')
+    assert(true, 'giant object stored')
     return store.disconnect()
   })
-  .catch(fail)
 })
