@@ -57,7 +57,7 @@
     "test/",
     "LICENSE"
   ],
-  "main": "lib/core.js",
+  "main": "lib/index.js",
   "eslintConfig": {
     "extends": "boss/es5"
   },

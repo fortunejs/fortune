@@ -8,7 +8,7 @@
 - Remove feature: it is no longer possible to *ponyfill* `Promise` by assigning to the main export.
 - Feature: expose `common` on Fortune instance, and inject into the Adapter instance.
 - Feature: expose `defaultAdapter` on Adapter class.
-- Refactor: removed `index.js` and `browser.js`. Now `core.js` is the main export, which makes it less brittle by relying on the same export for Node.js and web browsers.
+- Refactor: remove `browser.js`. Now there is only one main export, which makes it less brittle by relying on the same export for Node.js and web browsers.
 
 
 ### 4.2.10 (2016-10-17)

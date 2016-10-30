@@ -2,7 +2,7 @@
 
 var run = require('tapdance')
 
-var fortune = require('../lib/core')
+var fortune = require('../lib')
 var createMethod = fortune.methods.create
 
 require('./integration/adapters/memory')

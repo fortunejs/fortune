@@ -1,7 +1,7 @@
 'use strict'
 
 const chalk = require('chalk')
-const fortune = require('../../lib/core')
+const fortune = require('../../lib')
 const assign = require('../../lib/common/assign')
 const stderr = require('../stderr')
 const fixtures = require('../fixtures')
