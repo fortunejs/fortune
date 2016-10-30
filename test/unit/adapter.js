@@ -3,10 +3,10 @@
 const run = require('tapdance')
 
 const Adapter = require('../../lib/adapter')
+const AdapterSingleton = require('../../lib/adapter/singleton')
+const common = require('../../lib/common')
 const errors = require('../../lib/common/errors')
-
 const message = require('../../lib/common/message')
-
 const deepEqual = require('../../lib/common/deep_equal')
 const map = require('../../lib/common/array/map')
 const find = require('../../lib/common/array/find')
@@ -557,21 +557,16 @@ module.exports = (adapter, options) => {
 }
 
 
-function runTest (a, options, fn) {
-  let A, adapter
+function runTest (adapterFn, options, fn) {
+  let adapter
 
-  // Check if it's a class or a dependency injection function.
-  try { a = a(Adapter) }
-  catch (error) { if (!(error instanceof TypeError)) throw error }
-
-  A = a
-  adapter = new A({
-    options: options,
-    keys: keys,
-    errors: errors,
-    message: message,
-    recordTypes: recordTypes
-  })
+  try {
+    adapter = new AdapterSingleton({
+      recordTypes,
+      adapter: [ adapterFn, options ]
+    })
+  }
+  catch (error) { return Promise.reject(error) }
 
   return adapter.connect()
   .then(() => adapter.delete(type))
