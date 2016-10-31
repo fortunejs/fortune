@@ -73,7 +73,8 @@ describe('Fortune test runner', function(){
           });
 
         });
-      }).then(done);
+      }).then(done)
+      .catch(done);
   });
 
   beforeEach(function(done) { 
