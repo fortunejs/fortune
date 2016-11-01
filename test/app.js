@@ -113,7 +113,8 @@ module.exports = function(options, port, ioPort) {
       },
       nestedArray: [{
         nestedField1: String,
-        nestedField2: Number
+        nestedField2: Number,
+        location: 'location'
       }],
       location: 'location',
       upsertTest : String,

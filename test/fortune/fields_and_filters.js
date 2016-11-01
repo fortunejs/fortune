@@ -726,6 +726,20 @@ module.exports = function(options){
             done();
           });
       });
+      it('should pass for feature flag false', function(done){
+        delete process.env.DISASTER_RECOVERY_COUNT_ENABLED;
+        request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.exist(body.meta);
+            should.exist(body.meta.count);
+            (body.meta.count).should.eql(1);
+            process.env.DISASTER_RECOVERY_COUNT_ENABLED = 'true';
+            done();
+          });
+      });
       it('should return total count in if meta requested', function(done) {
         request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true')
           .expect(200)

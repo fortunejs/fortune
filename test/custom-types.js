@@ -1,12 +1,15 @@
-var _ = require("lodash"),
-    sinon = require("sinon"),
-    should = require("should"),
-    fortune = require("../../lib/fortune"),
-    RSVP = require('rsvp'),
-    mongoose = require("mongoose"),
-    when = require("when");
+'use strict';
+var customTypesHelpers = require('../lib/custom-types');
+var hooks = require('../lib/hooks');
+var RSVP = require('rsvp');
+var _ = require('lodash');
+var sinon = require('sinon');
+var should = require('should');
+var fortune = require("../lib/fortune");
+var mongoose = require("mongoose");
 
-describe("Fortune", function() {
+describe('custom-types util', function(){
+
   describe("Custom Types", function() {
     var sandbox;
     beforeEach(function(){
@@ -18,7 +21,7 @@ describe("Fortune", function() {
     });
 
     describe("Sandbox", function() {
-      var app;
+      var app, modelStub;
       beforeEach(function() {
         app = fortune({ adapter: "mongodb" });
         sandbox.stub(app.adapter, "awaitConnection").returns(RSVP.resolve());
@@ -34,7 +37,7 @@ describe("Fortune", function() {
         app.customType("money", {
           amount: Number,
           currency: String
-        })._customTypes["money"].should.be.ok() 
+        })._customTypes["money"].should.be.ok()
       });
       it("should allow usage of the custom type in any resource via string name", function() {
         app.customType("money", {
@@ -45,7 +48,7 @@ describe("Fortune", function() {
           price: 'money'
         });
         var schema = flight._resources["flight"].schema;
-        schema.price.should.be.ok()
+        schema.price.should.be.ok();
         schema.price.amount.should.eql(Number);
         schema.price.currency.should.eql(String);
       });
@@ -59,7 +62,7 @@ describe("Fortune", function() {
           }).beforeWrite([{
             name: 'writemeter',
             init: function() {
-              return function(res, res) { return this; }
+              return function(req, res) { return this; }
             }
           }]).afterRead([{
             name: 'readmeter',
@@ -97,12 +100,13 @@ describe("Fortune", function() {
           var hooks = app._resources["flight"].hooks;
 
           _.find(hooks._before.write, function(hook) {
-            return hook.name == "distance-writemeter";
-          }).should.be.ok()
+            //Check beforeEach for this type def
+            return hook.name == "distance-writemeter-distance";
+          }).should.be.ok();
 
           _.find(hooks._after.read, function(hook) {
-            return hook.name == "distance-readmeter";
-          }).should.be.ok()
+            return hook.name == "distance-readmeter-distance";
+          }).should.be.ok();
         });
 
         it("should not hide any existing hooks", function() {
@@ -112,7 +116,7 @@ describe("Fortune", function() {
           }).beforeWrite([{
             name: "wtfwriter",
             init: function() {
-              return function(res, res) {
+              return function(req, res) {
                 return { wtf: 4, ahas: 2 };
               }
             }
@@ -137,7 +141,7 @@ describe("Fortune", function() {
           }]);
           var hooks = app._resources["developer"].hooks;
           var wtfwriter = _.find(hooks._before.write, function(hook) {
-            return hook.name == "wtf-wtfwriter";
+            return hook.name == "wtfmeter-wtfwriter-wtf";
           });
           var kick = _.find(hooks._before.write, function(hook) {
             return hook.name == "kick";
@@ -154,7 +158,7 @@ describe("Fortune", function() {
           }).beforeWrite([{
             name: "wtfwriter",
             init: function() {
-              return function(res, res) {
+              return function(req, res) {
                 return { wtf: 4, ahas: 2 };
               }
             }
@@ -168,16 +172,16 @@ describe("Fortune", function() {
           }]);
 
           app.resource("developer", {
-            wtfcurrent: "wtfmeter",
-            wtf2end: "wtfmeter"
+            wtfcurrent: "wtfmeter", //on go-around...
+            wtf2end: "wtfmeter" //forget it
           });
 
           var hooks = app._resources["developer"].hooks;
           var wtf2end = _.find(hooks._before.write, function(hook) {
-            return hook.name == "wtf2end-wtfwriter";
+            return hook.name == "wtfmeter-wtfwriter-wtf2end";
           });
           var wtfcurrent = _.find(hooks._before.write, function(hook) {
-            return hook.name == "wtfcurrent-wtfwriter";
+            return hook.name == "wtfmeter-wtfwriter-wtfcurrent";
           });
 
           wtf2end.should.be.ok()
@@ -193,7 +197,7 @@ describe("Fortune", function() {
             }).beforeWrite([{
               name: 'writemeter',
               init: function() {
-                return function(res, res) {
+                return function(req, res) {
                   writewtf = this;
                   return RSVP.resolve({ wtf: 4, ahas: 2 });
                 }
@@ -215,7 +219,7 @@ describe("Fortune", function() {
 
           it("should bind the custom type's inner hooks to the data linked only, skipping entire resource", function() {
             var hook = _.find(app._resources["developer"].hooks._before.write, function(hook) {
-              return hook && hook.name == "wtfpersecond-writemeter";
+              return hook && hook.name == "wtfmeter-writemeter-wtfpersecond";
             });
             hook.fn.call({ wtfpersecond: 3 }, {}, {}).then(function() {
               writewtf.should.eql(3);
@@ -223,7 +227,7 @@ describe("Fortune", function() {
           });
           it("should set the linked data inside the resource to whatever custom data hooks return", function() {
             var hook = _.find(app._resources["developer"].hooks._before.write, function(hook) {
-              return hook && hook.name == "wtfpersecond-writemeter";
+              return hook && hook.name == "wtfmeter-writemeter-wtfpersecond";
             });
 
             hook.fn.call({ wtfpersecond: { wtf: 3 }}, {}, {}).then(function(developer) {
@@ -250,7 +254,7 @@ describe("Fortune", function() {
           app.customType("wtfmeter", {
             wtf: Number,
             ahas: Number
-          })
+          });
           app._customTypes["wtfmeter"].should.be.ok();
         })
       });
@@ -289,7 +293,9 @@ describe("Fortune", function() {
         }, {
           hooks: {}
         });
-        return when().delay(1000); // awaitConnection
+        return new RSVP.Promise(function(resolve){
+          setTimeout(resolve, 1000); // awaitConnection
+        });
       });
       afterEach(function(){
         toDbFormatter.reset();
@@ -300,6 +306,8 @@ describe("Fortune", function() {
         return app.direct.create("flights", { body: { flights: [{ price: { amount: 1000, currency: "GBP" }}]}}).then(function(result) {
           result.body.flights[0].price.amount.should.eql(1000);
           result.body.flights[0].price.currency.should.eql("GBP")
+        }).catch(function(err){
+          console.error(err);
         });
       });
       it("should automatically convert data to appropriate format", function() {
@@ -327,4 +335,215 @@ describe("Fortune", function() {
       });
     });
   })
+
+  describe('pullCustomTypePaths', function(){
+    var types, type;
+    beforeEach(function(){
+      type = {
+        hooks: ['hook'],
+        schema: {}
+      };
+      types = {
+        date: type
+      };
+    });
+    it('should correctly identify custom-types paths in top-level keys', function(){
+      var schema = {
+        date: 'date'
+      };
+      customTypesHelpers.mapCustomTypes(schema, types).should.eql([
+        {
+          hooks: ['hook'],
+          path: 'date',
+          schema: {},
+          type: type,
+          typeId: 'date'
+        }
+      ]);
+    });
+    it('should correctly identify custom-types in embedded objects', function(){
+      var schema = {
+        nested: {
+          date: 'date',
+          a: {
+            b: 'date'
+          }
+        }
+      };
+      customTypesHelpers.mapCustomTypes(schema, types).should.eql([
+        {
+          path: 'nested.date',
+          hooks: ['hook'],
+          schema: {},
+          typeId: 'date',
+          type: type
+        },
+        {
+          path: 'nested.a.b',
+          hooks: ['hook'],
+          schema: {},
+          typeId: 'date',
+          type: type
+        }
+      ]);
+    });
+    it('should correctly identify custom-types in sub-docs', function(){
+      var schema = {
+        array: [
+          {date: 'date'}
+        ],
+        reference: ['ref']
+      };
+      customTypesHelpers.mapCustomTypes(schema, types).should.eql([
+        {
+          path: 'array.0.date',
+          hooks: ['hook'],
+          schema: {},
+          typeId: 'date',
+          type: type
+        }
+      ]);
+    });
+    it('should not pick end schema path options as nested docuemnt', function(){
+      var schema = {
+        path: {
+          type: String,
+          default: 'whatever'
+        }
+      };
+
+      (function(){
+        customTypesHelpers.mapCustomTypes(schema, types).should.eql([]);
+      }).should.not.throw();
+    });
+  });
+  describe('rewriteSchemaPaths', function(){
+    var paths, type;
+    beforeEach(function(){
+      type = {};
+      paths = [];
+    });
+    it('should rewrite top-level types on schema', function(){
+      var schema = {date: 'date'};
+      paths.push({schema: type, path: 'date'});
+      customTypesHelpers.rewriteSchema(schema, paths);
+      schema.date.should.equal(type);
+    });
+    it('should rewrite nested object types on schema', function(){
+      var schema = {nested: {date: 'date'}};
+      paths.push({schema: type, path: 'nested.date'});
+      customTypesHelpers.rewriteSchema(schema, paths);
+      schema.nested.date.should.equal(type);
+    });
+    it('should rewrite embedded documents types on schema', function(){
+      var schema = {array: [{date: 'date'}]};
+      paths.push({schema: type, path: 'array.0.date'});
+      customTypesHelpers.rewriteSchema(schema, paths);
+      schema.array[0].date.should.equal(type);
+    });
+  });
+  describe('applyHook', function(){
+    var fn, doc, type, req, res;
+    beforeEach(function(){
+      fn = sinon.stub();
+      _.range(10).forEach(function(i) { fn.onCall(i).returns(i);});
+
+      doc = {
+        top: 'a'
+      };
+      type = {};
+      req = {};
+      res = {};
+    });
+    it('should apply hook fn to correct path', function(){
+      return customTypesHelpers.applyHook(fn, 'top', doc, req, res).then(function(){
+        fn.callCount.should.equal(1);
+        fn.getCall(0).args[0].should.equal(req);
+        fn.getCall(0).args[1].should.equal(res);
+        doc.top.should.equal(0);
+      });
+    });
+    it('should apply hook fn to all items of embedded array', function(){
+      doc = {array: [
+        {top: 'a'},
+        {top: 'b'}
+      ]};
+
+      return customTypesHelpers.applyHook(fn, 'array.0.top', doc, req, res).then(function(){
+        fn.callCount.should.equal(2);
+
+        doc.array[0].should.eql({top: 0});
+        fn.getCall(0).args[0].should.equal(req);
+        fn.getCall(0).args[1].should.equal(res);
+
+        doc.array[1].should.eql({top: 1});
+        fn.getCall(1).args[0].should.equal(req);
+        fn.getCall(1).args[1].should.equal(res);
+      });
+    });
+    it('shoud apply hook to correct nested document branch', function(){
+      doc = {
+        nested: {
+          second: {
+            top: 'a'
+          }
+        }
+      };
+
+      return customTypesHelpers.applyHook(fn, 'nested.second.top', doc, req, res).then(function(){
+        fn.callCount.should.equal(1);
+
+        doc.nested.second.top.should.equal(0);
+      });
+
+    });
+    it('gets fancy', function(){
+      doc = {
+        top: 'a',
+        nested: {
+          top: 'a'
+        },
+        array: [{
+          one: [{two: {three: 'b'}}]
+        }]
+      };
+
+      var paths = [
+        'top',
+        'nested.top',
+        'array.0.one.0.two.three'
+      ];
+
+      return RSVP.all(paths.map(function(path){
+        return customTypesHelpers.applyHook(fn, path, doc, req, res);
+      })).then(function(){
+        doc.should.eql({
+          top: 0,
+          nested: {top: 1},
+          array: [{
+            one: [{
+              two: {three: 2}
+            }]
+          }]
+        });
+      });
+    });
+  });
+  it('gets fancy', function(){
+    var schema = {
+      a: 'date',
+      b: {c: {d: {e: 'date'}}},
+      f: [{g: {h: [{i: 'date'}]}}]
+    };
+    var date = {};
+    var types = {
+      date: {schema: date}
+    };
+    var config = customTypesHelpers.mapCustomTypes(schema, types);
+    console.log(config);
+    customTypesHelpers.rewriteSchema(schema, config);
+    schema.a.should.equal(date);
+    schema.b.c.d.e.should.equal(date);
+    schema.f[0].g.h[0].i.should.equal(date);
+  });
 });
