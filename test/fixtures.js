@@ -1,6 +1,7 @@
 'use strict'
 
-const buffer = Buffer.from || Buffer
+const buffer = Buffer.from ||
+  ((input, encoding) => new Buffer(input, encoding))
 
 exports.user = [
   {

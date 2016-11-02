@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.0.1 (2016-11-02)
+- Refactor: move `common` dependency into prototype of Fortune rather than on the instance itself.
+
+
 ### 5.0.0 (2016-10-30)
 - **Breaking change**: extracted IndexedDB, HTTP, and WebSocket implementations into separate modules: `fortune-indexeddb`, `fortune-http`, `fortune-ws`.
   - The `fortune.net` namespace is removed. For example, use `require('fortune-http')` instead of `fortune.net.http`.

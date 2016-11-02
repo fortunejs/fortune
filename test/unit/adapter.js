@@ -40,7 +40,8 @@ const recordTypes = {
   }
 }
 
-const buffer = Buffer.from || Buffer
+const buffer = Buffer.from ||
+  ((input, encoding) => new Buffer(input, encoding))
 const deadbeef = buffer('deadbeef', 'hex')
 const key1 = buffer('cafe', 'hex')
 const key2 = buffer('babe', 'hex')

@@ -21,6 +21,7 @@ run(function (assert, comment) {
   return store.connect()
   .then(function (store) {
     assert(store instanceof fortune, 'instantiation works')
+    assert(store.common, 'common dependencies exist')
 
     return store.adapter.delete('model')
   })
