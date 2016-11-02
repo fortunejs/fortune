@@ -70,10 +70,7 @@
     "database",
     "adapter",
     "data",
-    "serializer",
-    "http",
-    "websocket",
-    "indexeddb",
-    "memory"
+    "model",
+    "record"
   ]
 }
