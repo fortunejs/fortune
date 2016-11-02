@@ -21,23 +21,33 @@ p.intro a {
   font-style: italic;
 }
 
+.install-container::after {
+  content: ' ';
+  display: block;
+  clear: both;
+}
+
 pre.install {
   color: var(--color-literal);
-  display: inline-block;
+  display: block;
+  float: left;
   margin: 0 0 calc(var(--line-height) * 3 / 2);
   background: none;
   border: 1px var(--color-literal) solid;
   border-radius: var(--border-radius);
-  padding: calc(var(--line-height) * 1 / 2 - 1px) calc(var(--line-height) * 2 / 3);
+  height: calc(var(--line-height) * 2);
+  line-height: calc(var(--line-height) * 2 - 2px);
+  padding: 0 calc(var(--line-height) * 2 / 3);
 }
 
 pre.install:first-of-type {
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  margin-right: calc(var(--line-height) * 1 / 2);
 }
 
 pre.install:last-of-type {
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  border-left: 0;
+  border-color: var(--color-highlight);
+  color: var(--color-highlight);
+  font-family: inherit;
 }
 
 pre.install a {
@@ -47,4 +57,5 @@ pre.install a {
 
 pre.install:first-of-type code::before {
   content: '$ ';
+  opacity: 0.5;
 }
