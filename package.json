@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {

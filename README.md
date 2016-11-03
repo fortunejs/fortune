@@ -18,7 +18,7 @@ $ npm install fortune --save
 
 ## Usage
 
-To get started, only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
+Only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
 
 ```js
 const fortune = require('fortune') // Works in web browsers, too.
@@ -114,13 +114,16 @@ const store = fortune({
 
 ## Networking
 
-There is a HTTP listener implementation, which returns a Node.js request listener that may be composed within larger applications. It maps Fortune requests and responses to the HTTP protocol automatically:
+There is a [HTTP listener implementation](https://github.com/fortunejs/fortune-http), which returns a Node.js request listener that may be composed within larger applications. It maps Fortune requests and responses to the HTTP protocol automatically:
 
 ```js
 // Bring your own HTTP! This makes it easier to add SSL and allows the user to
 // choose between different HTTP implementations, such as HTTP/2.
 const http = require('http')
+const fortune = require('fortune')
 const createListener = require('fortune-http')
+
+const store = fortune(...)
 
 // The `fortune.net.http` helper function returns a listener function which
 // does content negotiation, and maps the internal response to a HTTP response.

@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.0.2 (2016-11-03)
+- Polish: make declaration of record types up front optional. It is still required to define record types before connecting for some adapters.
+
+
 ### 5.0.1 (2016-11-02)
 - Refactor: move `common` dependency into prototype of Fortune rather than on the instance itself.
 
