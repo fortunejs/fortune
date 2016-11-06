@@ -357,6 +357,170 @@ module.exports = (adapter, options) => {
   })
 
   run((assert, comment) => {
+    comment('find: logical not #1')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        not: {
+          match: { name : 'bob' }
+        }
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'john')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: logical not #2')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        not: {
+          exists: { birthday: false }
+        }
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'bob', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: logical not #3')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        not: {
+          range: { age: [40, null] }
+        }
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'john', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: logical and #1')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        and: [
+          {
+            exists: { birthday: true }
+          },
+          {
+            range: { age: [40, null] }
+          }
+        ]
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'bob', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: logical or #1')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        or: [
+          {
+            match: { isAlive: false }
+          },
+          {
+            range: { age: [40, null] }
+          }
+        ],
+
+        sort: { age: false }
+      })
+      .then(records => {
+        assert(records.length === 2, 'records length is correct')
+        assert(records[0].name === 'bob', 'record is correct')
+        assert(records[1].name === 'john', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: logical or #2')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        or: [
+          {
+            match: { isAlive: true }
+          },
+          {
+            range: { age: [40, null] }
+          }
+        ]
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'bob', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: multiple logical operators #1')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        and: [
+          {
+            or: [
+              {
+                match: { isAlive: false }
+              },
+              {
+                match: { isAlive: true },
+                range: { age: [40, null] }
+              }
+            ]
+          },
+          {
+            exists: { birthday: true }
+          }
+        ]
+      })
+      .then(records => {
+        assert(records.length === 1, 'records length is correct')
+        assert(records[0].name === 'bob', 'record is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: multiple logical operators #2')
+    return test(adapter => {
+      return adapter.find(type, null, {
+        and: [
+          {
+            or: [
+              {
+                match: { isAlive: false },
+                range: { age: [40, null] }
+              },
+              {
+                match: { isAlive: true },
+                range: { age: [null, 40] }
+              }
+            ]
+          },
+          {
+            exists: { birthday: false }
+          }
+        ]
+      })
+      .then(records => {
+        assert(records.length === 0, 'records length is correct')
+      })
+    })
+  })
+
+  run((assert, comment) => {
     comment('create: no-op')
     return test(adapter => {
       return adapter.create(type, [])
