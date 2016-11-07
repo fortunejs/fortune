@@ -152,6 +152,35 @@ module.exports = function(options, port, ioPort) {
           return this;
         }
       }
+    },{
+      name: 'set-fortune-extension',
+      init: function(){
+        return function(req){
+          var extension = req.headers['set-fortune-extension'];
+
+          switch (extension){
+            case 'dilbert':
+              req.query.fortuneExtensions.push({
+                name: 'Dilbert'
+              });
+              break;
+            case 'born-in-1995':
+              req.query.fortuneExtensions.push({
+                birthday: {
+                  $gte: new Date('1995-01-01T00:00:00.000Z'),
+                  $lte: new Date('1996-01-01T00:00:00.000Z')
+                }
+              });
+              break;
+            case 'nobody':
+              req.query.fortuneExtensions.push({
+                schizophrenicRabbitOfMordor: true
+              });
+          }
+
+          return this;
+        }
+      }
     }])
 
   //Hooks with standard config defined in personHooks.js
