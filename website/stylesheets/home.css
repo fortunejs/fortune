@@ -41,13 +41,13 @@ pre.install {
 }
 
 pre.install:first-of-type {
-  margin-right: calc(var(--line-height) * 1 / 2);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 pre.install:last-of-type {
-  border-color: var(--color-highlight);
-  color: var(--color-highlight);
   font-family: inherit;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-left: none;
 }
 
 pre.install a {
