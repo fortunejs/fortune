@@ -726,20 +726,6 @@ module.exports = function(options){
             done();
           });
       });
-      it('should pass for feature flag false', function(done){
-        delete process.env.DISASTER_RECOVERY_COUNT_ENABLED;
-        request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true')
-          .expect(200)
-          .end(function(err, res){
-            should.not.exist(err);
-            var body = JSON.parse(res.text);
-            should.exist(body.meta);
-            should.exist(body.meta.count);
-            (body.meta.count).should.eql(1);
-            process.env.DISASTER_RECOVERY_COUNT_ENABLED = 'true';
-            done();
-          });
-      });
       it('should return total count in if meta requested', function(done) {
         request(baseUrl).get('/people?sort=name&page=2&pageSize=2&includeMeta=true')
           .expect(200)
@@ -749,6 +735,17 @@ module.exports = function(options){
             should.exist(body.meta);
             should.exist(body.meta.count);
             (body.meta.count).should.eql(4);
+            done();
+          });
+      });
+      it('should apply extension queries to the count', function(done){
+        request(baseUrl).get('/people?includeMeta=true')
+          .set('set-fortune-extension', 'dilbert')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.meta.count.should.equal(1);
             done();
           });
       });
@@ -762,6 +759,31 @@ module.exports = function(options){
             should.exist(body.meta.count);
             (body.meta.count).should.eql(4);
             (body.meta.filterCount).should.eql(3);
+            done();
+          });
+      });
+      it('should restrict total count to the fortune extension query', function(done){
+        request(baseUrl).get('/people?filter[name]=Wally&includeMeta=true')
+          .set('set-fortune-extension', 'born-in-1995')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.meta.count.should.equal(2);
+            body.meta.filterCount.should.equal(1);
+            done();
+          });
+      });
+      it('should set metadata when total count matched 0 items and metadata was requested', function(done){
+        request(baseUrl).get('/people?includeMeta=true')
+          .set('set-fortune-extension', 'nobody')
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            should.exist(body.meta);
+            body.meta.count.should.equal(0);
+            body.meta.filterCount.should.equal(0);
             done();
           });
       });
