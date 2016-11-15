@@ -3,6 +3,11 @@ node_js:
   - '0.10'
 before_script:
   - mysql -e 'create database fortune_test;'
+  - script:
+    name: echo nodejs information
+    code: |
+      echo "node version $(node -v) running"
+      echo "npm version $(npm -v) running"
 #  - psql -c 'create database fortune_test;' -U postgres
 services:
   - mongodb
