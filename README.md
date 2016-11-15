@@ -121,13 +121,16 @@ There is a [HTTP listener implementation](https://github.com/fortunejs/fortune-h
 // choose between different HTTP implementations, such as HTTP/2.
 const http = require('http')
 const fortune = require('fortune')
-const createListener = require('fortune-http')
+const fortuneHTTP = require('fortune-http')
 
 const store = fortune(...)
 
-// The `fortune.net.http` helper function returns a listener function which
-// does content negotiation, and maps the internal response to a HTTP response.
-const server = http.createServer(createListener(store))
+// The `fortuneHTTP` function returns a listener function which does
+// content negotiation, and maps the internal response to a HTTP response.
+const listener = fortuneHTTP(store)
+const server = http.createServer((request, response) =>
+  listener(request, response)
+  .catch(error => { /* error logging */ }))
 
 store.connect().then(() => server.listen(1337))
 ```

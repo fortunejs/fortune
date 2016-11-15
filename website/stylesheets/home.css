@@ -42,12 +42,13 @@ pre.install {
 
 pre.install:first-of-type {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
+  border-right: none;
 }
 
 pre.install:last-of-type {
   font-family: inherit;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  border-left: none;
+  border-left-style: dotted;
 }
 
 pre.install a {
