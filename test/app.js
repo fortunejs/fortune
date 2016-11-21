@@ -120,6 +120,7 @@ module.exports = function(options, port, ioPort) {
       upsertTest : String,
       _tenantId: String
     }, {
+      defaultSort: {birthday: 1},
       upsertKeys: ["upsertTest"],
       model: {pk:"email"},
       hooks: {
@@ -139,7 +140,7 @@ module.exports = function(options, port, ioPort) {
         'send-through': require('./testing-actions').genericSendThrough,
         'aggregate-by-birthday' : require('./testing-actions').genericAction,
         echo: require('./testing-actions').echo
-      }
+      },
     })
     .beforeRead([{
       name: 'modifyFilter',
@@ -210,6 +211,8 @@ module.exports = function(options, port, ioPort) {
       appearances: Number,
       owner: {ref:'person', inverse: 'pets', type: String},
       _tenantId: String
+    },{
+      defaultSort:{ appearances: 1 }
     })
 
     .resource('address', {
