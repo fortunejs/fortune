@@ -656,6 +656,23 @@ module.exports = function(options){
     });
 
     describe('sort', function(){
+      beforeEach(function(done){
+        var update = [{
+          op: 'add',
+          path: '/people/0/links/pets/-',
+          value: ids.pets[0]
+        },{
+          op: 'add',
+          path: '/people/0/links/pets/-',
+          value: ids.pets[1]
+        }];
+        request(baseUrl).patch('/people/' + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify(update))
+          .expect(200)
+          .end(done);
+      });
+
       it('should be possible to sort by name', function(done){
         request(baseUrl).get('/people?sort=name')
           .expect(200)
@@ -685,6 +702,24 @@ module.exports = function(options){
             should.not.exist(err);
             var body = JSON.parse(res.text);
             _.pluck(body.people, "name").should.eql(["Sally", "Robert", "Wally", "Dilbert"]);
+            done();
+          });
+      });
+      it('should sort based on default sort order', function(done){
+        request(baseUrl).get('/people')
+          .expect(200)
+          .end(function(err, res){
+            var body = JSON.parse(res.text);
+            _.pluck(body.people, "name").should.eql(["Dilbert", "Wally", "Sally", "Robert"]);
+            done();
+          });
+      });
+      it('should sort linked resources based on default sort order', function(done){
+        request(baseUrl).get('/people?include=pets')
+          .expect(200)
+          .end(function(err, res){
+            var body = JSON.parse(res.text);
+            _.pluck(body.linked.pets, "name").should.eql(["Ratbert", "Dogbert"]);
             done();
           });
       });
