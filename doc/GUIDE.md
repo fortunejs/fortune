@@ -11,6 +11,8 @@ Fortune.js is a database abstraction layer for Node.js and web browsers. It make
 
 The only required input of Fortune.js are *record types*, which are analogous to a `struct` in C-like languages. Record types guarantee that fields must belong to a single type or that they are links. The valid types are native JavaScript types including `Buffer` from Node.js, and custom types may extend one of the native types. A link must refer to an ID belonging to a single record type. Both types and links may be defined as arrays or singular values.
 
+Links in record type fields are just primitive values that correspond to the ID of a record in a collection. What is special about links is that Fortune.js automatically manages both sides of the relationship. Writing a link on a record will cause other records to be written as well.
+
 Here is a basic example of record type definitions, which may model a micro-blogging service:
 
 ```js
@@ -28,7 +30,6 @@ const recordTypes = {
     name: String,
     password: Buffer,
     salt: Buffer,
-    createdAt: Date,
     posts: [ Array('post'), 'author' ],
     following: [ Array('user'), 'followers' ],
     followers: [ Array('user'), 'following' ]
@@ -43,7 +44,7 @@ This is already very close to a working web application. The rest of this guide 
 
 ## Adapter Interface
 
-By default, Fortune.js ships with an in-memory database. While this is fine for development purposes, it will not scale beyond a single thread nor will it persist data. What Fortune.js provides is an abstract base class for dealing with the database called the `Adapter`. To use an adapter, it must be specified. For example, using the Postgres adapter:
+By default, Fortune.js uses an in-memory database. While this is fine for development purposes, it will not scale beyond a single thread nor will it persist data. What Fortune.js provides is an abstract base class for dealing with the database called the `Adapter`. To use an adapter, it must be specified. For example, using the Postgres adapter:
 
 ```js
 const pgAdapter = require('fortune-postgres')
@@ -89,23 +90,57 @@ const hooks = {
 const store = fortune(recordTypes, { hooks })
 ```
 
-All of the arguments for the I/O hooks may be mutated. Any custom errors thrown will be displayed to client, while operational errors will be hidden (native errors such as `Error`). For example, dealing with input for the `user` record type:
+All of the arguments for the I/O hooks may be mutated. Any custom errors thrown will be displayed to client, while operational errors will be hidden (native errors such as `Error`).
+
+For example, dealing with input for the `user` record type, a variety of authorization cases need to be handled. When creating a user, the name and password fields must be checked and the password must be encrypted, while updating and deleting require an authorization check.
 
 ```js
 const { methods } = fortune
+const { errors: { BadRequestError } } = fortune
+const hashAlgorithm = 'SHA256'
 
 function userInput (context, record, update) {
-  const { request: { method } } = context
+  const { request: { method, meta: { language } } } = context
 
-  return validateUser(context).then(() => {
-    switch (method) {
-    case methods.create:
-      return {
-        name: record.name,
-        createdAt: new Date()
+  switch (method) {
+  case methods.create:
+    for (const field of [ 'name', 'password' ])
+      if ((!field in record)) throw new BadRequestError(
+        message('MissingField', language, { field }))
+
+    const { name, password } = record
+
+    return Object.assign({ name }, makePassword(password))
+
+  case methods.update:
+    return validateUser(context, update.id).then(() => {
+      if (update.replace) {
+        // Only allow updates to name and password.
+        const { replace: { name, password } } = update
+        update.replace = { name }
+        if (password) Object.assign(update.replace, makePassword(password))
       }
-    }
-  })
+
+      // Only allow push/pull updates to follow and unfollow.
+      if (update.push) update.push = { following: update.push.following }
+      else if (update.pull) update.pull = { following: update.pull.following }
+    })
+
+  case methods.delete:
+    return validateUser(context, record.id)
+  }
+}
+```
+
+The password hashing function is an implementation detail. In this example, a hash function is used for the sake of simplicity, though a key derivation function or stronger should be used in real applications.
+
+```js
+function makePassword (string) {
+  const salt = crypto.randomBytes(32)
+  const password = crypto.createHash(hashAlgorithm)
+    .update(salt).update('' + string).digest()
+
+  return { salt, password }
 }
 ```
 
@@ -116,28 +151,130 @@ const crypto = require('crypto')
 
 const { errors: { UnauthorizedError, ForbiddenError } } = fortune
 
-function validateUser (context) {
+function validateUser (context, userId) {
   const {
-    request: { meta: { userId, password, language } },
+    request: { meta: { headers: { authorization }, language } },
     response: { meta }
   } = context
+  const [ userId, password ] = atob(authorization.split(' ')[1]).split(':')
 
   if (!userId || !password) {
+    if (!meta.headers) meta.headers = {}
     meta.headers['WWW-Authenticate'] = 'Basic realm="App name"'
     throw new UnauthorizedError(message('InvalidAuthorization', language))
   }
 
   const options = { fields: { password: true, salt: true } }
-  const error = new ForbiddenError(message('InvalidPermission', language))
 
   return store.adapter.find('user', [ userId ], options).then(result => {
     const [ user ] = result
+    const error = new ForbiddenError(message('InvalidPermission', language))
 
-    if (!user) throw error
+    if (!user || (userId && userId !== user.id)) throw error
 
-    return Promise.all([
-      // Hash passwords
-    ])
+    const hash = crypto.createHash(hashAlgorithm)
+      .update(user.salt).update(password).digest()
+
+    // Prefer a constant-time equality check, this is not secure.
+    if (!hash.equals(user.password)) throw error
+
+    return user
   })
 }
 ```
+
+When reading a user, the password and salt must not be exposed. This can be done in the output hook:
+
+```js
+function userOutput (context, record) {
+  delete record.password
+  delete record.salt
+}
+```
+
+The `post` type only needs to check for validity and whitelist fields that may be written.
+
+```js
+function postInput (context, record, update) {
+  const { request: { method, meta: { language } } } = context
+
+  switch (method) {
+  case methods.create:
+    const { text, parent } = record
+    return validateUser(context).then(user => ({
+      text, parent, createdAt: new Date(), author: user.id
+    }))
+  case methods.update:
+    throw new ForbiddenError(message('InvalidPermissions', language))
+  case methods.delete:
+    return validateUser(context, record.author)
+  }
+}
+```
+
+
+## Networking
+
+All networking is external to Fortune.js. It makes no assumption that there is even a network at all. This makes it feasible to write applications which are decoupled from the network protocol.
+
+There is a `fortune-http` package which maps requests and responses from the listener function arguments in Node.js to Fortune.js. What it does is implement relevant parts of the HTTP protocol such as content negotiation, status codes, caching and encoding. In the example above, error classes are used, and each error class maps to a status code.
+
+A few basic serializers are included. To use it:
+
+```js
+const http = require('http')
+const fortuneHTTP = require('fortune-http')
+
+const listener = fortuneHTTP(store, {
+  // The order specifies priority of media type negotiation.
+  serializers: [
+    fortuneHTTP.JsonSerializer,
+    fortuneHTTP.HtmlSerializer,
+    fortuneHTTP.FormDataSerializer,
+    fortuneHTTP.FormUrlEncodedSerializer
+  ]
+})
+
+const server = http.createServer((request, response) =>
+  listener(request, response)
+  .catch(error => { /* error logging */ }))
+
+server.listen(1337)
+```
+
+There is also a `fortune-ws` package, which may be useful for real-time updates. It implements a wire protocol that uses MessagePack as a serialization format.
+
+Suppose that new posts from users who are followed should be sent. The client must initiate a state change containing users to follow, so that the server knows which posts to send.
+
+```js
+const fortuneWS = require('fortune-ws')
+
+const options = { port: 1337 }
+const server = fortuneWS(store, (state, changes) => {
+  // Whitelist state changes.
+  if (!changes) return { users: Array.isArray(state.users) ? state.users : [] }
+
+  // Only send new posts from users that are being followed.
+  if (changes[methods.create] && changes[methods.create].post) {
+    const post = state.users ? changes[methods.create].post
+      .filter(post => ~state.users.indexOf(post.author)) : []
+
+    if (post.length) return { [methods.create]: { post } }
+  }
+}, options)
+```
+
+A web client can listen for changes:
+
+```js
+const client = new WebSocket(...)
+const users = [ ... ]
+
+fortuneWS.request(client, null, { users })
+.then(() => fortuneWS.sync(client, store))
+```
+
+
+## Philosophy
+
+TBD
