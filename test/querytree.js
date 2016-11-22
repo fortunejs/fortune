@@ -4,6 +4,7 @@ var RSVP = require('rsvp');
 var Promise = RSVP.Promise;
 var fixtures = require('./fixtures.json');
 var should = require('should');
+var sinon = require("sinon");
 var neighbourhood = require('./neighbourhood');
 
 var mockAdapter = {
@@ -36,17 +37,48 @@ module.exports = function(options){
   });
   describe('Query tree', function(){
     describe('Nodes', function(){
-      var tree;
-      before(function(){
+      var tree, req, director;
+      beforeEach(function(){
+        req = {};
+
+        director = {
+          methods: {
+            get: sinon.stub()
+          }
+        };
+
+        director.methods.get.withArgs('people').returns(new Promise(function(resolve){
+          resolve({
+            body: {
+              people: [
+                {id: 'resource-id'}
+              ]
+            }
+          });
+        }));
+
+        director.methods.get.withArgs('pets').returns(new Promise(function(resolve){
+          resolve({
+            body: {
+              pets: [
+                {id: 'resource-id'}
+              ]
+            }
+          });
+        }));
+
         tree = querytree.init({
           _resources: options.app._resources,
           inflect: options.app.inflect,
-          adapter: mockAdapter
+          director: director
         });
       });
       describe('Query preprocessing', function(){
         it('it should not modify query to plain fields', function(done){
-          var node = new tree._QueryNode('person', {name: 'Dilbert'});
+          director.methods.get.returns(new Promise(function(resolve){
+            resolve({body: {people: []}});
+          }));
+          var node = new tree._QueryNode(req, 'person', {name: 'Dilbert'});
           (node.resource).should.eql('person');
           node.query.then(function(parsed){
             (parsed).should.eql({name: 'Dilbert'});
@@ -54,58 +86,92 @@ module.exports = function(options){
           });
         });
         it('should handle case of reference defined with object', function(done){
-          var node = new tree._QueryNode('person', {soulmate: {name: 'Wally'}}, true);
+          var node = new tree._QueryNode(req, 'person', {soulmate: {name: 'Wally'}}, true);
           (node.resource).should.eql('person');
           node.query.then(function(parsed){
-            (mockAdapter.latestQuery).should.eql({name: 'Wally'});
-            (mockAdapter.latestResource).should.eql('person');
-            (parsed).should.eql({soulmate: {$in: [ids.people[0]]}});
+            director.methods.get.callCount.should.equal(1);
+            var args = director.methods.get.getCall(0).args;
+            args[0].should.equal('people');
+            args[1].should.eql({
+              query: {
+                filter: {name: 'Wally'},
+                fields: 'id',
+                limit: 0
+              },
+              linker: undefined
+            });
+            (parsed).should.eql({soulmate: {$in: ['resource-id']}});
             done();
-          });
-          mockAdapter.flush([{id: ids.people[0]}])
+          }).catch(done);
         });
         it('should handle case of reference defined with array', function(done){
-          var node = new tree._QueryNode('person', {lovers: {name: 'Sally'}}, true);
+
+          var node = new tree._QueryNode(req, 'person', {lovers: {name: 'Sally'}}, true);
           (node.resource).should.eql('person');
           node.query.then(function(parsed){
-            (mockAdapter.latestQuery).should.eql({name: 'Sally'});
-            (mockAdapter.latestResource).should.eql('person');
-            (parsed).should.eql({lovers: {$in: [ids.people[0]]}});
+            director.methods.get.callCount.should.equal(1);
+            var args = director.methods.get.getCall(0).args;
+            args[0].should.equal('people');
+            args[1].should.eql({
+              query: {
+                filter: {name: 'Sally'},
+                fields: 'id',
+                limit: 0
+              },
+              linker: undefined
+            });
+            (parsed).should.eql({lovers: {$in: ['resource-id']}});
             done();
-          });
-          mockAdapter.flush([{id: ids.people[0]}]);
+          }).catch(done);
         });
         it('should handle case of reference defined with a string in array', function(done){
-          var node = new tree._QueryNode('person', {pets: {name: 'Tobi'}}, true);
+          var node = new tree._QueryNode(req, 'person', {pets: {name: 'Tobi'}}, true);
           (node.resource).should.eql('person');
           node.query.then(function(parsed){
-            (mockAdapter.latestQuery).should.eql({name: 'Tobi'});
-            (mockAdapter.latestResource).should.eql('pet');
-            (parsed).should.eql({pets: {$in: [ids.pets[0]]}});
+            director.methods.get.callCount.should.equal(1);
+            var args = director.methods.get.getCall(0).args;
+            args[0].should.equal('pets');
+            args[1].should.eql({
+              query: {
+                filter: {name: 'Tobi'},
+                fields: 'id',
+                limit: 0
+              },
+              linker: undefined
+            });
+            (parsed).should.eql({pets: {$in: ['resource-id']}});
             done();
-          });
-          mockAdapter.flush([{id: ids.pets[0]}]);
+          }).catch(done);
         });
         it('should handle case of object that defines business PK', function(done){
-          var node = new tree._QueryNode('person', {lovers: {email: ids.people[0]}}, true);
+          var node = new tree._QueryNode(req, 'person', {lovers: {email: 'dilbert@mailbert.com'}}, true);
           (node.resource).should.eql('person');
           node.query.then(function(parsed){
-            (mockAdapter.latestQuery).should.eql({email: ids.people[0]});
-            (mockAdapter.latestResource).should.eql('person');
-            (parsed).should.eql({lovers: {$in: [ids.people[0]]}});
+            director.methods.get.callCount.should.equal(1);
+            var args = director.methods.get.getCall(0).args;
+            args[0].should.equal('people');
+            args[1].should.eql({
+              query: {
+                filter: {email: 'dilbert@mailbert.com'},
+                fields: 'id',
+                limit: 0
+              },
+              linker: undefined
+            });
+            (parsed).should.eql({lovers: {$in: ['resource-id']}});
             done();
-          });
-          mockAdapter.flush([{id: ids.people[0]}]);
+          }).catch(done);
         });
       });
     });
     describe('Integration to fortune', function(){
-      var adapter, tree;
+      var adapter, tree, request;
       before(function(){
         adapter = options.app.adapter;
         tree = querytree.init(options.app);
       });
       beforeEach(function(done){
+        request = {};
         //Create little social network
         neighbourhood(adapter, ids).then(function(){
           done();
@@ -125,7 +191,7 @@ module.exports = function(options){
             }
           }
         };
-        tree.parse('house', query).then(function(result){
+        tree.parse(request, 'house', query).then(function(result){
           //ids.houses[0] owner is ids.people[0]
           result.should.eql({owners: {$in: [ids.people[0]]}});
           done();
@@ -145,7 +211,7 @@ module.exports = function(options){
               }
             }
           };
-          tree.parse('house', query).then(function(result){
+          tree.parse(request, 'house', query).then(function(result){
             result.should.eql({owners: {$in: [ids.people[0]]}});
             done();
           });
@@ -159,7 +225,7 @@ module.exports = function(options){
               }
             }
           };
-          tree.parse('house', query).then(function(result){
+          tree.parse(request, 'house', query).then(function(result){
             (result).should.eql({owners: {$in: [ids.people[1]]}});
            done();
           });
@@ -170,14 +236,14 @@ module.exports = function(options){
               $exists: true
             }
           };
-          tree.parse('house', query).then(function(result){
+          tree.parse(request, 'house', query).then(function(result){
             (result).should.eql({owners: {$exists: true}});
             var complexQuery = {
               $or: [
                 {owners: {$exists: true}}
               ]
             };
-            tree.parse('house', complexQuery).then(function(result) {
+            tree.parse(request, 'house', complexQuery).then(function(result) {
               (result).should.eql({$or: [{owners: {$exists: true}}]});
               done();
             });
