@@ -7,7 +7,7 @@ Fortune.js is a database abstraction layer for Node.js and web browsers. It make
 - **Inverse relationship updates**: when using links in the definition of a record type, Fortune.js will automatically write the other side of the link.
 - **Referential integrity**: Fortune.js ensures that all links must be valid at the application-level.
 - **Type validation**: fields are guaranteed to belong to a single type.
-- **Adapter interface**: any database that can implement the Adapter abstract base class can work with Fortune.js.
+- **Adapter interface**: any database driver that can implement the Adapter abstract base class can work with Fortune.js.
 
 The only required input of Fortune.js are *record types*, which are analogous to a `struct` in C-like languages. Record types guarantee that fields must belong to a single type or that they are links. The valid types are native JavaScript types including `Buffer` from Node.js, and custom types may extend one of the native types. A link must refer to an ID belonging to a single record type. Both types and links may be defined as arrays or singular values.
 
@@ -70,7 +70,7 @@ const { message } = fortune
 // Add application error messages in English (default language).
 // More languages can be defined as keys on the `message` function.
 Object.assign(message.en, {
-  'InvalidAuthorization: 'The given user and/or password is invalid.',
+  'InvalidAuthorization': 'The given user and/or password is invalid.',
   'InvalidPermission': 'You do not have permission to do that.',
   'MissingField': 'The required field "{field}" is missing.'
 })
@@ -104,12 +104,12 @@ function userInput (context, record, update) {
 
   switch (method) {
   case methods.create:
+    // Check for required fields.
     for (const field of [ 'name', 'password' ])
       if ((!field in record)) throw new BadRequestError(
         message('MissingField', language, { field }))
 
     const { name, password } = record
-
     return Object.assign({ name }, makePassword(password))
 
   case methods.update:
@@ -156,6 +156,8 @@ function validateUser (context, userId) {
     request: { meta: { headers: { authorization }, language } },
     response: { meta }
   } = context
+
+  // Parse HTTP Basic Access Authentication.
   const [ userId, password ] = atob(authorization.split(' ')[1]).split(':')
 
   if (!userId || !password) {
@@ -204,8 +206,10 @@ function postInput (context, record, update) {
     return validateUser(context).then(user => ({
       text, parent, createdAt: new Date(), author: user.id
     }))
+
   case methods.update:
     throw new ForbiddenError(message('InvalidPermissions', language))
+
   case methods.delete:
     return validateUser(context, record.author)
   }
@@ -277,4 +281,8 @@ fortuneWS.request(client, null, { users })
 
 ## Philosophy
 
-TBD
+Most web applications are like skins around databases. Fortune.js provides an abstraction around core functionality of web applications. It is designed as a library which adds useful features on top of databases.
+
+It avoids the Object-Relational or Object-Document Mapping problem by not dealing with *objects* in the Object-Oriented Programming sense. Records in Fortune.js do not inherit any classes and are just plain data structures.
+
+It targets Node.js and web browsers with the same codebase, since the same concepts apply in both environments.
