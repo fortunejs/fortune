@@ -185,6 +185,7 @@ article a {
 nav {
   float: right;
   width: var(--menu-width);
+  position: relative;
 }
 
 nav > div {
@@ -275,7 +276,7 @@ nav li:last-of-type {
 
 nav li::before {
   content: '\2013';
-  color: var(--color-alt);
+  color: var(--color-light);
   margin-right: calc(1em / 3);
 }
 
