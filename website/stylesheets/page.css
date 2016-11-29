@@ -8,7 +8,7 @@ html { box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
 
 body {
-  background-color: var(--color-menu);
+  background-color: color(var(--color-menu) l(- 2%));
   font-family: var(--font-body);
   font-size: var(--size-body);
   color: var(--color-body);
@@ -102,7 +102,7 @@ tbody tr:nth-of-type(2n) {
 }
 
 header {
-  background-color: var(--color-accent);
+  background-color: rgba(255, 238, 119, 0.8);
   position: fixed;
   z-index: 100;
   top: 0;
@@ -117,7 +117,7 @@ header > div {
   margin: 0 auto;
 }
 
-header > div::after {
+header > div::after, main::after {
   display: block;
   content: ' ';
   clear: both;
@@ -125,21 +125,33 @@ header > div::after {
 
 header .logo-type {
   display: block;
-  height: calc(var(--line-height) * 4 / 3);
-  margin: calc(var(--line-height) * 1 / 3) 0;
+  height: calc(var(--line-height) * 3 / 2);
+  margin: calc(var(--line-height) * 1 / 2) 0;
   padding: 0 1em 0 calc(var(--line-height) * 3 / 2);
   float: left;
 }
 
 header .corner {
   display: block;
+  position: relative;
   width: var(--menu-width);
   float: right;
-  padding: calc(var(--line-height) * 1 / 2) calc(var(--line-height) * 3 / 2);
+  padding: calc(var(--line-height) * 3 / 4) calc(var(--line-height) * 3 / 2);
   border: 1px rgba(0, 0, 0, 0.08) solid;
   border-top: 0;
   border-bottom: 0;
   color: var(--color-link);
+}
+
+header .corner::before {
+  display: block;
+  content: ' ';
+  position: absolute;
+  width: 500em;
+  height: 100%;
+  top: 0;
+  left: calc(100% + 1px);
+  background: rgba(0, 0, 0, 0.01);
 }
 
 header .corner::after {
@@ -153,13 +165,16 @@ main {
   min-width: var(--min-width);
   max-width: var(--max-width);
   margin: 0 auto;
+  border-right: 1px rgba(0, 0, 0, 0.06) solid;
 }
 
 article {
   background: var(--color-background);
   max-width: calc(100% - var(--menu-width));
-  padding: calc(var(--line-height) * 2) calc(var(--line-height) * 7 / 2) 0 calc(var(--line-height) * 3 / 2);
+  padding: calc(var(--line-height) * (5 / 2)) calc(var(--line-height) * (7 / 2)) 0 calc(var(--line-height) * 3 / 2);
   hyphens: auto;
+  float: left;
+  position: relative;
 }
 
 article::before {
@@ -191,13 +206,9 @@ nav {
 nav > div {
   position: fixed;
   background: var(--color-menu);
-  top: calc(var(--line-height) * 2);
+  top: calc(var(--line-height) * (5 / 2));
   width: var(--menu-width);
   height: calc(100% - var(--line-height) * 2);
-  border: 1px rgba(0, 0, 0, 0.06) solid;
-  border-top: 0;
-  border-bottom: 0;
-  border-left: 1px transparent solid;
   padding: 0 calc(var(--line-height) * 3 / 2);
   overflow: auto;
 }
@@ -248,7 +259,7 @@ article > h1:first-of-type::before {
   bottom: -1px;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 1px;
   background: rgba(0, 0, 0, 0.12);
 }
 

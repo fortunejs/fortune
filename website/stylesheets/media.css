@@ -8,7 +8,7 @@
   header {
     width: auto;
   }
-  header, nav > div {
+  /*header, nav > div {
     position: absolute;
-  }
+  }*/
 }

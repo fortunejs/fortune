@@ -18,7 +18,6 @@ p.intro {
 p.intro a {
   color: inherit;
   text-decoration: none;
-  font-style: italic;
 }
 
 .install-container::after {
