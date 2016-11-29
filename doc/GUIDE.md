@@ -5,7 +5,7 @@
 Fortune.js is a database abstraction layer for Node.js and web browsers. It makes assumptions about the data model in order to build features on top of those assumptions:
 
 - **Inverse relationship updates**: when using links in the definition of a record type, Fortune.js will automatically write the other side of the link.
-- **Referential integrity**: Fortune.js ensures that all links must be valid at the application-level.
+- **Referential integrity**: Fortune.js ensures that all links must be valid at the application level.
 - **Type validation**: fields are guaranteed to belong to a single type.
 - **Adapter interface**: any database driver that can implement the Adapter abstract base class can work with Fortune.js.
 

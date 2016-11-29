@@ -142,10 +142,10 @@ Fortune.js implements its own [wire protocol](https://github.com/fortunejs/fortu
 
 ## Features and Non-Features
 
-- Application-level relationships: inverse updates and referential integrity.
-- Transaction support for databases that support transactions, such as Postgres.
-- Dereferencing relationships in a single request via `include`.
-- Type validations, plus support for custom types.
+- Inverse relationship updates, automatically maintain both sides of relationships between records.
+- Referential integrity, ensure that links must be valid at the application level.
+- Type validations, fields are guaranteed to belong to a single type.
+- Adapter interface, use any database that can implement an adapter.
 - **No** ORM or active record pattern, just plain data objects.
 - **No** coupling with network protocol, handle requests from anywhere.
 
