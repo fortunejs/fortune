@@ -8,7 +8,7 @@ html { box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
 
 body {
-  background-color: color(var(--color-menu) l(- 2%));
+  background-color: color(var(--color-menu));
   font-family: var(--font-body);
   font-size: var(--size-body);
   color: var(--color-body);
@@ -134,24 +134,13 @@ header .logo-type {
 header .corner {
   display: block;
   position: relative;
-  width: var(--menu-width);
+  width: calc(var(--menu-width) + 1px);
   float: right;
   padding: calc(var(--line-height) * 3 / 4) calc(var(--line-height) * 3 / 2);
   border: 1px rgba(0, 0, 0, 0.08) solid;
   border-top: 0;
   border-bottom: 0;
   color: var(--color-link);
-}
-
-header .corner::before {
-  display: block;
-  content: ' ';
-  position: absolute;
-  width: 500em;
-  height: 100%;
-  top: 0;
-  left: calc(100% + 1px);
-  background: rgba(0, 0, 0, 0.01);
 }
 
 header .corner::after {
@@ -165,7 +154,7 @@ main {
   min-width: var(--min-width);
   max-width: var(--max-width);
   margin: 0 auto;
-  border-right: 1px rgba(0, 0, 0, 0.06) solid;
+  border-right: 1px rgba(0, 0, 0, 0.08) solid;
 }
 
 article {
@@ -211,6 +200,7 @@ nav > div {
   height: calc(100% - var(--line-height) * 2);
   padding: 0 calc(var(--line-height) * 3 / 2);
   overflow: auto;
+  border-left: 1px rgba(0, 0, 0, 0.04) solid;
 }
 
 nav hr {

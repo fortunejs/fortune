@@ -96,7 +96,6 @@ For example, dealing with input for the `user` record type, a variety of authori
 
 ```js
 const { methods, errors: { BadRequestError } } = fortune
-const hashAlgorithm = 'SHA256'
 
 function userInput (context, record, update) {
   const { request: { method, meta: { language } } } = context
@@ -134,6 +133,8 @@ function userInput (context, record, update) {
 The password hashing function is an implementation detail. In this example, a hash function is used for the sake of simplicity, though a key derivation function or stronger should be used in real applications.
 
 ```js
+const hashAlgorithm = 'SHA256'
+
 function makePassword (string) {
   const salt = crypto.randomBytes(32)
   const password = crypto.createHash(hashAlgorithm)
