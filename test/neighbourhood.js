@@ -2,42 +2,42 @@ var RSVP = require('rsvp');
 
 module.exports = function(adapter, ids){
     //Housing
-  return adapter.update('house', ids.houses[0], {owners: [ids.people[0]]})
+  return adapter.update('house', adapter.preupdate('house', ids.houses[0]), {owners: [ids.people[0]]})
     .then(function(){
-      return adapter.update('house', ids.houses[1], {owners: [ids.people[1]]});
+      return adapter.update('house', adapter.preupdate('house', ids.houses[1]), {owners: [ids.people[1]]});
     })
     .then(function(){
-      return adapter.update('house', ids.houses[2], {owners: [ids.people[2]]});
+      return adapter.update('house', adapter.preupdate('house', ids.houses[2]), {owners: [ids.people[2]]});
     })
     .then(function(){
-      return adapter.update('house', ids.houses[3], {owners: [ids.people[3]]});
+      return adapter.update('house', adapter.preupdate('house', ids.houses[3]), {owners: [ids.people[3]]});
     })
 
   //Lovers and haters
     .then(function(){
-      return adapter.update('person', ids.people[0], {soulmate: ids.people[1]});
+      return adapter.update('person', adapter.preupdate('person', ids.people[0]), {soulmate: ids.people[1]});
     })
     .then(function(){
-      return adapter.update('person', ids.people[3], {soulmate: ids.people[2]});
+      return adapter.update('person', adapter.preupdate('person', ids.people[3]), {soulmate: ids.people[2]});
     })
     .then(function(){
-      return adapter.update('person', ids.people[0], {lovers: [ids.people[1], ids.people[2], ids.people[3]]});
+      return adapter.update('person', adapter.preupdate('person', ids.people[0]), {lovers: [ids.people[1], ids.people[2], ids.people[3]]});
     })
 
   //Pets
     .then(function(){
-      return adapter.update('pet', ids.pets[0], {owner: ids.people[1]});
+      return adapter.update('pet', adapter.preupdate('pet', ids.pets[0]), {owner: ids.people[1]});
     })
     .then(function(){
-      return adapter.update('pet', ids.pets[1], {owner: ids.people[3]});
+      return adapter.update('pet', adapter.preupdate('pet', ids.pets[1]), {owner: ids.people[3]});
     })
 
   //Cars
     .then(function(){
-      return adapter.update('car', ids.cars[0], {owner: ids.people[0]});
+      return adapter.update('car', adapter.preupdate('car', ids.cars[0]), {owner: ids.people[0]});
     })
     .then(function(){
-      return adapter.update('car', ids.cars[1], {owner: ids.people[1]});
+      return adapter.update('car', adapter.preupdate('car', ids.cars[1]), {owner: ids.people[1]});
     });
 };
 

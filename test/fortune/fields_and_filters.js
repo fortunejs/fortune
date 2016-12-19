@@ -670,7 +670,9 @@ module.exports = function(options){
           .set('content-type', 'application/json')
           .send(JSON.stringify(update))
           .expect(200)
-          .end(done);
+          .end(function(err){
+            done(err);
+          });
       });
 
       it('should be possible to sort by name', function(done){

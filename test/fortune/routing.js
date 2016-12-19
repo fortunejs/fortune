@@ -363,6 +363,18 @@ module.exports = function(options){
       });
     });
 
+    //helpers
+    function patch(url, cmd, cb){
+      request(baseUrl).patch(url)
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(cmd))
+        .expect(200)
+        .end(function(err, res){
+          should.not.exist(err);
+          cb(err, res);
+        });
+    }
+
     describe("PATCH replace method", function(){
       it("with embedded documents", function(done){
         request(baseUrl).patch("/cars/" + ids.cars[0])
@@ -379,6 +391,60 @@ module.exports = function(options){
             body.cars[0].additionalDetails.seats.should.equal(100);
             done();
           });
+      });
+      describe('with nested schemas', function(){
+        beforeEach(function(done){
+          patch('/people/' + ids.people[0], [
+            {op: 'add', path: '/people/0/nestedArray', value: {nestedField1: 'original'}},
+            {op: 'add', path: '/people/0/nestedArray', value: {nestedField1: 'original'}}
+          ], function(err){
+            should.not.exist(err);
+            done();
+          });
+        });
+        it('should apply update to correct item matching provided _id', function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              var person = body.people[0];
+              var itemId = person.nestedArray[0]._id;
+              patch('/people/' + ids.people[0], [
+                {op: 'replace', path: '/people/0/nestedArray/' + itemId + '/nestedField1', value: 'updated'}
+              ], function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                console.log(body.people[0]);
+                body.people[0].nestedArray[0].nestedField1.should.equal('updated');
+                body.people[0].nestedArray[1].nestedField1.should.equal('original');
+                done();
+              });
+            });
+        });
+        it('should be able to update deleted item matching provided _id', function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .end(function(err, res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              var person = body.people[0];
+              var itemId = person.nestedArray[0]._id;
+              patch('/people/' + person.id, [
+                {op: 'remove', path: '/people/0/nestedArray/' + itemId}
+              ], function(err){
+                should.not.exist(err);
+                patch('/people/' + person.id, [
+                  {op: 'replace', path: '/people/0/nestedArray/' + itemId + '/nestedField1', value: 'updated'}
+                ], function(err){
+                  should.not.exist(err);
+                  options.app.adapter.model('person').findOne({email: person.email}, function(err, dbPerson){
+                    should.not.exist(err);
+                    dbPerson._internal.deleted.nestedArray[0].nestedField1.should.equal('updated');
+                    done();
+                  });
+                });
+              });
+            })
+        });
       });
     });
 
@@ -456,17 +522,6 @@ module.exports = function(options){
           done();
         });
       });
-      //helpers
-      function patch(url, cmd, cb){
-        request(baseUrl).patch(url)
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(cmd))
-          .expect(200)
-          .end(function(err, res){
-            should.not.exist(err);
-            cb(err, res);
-          });
-      }
     });
     describe("PATCH remove method", function(){
 
