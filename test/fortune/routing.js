@@ -445,6 +445,24 @@ module.exports = function(options){
               });
             })
         });
+        it('should be backward compatible with update path providing document index', function(done){
+          request(baseUrl).get('/people/' + ids.people[0])
+            .end(function(err,res){
+              should.not.exist(err);
+              var body = JSON.parse(res.text);
+              var person = body.people[0];
+              patch('/people/' + person.id, [
+                {op: 'replace', path: '/people/0/nestedArray/0/nestedField1', value: 'updated'}
+              ], function(err){
+                should.not.exist(err);
+                options.app.adapter.model('person').findOne({email: person.email}, function(err, dbPerson){
+                  should.not.exist(err);
+                  dbPerson.nestedArray[0].nestedField1.should.equal('updated');
+                  done();
+                });
+              });
+            });
+        });
       });
     });
 

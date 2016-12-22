@@ -102,10 +102,10 @@ module.exports = function(){
       it('should correctly identify update on embedded schema and apply positional update', function(){
         helpers.processReplaceOp({
           op: 'replace',
-          path: '/resource-name/0/embedded/sub-doc-id/path',
+          path: '/resource-name/0/embedded/012345678901234567891234/path',
           value: 'x'
         }, model).should.eql([{
-          match: {'embedded._id': 'sub-doc-id'},
+          match: {'embedded._id': '012345678901234567891234'},
           separate: true,
           key: '$set',
           update: {
@@ -114,13 +114,29 @@ module.exports = function(){
         },{
           "key": "$set",
           "match": {
-            "_internal.deleted.embedded._id": "sub-doc-id"
+            "_internal.deleted.embedded._id": "012345678901234567891234"
           },
           "separate": true,
           "update": {
             "_internal.deleted.embedded.$.path": "x"
           }
         }]);
+      });
+      it('should not apply positional update if provided id is not id-like',function(){
+        helpers.processReplaceOp({
+          op: 'replace',
+          path: '/resource-name/0/embedded/simple-index/path',
+          value: 'x'
+        }, model).should.eql([
+          {
+            match: {},
+            separate: false,
+            key: '$set',
+            update: {
+              'embedded.simple-index.path': 'x'
+            }
+          }
+        ]);
       });
     });
     describe('processAddOp', function(){
