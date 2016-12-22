@@ -18,6 +18,7 @@ describe('Fortune', function () {
   });
 
 
+  require('./route-helpers')(options);
   require('./actions')(options);
   require('./routing')(options);
   require('./associations')(options);
