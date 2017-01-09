@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.0.3 (2017-01-09)
+- Polish: publish built files in `dist/*.js`.
+
+
 ### 5.0.2 (2016-11-03)
 - Polish: make declaration of record types up front optional. It is still required to define record types before connecting for some adapters.
 

@@ -25,7 +25,7 @@ const start = Date.now()
 const year = new Date().getFullYear()
 const CNAME = 'fortune.js.org'
 
-const outputPath = path.join(__dirname, '../dist/web')
+const outputPath = path.join(__dirname, '../dist')
 const assetPath = path.join(__dirname, 'assets')
 const apiPath = path.join(__dirname, '../lib')
 const templatePath = path.join(__dirname, 'templates')

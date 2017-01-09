@@ -4,7 +4,7 @@ REPO_GIT=git@github.com:fortunejs/fortune.git
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 # Deploying to GitHub pages.
-(cd "$DIR/../dist/web"; \
+(cd "$DIR/../dist"; \
 	[ ! -d .git ] && \
 		git init && \
 		git remote add origin $REPO_GIT &&
