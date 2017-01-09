@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "5.0.4",
+  "version": "5.0.6",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -16,7 +16,7 @@
     "build:browser": "(node lib/header; browserify lib/global.js) > dist/fortune.js",
     "build:minified": "(node lib/header; cat dist/fortune.js | uglifyjs -cm) > dist/fortune.min.js",
     "lint": "eslint lib",
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "postpublish": "npm run deploy && npm run tag",
     "tag": "git tag `npm v fortune version` && git push origin --tags",
     "test": "npm run lint && npm run test:server && npm run test:browser",
