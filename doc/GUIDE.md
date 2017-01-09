@@ -76,6 +76,8 @@ Object.assign(message.en, {
 })
 ```
 
+It is entirely optional to use this feature, but it is provided since `Intl` is not defined in ES5. There is a [specification for message formatting](http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting) which should be preferred.
+
 
 ## Input and Output Hooks
 
