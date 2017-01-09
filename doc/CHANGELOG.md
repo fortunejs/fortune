@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 5.0.4 (2017-01-09)
+### 5.0.5 (2017-01-09)
 - Polish: publish built files in `dist/*.js`.
 - Fix: detect language subtag in internal message function.
 
