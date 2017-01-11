@@ -50,6 +50,24 @@ module.exports = function(options){
       });
     });
 
+    it("should stop processing a PUT request if a before hook returns false", function(done) {
+      request(baseUrl).get('/pets/')
+        .end(function(err, res) {
+          var pet = JSON.parse(res.text).pets[0];
+          request(baseUrl).put('/pets/' + pet.id + '?failbeforeAllWrite=boolean')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({pets: [{name: 'new pet'}]}))
+          .end(function(req, res) {
+            res.statusCode.should.equal(321);
+            request(baseUrl).get('/pets/' + pet.id)
+            .end(function(err, res) {
+              JSON.parse(res.text).pets[0].name.should.not.eql('new pet');
+              done();
+            });
+        });
+      });
+    });
+
     it("should stop processing a POST request if a before hook returns false via a promise", function(done) {
       var petCount;
       request(baseUrl).get('/pets/')
@@ -85,6 +103,24 @@ module.exports = function(options){
                   JSON.parse(res.text).pets[0].name.should.not.eql('new name');
                   done();
                 });
+        });
+      });
+    });
+
+    it("should stop processing a PUT request if a before hook returns false via promise", function(done) {
+      request(baseUrl).get('/pets/')
+        .end(function(err, res) {
+          var pet = JSON.parse(res.text).pets[0];
+          request(baseUrl).put('/pets/' + pet.id + '?failbeforeAllWrite=promise')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({pets: [{name: 'new pet'}]}))
+          .end(function(req, res) {
+            res.statusCode.should.equal(321);
+            request(baseUrl).get('/pets/' + pet.id)
+            .end(function(err, res) {
+              JSON.parse(res.text).pets[0].name.should.not.eql('new pet');
+              done();
+            });
         });
       });
     });
