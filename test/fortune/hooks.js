@@ -11,10 +11,9 @@ module.exports = function(options){
   });
 
   describe("hooks", function(){
-    it("should stop processing a request if a before hook returns false", function(done) {
+    it("should stop processing a POST request if a before hook returns false", function(done) {
       var petCount;
       request(baseUrl).get('/pets/')
-        .set('content-type', 'application/json')
         .end(function(err, res) {
           petCount = JSON.parse(res.text).pets.length;
           request(baseUrl).post('/pets/?failbeforeAllWrite=boolean')
@@ -23,7 +22,6 @@ module.exports = function(options){
           .end(function(req, res) {
             res.statusCode.should.equal(321);
             request(baseUrl).get('/pets/')
-              .set('content-type', 'application/json')
               .end(function(err, res) {
                 JSON.parse(res.text).pets.length.should.equal(petCount);
                 done();
@@ -32,10 +30,29 @@ module.exports = function(options){
       });
     });
 
-    it("should stop processing a request if a before hook returns false via a promise", function(done) {
+    it("should stop processing a PATCH request if a before hook returns false", function(done) {
+      request(baseUrl).get('/pets/')
+        .end(function(err, res) {
+          var pet = JSON.parse(res.text).pets[0];
+          request(baseUrl).patch('/pets/' + pet.id + '?failbeforeAllWrite=boolean')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/pets/0/name', value: 'new name'}
+          ]))
+          .end(function(req, res) {
+            res.statusCode.should.equal(321);
+            request(baseUrl).get('/pets/' + pet.id)
+            .end(function(err, res) {
+              JSON.parse(res.text).pets[0].name.should.not.eql('new name');
+              done();
+            });
+        });
+      });
+    });
+
+    it("should stop processing a POST request if a before hook returns false via a promise", function(done) {
       var petCount;
       request(baseUrl).get('/pets/')
-        .set('content-type', 'application/json')
         .end(function(err, res) {
           petCount = JSON.parse(res.text).pets.length;
           request(baseUrl).post('/pets/?failbeforeAllWrite=promise')
@@ -44,11 +61,30 @@ module.exports = function(options){
           .end(function(req, res) {
             res.statusCode.should.equal(321);
             request(baseUrl).get('/pets/')
-              .set('content-type', 'application/json')
               .end(function(err, res) {
                 JSON.parse(res.text).pets.length.should.equal(petCount);
                 done();
             });
+        });
+      });
+    });
+
+    it("should stop processing a PATCH request if a before hook returns false via promise", function(done) {
+      request(baseUrl).get('/pets/')
+        .end(function(err, res) {
+          var pet = JSON.parse(res.text).pets[0];
+          request(baseUrl).patch('/pets/' + pet.id + '?failbeforeAllWrite=promise')
+            .set('content-type', 'application/json')
+            .send(JSON.stringify([
+              {op: 'replace', path: '/pets/0/name', value: 'new name'}
+            ]))
+            .end(function(req, res) {
+              res.statusCode.should.equal(321);
+              request(baseUrl).get('/pets/' + pet.id)
+                .end(function(err, res) {
+                  JSON.parse(res.text).pets[0].name.should.not.eql('new name');
+                  done();
+                });
         });
       });
     });
