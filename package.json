@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer for data-driven applications.",
-  "version": "5.0.6",
+  "version": "5.1.0",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "error-class": "^2.0.1",
-    "event-lite": "^0.1.1"
+    "event-lite": "^0.1.1",
+    "tapdance": "^5.0.3"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",

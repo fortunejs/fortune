@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.1.0 (2017-01-21)
+- Feature: add logical operators "and" and "or" for the Adapter's `find` method.
+- Feature: add feature flags on Adapter as static property.
+
+
 ### 5.0.6 (2017-01-09)
 - Polish: publish built files in `dist/*.js`.
 - Fix: detect language subtag in internal message function.
