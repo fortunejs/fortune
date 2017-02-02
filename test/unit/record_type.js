@@ -224,4 +224,4 @@ run((assert, comment) => {
 
 
 function Integer (x) { return (x | 0) === x }
-Integer.prototype = Object.create(Number.prototype)
+Integer.prototype = new Number()

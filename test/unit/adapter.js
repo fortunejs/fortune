@@ -20,7 +20,7 @@ const primaryKey = keys.primary
 const type = 'user'
 
 function Integer (x) { return (x | 0) === x }
-Integer.prototype = Object.create(Number.prototype)
+Integer.prototype = new Number()
 
 const recordTypes = {
   user: {
