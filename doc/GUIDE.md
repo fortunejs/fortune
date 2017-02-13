@@ -13,6 +13,16 @@ The only required input of Fortune.js are *record types*, which are analogous to
 
 Links in record type fields are just primitive values that correspond to the ID of a record in a collection. What is special about links is that Fortune.js automatically manages both sides of the relationship. Writing a link on a record will cause other records to be written as well.
 
+
+## Motivation
+
+Databases implement disparate sets of features, Fortune.js provides common functionality that may not be implemented by the underlying database. The abstraction layer that Fortune.js provides can be extended to network protocols, as HTTP and WebSocket can be exposed using the same application code, using any serialization format.
+
+There is a misconception that database abstractions are for porting application code to use another database, which rarely is the case. However, this is particularly useful for writing applications that can run anywhere, such as on a server or a client where different databases may be a necessity.
+
+
+## Type Definition
+
 Here is a basic example of record type definitions, which may model a micro-blogging service:
 
 ```js

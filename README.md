@@ -16,13 +16,6 @@ $ npm install fortune --save
 *This is the core module. Additional features such as networking (HTTP, WebSocket), database adapters, serialization formats are listed in the [plugins page](http://fortune.js.org/plugins).*
 
 
-## Motivation
-
-Databases implement disparate sets of features, Fortune.js provides common functionality that may not be implemented by the underlying database. The abstraction layer that Fortune.js provides can be extended to network protocols, as HTTP and WebSocket can be exposed using the same application code, using any serialization format.
-
-There is a misconception that database abstractions are for porting application code to use another database, which rarely is the case. However, this is particularly useful for writing applications that can run anywhere, such as on a server or a client where different databases may be a necessity.
-
-
 ## Usage
 
 Only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here's an example of a basic micro-blogging service:
