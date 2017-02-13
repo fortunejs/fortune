@@ -5,7 +5,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) for data-driven applications in Node.js and web browsers. It provides a common interface for databases and implements features such as relationships, inverse updates, referential integrity, which are built upon assumptions in the data model.
+Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) that implements common features for Node.js and web browsers. It provides an interface for databases, as well as relationships, inverse updates, referential integrity, which are built upon assumptions in the data model.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
 
@@ -14,6 +14,13 @@ $ npm install fortune --save
 ```
 
 *This is the core module. Additional features such as networking (HTTP, WebSocket), database adapters, serialization formats are listed in the [plugins page](http://fortune.js.org/plugins).*
+
+
+## Motivation
+
+Databases implement disparate sets of features, Fortune.js provides common functionality that may not be implemented by the underlying database. The abstraction layer that Fortune.js provides can be extended to network protocols, as HTTP and WebSocket can be exposed using the same application code, using any serialization format.
+
+There is a misconception that database abstractions are for porting application code to use another database, which rarely is the case. However, this is particularly useful for writing applications that can run anywhere, such as on a server or a client where different databases may be a necessity.
 
 
 ## Usage
