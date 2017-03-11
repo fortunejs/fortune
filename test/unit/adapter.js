@@ -213,6 +213,18 @@ module.exports = (adapter, options) => {
   })
 
   run((assert, comment) => {
+    comment('find: match (link)')
+    return test(adapter => {
+      return adapter.find(type, null,
+        { match: { friends: 2 } })
+      .then(records => {
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0].name === 'bob', 'matched correct record')
+      })
+    })
+  })
+
+  run((assert, comment) => {
     comment('find: match (buffer)')
     return test(adapter => {
       return adapter.find(type, null, { match: { picture: deadbeef } })
@@ -225,9 +237,20 @@ module.exports = (adapter, options) => {
   })
 
   run((assert, comment) => {
-    comment('find: match (array containment)')
+    comment('find: match (array containment #1)')
     return test(adapter => {
       return adapter.find(type, null, { match: { privateKeys: key1 } })
+      .then(records => {
+        assert(records.length === 1, 'match length is correct')
+        assert(records[0][primaryKey] === 2, 'matched correct record')
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: match (array containment #2)')
+    return test(adapter => {
+      return adapter.find(type, null, { match: { privateKeys: [ key1 ] } })
       .then(records => {
         assert(records.length === 1, 'match length is correct')
         assert(records[0][primaryKey] === 2, 'matched correct record')

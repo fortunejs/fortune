@@ -50,9 +50,9 @@
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.1.0",
     "rimraf": "^2.6.1",
-    "tapdance": "^5.0.3",
+    "tapdance": "^5.0.4",
     "tape-run": "^3.0.0",
-    "uglify-js": "^2.8.11"
+    "uglify-js": "^2.8.12"
   },
   "files": [
     "lib/",
