@@ -654,6 +654,98 @@ module.exports = function(options){
       }
 
     });
+
+    describe("PATCH inc method", function(){
+      it("should increment target path by provided value", function(done){
+        request(baseUrl).get("/people/" + ids.people[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            var current = body.people[0].appearances;
+            request(baseUrl).patch("/people/" + ids.people[0])
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([
+                {op: 'inc', path: '/people/0/appearances', value: 5}
+              ]))
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var updated = res.body.people[0].appearances;
+                updated.should.equal(current + 5);
+                done();
+              });
+          });
+      });
+      it("should increment target path by 1 if value is not a valid integer", function(done){
+        request(baseUrl).get("/people/" + ids.people[0])
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            var current = body.people[0].appearances;
+            request(baseUrl).patch("/people/" + ids.people[0])
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([
+                {op: 'inc', path: '/people/0/appearances', value: 'invalid'}
+              ]))
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var updated = res.body.people[0].appearances;
+                updated.should.equal(current + 1);
+                done();
+              });
+          });
+      });
+      it("should error if target path is not Number", function(done){
+        request(baseUrl).patch("/people/" + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'inc', path: '/people/0/name', value: 'any'}
+          ]))
+          .expect(500)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            body.detail.should.match(/increment with non-numeric argument/);
+            done();
+          });
+      });
+      it("should correctly apply positional updates with $inc", function(done){
+        request(baseUrl).patch("/people/" + ids.people[0])
+          .set('content-type', 'application/json')
+          .send(JSON.stringify([
+            {op: 'replace', path: '/people/0/nestedArray', value: [
+              {index: 1},
+              {index: 2},
+              {index: 3}
+            ]}
+          ]))
+          .expect(200)
+          .end(function(err, res){
+            should.not.exist(err);
+            var body = JSON.parse(res.text);
+            var beforeInc = body.people[0].nestedArray;
+            var embedId = body.people[0].nestedArray[1]._id;
+
+            request(baseUrl).patch('/people/' + ids.people[0])
+              .set('content-type', 'application/json')
+              .send(JSON.stringify([
+                {op: 'inc', path: '/people/0/nestedArray/' + embedId + '/index', value: 3}
+              ]))
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+                var body = JSON.parse(res.text);
+                beforeInc[1].index = 5;
+                body.people[0].nestedArray.should.eql(beforeInc);
+                done();
+              });
+          });
+      });
+    });
+
     describe("PUT individual route", function(){
       it("should create document if there's no such one with provided id and update if it exists", function(done){
         new Promise(function(resolve){
