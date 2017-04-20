@@ -151,10 +151,7 @@ Fortune.js implements its own [wire protocol](https://github.com/fortunejs/fortu
 
 ## Requirements
 
-Fortune.js is written in ECMAScript 5.1, with some ECMAScript 6 additions:
-
-- **Promise** (ES6): most of its public API returns Promises.
-- **WeakMap** (ES6): used in its internal implementation.
+Fortune.js is written in ECMAScript 5.1, with one ECMAScript 6 addition: **Promise**. Most of its public API returns Promises to be compatible with future editions of the language.
 
 
 ## License
