@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.1 (2017-04-22)
+- Fix: do not show denormalized fields on updates in the change event data.
+
+
 ### 5.2.0 (2017-04-21)
 - Feature: allow strings in type definition, i.e. `'object'` becomes `Object`.
 - Feature: improve syntax of `include` array, now allows for arbitrary querying at every level.

@@ -604,7 +604,7 @@ run((assert, comment) => {
     change: data => {
       assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
-        [ 1, 2, 3 ]), 'change event shows updated IDs')
+        [ 1 ]), 'change event hides denormalized updates')
     },
     type: 'user',
     payload: {
