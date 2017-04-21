@@ -31,6 +31,7 @@ const fields = {
   mugshot: { type: Buffer },
   integer: { type: Integer },
   luckyNumbers: { type: Number, isArray: true },
+  fingerprint: { type: 'buffer' },
   friends: { link: 'person', isArray: true, inverse: 'friends' },
   spouse: { link: 'person', inverse: 'spouse' },
   toys: { type: Object, isArray: true }
@@ -82,6 +83,7 @@ run((assert, comment) => {
   assert(testField('birthdate'), valid)
   assert(testField('mugshot'), valid)
   assert(testField('luckyNumbers'), valid)
+  assert(testField('fingerprint'), valid)
   assert(testField('friends'), valid)
   assert(testField('toys'), valid)
   assert(testField('integer'), valid)
@@ -91,6 +93,7 @@ run((assert, comment) => {
 
   assert(!testFields({ badType: true }), invalid)
   assert(!testFields({ nested: { thing: { type: String } } }), invalid)
+  assert(!testFields({ thing: { type: 'not' } }), invalid)
   assert(!testFields({
     typeAndLink: { type: String, link: 'y', inverse: 'friends' }
   }), invalid)

@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.2.0 (2017-04-xx)
+- Feature: allow strings in type definition, i.e. `'object'` becomes `Object`.
+- Refactor: remove usage of `WeakMap`.
+
+
 ### 5.1.0 (2017-01-21)
 - Feature: add logical operators "and" and "or" for the Adapter's `find` method.
 - Feature: add feature flags on Adapter as static property.
