@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 5.2.0 (2017-04-xx)
+### 5.2.0 (2017-04-21)
 - Feature: allow strings in type definition, i.e. `'object'` becomes `Object`.
 - Feature: improve syntax of `include` array, now allows for arbitrary querying at every level.
 - Fix: transactions last for the entire lifetime of a request.
