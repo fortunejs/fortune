@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.2 (2017-04-23)
+- Fix: do not try to call `endTransaction` if none was initiated.
+
+
 ### 5.2.1 (2017-04-22)
 - Fix: do not show denormalized fields on updates in the change event data.
 

@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer that implements common features for Node.js and web browsers.",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
