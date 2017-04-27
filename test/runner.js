@@ -8,7 +8,7 @@ var fixtures = require('./fixtures.json');
 var port = 8891;
 var ioPort = 8892;
 var baseUrl = 'http://localhost:' + port;
-
+process.env.DISASTER_RECOVERY_COUNT_ENABLED = 'true';
 describe('Fortune test runner', function(){
   var options = {
     app: null,
