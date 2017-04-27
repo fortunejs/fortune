@@ -14,7 +14,109 @@ module.exports = function(options){
     baseUrl = options.baseUrl;
   });
 
-  describe('documents with links', function(){
+  describe.only('documents with links', function(){
+
+    describe('screwed up links', function(){
+      it('should correctly link single person to single address', function(done){
+        request(baseUrl).post('/addresses')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({addresses: [{
+            name: 'test',
+            links: {
+              person: ids.people[0]
+            }
+          }]}))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var address = res.body.addresses[0];
+            console.log(address.links);
+            request(baseUrl).get('/people/' + ids.people[0])
+              .set('content-type', 'applicaton/json')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+
+                var addresses = res.body.people[0].links.addresses;
+
+                addresses.length.should.equal(1);
+                addresses.should.eql([address.id]);
+                done();
+              });
+          });
+      });
+      it('should correctly link neighbour to address', function(done){
+        request(baseUrl).post('/addresses')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({addresses: [{
+            name: 'test',
+            links: {
+              neighbour: ids.people[0]
+            }
+          }]}))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var address = res.body.addresses[0];
+            console.log(address.links);
+            request(baseUrl).get('/people/' + ids.people[0])
+              .set('content-type', 'applicaton/json')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+
+                //var addresses = res.body.people[0].links.addresses;
+                should.not.exist(res.body.people[0].links);
+                //console.log(addresses, address.id);
+                //addresses.length.should.equal(0);
+                //addresses.should.eql([address.id]);
+                done();
+              });
+          });
+      });
+
+      it('should correctly link both', function(done){
+        request(baseUrl).post('/addresses')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({addresses: [{
+            name: 'test',
+            links: {
+              person: ids.people[1],
+              neighbour: ids.people[0]
+            }
+          }]}))
+          .expect(201)
+          .end(function(err, res){
+            should.not.exist(err);
+            var address = res.body.addresses[0];
+            console.log(address.links);
+            request(baseUrl).get('/people/' + ids.people[0])
+              .set('content-type', 'applicaton/json')
+              .expect(200)
+              .end(function(err, res){
+                should.not.exist(err);
+
+                should.not.exist(res.body.people[0].links);
+                //var addresses = res.body.people[0].links.addresses;
+                //console.log(addresses, address.id);
+                //addresses.length.should.equal(0);
+                //addresses.should.eql([address.id]);
+                request(baseUrl).get('/people/' + ids.people[0])
+                  .set('content-type', 'application/json')
+                  .expect(200)
+                  .end(function(err, res){
+                    should.not.exist(err);
+
+                    var addresses = res.body.people[0].links.addresses;
+                    addresses.length.should.equal(1);
+                    addresses.should.eql([address.id]);
+                    done();
+                  });
+              });
+          });
+      });
+    });
+
     describe('creating a resource referencing another one: many-to-many', function(){
       var houseId;
       beforeEach(function(done){

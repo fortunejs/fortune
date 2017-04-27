@@ -102,6 +102,28 @@ module.exports = function(options){
       });
     });
     describe('Relationships', function(){
+      describe('_updateRelationships', function(){
+        describe('one-to-one', function(){
+          it('should generate correct linking tasks with no inverse');
+          it('should generate correct linking tasks with inverse');
+          it('should generate correct linking tasks with both inverse and one-way link');
+        });
+        describe('one-to-many', function(){
+          it('should generate correct linking tasks with no inverse');
+          it('should generate correct linking tasks with inverse');
+          it('should generate correct linking tasks with both inverse and one-way link');
+        });
+        describe('many-to-one', function(){
+          it('should generate correct linking tasks with no inverse');
+          it('should generate correct linking tasks with inverse');
+          it('should generate correct linking tasks with both inverse and one-way link');
+        });
+        describe('many-to-many', function(){
+          it('should generate correct linking tasks with no inverse');
+          it('should generate correct linking tasks with inverse');
+          it('should generate correct linking tasks with both inverse and one-way link');
+        })
+      });
       describe('synchronizing many-to-many', function(){
         it('should keep in sync many-to-many relationship', function(){
           return adapter.update('person', ids.people[0], {$pushAll: {houses: [ids.houses[0]]}})
