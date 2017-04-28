@@ -14,6 +14,62 @@ module.exports = function(options){
       ids = options.ids;
       baseUrl = options.baseUrl;
     });
+    
+    describe('parallel delete', function() {
+      beforeEach(function(done){
+        request(baseUrl)
+          .put('/people/' + ids.people[0])
+          .send({people: [{
+            links: {
+              pets: [ids.pets[0], ids.pets[1]]
+            }
+          }]})
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            (body.people[0].links.pets).should.containEql(ids.pets[0]);
+            done();
+          });
+      });
+      
+      it('should delete parent link after parallel delete', function(done) {
+        
+        new Promise(function(resolve){
+          _.each(ids.pets, function(petId, i){
+            request(baseUrl).del('/pets/' + petId).expect(204).end(function(error, response) {
+              should.not.exist(error);
+              if (i == 1) resolve();
+            });
+          });
+        }).then(function(){
+          return new Promise(function(resolve){
+            var pets = []; 
+            _.each(ids.pets, function(petId){
+              app.adapter.model('pet').findOne({_id: petId}, function(error, pet){
+                should.not.exist(error);
+                pets.push(pet);
+                if (pets.length === ids.pets.length) resolve(pets);
+              });
+            });
+          });
+        }).then(function(pets){
+          var err = null;
+          _.each(pets, function(pet){
+            try {
+              should.not.exist(pet.owner);
+            } catch (error) {
+              err = error;
+              done(error);
+            }
+          });
+          if (!err) done();
+        })
+          
+      });
+      
+    });
 
     describe('many to one association', function() {
       beforeEach(function(done){
