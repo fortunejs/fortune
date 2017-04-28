@@ -14,7 +14,7 @@ module.exports = function(options){
     baseUrl = options.baseUrl;
   });
 
-  describe.only('documents with links', function(){
+  describe('documents with links', function(){
 
     describe('screwed up links', function(){
       it('should correctly link single person to single address', function(done){
@@ -58,18 +58,14 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var address = res.body.addresses[0];
-            console.log(address.links);
+            address.links.neighbour.should.equal(ids.people[0]);
             request(baseUrl).get('/people/' + ids.people[0])
               .set('content-type', 'applicaton/json')
               .expect(200)
               .end(function(err, res){
                 should.not.exist(err);
 
-                //var addresses = res.body.people[0].links.addresses;
                 should.not.exist(res.body.people[0].links);
-                //console.log(addresses, address.id);
-                //addresses.length.should.equal(0);
-                //addresses.should.eql([address.id]);
                 done();
               });
           });
@@ -89,7 +85,8 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var address = res.body.addresses[0];
-            console.log(address.links);
+            address.links.neighbour.should.equal(ids.people[0]);
+            address.links.person.should.equal(ids.people[1]);
             request(baseUrl).get('/people/' + ids.people[0])
               .set('content-type', 'applicaton/json')
               .expect(200)
@@ -97,21 +94,7 @@ module.exports = function(options){
                 should.not.exist(err);
 
                 should.not.exist(res.body.people[0].links);
-                //var addresses = res.body.people[0].links.addresses;
-                //console.log(addresses, address.id);
-                //addresses.length.should.equal(0);
-                //addresses.should.eql([address.id]);
-                request(baseUrl).get('/people/' + ids.people[0])
-                  .set('content-type', 'application/json')
-                  .expect(200)
-                  .end(function(err, res){
-                    should.not.exist(err);
-
-                    var addresses = res.body.people[0].links.addresses;
-                    addresses.length.should.equal(1);
-                    addresses.should.eql([address.id]);
-                    done();
-                  });
+                done();
               });
           });
       });
