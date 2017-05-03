@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.3 (2017-05-03)
+- Improvement: more flexible `include` format, it can accept unnested structures now.
+
+
 ### 5.2.2 (2017-04-23)
 - Fix: do not try to call `endTransaction` if none was initiated.
 

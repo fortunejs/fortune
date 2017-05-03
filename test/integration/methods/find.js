@@ -38,11 +38,7 @@ run((assert, comment) => {
 run((assert, comment) => {
   comment('get includes')
   return findTest({
-    request: [ 'user', [ 1, 2 ], null, [
-      [
-        'ownedPets'
-      ]
-    ] ],
+    request: [ 'user', [ 1, 2 ], null, 'ownedPets' ],
     response: response => {
       assert(deepEqual(response.payload.records
         .map(record => record[primaryKey]).sort((a, b) => a - b),
@@ -59,13 +55,7 @@ run((assert, comment) => {
   comment('get includes with options')
   return findTest({
     request: [ 'user', 1, null, [
-      [
-        'spouse',
-        [
-          'enemies',
-          { fields: { name: true } }
-        ]
-      ]
+      'spouse', [ 'enemies', { fields: { name: true } } ]
     ] ],
     response: response => {
       assert(response.payload.include.user.length === 1,
