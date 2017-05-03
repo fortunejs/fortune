@@ -35,38 +35,29 @@ module.exports = function(options){
       });
       
       it('should delete parent link after parallel delete', function(done) {
-        
-        new Promise(function(resolve){
-          _.each(ids.pets, function(petId, i){
-            request(baseUrl).del('/pets/' + petId).expect(204).end(function(error, response) {
-              should.not.exist(error);
-              if (i == 1) resolve();
+        RSVP.all(_.map(ids.pets, function(petId){
+          return new Promise(function(resolve, reject){
+            request(baseUrl).del('/pets/' + petId).expect(204).end(function(err) {
+              if (err) return reject(err);
+              resolve();
             });
-          });
-        }).then(function(){
-          return new Promise(function(resolve){
-            var pets = []; 
-            _.each(ids.pets, function(petId){
-              app.adapter.model('pet').findOne({_id: petId}, function(error, pet){
-                should.not.exist(error);
-                pets.push(pet);
-                if (pets.length === ids.pets.length) resolve(pets);
+          })
+        }))
+        .then(function(){
+          return RSVP.all(_.map(ids.pets, function(petId){
+            return new Promise(function(resolve, reject){
+              app.adapter.model('pet').findOne({_id: petId}, function(err, pet){
+                if (err) return reject(err);
+                resolve(pet);
               });
-            });
-          });
+            })
+          }));
         }).then(function(pets){
-          var err = null;
           _.each(pets, function(pet){
-            try {
-              should.not.exist(pet.owner);
-            } catch (error) {
-              err = error;
-              done(error);
-            }
+            should.not.exist(pet.owner);
           });
-          if (!err) done();
-        })
-          
+          done();
+        }).catch(done);
       });
       
     });
