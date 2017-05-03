@@ -16,7 +16,7 @@ module.exports = function(options){
 
   describe('documents with links', function(){
 
-    describe('screwed up links', function(){
+    describe('multiple links to single resource', function(){
       it('should correctly link single person to single address', function(done){
         request(baseUrl).post('/addresses')
           .set('content-type', 'application/json')
@@ -30,7 +30,6 @@ module.exports = function(options){
           .end(function(err, res){
             should.not.exist(err);
             var address = res.body.addresses[0];
-            console.log(address.links);
             request(baseUrl).get('/people/' + ids.people[0])
               .set('content-type', 'applicaton/json')
               .expect(200)

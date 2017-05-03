@@ -129,7 +129,7 @@ module.exports = function(options){
         var originalModels;
         beforeEach(function(){
           originalModels = adapter._models;
-          sinon.stub(adapter, '_getReferences');
+          sinon.stub(adapter, '_getInverseReferences');
           sinon.stub(adapter, '_updateOneToOne').returns(RSVP.resolve());
           sinon.stub(adapter, '_updateOneToMany').returns(RSVP.resolve());
           sinon.stub(adapter, '_updateManyToOne').returns(RSVP.resolve());
@@ -153,7 +153,7 @@ module.exports = function(options){
         });
         afterEach(function(){
           adapter._models = originalModels;
-          adapter._getReferences.restore();
+          adapter._getInverseReferences.restore();
           adapter._updateOneToOne.restore();
           adapter._updateOneToMany.restore();
           adapter._updateManyToOne.restore();
@@ -174,7 +174,7 @@ module.exports = function(options){
               singular: true
             };
 
-            adapter._getReferences.returns([referenceConfig]);
+            adapter._getInverseReferences.returns([referenceConfig]);
 
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateOneToOne.callCount.should.equal(0);
@@ -197,7 +197,7 @@ module.exports = function(options){
               path: 'soulmate',
               singular: true
             };
-            adapter._getReferences.returns([referenceConfig]);
+            adapter._getInverseReferences.returns([referenceConfig]);
 
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateOneToOne.callCount.should.equal(1);
@@ -215,7 +215,6 @@ module.exports = function(options){
               done();
             }).catch(done);
           });
-          it('should generate correct linking tasks with both inverse and one-way link');
         });
         describe('one-to-many', function(){
           it('should generate correct linking tasks with no inverse', function(done){
@@ -224,18 +223,10 @@ module.exports = function(options){
             referencedModel.modelName = 'pet';
             referencedModel.schema.tree = {};
 
-            var referenceConfig = {
-              inverse: null,
-              isExternal: false,
-              model: 'pet',
-              path: 'pet',
-              singular: true
-            };
-
-            adapter._getReferences.returns([]);
+            adapter._getInverseReferences.returns([]);
 
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
-              adapter._updateOneToOne.callCount.should.equal(0);
+              adapter._updateOneToMany.callCount.should.equal(0);
               //Nothing to update here as inverse field does not exist
               done();
             }).catch(done);
@@ -253,7 +244,7 @@ module.exports = function(options){
               path: 'pet',
               singular: true
             };
-            adapter._getReferences.returns([referenceConfig]);
+            adapter._getInverseReferences.returns([referenceConfig]);
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateOneToMany.callCount.should.equal(1);
 
@@ -271,7 +262,6 @@ module.exports = function(options){
               done();
             }).catch(done);
           });
-          it('should generate correct linking tasks with both inverse and one-way link');
         });
         describe('many-to-one', function(){
           it('should generate correct linking tasks with no inverse', function(done){
@@ -279,7 +269,7 @@ module.exports = function(options){
             primaryModel.schema.tree = {pets: [{ref: 'pet'}]};
             referencedModel.modelName = 'pet';
             referencedModel.schema.tree = {};
-            adapter._getReferences.returns([]);
+            adapter._getInverseReferences.returns([]);
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateManyToOne.callCount.should.equal(0);
               done();
@@ -298,7 +288,7 @@ module.exports = function(options){
               path: 'pet',
               singular: false
             };
-            adapter._getReferences.returns([referenceConfig]);
+            adapter._getInverseReferences.returns([referenceConfig]);
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateManyToOne.callCount.should.equal(1);
 
@@ -316,7 +306,6 @@ module.exports = function(options){
               done();
             }).catch(done);
           });
-          it('should generate correct linking tasks with both inverse and one-way link');
         });
         describe('many-to-many', function(){
           it('should generate correct linking tasks with no inverse', function(done){
@@ -324,7 +313,7 @@ module.exports = function(options){
             primaryModel.schema.tree = {pets: [{ref: 'pet', inverse: 'owners'}]};
             referencedModel.modelName = 'pet';
             referencedModel.schema.tree = {owners: [{ref: 'person', inverse: 'pets'}]};
-            adapter._getReferences.returns([]);
+            adapter._getInverseReferences.returns([]);
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateManyToMany.callCount.should.equal(0);
               done();
@@ -342,7 +331,7 @@ module.exports = function(options){
               path: 'pets',
               singular: false
             };
-            adapter._getReferences.returns([referenceConfig]);
+            adapter._getInverseReferences.returns([referenceConfig]);
             adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
               adapter._updateManyToMany.callCount.should.equal(1);
 
@@ -360,10 +349,9 @@ module.exports = function(options){
               done();
             }).catch(done);
           });
-          it('should generate correct linking tasks with both inverse and one-way link');
         })
       });
-      describe('_getReferences', function(){
+      describe('_getAllReferences', function(){
         var model;
         beforeEach(function(){
           model = {
@@ -376,7 +364,7 @@ module.exports = function(options){
           model.schema.tree = {
             pet: {ref: 'pet', inverse: 'owner'}
           };
-          adapter._getReferences(model).should.eql([{
+          adapter._getAllReferences(model).should.eql([{
             path: 'pet',
             model: 'pet',
             singular: true,
@@ -388,7 +376,7 @@ module.exports = function(options){
           model.schema.tree = {
             pets: [{ref: 'pet', inverse: 'owner'}]
           };
-          adapter._getReferences(model).should.eql([{
+          adapter._getAllReferences(model).should.eql([{
             path: 'pets',
             model: 'pet',
             singular: false,
@@ -402,7 +390,7 @@ module.exports = function(options){
             addresses: [{ref: 'address'}],
             spouse: {ref: 'person', inverse: 'spouse'}
           };
-          adapter._getReferences(model).should.eql([{
+          adapter._getAllReferences(model).should.eql([{
             path: 'spouse',
             model: 'person',
             singular: true,
