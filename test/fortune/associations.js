@@ -14,6 +14,53 @@ module.exports = function(options){
       ids = options.ids;
       baseUrl = options.baseUrl;
     });
+    
+    describe('parallel delete', function() {
+      beforeEach(function(done){
+        request(baseUrl)
+          .put('/people/' + ids.people[0])
+          .send({people: [{
+            links: {
+              pets: [ids.pets[0], ids.pets[1]]
+            }
+          }]})
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(error, response) {
+            should.not.exist(error);
+            var body = JSON.parse(response.text);
+            (body.people[0].links.pets).should.containEql(ids.pets[0]);
+            done();
+          });
+      });
+      
+      it('should delete parent link after parallel delete', function(done) {
+        RSVP.all(_.map(ids.pets, function(petId){
+          return new Promise(function(resolve, reject){
+            request(baseUrl).del('/pets/' + petId).expect(204).end(function(err) {
+              if (err) return reject(err);
+              resolve();
+            });
+          })
+        }))
+        .then(function(){
+          return RSVP.all(_.map(ids.pets, function(petId){
+            return new Promise(function(resolve, reject){
+              app.adapter.model('pet').findOne({_id: petId}, function(err, pet){
+                if (err) return reject(err);
+                resolve(pet);
+              });
+            })
+          }));
+        }).then(function(pets){
+          _.each(pets, function(pet){
+            should.not.exist(pet.owner);
+          });
+          done();
+        }).catch(done);
+      });
+      
+    });
 
     describe('many to one association', function() {
       beforeEach(function(done){
