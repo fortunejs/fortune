@@ -1,4 +1,7 @@
 var should = require('should');
+var sinon = require('sinon');
+var request = require('supertest');
+var RSVP = require('rsvp');
 
 var adapter = require('../../lib/adapters/mongodb');
 
@@ -6,9 +9,10 @@ var _ = require('lodash');
 
 module.exports = function(options){
   describe('MongoDB adapter', function(){
-    var ids;
+    var ids, baseUrl;
 
     beforeEach(function(){
+      baseUrl = options.baseUrl;
       ids = options.ids;
     });
 
@@ -102,6 +106,299 @@ module.exports = function(options){
       });
     });
     describe('Relationships', function(){
+      it('mock', function(done){
+        request(baseUrl).post('/people')
+          .set('content-type', 'application/json')
+          .send(JSON.stringify({people: [
+            {
+              email: 'testing',
+              links:{
+                soulmate: ids.people[0]
+              }
+            }
+          ]}))
+          .end(function(err,res){
+            should.not.exist(err);
+            res.statusCode.should.equal(201);
+            done();
+          });
+      });
+      describe('_updateRelationships', function(){
+        var primaryModel, referencedModel;
+        var resourceData;
+        var originalModels;
+        beforeEach(function(){
+          originalModels = adapter._models;
+          sinon.stub(adapter, '_getInverseReferences');
+          sinon.stub(adapter, '_updateOneToOne').returns(RSVP.resolve());
+          sinon.stub(adapter, '_updateOneToMany').returns(RSVP.resolve());
+          sinon.stub(adapter, '_updateManyToOne').returns(RSVP.resolve());
+          sinon.stub(adapter, '_updateManyToMany').returns(RSVP.resolve());
+
+          primaryModel = {
+            modelName: 'TBD below',
+            schema: {tree: {}}
+          };
+          referencedModel = {
+            modelName: 'TBD below',
+            schema: {tree: {}}
+          };
+          resourceData = {};
+
+          adapter._models = {
+            person: referencedModel,
+            pet: referencedModel
+          };
+
+        });
+        afterEach(function(){
+          adapter._models = originalModels;
+          adapter._getInverseReferences.restore();
+          adapter._updateOneToOne.restore();
+          adapter._updateOneToMany.restore();
+          adapter._updateManyToOne.restore();
+          adapter._updateManyToMany.restore();
+        });
+        describe('one-to-one', function(){
+          it('should generate correct linking tasks with no inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pet: {ref: 'pet'}};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {};
+
+            var referenceConfig = {
+              inverse: null,
+              isExternal: false,
+              model: 'pet',
+              path: 'pet',
+              singular: true
+            };
+
+            adapter._getInverseReferences.returns([referenceConfig]);
+
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateOneToOne.callCount.should.equal(0);
+              //Nothing to update here as inverse field does not exist
+              done();
+            }).catch(done);
+          });
+          it('should generate correct linking tasks with inverse', function(done){
+            primaryModel.modelName = 'person';
+            referencedModel.schema.tree = {
+              soulmate: {
+                ref: 'person',
+                inverse: 'soulmate'
+              }
+            };
+            var referenceConfig = {
+              inverse: 'soulmate',
+              isExternal: false,
+              model: 'person',
+              path: 'soulmate',
+              singular: true
+            };
+            adapter._getInverseReferences.returns([referenceConfig]);
+
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateOneToOne.callCount.should.equal(1);
+              var args = adapter._updateOneToOne.getCall(0).args;
+              args[0].should.equal(primaryModel);
+              args[1].should.equal(referencedModel);
+              args[2].should.equal(resourceData);
+              args[3].should.equal(referenceConfig);
+              args[4].should.eql({
+                inverse: 'soulmate',
+                model: 'person',
+                path: 'soulmate',
+                singular: true
+              });
+              done();
+            }).catch(done);
+          });
+        });
+        describe('one-to-many', function(){
+          it('should generate correct linking tasks with no inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pet: [{ref: 'pet'}]};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {};
+
+            adapter._getInverseReferences.returns([]);
+
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateOneToMany.callCount.should.equal(0);
+              //Nothing to update here as inverse field does not exist
+              done();
+            }).catch(done);
+          });
+          it('should generate correct linking tasks with inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pet: {ref: 'pet', inverse: 'owners'}};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {owners: [{ref: 'person', inverse: 'pet'}]};
+
+            var referenceConfig = {
+              inverse: 'owners',
+              isExternal: false,
+              model: 'pet',
+              path: 'pet',
+              singular: true
+            };
+            adapter._getInverseReferences.returns([referenceConfig]);
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateOneToMany.callCount.should.equal(1);
+
+              var args = adapter._updateOneToMany.getCall(0).args;
+              args[0].should.equal(primaryModel);
+              args[1].should.equal(referencedModel);
+              args[2].should.equal(resourceData);
+              args[3].should.equal(referenceConfig);
+              args[4].should.eql({
+                inverse: 'pet',
+                model: 'person',
+                path: 'owners',
+                singular: false
+              });
+              done();
+            }).catch(done);
+          });
+        });
+        describe('many-to-one', function(){
+          it('should generate correct linking tasks with no inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pets: [{ref: 'pet'}]};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {};
+            adapter._getInverseReferences.returns([]);
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateManyToOne.callCount.should.equal(0);
+              done();
+            }).catch(done);
+          });
+          it('should generate correct linking tasks with inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pets: [{ref: 'pet', inverse: 'owner'}]};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {owner: {ref: 'person', inverse: 'pets'}};
+
+            var referenceConfig = {
+              inverse: 'owner',
+              isExternal: false,
+              model: 'pet',
+              path: 'pet',
+              singular: false
+            };
+            adapter._getInverseReferences.returns([referenceConfig]);
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateManyToOne.callCount.should.equal(1);
+
+              var args = adapter._updateManyToOne.getCall(0).args;
+              args[0].should.equal(primaryModel);
+              args[1].should.equal(referencedModel);
+              args[2].should.equal(resourceData);
+              args[3].should.equal(referenceConfig);
+              args[4].should.eql({
+                inverse: 'pets',
+                model: 'person',
+                path: 'owner',
+                singular: true
+              });
+              done();
+            }).catch(done);
+          });
+        });
+        describe('many-to-many', function(){
+          it('should generate correct linking tasks with no inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pets: [{ref: 'pet', inverse: 'owners'}]};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {owners: [{ref: 'person', inverse: 'pets'}]};
+            adapter._getInverseReferences.returns([]);
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateManyToMany.callCount.should.equal(0);
+              done();
+            }).catch(done);
+          });
+          it('should generate correct linking tasks with inverse', function(done){
+            primaryModel.modelName = 'person';
+            primaryModel.schema.tree = {pets: [{ref: 'pet', inverse: 'owners'}]};
+            referencedModel.modelName = 'pet';
+            referencedModel.schema.tree = {owners: [{ref: 'person', inverse: 'pets'}]};
+            var referenceConfig = {
+              inverse: 'owners',
+              isExternal: false,
+              model: 'pet',
+              path: 'pets',
+              singular: false
+            };
+            adapter._getInverseReferences.returns([referenceConfig]);
+            adapter._updateRelationships(primaryModel, resourceData, []).then(function(){
+              adapter._updateManyToMany.callCount.should.equal(1);
+
+              var args = adapter._updateManyToMany.getCall(0).args;
+              args[0].should.equal(primaryModel);
+              args[1].should.equal(referencedModel);
+              args[2].should.equal(resourceData);
+              args[3].should.equal(referenceConfig);
+              args[4].should.eql({
+                inverse: 'pets',
+                model: 'person',
+                path: 'owners',
+                singular: false
+              });
+              done();
+            }).catch(done);
+          });
+        })
+      });
+      describe('_getAllReferences', function(){
+        var model;
+        beforeEach(function(){
+          model = {
+            schema: {
+              tree: {}
+            }
+          };
+        });
+        it('should return correct to-one config', function(){
+          model.schema.tree = {
+            pet: {ref: 'pet', inverse: 'owner'}
+          };
+          adapter._getAllReferences(model).should.eql([{
+            path: 'pet',
+            model: 'pet',
+            singular: true,
+            inverse: 'owner',
+            isExternal: undefined
+          }]);
+        });
+        it('should return correct to-many config', function(){
+          model.schema.tree = {
+            pets: [{ref: 'pet', inverse: 'owner'}]
+          };
+          adapter._getAllReferences(model).should.eql([{
+            path: 'pets',
+            model: 'pet',
+            singular: false,
+            inverse: 'owner',
+            isExternal: undefined
+          }]);
+        });
+        it('should skip links that do not provide inverse fields', function(){
+          model.schema.tree = {
+            pet: {ref: 'pet'},
+            addresses: [{ref: 'address'}],
+            spouse: {ref: 'person', inverse: 'spouse'}
+          };
+          adapter._getAllReferences(model).should.eql([{
+            path: 'spouse',
+            model: 'person',
+            singular: true,
+            inverse: 'spouse',
+            isExternal: undefined
+          }]);
+        });
+      });
       describe('synchronizing many-to-many', function(){
         it('should keep in sync many-to-many relationship', function(){
           return adapter.update('person', ids.people[0], {$pushAll: {houses: [ids.houses[0]]}})

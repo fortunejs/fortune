@@ -99,7 +99,7 @@ module.exports = function(options, port, ioPort) {
       appearances: Number,
       birthday: Date,
       email: {type: String},
-      pets: ['pet'],
+      pets: [{ref: 'pet', inverse: 'owner'}],
       soulmate: {ref: 'person', inverse: 'soulmate', type: String},
       lovers: [{ref: 'person', inverse: 'lovers', type: String}],
       externalResources: [{ ref: "externalResourceReference", type: String, external: true }],
@@ -218,7 +218,8 @@ module.exports = function(options, port, ioPort) {
 
     .resource('address', {
       name: String,
-      person: {ref: 'person', inverse: 'addresses', pkType: String}
+      person: {ref: 'person', inverse: 'addresses', pkType: String},
+      neighbour: {ref: 'person', pkType: String}
     })
 
 
