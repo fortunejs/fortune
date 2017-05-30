@@ -52,6 +52,22 @@ run((assert, comment) => {
 
 
 run((assert, comment) => {
+  comment('get deep includes')
+  return findTest({
+    request: [ 'user', [ 1 ], null, [ 'spouse', 'enemies' ] ],
+    response: response => {
+      assert(deepEqual(response.payload.records
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
+        [ 1 ]), 'gets records with IDs')
+      assert(deepEqual(response.payload.include.user
+        .map(record => record[primaryKey]).sort((a, b) => a - b),
+        [ 3 ]), 'gets included records')
+    }
+  })
+})
+
+
+run((assert, comment) => {
   comment('get includes with options')
   return findTest({
     request: [ 'user', 1, null, [

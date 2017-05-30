@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.4 (2017-05-30)
+- Fix: nested includes would not correctly show all fields if options were not explicitly passed in, now all fields should be shown.
+
+
 ### 5.2.3 (2017-05-03)
 - Improvement: more flexible `include` format, it can accept unnested structures now.
 
