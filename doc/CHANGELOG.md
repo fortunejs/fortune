@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.5 (2017-06-02)
+- Polish: improve default ID generation so that creation time is no longer revealed.
+
+
 ### 5.2.4 (2017-05-30)
 - Fix: nested includes would not correctly show all fields if options were not explicitly passed in, now all fields should be shown.
 
