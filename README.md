@@ -9,7 +9,7 @@ Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Datab
 It's particularly useful for:
 
 - Bi-directional relationships in any database.
-- Applications that may need to use different storage options.
+- Applications that need storage options to be portable.
 - Sharing the same data models on the server and client.
 
 [View the website](http://fortune.js.org) for documentation. Get it from `npm`:
@@ -151,7 +151,7 @@ Fortune.js implements its own [wire protocol](https://github.com/fortunejs/fortu
 - Referential integrity, ensure that links must be valid at the application level.
 - Type validations, fields are guaranteed to belong to a single type.
 - Adapter interface, use any database that can implement an adapter.
-- **No** ORM or active record pattern, just plain data objects.
+- **No** object-relational mapping (ORM) or active record pattern, just plain data objects.
 - **No** coupling with network protocol, handle requests from anywhere.
 
 

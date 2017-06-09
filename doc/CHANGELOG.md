@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.2.6 (2017-06-09)
+- Polish: increase length of default ID generation.
+- Fix: improve return value check for create/update input hooks to ignore non-objects.
+
+
 ### 5.2.5 (2017-06-02)
 - Polish: improve default ID generation so that creation time is no longer revealed.
 
