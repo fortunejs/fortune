@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.2.7 (2017-06-30)
+- Improvement: provide the proper type for a record when including it with an output hook.
+- Improvement: include `package-lock.json` file introduced by newer versions of `npm`.
+
+
 ### 5.2.6 (2017-06-09)
 - Polish: increase length of default ID generation.
 - Fix: improve return value check for create/update input hooks to ignore non-objects.
