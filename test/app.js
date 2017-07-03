@@ -109,7 +109,10 @@ module.exports = function(options, port, ioPort) {
       estate: {ref: 'house', inverse: 'landlord'},
       nested: {
         field1: String,
-        field2: String
+        field2: String,
+        field3: {
+          name: String
+        }
       },
       nestedArray: [{
         nestedField1: String,
@@ -182,6 +185,18 @@ module.exports = function(options, port, ioPort) {
 
           return this;
         }
+      }
+    }])
+    .beforeWrite([{
+      name: "change-nested-$set",
+      init: function(){
+        return function(req, res){
+          if (req.method === "PATCH" && _.has(this, '$set.nested.field3')) {
+            this.$set.nested.field3.name = "hooked name";
+            res.setHeader('reqbody', JSON.stringify(req.body));
+          }
+          return this;
+        };
       }
     }])
 
