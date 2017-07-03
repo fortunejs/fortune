@@ -191,7 +191,7 @@ module.exports = function(options, port, ioPort) {
       name: "change-nested-$set",
       init: function(){
         return function(req, res){
-          if (req.method === "PATCH" && _.has(this, '$set.nested.field3')) {
+          if (req.query['changeNestedProperty'] && req.method === "PATCH" && _.has(this, '$set.nested.field3')) {
             this.$set.nested.field3.name = "hooked name";
             res.setHeader('reqbody', JSON.stringify(req.body));
           }

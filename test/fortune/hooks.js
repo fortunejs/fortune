@@ -161,7 +161,7 @@ module.exports = function(options){
               }
             }}
           ]);
-          request(baseUrl).patch('/people/' + people.id)
+          request(baseUrl).patch('/people/' + people.id + '?changeNestedProperty=false')
             .set('content-type', 'application/json')
             .send(replace)
             .end(function(req, res) {
