@@ -149,6 +149,28 @@ module.exports = function(options){
           done();
         });
     });
+
+    it("should not change req.body in the hook on PATCH", function(done) {
+      request(baseUrl).get('/people')
+        .end(function(err, res) {
+          var people = JSON.parse(res.text).people[0];
+          var replace = JSON.stringify([
+            {op: 'replace', path: '/people/0/nested', value: {
+              field3: {
+                name: "nested field3"
+              }
+            }}
+          ]);
+          request(baseUrl).patch('/people/' + people.id + '?changeNestedProperty=true')
+            .set('content-type', 'application/json')
+            .send(replace)
+            .end(function(req, res) {
+              res['headers'].reqbody.should.eql(replace);
+              done();
+            });
+        });
+    });
+
   });
   describe('onResponse hooks', function(){
     it('should call beforeResponseSend hooks once per request', function(done){
