@@ -1,6 +1,7 @@
 'use strict'
 
 const run = require('tapdance')
+const spy = require('spy')
 
 const testInstance = require('../test_instance')
 const stderr = require('../../stderr')
@@ -14,6 +15,12 @@ const primaryKey = constants.primary
 run((assert, comment) => {
   comment('get collection')
   return findTest({
+    before: store => spy(store.adapter, 'find'),
+    after: store => {
+      assert(store.adapter.find.callCount === 1,
+        'gets records using a single fetch')
+      store.adapter.find.restore()
+    },
     request: [ 'user' ],
     response: response => {
       assert(response.payload.records.length === 3, 'gets all records')
@@ -92,11 +99,15 @@ function findTest (o) {
   .then(instance => {
     store = instance
 
+    if (o.before) o.before(store)
+
     return store.find.apply(store, o.request)
   })
 
   .then(response => {
     o.response(response)
+
+    if (o.after) o.after(store)
 
     return store.disconnect()
   })
