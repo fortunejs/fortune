@@ -2,6 +2,7 @@
 
 
 ### 5.2.8 (2017-07-16)
+- Fix: cast include shorthand correctly.
 - Optimization: avoid `n+1` query when checking for the first level of included fields.
 
 
