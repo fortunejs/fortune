@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.8 (2017-07-16)
+- Optimization: avoid `n+1` query when checking for the first level of included fields.
+
+
 ### 5.2.7 (2017-06-30)
 - Improvement: provide the proper type for a record when including it with an output hook.
 - Improvement: include `package-lock.json` file introduced by newer versions of `npm`.
