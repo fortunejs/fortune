@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.9 (2017-07-23)
+- Polish: add message copy function, useful for not overwriting anything.
+
+
 ### 5.2.8 (2017-07-16)
 - Fix: cast include shorthand correctly.
 - Optimization: avoid `n+1` query when checking for the first level of included fields.
