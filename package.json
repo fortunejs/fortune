@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Database abstraction layer that implements common features for Node.js and web browsers.",
-  "version": "5.2.9",
+  "version": "5.2.10",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -31,7 +31,7 @@
     "@tap-format/dot": "^0.2.0",
     "bluebird": "^3.5.0",
     "browserify": "^14.4.0",
-    "caniuse-db": "^1.0.30000704",
+    "caniuse-db": "^1.0.30000708",
     "chalk": "^2.0.1",
     "cssnano": "^3.10.0",
     "doc-tree": "^0.12.2",
@@ -53,7 +53,7 @@
     "rimraf": "^2.6.1",
     "tapdance": "^5.0.4",
     "tape-run": "^3.0.0",
-    "uglify-js": "^3.0.26"
+    "uglify-js": "^3.0.27"
   },
   "files": [
     "lib/",

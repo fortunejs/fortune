@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.2.10 (2017-07-29)
+- Polish: each instance contains a copy of the message function, to avoid overwriting the global message.
+
+
 ### 5.2.9 (2017-07-23)
 - Polish: add message copy function, useful for not overwriting anything.
 
