@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.2.11 (2017-07-30)
+- Polish: more lenient type casting of string to boolean, to accept more variants of truthy values.
+- Polish: fix test setup regarding message not being injected into adapter.
+
+
 ### 5.2.10 (2017-07-29)
 - Polish: each instance contains a copy of the message function, to avoid overwriting the global message.
 

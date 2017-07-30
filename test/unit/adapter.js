@@ -775,6 +775,7 @@ function runTest (adapterFn, options, fn) {
   try {
     adapter = new AdapterSingleton({
       recordTypes,
+      message,
       adapter: [ adapterFn, options ]
     })
   }
