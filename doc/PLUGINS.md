@@ -12,6 +12,7 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 | [MongoDB](https://github.com/fortunejs/fortune-mongodb) | NoSQL document data store. |
 | [Postgres](https://github.com/fortunejs/fortune-postgres) | Relational database adapter, translates arguments directly to SQL. |
 | [Redis](https://github.com/thibremy/fortune-redis) | In-memory data structure store. |
+| [Google Cloud Datastore](https://github.com/patrinhani-ciandt/fortune-datastore) | Google Cloud Datastore, NoSQL. |
 | [NeDB](https://github.com/fortunejs/fortune-nedb) | Embedded document data store with an API that is mostly compatible with MongoDB. |
 | [File System](https://github.com/fortunejs/fortune-fs) | An extension of the built-in memory adapter that persists records on disk as flat files. |
 
