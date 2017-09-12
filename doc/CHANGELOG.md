@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.3.0 (2017-09-12)
+- Feature: allow transactions to be re-used across multiple requests.
+- Polish: remove check for field names that might conflict with stringly-typed types.
+
+
 ### 5.2.11 (2017-07-30)
 - Polish: more lenient type casting of string to boolean, to accept more variants of truthy values.
 - Polish: fix test setup regarding message not being injected into adapter.
