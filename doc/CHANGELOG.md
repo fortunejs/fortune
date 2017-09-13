@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.3.1 (2017-09-13)
+- Fix: if a transaction is passed to the request, it should never be ended by the request, even if an error happens.
+
 
 ### 5.3.0 (2017-09-12)
 - Feature: allow transactions to be re-used across multiple requests.
