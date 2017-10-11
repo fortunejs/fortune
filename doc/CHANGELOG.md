@@ -1,5 +1,10 @@
 # Changelog
 
+
+### 5.4.0 (2017-10-10)
+- Feature: the adapter should receive the records to update or delete as `meta[keys.findRecords]`.
+
+
 ### 5.3.1 (2017-09-13)
 - Fix: if a transaction is passed to the request, it should never be ended by the request, even if an error happens.
 

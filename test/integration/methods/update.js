@@ -50,6 +50,29 @@ run((assert, comment) => {
 
 
 run((assert, comment) => {
+  comment('update should receive found records')
+  return updateTest({
+    type: 'user',
+    payload: {
+      [primaryKey]: 2,
+      replace: { name: 'Q' }
+    },
+    patch: store => {
+      const update = store.adapter.update
+
+      store.adapter.update = function (type, updates, meta) {
+        assert(
+          Array.isArray(meta[constants.findRecords]),
+          'found records are passed')
+
+        return update.apply(this, arguments)
+      }
+    }
+  })
+})
+
+
+run((assert, comment) => {
   comment('update one to one with 2nd degree unset')
   return updateTest({
     change: data => {
@@ -637,6 +660,9 @@ function updateTest (o) {
 
   .then(instance => {
     store = instance
+
+    if (o.patch)
+      o.patch(store)
 
     if (o.change)
       store.on(changeEvent, data => o.change(data))
