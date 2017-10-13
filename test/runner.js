@@ -29,7 +29,12 @@ describe('Fortune test runner', function(){
       adapter: "mongodb",
       connectionString: remoteDB || "mongodb://localhost/fortune_test",
       inflect: true,
-      enableWebsockets: true
+      enableWebsockets: true,
+      flags: {
+        config: {
+          autoIndex: true
+        }
+      }
     }, port, ioPort);
 
     var app = options.app;
