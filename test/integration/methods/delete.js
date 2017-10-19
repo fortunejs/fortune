@@ -24,16 +24,6 @@ run((assert, comment) => {
   .then(instance => {
     store = instance
 
-    const originalDelete = store.adapter.delete
-
-    store.adapter.delete = function (type, ids, meta) {
-      assert(
-        Array.isArray(meta[constants.findRecords]),
-        'found records are passed')
-
-      return originalDelete.apply(this, arguments)
-    }
-
     store.on(changeEvent, data => {
       assert(find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')

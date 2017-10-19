@@ -1,8 +1,8 @@
 # Changelog
 
 
-### 5.4.0 (2017-10-10)
-- Feature: the adapter should receive the records to update or delete as `meta[keys.findRecords]`.
+### 5.4.1 (2017-10-19)
+- Remove `findRecords` symbol. This had some edge case problems.
 
 
 ### 5.3.1 (2017-09-13)
