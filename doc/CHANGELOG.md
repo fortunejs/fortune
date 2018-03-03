@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.4.2 (2018-03-02)
+- Polish: expose message for invalid link in `include` parameter.
+
+
 ### 5.4.1 (2017-10-19)
 - Remove `findRecords` symbol. This had some edge case problems.
 
