@@ -2,7 +2,7 @@
 
 *This guide assumes familiarity with Node.js, JavaScript, and databases, and is intended to show how to use Fortune.js effectively.*
 
-Fortune.js is a database abstraction layer for Node.js and web browsers. It makes assumptions about the data model in order to build features on top of those assumptions:
+Fortune.js is a non-native graph database abstraction layer for Node.js and web browsers. It makes assumptions about the data model in order to build features on top of those assumptions:
 
 - **Inverse relationship updates**: when using links in the definition of a record type, Fortune.js will automatically write the other side of the link.
 - **Referential integrity**: Fortune.js ensures that all links must be valid at the application level.

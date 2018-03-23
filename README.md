@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
-Fortune.js is a [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) that implements features on the application-level for Node.js and web browsers. It provides a common interface for databases, as well as relationships, inverse updates, referential integrity, which are built upon assumptions in the data model.
+Fortune.js is a non-native graph [database abstraction layer](https://en.wikipedia.org/wiki/Database_abstraction_layer) that implements graph-like features on the application-level for Node.js and web browsers. It provides a common interface for databases, as well as relationships, inverse updates, referential integrity, which are built upon assumptions in the data model.
 
 It's particularly useful for:
 
