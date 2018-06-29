@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Non-native graph database abstraction layer for Node.js and web browsers.",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -30,30 +30,30 @@
   "devDependencies": {
     "@tap-format/dot": "^0.3.0",
     "bluebird": "^3.5.1",
-    "browserify": "^16.1.0",
-    "caniuse-db": "^1.0.30000810",
-    "chalk": "^2.3.2",
+    "browserify": "^16.2.2",
+    "caniuse-db": "^1.0.30000861",
+    "chalk": "^2.4.1",
     "cssnano": "^3.10.0",
     "doc-tree": "^0.12.2",
-    "eslint": "^4.18.2",
+    "eslint": "^5.0.1",
     "eslint-config-boss": "^1.0.6",
     "fortune-http": "^1.2.8",
     "fortune-ws": "^1.0.3",
     "highlight.js": "^9.12.0",
-    "html-minifier": "^3.5.9",
+    "html-minifier": "^3.5.17",
     "inflection": "^1.12.0",
     "istanbul": "^0.4.5",
-    "marked": "^0.3.17",
+    "marked": "^0.4.0",
     "mkdirp": "^0.5.1",
     "mustache": "^2.3.0",
     "normalize.css": "^8.0.0",
-    "postcss": "^6.0.19",
+    "postcss": "^6.0.23",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^11.1.0",
     "rimraf": "^2.6.2",
-    "tapdance": "^5.0.4",
-    "tape-run": "^3.0.4",
-    "uglify-js": "^3.3.12"
+    "tapdance": "^5.1.0",
+    "tape-run": "^4.0.0",
+    "uglify-js": "^3.4.2"
   },
   "files": [
     "lib/",
@@ -64,9 +64,6 @@
   "main": "lib/index.js",
   "eslintConfig": {
     "extends": "boss/es5"
-  },
-  "engines": {
-    "node": ">=6.10"
   },
   "keywords": [
     "database",

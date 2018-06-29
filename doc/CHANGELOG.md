@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.4.3 (2018-06-29)
+- Expose `applyUpdate` from common functions, used mainly for the memory adapter.
+
+
 ### 5.4.2 (2018-03-02)
 - Polish: expose message for invalid link in `include` parameter.
 
