@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.4.4 (2018-07-08)
+- Fix: bug in removing related record ID due to incorrect variable name.
+
+
 ### 5.4.3 (2018-06-29)
 - Expose `applyUpdate` from common functions, used mainly for the memory adapter.
 

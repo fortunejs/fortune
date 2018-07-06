@@ -178,6 +178,58 @@ run((assert, comment) => {
 
 
 run((assert, comment) => {
+  comment('update one to one across types')
+  return updateTest({
+    change: data => {
+      assert(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
+        [ 1 ]), 'change event shows updated IDs')
+      assert(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
+        [ 2 ]), 'change event shows related update IDs')
+    },
+    type: 'user',
+    payload: {
+      [primaryKey]: 1,
+      replace: { likedAnimal: 2 }
+    },
+    relatedType: 'animal',
+    related: response => {
+      assert(find(response.payload.records,
+        record => record[primaryKey] === 2).likedBy === 1,
+        'related field set')
+    }
+  })
+})
+
+
+run((assert, comment) => {
+  comment('update one to one with 2nd degree unset across types')
+  return updateTest({
+    change: data => {
+      assert(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
+        [ 1, 2 ]), 'change event shows updated IDs')
+      assert(deepEqual(data[updateMethod].animal
+        .map(x => x.id).sort((a, b) => a - b),
+        [ 1 ]), 'change event shows related update IDs')
+    },
+    type: 'user',
+    payload: {
+      [primaryKey]: 1,
+      replace: { likedAnimal: 1 }
+    },
+    relatedType: 'animal',
+    related: response => {
+      assert(find(response.payload.records,
+        record => record[primaryKey] === 1).likedBy === 1,
+        'related field set')
+    }
+  })
+})
+
+
+run((assert, comment) => {
   comment('update one to many (no inverse updates)')
   return updateTest({
     change: data => {

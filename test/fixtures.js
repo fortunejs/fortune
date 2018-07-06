@@ -23,6 +23,7 @@ exports.user = [
     lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     birthday: new Date(Date.UTC(1997, 6, 30)),
     spouse: 1,
+    likedAnimal: 1,
     ownedPets: [ 2, 3 ],
     friends: [ 3 ],
     enemies: [ 3 ]
@@ -52,6 +53,7 @@ exports.animal = [
     createdAt: new Date(Date.UTC(2016, 3, 29)),
     lastModifiedAt: new Date(Date.UTC(2016, 3, 30)),
     isNeutered: true,
+    likedBy: 2,
     owner: 1
   },
   {

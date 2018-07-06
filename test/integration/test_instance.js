@@ -30,6 +30,9 @@ module.exports = adapter => {
       // One to one
       spouse: { link: 'user', inverse: 'spouse' },
 
+      // One to one
+      likedAnimal: { link: 'animal', inverse: 'likedBy'},
+
       // Many to one
       ownedPets: { link: 'animal', inverse: 'owner', isArray: true }
     },
@@ -46,6 +49,9 @@ module.exports = adapter => {
       lastModifiedAt: { type: Date },
       nicknames: { type: String, isArray: true },
       picture: { type: Buffer },
+
+      // One to one
+      likedBy: { link: 'user', inverse: 'likedAnimal' },
 
       // One to many
       owner: { link: 'user', inverse: 'ownedPets' }
