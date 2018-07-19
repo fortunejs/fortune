@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Non-native graph database abstraction layer for Node.js and web browsers.",
-  "version": "5.4.4",
+  "version": "5.4.5",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {

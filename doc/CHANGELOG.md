@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.4.5 (2018-07-19)
+- Fix: pulling from an array no longer reverses the order of the array.
+
+
 ### 5.4.4 (2018-07-08)
 - Fix: bug in removing related record ID due to incorrect variable name.
 
