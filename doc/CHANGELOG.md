@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.4.6 (2018-09-05)
+- Polish: delete temporary keys after output hooks are run, to allow for introspection during hook.
+
+
 ### 5.4.5 (2018-07-19)
 - Fix: pulling from an array no longer reverses the order of the array.
 
