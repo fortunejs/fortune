@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.4.7 (2018-09-07)
+- Fix: unset 2nd degree one-to-one related record upon record creation.
+- Fix: unset 2nd degree many-to-one related record upon record creation.
+
+
 ### 5.4.6 (2018-09-05)
 - Polish: delete temporary keys after output hooks are run, to allow for introspection during hook.
 

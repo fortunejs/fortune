@@ -639,6 +639,24 @@ module.exports = (adapter, options) => {
   })
 
   run((assert, comment) => {
+    comment('create: records returned in same order')
+    return test(adapter => {
+      let id
+
+      return adapter.create(type, [
+        { name: 'a' },
+        { name: 'b' },
+        { name: 'c' }
+      ])
+      .then(records => {
+        assert(deepEqual(records.map(record => record.name),
+          [ 'a', 'b', 'c' ]),
+          'records returned in the same order')
+      })
+    })
+  })
+
+  run((assert, comment) => {
     comment('update: no-op')
     return test(adapter => {
       return adapter.update(type, [])

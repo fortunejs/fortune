@@ -130,3 +130,59 @@ run((assert, comment) => {
     assert(error instanceof ConflictError, 'error type is correct')
   })
 })
+
+
+run((assert, comment) => {
+  comment('create record with one-to-one relationship and 2nd degree unset')
+
+  let store
+  let didChange
+
+  return testInstance()
+
+  .then(instance => {
+    store = instance
+
+    store.on(changeEvent, data => {
+      didChange = true
+      assert(data.update.user.find(record => record.id === 2),
+        'should update related record')
+      assert(data.update.user.find(record => record.id === 1),
+        'should update 2nd degree related record')
+    })
+
+    return store.create('user', [ { spouse: 2 } ])
+  })
+
+  .then(() => {
+    assert(didChange, 'change event emitted')
+  })
+})
+
+
+run((assert, comment) => {
+  comment('create record with many-to-one relationship and 2nd degree unset')
+
+  let store
+  let didChange
+
+  return testInstance()
+
+  .then(instance => {
+    store = instance
+
+    store.on(changeEvent, data => {
+      didChange = true
+      assert(deepEqual(data[updateMethod].user
+        .map(x => x.id).sort((a, b) => a - b),
+        [ 1, 2 ]),
+        'should update 2nd degree related records')
+    })
+
+    return store.create('user', [ { ownedPets: [ 1, 2, 3 ] } ])
+  })
+
+  .then(() => {
+    assert(didChange, 'change event emitted')
+  })
+})
