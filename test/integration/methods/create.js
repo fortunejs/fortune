@@ -145,13 +145,15 @@ run((assert, comment) => {
 
     store.on(changeEvent, data => {
       didChange = true
-      assert(data.update.user.find(record => record.id === 2),
+      assert(data.update.animal.find(record =>
+        record.id === 1 && record.replace.likedBy),
         'should update related record')
-      assert(data.update.user.find(record => record.id === 1),
+      assert(data.update.user.find(record =>
+        record.id === 2 && record.replace.likedAnimal === null),
         'should update 2nd degree related record')
     })
 
-    return store.create('user', [ { spouse: 2 } ])
+    return store.create('user', [ { likedAnimal: 1 } ])
   })
 
   .then(() => {

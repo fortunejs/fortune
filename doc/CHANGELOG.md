@@ -1,6 +1,11 @@
 # Changelog
 
 
+### 5.4.8 (2018-09-07)
+- Fix: unset 2nd degree one-to-one related record upon record creation (wrong field name).
+- Fix: unset 2nd degree one-to-one related record upon record update (wrong field name).
+
+
 ### 5.4.7 (2018-09-07)
 - Fix: unset 2nd degree one-to-one related record upon record creation.
 - Fix: unset 2nd degree many-to-one related record upon record creation.
