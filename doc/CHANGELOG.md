@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 5.5.1 (2018-09-23)
+### 5.5.2 (2018-09-23)
 - Fix: workaround Content Security Policy by avoiding use of `new Function`.
 
 
