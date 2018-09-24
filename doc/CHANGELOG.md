@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.1 (2018-09-23)
+- Fix: workaround Content Security Policy by avoiding use of `new Function`.
+
+
 ### 5.5.0 (2018-09-10)
 - Feature: allow messages to be defined as functions, to facilitate pre-compiled message functions. These functions will be called with one argument, a key-value hash.
 - Polish: use ICU MessageFormat internally.
