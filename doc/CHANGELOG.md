@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.3 (2018-09-27)
+- Fix: improve how generic error message is shown.
+
+
 ### 5.5.2 (2018-09-23)
 - Fix: workaround Content Security Policy by avoiding use of `new Function`.
 
