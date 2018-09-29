@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Non-native graph database abstraction layer for Node.js and web browsers.",
-  "version": "5.5.4",
+  "version": "5.5.5",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -25,7 +25,7 @@
     "test:browser": "browserify test/browser.js | tape-run | tf-dot"
   },
   "dependencies": {
-    "error-class": "^2.0.1",
+    "error-class": "^2.0.2",
     "event-lite": "^0.1.2"
   },
   "devDependencies": {
