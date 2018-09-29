@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.4 (2018-09-29)
+- Fix: remove use of Function constructor to comply with Content Security Policy.
+
+
 ### 5.5.3 (2018-09-27)
 - Fix: improve how generic error message is shown.
 
