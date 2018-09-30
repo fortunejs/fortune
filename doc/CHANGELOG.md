@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.6 (2018-09-30)
+- Fix: improper check on `linked[field]` caused errors when `enforceLinks` is false.
+
+
 ### 5.5.5 (2018-09-29)
 - Fix: remove use of Function constructor to comply with Content Security Policy.
 - Fix: remove use of Function constructor in `error-class` dependency.
