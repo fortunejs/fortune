@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.8 (2018-10-10)
+- Fix: remove bad reference to `message.copy`.
+
+
 ### 5.5.7 (2018-10-09)
 - Polish: remove `message.copy`, turns out it was pretty useless, I hope nobody was using it.
 
