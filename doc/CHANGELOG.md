@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.7 (2018-10-09)
+- Polish: remove `message.copy`, turns out it was pretty useless, I hope nobody was using it.
+
+
 ### 5.5.6 (2018-09-30)
 - Fix: improper check on `linked[field]` caused errors when `enforceLinks` is false.
 
