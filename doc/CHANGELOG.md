@@ -1,7 +1,7 @@
 # Changelog
 
 
-### 5.5.8 (2018-10-10)
+### 5.5.9 (2018-10-10)
 - Fix: remove bad reference to `message.copy`.
 
 
