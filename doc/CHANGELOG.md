@@ -1,8 +1,8 @@
 # Changelog
 
 
-### 5.5.10 (2018-10-11)
-- Fix: problem in record type validation in which prototype is accessed on a field type, this is not allowed in certain secure contexts.
+### 5.5.12 (2018-10-11)
+- Fix: various issues in record type validation in which prototype is accessed on a field type, this is not allowed in certain secure contexts.
 
 
 ### 5.5.9 (2018-10-10)
