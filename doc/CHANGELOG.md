@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.13 (2018-10-18)
+- Fix: expose `recordTypes`, `options`, `hooks`, and `adapter` and plain properties on the Fortune instance. It was causing problems in virtual machines like `vm2` due to [unexpected behavior](https://github.com/patriksimek/vm2/issues/62).
+
+
 ### 5.5.12 (2018-10-11)
 - Fix: various issues in record type validation in which prototype is accessed on a field type, this is not allowed in certain secure contexts.
 
