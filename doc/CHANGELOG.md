@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.14 (2018-10-18)
+- Fix: improve type checking, particularly across mixed global contexts.
+
+
 ### 5.5.13 (2018-10-18)
 - Fix: expose `recordTypes`, `options`, `hooks`, and `adapter` and plain properties on the Fortune instance. It was causing problems in virtual machines like `vm2` due to [unexpected behavior](https://github.com/patriksimek/vm2/issues/62).
 
