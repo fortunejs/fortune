@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.15 (2018-11-15)
+- Polish: virtual machine fix by defining denormalized field definition as writable and configurable.
+
+
 ### 5.5.14 (2018-10-18)
 - Fix: improve type checking, particularly across mixed global contexts.
 
