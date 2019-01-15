@@ -56,6 +56,14 @@ module.exports = adapter => {
       // One to many
       owner: { link: 'user', inverse: 'ownedPets' }
     },
+    article: {
+      title: { type: String },
+      body:{ type: String }
+    },
+    comment: {
+      text: { type: String },
+      article: { link: 'article' }
+    },
     '☯': {}
   }, assign({
     hooks: {

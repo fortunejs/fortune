@@ -86,3 +86,21 @@ exports.animal = [
     isNeutered: false
   }
 ]
+
+exports.article = [
+  {
+    id: 1,
+    title: 'Title',
+    body: 'Something here',
+    // Hidden denormalized field
+    '__comment_article_inverse': 1
+  }
+]
+
+exports.comment = [
+  {
+    id: 1,
+    text: 'Comment to article 1',
+    article: 1
+  }
+]
