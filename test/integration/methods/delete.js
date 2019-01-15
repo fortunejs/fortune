@@ -27,12 +27,12 @@ run((assert, comment) => {
     store.on(changeEvent, data => {
       assert(find(data[deleteMethod].user, id => id === 3),
         'change event shows deleted ID')
-      assert(find(data[updateMethod].user, (update) => {
-        return update.id === 2 && update.pull.enemies[0] === 3
-      }), 'user 3 is removed from user 2 enemies')
+      assert(find(data[updateMethod].user, update =>
+        update.id === 2 && update.pull.enemies[0] === 3),
+        'denormalized inverse field is updated')
       assert(deepEqual(data[updateMethod].user
         .map(x => x.id).sort((a, b) => a - b),
-        [ 1, 2, 2 ]), 'change event shows updated IDs')
+        [ 1, 2 ]), 'change event shows updated IDs')
     })
 
     return store.delete('user', 3)

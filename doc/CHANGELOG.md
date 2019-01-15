@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.16 (2019-01-15)
+- Fix: denormalized inverse field should be updated on delete.
+
+
 ### 5.5.15 (2018-11-15)
 - Polish: virtual machine fix by defining denormalized field definition as writable and configurable.
 
