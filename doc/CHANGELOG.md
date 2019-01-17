@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.17 (2019-01-16)
+- Fix: error on updating denormalized inverse field in delete method.
+
+
 ### 5.5.16 (2019-01-15)
 - Fix: denormalized inverse field should be updated on delete.
 

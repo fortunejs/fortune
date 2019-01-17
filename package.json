@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Non-native graph database abstraction layer for Node.js and web browsers.",
-  "version": "5.5.16",
+  "version": "5.5.17",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -32,7 +32,7 @@
     "@tap-format/dot": "^0.3.0",
     "bluebird": "^3.5.3",
     "browserify": "^16.2.3",
-    "caniuse-db": "^1.0.30000928",
+    "caniuse-db": "^1.0.30000929",
     "chalk": "^2.4.2",
     "cssnano": "^4.1.8",
     "doc-tree": "^0.12.2",
@@ -50,7 +50,7 @@
     "mkdirp": "^0.5.1",
     "mustache": "^3.0.1",
     "normalize.css": "^8.0.1",
-    "postcss": "^7.0.11",
+    "postcss": "^7.0.13",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
     "rimraf": "^2.6.3",
