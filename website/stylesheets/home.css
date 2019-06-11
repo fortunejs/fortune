@@ -3,14 +3,13 @@ article > h1.intro {
 }
 
 article > h1.intro::before {
-  background: var(--color-literal);
-  opacity: 0.32;
+  background: none;
 }
 
 p.intro {
   color: var(--color-literal);
-  font-size: calc(1em * 9 / 5);
-  line-height: calc(var(--line-height) / ((9 / 5) / 2));
+  font-size: calc(1em * 10 / 5);
+  line-height: calc(var(--line-height) / ((10 / 5) / 2));
   padding-bottom: calc(var(--line-height) * (3 / 4) / ((9 / 5) / 2));
   margin: 0;
 }
@@ -37,6 +36,7 @@ pre.install {
   height: calc(var(--line-height) * 2);
   line-height: calc(var(--line-height) * 2 - 2px);
   padding: 0 calc(var(--line-height) * 2 / 3);
+  overflow: hidden;
 }
 
 pre.install:first-of-type {
@@ -48,6 +48,7 @@ pre.install:last-of-type {
   font-family: inherit;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
   border-left-style: dotted;
+  font-weight: bold;
 }
 
 pre.install a {
