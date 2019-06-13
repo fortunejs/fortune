@@ -16,6 +16,7 @@ Fortune.js comes with some defaults to work out of the box. Plugins extend funct
 | [NeDB](https://github.com/fortunejs/fortune-nedb) | Embedded document data store with an API that is mostly compatible with MongoDB. |
 | [File System](https://github.com/fortunejs/fortune-fs) | An extension of the built-in memory adapter that persists records on disk as flat files. |
 | [localForage](https://github.com/genie-team/fortune-localforage) | Takes advantage of [localForage](https://github.com/localForage/localForage), which wraps IndexedDB, WebSQL, or localStorage. There is also a [Cordova SQLite Driver](https://github.com/thgreasi/localForage-cordovaSQLiteDriver). |
+| [ElasticSearch](https://github.com/sjovanovic/fortune-elastic-adapter) | Search engine based on Lucene. |
 
 
 ### Networking
