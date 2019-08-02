@@ -102,7 +102,7 @@ tbody tr:nth-of-type(2n) {
 }
 
 header {
-  background-color: color(var(--color-literal) lightness(- 20%));
+  background-color: color(var(--color-literal) lightness(- 8%) saturation(- 12%));
   position: fixed;
   z-index: 100;
   top: 0;
@@ -272,7 +272,7 @@ nav li:last-of-type {
 }
 
 nav li::before {
-  content: '\2013';
+  content: '\2022';
   color: var(--color-light);
   margin-right: calc(1em / 3);
 }
