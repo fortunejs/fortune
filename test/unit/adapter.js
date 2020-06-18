@@ -201,6 +201,46 @@ module.exports = (adapter, options) => {
   })
 
   run((assert, comment) => {
+    comment('find: fuzzyMatch')
+    return test(adapter => {
+      debugger
+      return Promise.all([
+        adapter.find(type, null, {
+          fuzzyMatch: {
+            "friends:name": "jo"
+          }
+        })
+      ])
+      .then(results => {
+        results.forEach((records) => {
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'bob', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run((assert, comment) => {
+    comment('find: fuzzyMatch in this world, the friend of a friend is myself')
+    return test(adapter => {
+      debugger
+      return Promise.all([
+        adapter.find(type, null, {
+          fuzzyMatch: {
+            "friends:friends:name": "jOHn"
+          }
+        })
+      ])
+      .then(results => {
+        results.forEach((records) => {
+          assert(records.length === 1, 'match length is correct')
+          assert(records[0].name === 'john', 'matched correct record')
+        })
+      })
+    })
+  })
+
+  run((assert, comment) => {
     comment('find: match (string)')
     return test(adapter => {
       return adapter.find(type, null,
