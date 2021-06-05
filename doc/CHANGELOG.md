@@ -1,6 +1,10 @@
 # Changelog
 
 
+### 5.5.18 (2021-06-04)
+- Fix: in case `Function.name` isn't available, don't throw an error.
+
+
 ### 5.5.17 (2019-01-16)
 - Fix: error on updating denormalized inverse field in delete method.
 
