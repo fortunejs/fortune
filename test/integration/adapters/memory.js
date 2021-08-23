@@ -21,7 +21,10 @@ var MemoryAdapter = memoryAdapter(Adapter)
 var adapter = new MemoryAdapter({
   keys: keys,
   errors: errors,
-  recordTypes: recordTypes
+  recordTypes: recordTypes,
+  options: {
+    recordsPerType: 20
+  }
 })
 
 testAdapter(memoryAdapter)
@@ -79,6 +82,23 @@ run(function (assert, comment) {
   .then(function (records) {
     assert(records.length === 1, 'records created')
     assert(Array.isArray(records[0].bar), 'new field present')
+  })
+})
+
+
+run(function (assert, comment) {
+  comment('manual memory management')
+  return adapter.connect()
+  .then(function () {
+    var records = []
+    for (var i = 0; i < 100; i++) {
+      records.push({ int: i })
+    }
+    return adapter.create('type', records)
+  })
+  .then(function (records) {
+    assert(records.length === 100, 'records created')
+    assert(Object.keys(adapter.db.type).length === 20, 'only max records retained')
   })
 })
 
