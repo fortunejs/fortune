@@ -1,5 +1,7 @@
 # Changelog
 
+### 5.5.19 (2024-02-20)
+- Fix: update dependencies and scripts
 
 ### 5.5.18 (2021-06-04)
 - Fix: in case `Function.name` isn't available, don't throw an error.
