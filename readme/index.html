@@ -1,0 +1,77 @@
+<!DOCTYPE html><!--
+
+This page is automatically generated. See:
+https://github.com/fortunejs/fortune/tree/master/website
+
+--><meta charset="utf-8"><title>Fortune.js</title><meta name="description" content="Non-native graph database abstraction layer for Node.js and web browsers."><meta name="keywords" content="database,adapter,data,model,record"><link rel="icon" href="./assets/fortune_pig.png"><link rel="stylesheet" href="./assets/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css"><header><div><a href="./"><img src="./assets/fortune_logo.svg" alt="Fortune.js" class="logo-type"></a><a href="https://github.com/fortunejs/fortune" class="corner">GitHub<span> Repository</span></a></div></header><main><article><h1 class="intro">Readme</h1><p class="intro">Fortune.js is a non-native graph <a href="https://en.wikipedia.org/wiki/Database_abstraction_layer">database abstraction layer</a> for Node.js and web browsers.</p><div class="install-container"><pre class="install"><code><a href="https://www.npmjs.com/package/fortune">npm install fortune --save</a></code></pre><pre class="install"><a href="/fortune.min.js">Download</a></pre></div><h4 id="usage">Usage<a class="anchor" href="#usage" title="Link to this section “Usage”">#</a></h4><p>Only record type definitions need to be provided. These definitions describe what data types may belong on a record and what relationships they may have, for which Fortune.js does inverse updates and maintains referential integrity. Here&#39;s an example of a basic micro-blogging service:</p><pre><code class="language-js">const fortune = require(&#39;fortune&#39;) // Works in web browsers, too.
+
+const store = fortune({
+  user: {
+    name: String,
+
+    // Following and followers are inversely related (many-to-many).
+    following: [ Array(&#39;user&#39;), &#39;followers&#39; ],
+    followers: [ Array(&#39;user&#39;), &#39;following&#39; ],
+
+    // Many-to-one relationship of user posts to post author.
+    posts: [ Array(&#39;post&#39;), &#39;author&#39; ]
+  },
+  post: {
+    message: String,
+
+    // One-to-many relationship of post author to user posts.
+    author: [ &#39;user&#39;, &#39;posts&#39; ]
+  }
+})
+</code></pre><p>Note that the primary key <code>id</code> is reserved, so there is no need to specify this. Links are <code>id</code>s that are maintained internally at the application-level by Fortune.js, and are always denormalized so that every link has a back-link. What this also means is that changes in a record will affect the links in related records.</p><p>By default, the data is persisted in memory (and IndexedDB for the browser). There are adapters for databases such as <a href="https://github.com/fortunejs/fortune-mongodb">MongoDB</a>, <a href="https://github.com/fortunejs/fortune-postgres">Postgres</a>, and <a href="https://github.com/fortunejs/fortune-nedb">NeDB</a>. See the <a href="http://fortune.js.org/plugins/">plugins page</a> for more details.</p><p>Fortune has 4 main methods: <code>find</code>, <code>create</code>, <code>update</code>, &amp; <code>delete</code>, which correspond to <a href="https://en.wikipedia.org/wiki/Create,_read,_update_and_delete">CRUD</a>. The method signatures are as follows:</p><pre><code class="language-js">// The first argument `type` is always required. The optional `include`
+// argument is used for finding related records in the same request and is
+// documented in the `request` method, and the optional `meta` is specific to
+// the adapter. All methods return promises.
+store.find(type, ids, options, include, meta)
+store.create(type, records, include, meta) // Records required.
+store.update(type, updates, include, meta) // Updates required.
+store.delete(type, ids, include, meta)
+
+// For example...
+store.find(&#39;user&#39;, 123).then(results =&gt; { ... })
+</code></pre><p>The first method call to interact with the database will trigger a connection to the data store, and it returns the result as a Promise. The specific methods wrap around the more general <code>request</code> method, see the <a href="http://fortune.js.org/api/#fortune-request">API documentation for <code>request</code></a>.</p><h2 id="input-and-output-hooks">Input and Output Hooks<a class="anchor" href="#input-and-output-hooks" title="Link to this section “Input and Output Hooks”">#</a></h2><p>I/O hooks isolate business logic, and are part of what makes the interface reusable across different protocols. An input and output hook function may be defined per record type. Hook functions accept at least two arguments, the <code>context</code> object, the <code>record</code>, and optionally the <code>update</code> object for an <code>update</code> request. The method of an input hook may be any method except <code>find</code>, and an output hook may be applied on all methods.</p><p>An input hook function may optionally return or resolve a value to determine what gets persisted, and it is safe to mutate any of its arguments. The returned or resolved value must be the record if it&#39;s a create request, the update if it&#39;s an update request, or anything (or simply <code>null</code>) if it&#39;s a delete request. For example, an input hook function for a record may look like this:</p><pre><code class="language-js">function input (context, record, update) {
+  switch (context.request.method) {
+    // If it&#39;s a create request, return the record.
+    case &#39;create&#39;: return record
+
+    // If it&#39;s an update request, return the update.
+    case &#39;update&#39;: return update
+
+    // If it&#39;s a delete request, the return value doesn&#39;t matter.
+    case &#39;delete&#39;: return null
+  }
+}
+</code></pre><p>An output hook function may optionally return or resolve a record, and it is safe to mutate any of its arguments.</p><pre><code class="language-js">function output (context, record) {
+  record.accessedAt = new Date()
+  return record
+}
+</code></pre><p>Based on whether or not the resolved record is different from what was passed in, serializers may decide not to show the resolved record of the output hook for update and delete requests.</p><p>Hooks for a record type may be defined as follows:</p><pre><code class="language-js">const store = fortune({
+  user: { ... }
+}, {
+  hooks: {
+    // Hook functions must be defined in order: input first, output last.
+    user: [ input, output ]
+  }
+})
+</code></pre><h2 id="networking">Networking<a class="anchor" href="#networking" title="Link to this section “Networking”">#</a></h2><p>There is a <a href="https://github.com/fortunejs/fortune-http">HTTP listener implementation</a>, which returns a Node.js request listener that may be composed within larger applications. It maps Fortune requests and responses to the HTTP protocol automatically:</p><pre><code class="language-js">// Bring your own HTTP! This makes it easier to add SSL and allows the user to
+// choose between different HTTP implementations, such as HTTP/2.
+const http = require(&#39;http&#39;)
+const fortune = require(&#39;fortune&#39;)
+const fortuneHTTP = require(&#39;fortune-http&#39;)
+
+const store = fortune(...)
+
+// The `fortuneHTTP` function returns a listener function which does
+// content negotiation, and maps the internal response to a HTTP response.
+const listener = fortuneHTTP(store)
+const server = http.createServer((request, response) =&gt;
+  listener(request, response)
+  .catch(error =&gt; { /* error logging */ }))
+
+store.connect().then(() =&gt; server.listen(1337))
+</code></pre><p>This yields an <em>ad hoc</em> JSON over HTTP API, as well as a HTML interface for humans. There are also serializers for <a href="https://github.com/fortunejs/fortune-micro-api">Micro API</a> (JSON-LD) and <a href="https://github.com/fortunejs/fortune-json-api">JSON API</a>.</p><p>Fortune.js implements its own <a href="https://github.com/fortunejs/fortune-ws">wire protocol</a> based on <a href="https://developer.mozilla.org/docs/Web/API/WebSockets_API">WebSocket</a> and <a href="http://msgpack.org">MessagePack</a>, which is useful for soft real-time applications.</p><h2 id="features-and-non-features">Features and Non-Features<a class="anchor" href="#features-and-non-features" title="Link to this section “Features and Non-Features”">#</a></h2><ul><li>Inverse relationship updates, automatically maintain both sides of relationships between records.</li><li>Referential integrity, ensure that links must be valid at the application level.</li><li>Type validations, fields are guaranteed to belong to a single type.</li><li>Adapter interface, use any database that can implement an adapter.</li><li><strong>No</strong> object-relational mapping (ORM) or active record pattern, just plain data objects.</li><li><strong>No</strong> coupling with network protocol, handle requests from anywhere.</li></ul><h2 id="requirements">Requirements<a class="anchor" href="#requirements" title="Link to this section “Requirements”">#</a></h2><p>Fortune.js is written in ECMAScript 5.1, with one ECMAScript 6 addition: <strong>Promise</strong>. Most of its public API returns Promises to be compatible with future editions of the language.</p><footer>&copy; 2024 &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a></footer></article><nav><div><h4>Docs <span class="version">(v5.5.18)</span></h4><ul><li><a href="./"><span>Readme</span></a></li><li><a href="./guide/"><span>Guide</span></a></li><li><a href="./api/"><span>API Reference</span></a></li><li><a href="./plugins/"><span>Plugins</span></a></li><li><a href="./concepts/"><span>Concepts</span></a></li><li><a href="./changelog/"><span>Changelog</span></a></li></ul><h4>Fortune</h4><ul><li><a href="./api/#fortune"><span>Fortune</span></a></li><li><a href="./api/#fortune-constructor"><span>constructor</span></a></li><li><a href="./api/#fortune-request"><span>request</span></a></li><li><a href="./api/#fortune-find"><span>find</span></a></li><li><a href="./api/#fortune-create"><span>create</span></a></li><li><a href="./api/#fortune-update"><span>update</span></a></li><li><a href="./api/#fortune-delete"><span>delete</span></a></li><li><a href="./api/#fortune-connect"><span>connect</span></a></li><li><a href="./api/#fortune-disconnect"><span>disconnect</span></a></li></ul><h4>Adapter</h4><ul><li><a href="./api/#adapter"><span>Adapter</span></a></li><li><a href="./api/#adapter-constructor"><span>constructor</span></a></li><li><a href="./api/#adapter-connect"><span>connect</span></a></li><li><a href="./api/#adapter-disconnect"><span>disconnect</span></a></li><li><a href="./api/#adapter-create"><span>create</span></a></li><li><a href="./api/#adapter-find"><span>find</span></a></li><li><a href="./api/#adapter-update"><span>update</span></a></li><li><a href="./api/#adapter-delete"><span>delete</span></a></li><li><a href="./api/#adapter-begintransaction"><span>beginTransaction</span></a></li><li><a href="./api/#adapter-endtransaction"><span>endTransaction</span></a></li><li><a href="./api/#adapter-applyoperators"><span>applyOperators</span></a></li></ul><h4>HTTP Server</h4><ul><li><a href="./api/#fortunehttp-createlistener"><span>createListener</span></a></li></ul><h4>HTTP Serializer</h4><ul><li><a href="./api/#httpserializer"><span>HttpSerializer</span></a></li><li><a href="./api/#httpserializer-constructor"><span>constructor</span></a></li><li><a href="./api/#httpserializer-processrequest"><span>processRequest</span></a></li><li><a href="./api/#httpserializer-processresponse"><span>processResponse</span></a></li><li><a href="./api/#httpserializer-parsepayload"><span>parsePayload</span></a></li><li><a href="./api/#httpserializer-mediatype"><span>mediaType</span></a></li></ul><h4>WebSocket</h4><ul><li><a href="./api/#fortunews-createserver"><span>createServer</span></a></li><li><a href="./api/#fortunews-request"><span>request</span></a></li><li><a href="./api/#fortunews-sync"><span>sync</span></a></li></ul><hr></div></nav></main><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script><script>Ps.initialize(document.querySelector('nav > div'))</script>

@@ -1,0 +1,625 @@
+<!DOCTYPE html><!--
+
+This page is automatically generated. See:
+https://github.com/fortunejs/fortune/tree/master/website
+
+--><meta charset="utf-8"><title>API Reference</title><link rel="icon" href="../assets/fortune_pig.png"><link rel="stylesheet" href="../assets/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css"><header><div><a href="../"><img src="../assets/fortune_logo.svg" alt="Fortune.js" class="logo-type"></a><a href="https://github.com/fortunejs/fortune" class="corner">GitHub<span> Repository</span></a></div></header><main><article><div class="api"><h6>Fortune <span>(<a href="https://github.com/fortunejs/fortune/blob/master/lib/index.js"><em>index.js</em></a>)</span></h6><h2 id="fortune"><span class="class">class</span> <!--
+        --><!--
+        --><!--
+        -->Fortune<!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+      --><a href="#fortune" class="anchor">#</a></h2><p>This is the default export of the <code>fortune</code> package. It implements a <a href="https://www.npmjs.com/package/event-lite">subset of <code>EventEmitter</code></a>, and it has a few static properties attached to it that may be useful to access:</p><ul><li><code>Adapter</code>: abstract base class for the Adapter.</li><li><code>adapters</code>: included adapters, defaults to memory adapter.</li><li><code>errors</code>: custom error types, useful for throwing errors in I/O hooks.</li><li><code>methods</code>: a hash that maps to string constants. Available are: <code>find</code>, <code>create</code>, <code>update</code>, and <code>delete</code>.</li><li><code>events</code>: names for events on the Fortune instance. Available are: <code>change</code>, <code>sync</code>, <code>connect</code>, <code>disconnect</code>, <code>failure</code>.</li><li><code>message</code>: a function which accepts the arguments (<code>id</code>, <code>language</code>, <code>data</code>). It has properties keyed by two-letter language codes, which by default includes only <code>en</code>.</li><li><code>Promise</code>: assign this to set the Promise implementation that Fortune will use.</li></ul><h2 id="fortune-constructor"><span class="class">new</span> Fortune<!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">[recordTypes]</span>, <span class="parameter" title="Object">[options]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Fortune</span><!--
+        --><!--
+      --><a href="#fortune-constructor" class="anchor">#</a></h2><p>Create a new instance, the only required input is record type definitions. The first argument must be an object keyed by name, valued by definition objects.</p><p>Here are some example field definitions:</p><pre><code class="language-js">{
+  // Top level keys are names of record types.
+  person: {
+    // Data types may be singular or plural.
+    name: String, // Singular string value.
+    luckyNumbers: Array(Number), // Array of numbers.
+
+    // Relationships may be singular or plural. They must specify which
+    // record type it refers to, and may also specify an inverse field
+    // which is optional but recommended.
+    pets: [ Array(&#39;animal&#39;), &#39;owner&#39; ], // Has many.
+    employer: [ &#39;organization&#39;, &#39;employees&#39; ], // Belongs to.
+    likes: Array(&#39;thing&#39;), // Has many (no inverse).
+    doing: &#39;activity&#39;, // Belongs to (no inverse).
+
+    // Reflexive relationships are relationships in which the record type,
+    // the first position, is of the same type.
+    following: [ Array(&#39;person&#39;), &#39;followers&#39; ],
+    followers: [ Array(&#39;person&#39;), &#39;following&#39; ],
+
+    // Mutual relationships are relationships in which the inverse,
+    // the second position, is defined to be the same field on the same
+    // record type.
+    friends: [ Array(&#39;person&#39;), &#39;friends&#39; ],
+    spouse: [ &#39;person&#39;, &#39;spouse&#39; ]
+  }
+}
+</code></pre><p>The above shows the shorthand which will be transformed internally to a more verbose data structure. The internal structure is as follows:</p><pre><code class="language-js">{
+  person: {
+    // A singular value.
+    name: { type: String },
+
+    // An array containing values of a single type.
+    luckyNumbers: { type: Number, isArray: true },
+
+    // Creates a to-many link to `animal` record type. If the field `owner`
+    // on the `animal` record type is not an array, this is a many-to-one
+    // relationship, otherwise it is many-to-many.
+    pets: { link: &#39;animal&#39;, isArray: true, inverse: &#39;owner&#39; },
+
+    // The `min` and `max` keys are open to interpretation by the specific
+    // adapter, which may introspect the field definition.
+    thing: { type: Number, min: 0, max: 100 },
+
+    // Nested field definitions are invalid. Use `Object` type instead.
+    nested: { thing: { ... } } // Will throw an error.
+  }
+}
+</code></pre><p>The allowed native types are <code>String</code>, <code>Number</code>, <code>Boolean</code>, <code>Date</code>, <code>Object</code>, and <code>Buffer</code>. Note that the <code>Object</code> type should be a JSON serializable object that may be persisted. The only other allowed type is a <code>Function</code>, which may be used to define custom types.</p><p>A custom type function should accept one argument, the value, and return a boolean based on whether the value is valid for the type or not. It may optionally have a method <code>compare</code>, used for sorting in the built-in adapters. The <code>compare</code> method should have the same signature as the native <code>Array.prototype.sort</code>.</p><p>A custom type function must inherit one of the allowed native types. For example:</p><pre><code class="language-js">function Integer (x) { return (x | 0) === x }
+Integer.prototype = new Number()
+</code></pre><p>The options object may contain the following keys:</p><ul><li><p><code>adapter</code>: configuration array for the adapter. The default type is the memory adapter. If the value is not an array, its settings will be considered omitted.</p><pre><code class="language-js">{
+  adapter: [
+    // Must be a class that extends `Fortune.Adapter`, or a function
+    // that accepts the Adapter class and returns a subclass. Required.
+    Adapter =&gt; { ... },
+
+    // An options object that is specific to the adapter. Optional.
+    { ... }
+  ]
+}
+</code></pre></li><li><p><code>hooks</code>: keyed by type name, valued by an array containing an <code>input</code> and/or <code>output</code> function at indices <code>0</code> and <code>1</code> respectively.</p><p>A hook function takes at least two arguments, the internal <code>context</code> object and a single <code>record</code>. A special case is the <code>update</code> argument for the <code>update</code> method.</p><p>There are only two kinds of hooks, before a record is written (input), and after a record is read (output), both are optional. If an error occurs within a hook function, it will be forwarded to the response. Use typed errors to provide the appropriate feedback.</p><p>For a create request, the input hook may return the second argument <code>record</code> either synchronously, or asynchronously as a Promise. The return value of a delete request is inconsequential, but it may return a value or a Promise. The <code>update</code> method accepts a <code>update</code> object as a third parameter, which may be returned synchronously or as a Promise.</p><p>An example hook to apply a timestamp on a record before creation, and displaying the timestamp in the server&#39;s locale:</p><pre><code class="language-js">{
+  recordType: [
+    (context, record, update) =&gt; {
+      switch (context.request.method) {
+        case &#39;create&#39;:
+          record.timestamp = new Date()
+          return record
+        case &#39;update&#39;: return update
+        case &#39;delete&#39;: return null
+      }
+    },
+    (context, record) =&gt; {
+      record.timestamp = record.timestamp.toLocaleString()
+      return record
+    }
+  ]
+}
+</code></pre><p>Requests to update a record will <strong>NOT</strong> have the updates already applied to the record.</p><p>Another feature of the input hook is that it will have access to a temporary field <code>context.transaction</code>. This is useful for ensuring that bulk write operations are all or nothing. Each request is treated as a single transaction.</p></li><li><p><code>documentation</code>: an object mapping names to descriptions. Note that there is only one namepspace, so field names can only have one description. This is optional, but useful for the HTML serializer, which also emits this information as micro-data.</p><pre><code class="language-js">{
+  documentation: {
+    recordType: &#39;Description of a type.&#39;,
+    fieldName: &#39;Description of a field.&#39;,
+    anotherFieldName: {
+      en: &#39;Two letter language code indicates localized description.&#39;
+    }
+  }
+}
+</code></pre></li><li><p><code>settings</code>: internal settings to configure.</p><pre><code class="language-js">{
+  settings: {
+    // Whether or not to enforce referential integrity. This may be
+    // useful to disable on the client-side.
+    enforceLinks: true,
+
+    // Name of the application used for display purposes.
+    name: &#39;My Awesome Application&#39;,
+
+    // Description of the application used for display purposes.
+    description: &#39;media type &quot;application/vnd.micro+json&quot;&#39;
+  }
+}
+</code></pre></li></ul><p>The return value of the constructor is the instance itself.</p><h2 id="fortune-request"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">request</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">options</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-request" class="anchor">#</a></h2><p>This is the primary method for initiating a request. The options object may contain the following keys:</p><ul><li><p><code>method</code>: The method is a either a function or a constant, which is keyed under <code>Fortune.common.methods</code> and may be one of <code>find</code>, <code>create</code>, <code>update</code>, or <code>delete</code>. Default: <code>find</code>.</p></li><li><p><code>type</code>: Name of a type. <strong>Required</strong>.</p></li><li><p><code>ids</code>: An array of IDs. Used for <code>find</code> and <code>delete</code> methods only. This is optional for the <code>find</code> method.</p></li><li><p><code>include</code>: A 3-dimensional array specifying links to include. The first dimension is a list, the second dimension is depth, and the third dimension is an optional tuple with field and query options. For example: <code>[[&#39;comments&#39;], [&#39;comments&#39;, [&#39;author&#39;, { ... }]]]</code>.</p></li><li><p><code>options</code>: Exactly the same as the <a href="#adapter-find"><code>find</code> method</a> options in the adapter. These options do not apply on methods other than <code>find</code>, and do not affect the records returned from <code>include</code>. Optional.</p></li><li><p><code>meta</code>: Meta-information object of the request. Optional.</p></li><li><p><code>payload</code>: Payload of the request. <strong>Required</strong> for <code>create</code> and <code>update</code> methods only, and must be an array of objects. The objects must be the records to create, or update objects as expected by the Adapter.</p></li><li><p><code>transaction</code>: if an existing transaction should be re-used, this may optionally be passed in. This must be ended manually.</p></li></ul><p>The response object may contain the following keys:</p><ul><li><p><code>meta</code>: Meta-info of the response.</p></li><li><p><code>payload</code>: An object containing the following keys:</p><ul><li><code>records</code>: An array of records returned.</li><li><code>count</code>: Total number of records without options applied (only for responses to the <code>find</code> method).</li><li><code>include</code>: An object keyed by type, valued by arrays of included records.</li></ul></li></ul><p>The resolved response object should always be an instance of a response type.</p><h2 id="fortune-find"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">find</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either any type, or an array of any types">[ids]</span>, <span class="parameter" title="Object">[options]</span>, <span class="parameter" title="Array of Arrays">[include]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-find" class="anchor">#</a></h2><p>The <code>find</code> method retrieves record by type given IDs, querying options, or both. This is a convenience method that wraps around the <code>request</code> method, see the <code>request</code> method for documentation on its arguments.</p><h2 id="fortune-create"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">create</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either Object, or an array of Objects">records</span>, <span class="parameter" title="Array of Arrays">[include]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-create" class="anchor">#</a></h2><p>The <code>create</code> method creates records by type given records to create. This is a convenience method that wraps around the <code>request</code> method, see the request <code>method</code> for documentation on its arguments.</p><h2 id="fortune-update"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">update</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either Object, or an array of Objects">updates</span>, <span class="parameter" title="Array of Arrays">[include]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-update" class="anchor">#</a></h2><p>The <code>update</code> method updates records by type given update objects. See the <a href="#adapter-update">Adapter.update</a> method for the format of the update objects. This is a convenience method that wraps around the <code>request</code> method, see the <code>request</code> method for documentation on its arguments.</p><h2 id="fortune-delete"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">delete</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either any type, or an array of any types">[ids]</span>, <span class="parameter" title="Array of Arrays">[include]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-delete" class="anchor">#</a></h2><p>The <code>delete</code> method deletes records by type given IDs (optional). This is a convenience method that wraps around the <code>request</code> method, see the <code>request</code> method for documentation on its arguments.</p><h2 id="fortune-connect"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">connect</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-connect" class="anchor">#</a></h2><p>This method does not need to be called manually, it is automatically called upon the first request if it is not connected already. However, it may be useful if manually reconnect is needed. The resolved value is the instance itself.</p><h2 id="fortune-disconnect"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Fortune.<span class="key">disconnect</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortune-disconnect" class="anchor">#</a></h2><p>Close adapter connection, and reset connection state. The resolved value is the instance itself.</p><hr><h6>Adapter <span>(<a href="https://github.com/fortunejs/fortune/blob/master/lib/adapter&#x2F;index.js"><em>adapter&#x2F;index.js</em></a>)</span></h6><h2 id="adapter"><span class="class">class</span> <!--
+        --><!--
+        --><!--
+        -->Adapter<!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+      --><a href="#adapter" class="anchor">#</a></h2><p>Adapter is an abstract base class containing methods to be implemented. All records returned by the adapter must have the primary key <code>id</code>. The primary key <strong>MUST</strong> be a string or a number.</p><p>It has one static property, <code>DefaultAdapter</code> which is a reference to the memory adapter.</p><h2 id="adapter-constructor"><span class="class">new</span> Adapter<!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+      --><a href="#adapter-constructor" class="anchor">#</a></h2><p>The Adapter should not be instantiated directly, since the constructor function accepts dependencies. The keys which are injected are:</p><ul><li><code>recordTypes</code>: an object which enumerates record types and their definitions.</li><li><code>options</code>: the options passed to the adapter.</li><li><code>common</code>: an object containing all internal utilities.</li><li><code>errors</code>: same as static property on Fortune class.</li><li><code>keys</code>: an object which enumerates reserved constants for record type</li><li><code>message</code>: a function with the signature (<code>id</code>, <code>language</code>, <code>data</code>).</li></ul><p>These keys are accessible on the instance (<code>this</code>).</p><p>An adapter may expose a <code>features</code> static property, which is an object that can contain boolean flags. These are used mainly for checking which additional features may be tested.</p><ul><li><code>logicalOperators</code>: whether or not <code>and</code> and <code>or</code> queries are supported.</li></ul><h2 id="adapter-connect"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">connect</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-connect" class="anchor">#</a></h2><p>The responsibility of this method is to ensure that the record types defined are consistent with the backing data store. If there is any mismatch it should either try to reconcile differences or fail. This method <strong>SHOULD NOT</strong> be called manually, and it should not accept any parameters. This is the time to do setup tasks like create tables, ensure indexes, etc. On successful completion, it should resolve to no value.</p><h2 id="adapter-disconnect"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">disconnect</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-disconnect" class="anchor">#</a></h2><p>Close the database connection.</p><h2 id="adapter-create"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">create</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Array of Objects">records</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-create" class="anchor">#</a></h2><p>Create records. A successful response resolves to the newly created records.</p><p><strong>IMPORTANT</strong>: the record must have initial values for each field defined in the record type. For non-array fields, it should be <code>null</code>, and for array fields it should be <code>[]</code> (empty array). Note that not all fields in the record type may be enumerable, such as denormalized inverse fields, so it may be necessary to iterate over fields using <code>Object.getOwnPropertyNames</code>.</p><h2 id="adapter-find"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">find</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either an array of Strings, or an array of Numbers">[ids]</span>, <span class="parameter" title="Object">[options]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-find" class="anchor">#</a></h2><p>Find records by IDs and options. If IDs is undefined, it should try to return all records. However, if IDs is an empty array, it should be a no-op. The format of the options may be as follows:</p><pre><code class="language-js">{
+  sort: { ... },
+  fields: { ... },
+  exists: { ... },
+  match: { ... },
+  range: { ... },
+
+  // Limit results to this number. Zero means no limit.
+  limit: 0,
+
+  // Offset results by this much from the beginning.
+  offset: 0,
+
+  // The logical operator &quot;and&quot;, may be nested. Optional feature.
+  and: { ... },
+
+  // The logical operator &quot;or&quot;, may be nested. Optional feature.
+  or: { ... },
+
+  // Reserved field for custom querying.
+  query: null
+}
+</code></pre><p>For the fields <code>exists</code>, <code>match</code>, and <code>range</code>, the logical operator should be &quot;and&quot;. The <code>query</code> field may be used on a per adapter basis to provide custom querying functionality.</p><p>The syntax of the <code>sort</code> object is as follows:</p><pre><code class="language-js">{
+  age: false, // descending
+  name: true // ascending
+}
+</code></pre><p>Fields can be specified to be either included or omitted, but not both. Use the values <code>true</code> to include, or <code>false</code> to omit. The syntax of the <code>fields</code> object is as follows:</p><pre><code class="language-js">{
+  name: true, // include this field
+  age: true // also include this field
+}
+</code></pre><p>The <code>exists</code> object specifies if a field should exist or not (<code>true</code> or <code>false</code>). For array fields, it should check for non-zero length.</p><pre><code class="language-js">{
+  name: true, // check if this fields exists
+  age: false // check if this field doesn&#39;t exist
+}
+</code></pre><p>The syntax of the <code>match</code> object is straightforward:</p><pre><code class="language-js">{
+  name: &#39;value&#39;, // exact match or containment if array
+  friends: [ &#39;joe&#39;, &#39;bob&#39; ] // match any one of these values
+}
+</code></pre><p>The <code>range</code> object is used to filter between lower and upper bounds. It should take precedence over <code>match</code>. For array fields, it should apply on the length of the array. For singular link fields, it should not apply.</p><pre><code class="language-js">{
+  range: { // Ranges should be inclusive.
+    age: [ 18, null ], // From 18 and above.
+    name: [ &#39;a&#39;, &#39;d&#39; ], // Starting with letters A through C.
+    createdAt: [ null, new Date(2016, 0) ] // Dates until 2016.
+  }
+}
+</code></pre><p>The return value of the promise should be an array, and the array <strong>MUST</strong> have a <code>count</code> property that is the total number of records without limit and offset.</p><h2 id="adapter-update"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">update</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Array of Objects">updates</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-update" class="anchor">#</a></h2><p>Update records by IDs. Success should resolve to the number of records updated. The <code>updates</code> parameter should be an array of objects that correspond to updates by IDs. Each update object must be as follows:</p><pre><code class="language-js">{
+  // ID to update. Required.
+  id: 1,
+
+  // Replace a value of a field. Use a `null` value to unset a field.
+  replace: { name: &#39;Bob&#39; },
+
+  // Append values to an array field. If the value is an array, all of
+  // the values should be pushed.
+  push: { pets: 1 },
+
+  // Remove values from an array field. If the value is an array, all of
+  // the values should be removed.
+  pull: { friends: [ 2, 3 ] },
+
+  // The `operate` field is specific to the adapter. This should take
+  // precedence over all of the above. Warning: using this may bypass
+  // field definitions and referential integrity. Use at your own risk.
+  operate: null
+}
+</code></pre><p>Things to consider:</p><ul><li><code>push</code> and <code>pull</code> can not be applied to non-arrays.</li><li>The same value in the same field should not exist in both <code>push</code> and <code>pull</code>.</li></ul><h2 id="adapter-delete"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">delete</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="String">type</span>, <span class="parameter" title="Either an array of Strings, or an array of Numbers">[ids]</span>, <span class="parameter" title="Object">[meta]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-delete" class="anchor">#</a></h2><p>Delete records by IDs, or delete the entire collection if IDs are undefined or empty. Success should resolve to the number of records deleted.</p><h2 id="adapter-begintransaction"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">beginTransaction</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-begintransaction" class="anchor">#</a></h2><p>Begin a transaction to write to the data store. This method is optional to implement, but useful for ACID. It should resolve to an object containing all of the adapter methods.</p><h2 id="adapter-endtransaction"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">endTransaction</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Error. If an error is passed, roll back the transaction.">[error]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#adapter-endtransaction" class="anchor">#</a></h2><p>End a transaction. This method is optional to implement. It should return a Promise with no value if the transaction is completed successfully, or reject the promise if it failed.</p><h2 id="adapter-applyoperators"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->Adapter.<span class="key">applyOperators</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">record</span>, <span class="parameter" title="Object. The `operate` field on an `update` object.">operators</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Object</span><!--
+        --><!--
+      --><a href="#adapter-applyoperators" class="anchor">#</a></h2><p>Apply operators on a record, then return the record. If you make use of update operators, you should implement this method so that the internal implementation of update requests get records in the correct state. This method is optional to implement.</p><hr><h6>HTTP Server <span>(<a href="https://github.com/fortunejs/fortune-http"><em>fortune-http</em></a>)</span></h6><h2 id="fortunehttp-createlistener"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->FortuneHTTP.<span class="key">createListener</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Fortune">instance</span>, <span class="parameter" title="Object">[options]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Function</span><!--
+        --><!--
+      --><a href="#fortunehttp-createlistener" class="anchor">#</a></h2><p><strong>Node.js only</strong>: This function implements a HTTP server for Fortune.</p><pre><code class="language-js">const http = require(&#39;http&#39;)
+const fortuneHTTP = require(&#39;fortune-http&#39;)
+
+const listener = fortuneHTTP(fortuneInstance, options)
+const server = http.createServer((request, response) =&gt;
+  listener(request, response)
+  .catch(error =&gt; {
+    // error logging
+  }))
+</code></pre><p>It determines which serializer to use, assigns request headers to the <code>meta</code> object, reads the request body, and maps the response from the <code>request</code> method on to the HTTP response. The listener function ends the response and returns a promise that is resolved when the response is ended. The returned promise may be rejected with the error response, providing a hook for error logging.</p><p>The options object may be formatted as follows:</p><pre><code class="language-js">{
+  // An array of HTTP serializers, ordered by priority. Defaults to ad hoc
+  // JSON and form serializers if none are specified. If a serializer value
+  // is not an array, its settings will be considered omitted.
+  serializers: [
+    [
+      // A function that subclasses the HTTP Serializer.
+      HttpSerializerSubclass,
+
+      // Settings to pass to the constructor, optional.
+      { ... }
+    ]
+  ],
+  settings: {
+    // By default, the listener will end the response, set this to `false`
+    // if the response will be ended later.
+    endResponse: true,
+
+    // Use compression if the request `Accept-Encoding` header allows it.
+    // Note that Buffer-typed responses will not be compressed. This option
+    // should be disabled in case of a reverse proxy which handles
+    // compression.
+    useCompression: true,
+
+    // Use built-in ETag implementation, which uses CRC32 for generating
+    // weak ETags under the hood. This option should be disabled in case of
+    // a reverse proxy which handles ETags.
+    useETag: true,
+
+    // Ensure that the request is sent at an acceptable rate, to prevent
+    // abusive slow requests. This is given in terms of kilobits per second
+    // (kbps). Default: `28.8`, based on slow modem speed.
+    minimumRateKBPS: 28.8,
+
+    // Ensure that requests can not be larger than a specific size, to
+    // prevent abusive large requests. This is given in terms of megabytes
+    // (MB). Default: `2`, based on unformatted 3.5&quot; floppy disk capacity.
+    // Use a falsy value to turn this off (not recommended).
+    maximumSizeMB: 2,
+
+    // How often to check for request rate in milliseconds (ms).
+    // Default: 3000.
+    rateCheckMS: 3000
+  }
+}
+</code></pre><p>The main export contains the following keys:</p><ul><li><code>Serializer</code>: HTTP Serializer class.</li><li><code>JsonSerializer</code>: JSON over HTTP serializer.</li><li><code>HtmlSerializer</code>: HTML serializer.</li><li><code>FormDataSerializer</code>: Serializer for <code>multipart/formdata</code>.</li><li><code>FormUrlEncodedSerializer</code>: Serializer for <code>application/x-www-form-urlencoded</code>.</li><li><code>instantiateSerializer</code>: an internal function with the signature (<code>instance</code>, <code>serializer</code>, <code>options</code>), useful if one needs to get an instance of the serializer without the HTTP listener.</li></ul><hr><h6>HTTP Serializer <span>(<a href="https://github.com/fortunejs/fortune-http"><em>fortune-http</em></a>)</span></h6><h2 id="httpserializer"><span class="class">class</span> <!--
+        --><!--
+        --><!--
+        -->HttpSerializer<!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+      --><a href="#httpserializer" class="anchor">#</a></h2><p><strong>Node.js only</strong>: <code>HttpSerializer</code> is an abstract base class containing methods to be implemented.</p><h2 id="httpserializer-constructor"><span class="class">new</span> HttpSerializer<!--
+        --><!--
+        --><!--
+        --><!--
+          -->()<!--
+        --><!--
+        --><!--
+      --><a href="#httpserializer-constructor" class="anchor">#</a></h2><p>The <code>HttpSerializer</code> should not be instantiated directly, since the constructor function accepts dependencies. The keys which are injected are:</p><ul><li><code>methods</code>: same as static property on Fortune class.</li><li><code>errors</code>: same as static property on Fortune class.</li><li><code>keys</code>: an object which enumerates reserved constants for record type definitions.</li><li><code>recordTypes</code>: an object which enumerates record types and their definitions.</li><li><code>castValue</code>: a function with the signature (<code>value</code>, <code>type</code>, <code>options</code>), useful for casting arbitrary values to a particular type.</li><li><code>options</code>: the options passed to the serializer.</li><li><code>adapter</code>: a reference to the adapter instance.</li><li><code>message</code>: a function with the signature (<code>id</code>, <code>language</code>, <code>data</code>).</li><li><code>Promise</code>: the Promise implementation.</li><li><code>settings</code>: settings from the Fortune instance.</li><li><code>documentation</code>: documentation from the Fortune instance.</li></ul><p>These keys are accessible on the instance (<code>this</code>).</p><h2 id="httpserializer-processrequest"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->HttpSerializer.<span class="key">processRequest</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">contextRequest</span>, <span class="parameter" title="Object">request</span>, <span class="parameter" title="Object">response</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise | Object</span><!--
+        --><!--
+      --><a href="#httpserializer-processrequest" class="anchor">#</a></h2><p>This method is run first, and it is optional to implement. The default implementation is typically used so that it may interoperate with other serializers. The purpose is typically to read and mutate the request before anything else happens. For example, it can handle URI routing and query string parsing. The arguments that it accepts beyond the required <code>contextRequest</code> are the <code>request</code> and <code>response</code> arguments from the Node.js HTTP listener.</p><p>It should return either the context request or a promise that resolves to the context request. <em>The expectation is that the request is mutated except for the payload</em>, which should be handled separately.</p><h2 id="httpserializer-processresponse"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->HttpSerializer.<span class="key">processResponse</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">contextResponse</span>, <span class="parameter" title="Object">request</span>, <span class="parameter" title="Object">response</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise | Object</span><!--
+        --><!--
+      --><a href="#httpserializer-processresponse" class="anchor">#</a></h2><p>This gets run last. The purpose is typically to read and mutate the response at the very end, for example, stringifying an object to be sent over the network. The arguments that it accepts beyond the required <code>contextResponse</code> are the <code>request</code> and <code>response</code> arguments from the Node.js HTTP listener.</p><p>It should return either the context response or a promise that resolves to the context response. <em>The expectation is that there is a key on the context response, <code>payload</code>, which is either a string or a buffer</em>, or else Node.js doesn&#39;t know how to respond.</p><h2 id="httpserializer-parsepayload"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->HttpSerializer.<span class="key">parsePayload</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Object">contextRequest</span>, <span class="parameter" title="Object">request</span>, <span class="parameter" title="Object">response</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise | an array of Objects</span><!--
+        --><!--
+      --><a href="#httpserializer-parsepayload" class="anchor">#</a></h2><p>Parse a request payload for creating or updating records. This method should return either an array of records as expected from the <code>adapter.create</code> method, or an array of update object as expected from the <code>adapter.update</code>. method. It may also mutate the context request object.</p><h2 id="httpserializer-mediatype"><span class="class">static</span> <!--
+        --><!--
+        --><!--
+        --><!--
+        -->HttpSerializer.<span class="key">mediaType</span><!--
+        --><!--
+        --><!--
+        --><!--
+        --><!--
+      --><a href="#httpserializer-mediatype" class="anchor">#</a></h2><p>A serializer must have a static property <code>mediaType</code>, which <strong>MUST</strong> be a string.</p><hr><h6>WebSocket <span>(<a href="https://github.com/fortunejs/fortune-ws"><em>fortune-ws</em></a>)</span></h6><h2 id="fortunews-createserver"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->FortuneWS.<span class="key">createServer</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="Fortune">instance</span>, <span class="parameter" title="Function">[change]</span>, <span class="parameter" title="Object">[options]</span>, <span class="parameter" title="Function">[callback]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Server</span><!--
+        --><!--
+      --><a href="#fortunews-createserver" class="anchor">#</a></h2><p><strong>Node.js only</strong>: This function returns a WebSocket server that implements the Fortune wire protocol. The options are the same as those documented in the documentation for the <a href="https://github.com/websockets/ws/blob/master/doc/ws.md"><code>ws</code> module</a>.</p><p>The wire protocol is based on <a href="http://msgpack.org">MessagePack</a>. The client may send two kinds of requests: setting state within the connection, and making a request to the Fortune instance. Each client request <strong>MUST</strong> include an ID for correlating a response to a request. For example, requesting a state change would look like:</p><pre><code class="language-js">{ id: &#39;xxx&#39;, state: { ... } } // MessagePack encoded.
+</code></pre><p>The format is identical in the response for a state change.</p><p>Making a request to the instance is similar, and has the same parameters as the <a href="#fortune-request"><code>request</code> method</a>:</p><pre><code class="language-js">{ id: &#39;xxx&#39;, request: { ... } } // MessagePack encoded.
+</code></pre><p>When a request succeeds, the client receives the response like so:</p><pre><code class="language-js">{ id: &#39;xxx&#39;, response: { ... } } // MessagePack encoded.
+</code></pre><p>The <code>change</code> callback function gets invoked either when a change occurs within the Fortune instance, or when the client requests a state change. If it&#39;s an internal change, it is invoked with the current state and changes, otherwise if it&#39;s a connection state change, it does not have a second argument. For an internal change, the return value of this function determines either what gets sent to the client, which may be falsy to send nothing. For connection state change, the return value should be what gets assigned over the current state. It may also return a Promise. For example:</p><pre><code class="language-js">function change (state, changes) {
+  return new Promise((resolve, reject) =&gt; {
+    if (!changes) {
+      // Accept only changes to the `isListening` key.
+      return resolve({ isListening: Boolean(state.isListening) })
+    }
+    // Determine what changes should be relayed to the client,
+    // based on the current state.
+    return resolve(state.isListening ? changes : null)
+  })
+}
+</code></pre><p>The changes are relayed to the client like so:</p><pre><code class="language-js">{ changes: { ... } } // MessagePack encoded.
+</code></pre><p>If any request fails, the client receives a message like so:</p><pre><code class="language-js">{ id: &#39;xxx&#39;, error: &#39;...&#39; } // MessagePack encoded.
+</code></pre><p>The returned <code>Server</code> object has an additional key <code>stateMap</code>, which is a <code>WeakMap</code> keyed by WebSocket connection, and valued by connection state. This may be useful for external connection handlers.</p><p><em>Note that by default, this is a single-threaded implementation</em>. In order to scale past a single instance, inter-process communication (IPC) is necessary.</p><h2 id="fortunews-request"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->FortuneWS.<span class="key">request</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="WebSocket">client</span>, <span class="parameter" title="Object">[options]</span>, <span class="parameter" title="Object">[state]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Promise</span><!--
+        --><!--
+      --><a href="#fortunews-request" class="anchor">#</a></h2><p>Given a W3C WebSocket client, send a request using the Fortune wire protocol, and get a response back as a Promise. This will not create a client, it needs to be created externally, and this method will automatically wait if it is not connected yet. For example:</p><pre><code class="language-js">// https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+var client = new WebSocket(url, protocols)
+fortune.net.request(client, options)
+</code></pre><p>The <code>options</code> object is exactly the same as that defined by <code>fortune.request</code>, and the <code>state</code> object is an arbitrary object to send to request a state change. Either <code>options</code> or <code>state</code> must be passed.</p><h2 id="fortunews-sync"><!--
+        --><!--
+        --><!--
+        --><!--
+        -->FortuneWS.<span class="key">sync</span><!--
+        --><!--
+        --><!--
+        --><!--
+          -->(<span class="parameter" title="WebSocket">client</span>, <span class="parameter" title="Fortune">instance</span>, <span class="parameter" title="Function">[merge]</span>)<!--
+        --><!--
+        --><!--
+        --><span class="arrow">⇒</span><!--
+        --><span class="return">Function</span><!--
+        --><!--
+      --><a href="#fortunews-sync" class="anchor">#</a></h2><p>Given a W3C WebSocket client and an instance of Fortune, try to synchronize records based on the <code>changes</code> data pushed from the server. This function returns the event listener function.</p><p>When a sync is completed, it emits the <code>sync</code> event with the changes data, or the <code>failure</code> event if something failed.</p><p>Optionally, a <code>merge</code> function may be passed, which accepts one argument, the remote changes, and is expected to return the changes to accept. This is useful for preventing remote changes from overriding local changes.</p><hr></div><footer>&copy; 2024 &nbsp;&mdash;&nbsp; <a href="https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE">MIT License</a></footer></article><nav><div><h4>Docs <span class="version">(v5.5.18)</span></h4><ul><li><a href="../"><span>Readme</span></a></li><li><a href="../guide/"><span>Guide</span></a></li><li><a href="../api/"><span>API Reference</span></a></li><li><a href="../plugins/"><span>Plugins</span></a></li><li><a href="../concepts/"><span>Concepts</span></a></li><li><a href="../changelog/"><span>Changelog</span></a></li></ul><h4>Fortune</h4><ul><li><a href="../api/#fortune"><span>Fortune</span></a></li><li><a href="../api/#fortune-constructor"><span>constructor</span></a></li><li><a href="../api/#fortune-request"><span>request</span></a></li><li><a href="../api/#fortune-find"><span>find</span></a></li><li><a href="../api/#fortune-create"><span>create</span></a></li><li><a href="../api/#fortune-update"><span>update</span></a></li><li><a href="../api/#fortune-delete"><span>delete</span></a></li><li><a href="../api/#fortune-connect"><span>connect</span></a></li><li><a href="../api/#fortune-disconnect"><span>disconnect</span></a></li></ul><h4>Adapter</h4><ul><li><a href="../api/#adapter"><span>Adapter</span></a></li><li><a href="../api/#adapter-constructor"><span>constructor</span></a></li><li><a href="../api/#adapter-connect"><span>connect</span></a></li><li><a href="../api/#adapter-disconnect"><span>disconnect</span></a></li><li><a href="../api/#adapter-create"><span>create</span></a></li><li><a href="../api/#adapter-find"><span>find</span></a></li><li><a href="../api/#adapter-update"><span>update</span></a></li><li><a href="../api/#adapter-delete"><span>delete</span></a></li><li><a href="../api/#adapter-begintransaction"><span>beginTransaction</span></a></li><li><a href="../api/#adapter-endtransaction"><span>endTransaction</span></a></li><li><a href="../api/#adapter-applyoperators"><span>applyOperators</span></a></li></ul><h4>HTTP Server</h4><ul><li><a href="../api/#fortunehttp-createlistener"><span>createListener</span></a></li></ul><h4>HTTP Serializer</h4><ul><li><a href="../api/#httpserializer"><span>HttpSerializer</span></a></li><li><a href="../api/#httpserializer-constructor"><span>constructor</span></a></li><li><a href="../api/#httpserializer-processrequest"><span>processRequest</span></a></li><li><a href="../api/#httpserializer-processresponse"><span>processResponse</span></a></li><li><a href="../api/#httpserializer-parsepayload"><span>parsePayload</span></a></li><li><a href="../api/#httpserializer-mediatype"><span>mediaType</span></a></li></ul><h4>WebSocket</h4><ul><li><a href="../api/#fortunews-createserver"><span>createServer</span></a></li><li><a href="../api/#fortunews-request"><span>request</span></a></li><li><a href="../api/#fortunews-sync"><span>sync</span></a></li></ul><hr></div></nav></main><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script><script>Ps.initialize(document.querySelector('nav > div'))</script>
