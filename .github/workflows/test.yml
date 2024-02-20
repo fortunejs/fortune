@@ -1,0 +1,17 @@
+name: 'test'
+
+on: [pull_request, push]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ljharb/actions/node/install@main
+        name: 'nvm install lts/* && npm install'
+      - run: 'xvfb-run npm run test'
+        timeout-minutes: 1  # prevent browser hang if test fails
+      - run: 'npm run build'
