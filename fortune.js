@@ -1,6 +1,6 @@
 /*!
  * Fortune.js
- * Version 5.5.18
+ * Version 5.5.19
  * MIT License
  * http://fortune.js.org
  */
