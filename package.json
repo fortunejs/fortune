@@ -1,7 +1,7 @@
 {
   "name": "fortune",
   "description": "Non-native graph database abstraction layer for Node.js and web browsers.",
-  "version": "5.5.18",
+  "version": "5.5.19",
   "license": "MIT",
   "homepage": "http://fortune.js.org",
   "repository": {
@@ -17,7 +17,6 @@
     "build:browser": "(node lib/header && browserify lib/global.js) > dist/fortune.js",
     "build:minified": "(node lib/header && cat dist/fortune.js | uglifyjs -cm) > dist/fortune.min.js",
     "lint": "eslint lib",
-    "prepare": "npm run test && npm run build",
     "postpublish": "npm run deploy && npm run tag",
     "tag": "git tag `npm v fortune version` && git push origin --tags",
     "test": "npm run lint && npm run test:server && npm run test:browser",
@@ -26,38 +25,41 @@
   },
   "dependencies": {
     "error-class": "^2.0.2",
-    "event-lite": "^0.1.2"
+    "event-lite": "^0.1.3"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.3.0",
     "bluebird": "^3.7.2",
     "browserify": "^17.0.0",
-    "caniuse-db": "^1.0.30001234",
+    "caniuse-db": "^1.0.30001588",
     "chalk": "^4.1.1",
-    "cssnano": "^5.0.5",
-    "doc-tree": "^0.12.3",
-    "eslint": "^7.28.0",
+    "cssnano": "^6.0.3",
+    "doc-tree": "^0.14.0",
+    "eslint": "^8.56.0",
     "eslint-config-boss": "^1.0.6",
     "fortune-http": "^1.2.26",
     "fortune-ws": "^1.0.4",
-    "highlight.js": "^11.0.1",
+    "highlight.js": "^11.9.0",
     "html-minifier": "^4.0.0",
-    "inflection": "^1.13.1",
+    "inflection": "^3.0.0",
     "istanbul": "^0.4.5",
-    "marked": "^2.0.7",
-    "messageformat": "^2.2.1",
+    "marked": "^12.0.0",
+    "messageformat": "^2.3.0",
     "messageformat-cli": "^2.1.1",
-    "mkdirp": "^1.0.4",
+    "mkdirp": "^3.0.1",
     "mustache": "^4.2.0",
     "normalize.css": "^8.0.1",
     "postcss": "^8.3.0",
-    "postcss-cssnext": "^3.1.0",
-    "postcss-import": "^14.0.2",
+    "postcss-import": "^16.0.1",
     "reserved-words": "^0.1.2",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.5",
     "tapdance": "^5.1.1",
-    "tape-run": "^9.0.0",
-    "uglify-js": "^3.13.9"
+    "tape-run": "^11.0.0",
+    "uglify-js": "^3.17.4"
+  },
+  "overrides": {
+    "diff": "^5.2.0",
+    "minimist": "^0.2.4"
   },
   "files": [
     "lib/",

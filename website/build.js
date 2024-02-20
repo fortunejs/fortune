@@ -7,10 +7,9 @@ const DocTree = require('doc-tree')
 
 const postcss = require('postcss')
 const atImport = require('postcss-import')
-const cssnext = require('postcss-cssnext')
 const cssnano = require('cssnano')
 const mustache = require('mustache')
-const marked = require('marked')
+const { marked } = require('marked')
 const mkdirp = require('mkdirp')
 const hjs = require('highlight.js')
 const inflection = require('inflection')
@@ -248,7 +247,7 @@ for (let file of fs.readdirSync(assetPath))
 
 const cssEntryPoint = path.join(stylesheetPath, 'index.css')
 
-postcss([ atImport, cssnext, cssnano() ])
+postcss([ atImport, cssnano() ])
   .process(fs.readFileSync(cssEntryPoint).toString(), {
     from: cssEntryPoint
   })
