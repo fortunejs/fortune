@@ -1,6 +1,6 @@
 # [![Fortune.js](https://fortunejs.github.io/fortune/assets/fortune_logo.svg)](http://fortune.js.org)
 
-[![Build Status](https://img.shields.io/travis/fortunejs/fortune/master.svg?style=flat-square)](https://travis-ci.org/fortunejs/fortune)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/fortunejs/fortune/test.yml)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune)
 [![License](https://img.shields.io/npm/l/fortune.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune/master/LICENSE)
 
@@ -153,11 +153,6 @@ Fortune.js implements its own [wire protocol](https://github.com/fortunejs/fortu
 - Adapter interface, use any database that can implement an adapter.
 - **No** object-relational mapping (ORM) or active record pattern, just plain data objects.
 - **No** coupling with network protocol, handle requests from anywhere.
-
-
-## Requirements
-
-Fortune.js is written in ECMAScript 5.1, with one ECMAScript 6 addition: **Promise**. Most of its public API returns Promises to be compatible with future editions of the language.
 
 
 ## License
